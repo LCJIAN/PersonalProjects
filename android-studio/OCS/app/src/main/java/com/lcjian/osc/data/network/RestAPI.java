@@ -1,17 +1,25 @@
 package com.lcjian.osc.data.network;
 
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
 import com.google.gson.GsonBuilder;
 import com.lcjian.osc.App;
 import com.lcjian.osc.BuildConfig;
-import com.lcjian.osc.Constants;
+import com.lcjian.osc.Global;
+import com.lcjian.osc.data.network.entity.ResponseData;
+import com.lcjian.osc.data.network.entity.SignInRequestData;
 import com.lcjian.osc.util.StorageUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,20 +28,13 @@ import timber.log.Timber;
 public class RestAPI {
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
-    private static RestAPI instance;
 
+    private SharedPreferences userInfoSp;
     private Retrofit retrofit;
     private CloudService cloudService;
 
-    public static RestAPI getInstance() {
-        if (instance == null) {
-            synchronized (RestAPI.class) {
-                if (instance == null) {
-                    instance = new RestAPI();
-                }
-            }
-        }
-        return instance;
+    public RestAPI(SharedPreferences userInfoSp) {
+        this.userInfoSp = userInfoSp;
     }
 
     private Retrofit getRetrofit() {
@@ -44,18 +45,36 @@ public class RestAPI {
                     .readTimeout(20, TimeUnit.SECONDS)
                     .cache(getCache());
 
-            clientBuilder.interceptors().add(chain -> chain.proceed(chain.request().newBuilder()
-                    .url(chain.request().url().newBuilder()
-                            .addQueryParameter("Key", Constants.KEY)
-                            .addQueryParameter("Language", Constants.LANGUAGE)
-                            .build())
-                    .build()));
+            clientBuilder
+                    .addInterceptor(chain -> {
+                        String token = userInfoSp.getString("token", "");
+                        if (TextUtils.isEmpty(token)) {
+                            return chain.proceed(chain.request());
+                        } else {
+                            return chain.proceed(chain.request()
+                                    .newBuilder()
+                                    .header("Authorization", "Bearer " + token)
+                                    .build());
+                        }
+                    })
+                    .authenticator((route, response) -> {
+                        String token = signIn();
+                        if (TextUtils.isEmpty(token)) {
+                            return response.request();
+                        } else {
+                            userInfoSp.edit().putString("token", token).apply();
+                            return response.request()
+                                    .newBuilder()
+                                    .header("Authorization", "Bearer " + token)
+                                    .build();
+                        }
+                    });
             if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+                clientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.API_URL)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("MMM d, yyyy").create()))
+                    .baseUrl(Global.API_URL)
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z").create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build();
@@ -80,5 +99,31 @@ public class RestAPI {
             cloudService = getRetrofit().create(CloudService.class);
         }
         return cloudService;
+    }
+
+    public void reset() {
+        retrofit = null;
+        cloudService = null;
+    }
+
+    private String signIn() throws IOException {
+        String signInAccount = userInfoSp.getString("sign_in_account", "");
+        String signInPwd = userInfoSp.getString("sign_in_pwd", "");
+        SignInRequestData signInRequestData = new SignInRequestData();
+        signInRequestData.tenancyName = HttpUrl.get(Global.API_URL).host();
+        signInRequestData.usernameOrEmailAddress = signInAccount;
+        signInRequestData.password = signInPwd;
+        if (TextUtils.isEmpty(signInAccount)) {
+            return null;
+        } else {
+            Call<ResponseData<String>> call;
+            call = cloudService().signInSync(signInRequestData);
+            ResponseData<String> responseData = call.execute().body();
+            if (responseData == null) {
+                return null;
+            } else {
+                return responseData.result;
+            }
+        }
     }
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_phone_u"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/til_password_u"
+        app:layout_constraintEnd_toEndOf="@+id/btn_sign_up"
+        app:layout_constraintStart_toStartOf="@+id/btn_sign_up"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_phone_u"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_phone"
+            android:drawableLeft="@drawable/ic_phone"
+            android:drawablePadding="8dp"
+            android:hint="@string/please_input_phone"
+            android:inputType="phone"
+            android:textColor="@color/colorTextBlack"
+            android:textColorHint="@color/colorTextLightGray" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_password_u"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/til_verification_code"
+        app:layout_constraintEnd_toEndOf="@+id/btn_sign_up"
+        app:layout_constraintStart_toStartOf="@+id/btn_sign_up"
+        app:layout_constraintTop_toBottomOf="@+id/til_phone_u">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_password_u"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:drawableStart="@drawable/ic_password"
+            android:drawableLeft="@drawable/ic_password"
+            android:drawablePadding="8dp"
+            android:hint="@string/please_input_password"
+            android:inputType="textPassword"
+            android:textColor="@color/colorTextBlack"
+            android:textColorHint="@color/colorTextLightGray" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_sign_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:background="@drawable/shape_primary_btn_bg"
+        android:text="@string/sign_in"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_verification_code" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til_verification_code"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
+        app:layout_constraintStart_toStartOf="@+id/btn_sign_up"
+        app:layout_constraintTop_toBottomOf="@+id/til_password_u">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_verification_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/please_input_verification_code"
+            android:textColor="@color/colorTextBlack"
+            android:textColorHint="@color/colorTextLightGray" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_send_verification_code"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/shape_primary_btn_bg_2"
+        android:text="@string/send_verification_code"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/til_verification_code"
+        app:layout_constraintEnd_toEndOf="@+id/btn_sign_up"
+        app:layout_constraintStart_toEndOf="@+id/til_verification_code"
+        app:layout_constraintTop_toTopOf="@+id/til_verification_code" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:background="@android:color/white"
+    android:layout_marginBottom="8dp"
+    android:foreground="?selectableItemBackground">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_lane"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/shape_indicator"
+            android:drawableLeft="@drawable/shape_indicator"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppTheme.Small"
+            android:textColor="@color/colorTextBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="车道: 1" />
+
+        <TextView
+            android:id="@+id/tv_car_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textAppearance="@style/TextAppearance.AppTheme.Small"
+            android:textColor="@color/colorTextBlack"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lane"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_lane"
+            tools:text="车牌号: 蓝川15283" />
+
+        <View
+            android:id="@+id/v_divider_d_1"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lane" />
+
+        <LinearLayout
+            android:id="@+id/ll_total_weight"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_d_1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_weight"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_total_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="20" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_2"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_total_weight"
+            app:layout_constraintEnd_toStartOf="@+id/ll_overload_weight"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_total_weight"
+            app:layout_constraintTop_toTopOf="@+id/ll_total_weight" />
+
+        <LinearLayout
+            android:id="@+id/ll_overload_weight"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_2"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_2"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overload_weight"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_overload_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="2" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_3"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_overload_weight"
+            app:layout_constraintEnd_toStartOf="@+id/ll_overload_percent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_overload_weight"
+            app:layout_constraintTop_toTopOf="@+id/ll_overload_weight" />
+
+        <LinearLayout
+            android:id="@+id/ll_overload_percent"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_3"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_3"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overload_percent"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_overload_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="11.11" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_4"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_overload_percent"
+            app:layout_constraintEnd_toStartOf="@+id/ll_speed"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_overload_percent"
+            app:layout_constraintTop_toTopOf="@+id/ll_overload_percent" />
+
+        <LinearLayout
+            android:id="@+id/ll_speed"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_4"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_4"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_4">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="2" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_5"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_speed"
+            app:layout_constraintEnd_toStartOf="@+id/ll_wheelbase"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_speed"
+            app:layout_constraintTop_toTopOf="@+id/ll_speed" />
+
+        <LinearLayout
+            android:id="@+id/ll_wheelbase"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_5"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wheelbase"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_wheelbase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="2.10" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_6"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_total_weight" />
+
+        <LinearLayout
+            android:id="@+id/ll_wheelbase_cunt"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_7"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_d_6">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wheelbase_count"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_wheelbase_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="3" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_7"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_wheelbase_cunt"
+            app:layout_constraintEnd_toStartOf="@+id/ll_direction"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_wheelbase_cunt"
+            app:layout_constraintTop_toTopOf="@+id/ll_wheelbase_cunt" />
+
+        <LinearLayout
+            android:id="@+id/ll_direction"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_7"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_8"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_7"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_7">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/direction"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_direction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="正向" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_8"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_direction"
+            app:layout_constraintEnd_toStartOf="@+id/ll_check_status"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_direction"
+            app:layout_constraintTop_toTopOf="@+id/ll_direction" />
+
+        <LinearLayout
+            android:id="@+id/ll_check_status"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_8"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_8"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_status"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_check_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="否" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_9"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_check_status"
+            app:layout_constraintEnd_toStartOf="@+id/ll_overload_status"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_check_status"
+            app:layout_constraintTop_toTopOf="@+id/ll_check_status" />
+
+        <LinearLayout
+            android:id="@+id/ll_overload_status"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_9"
+            app:layout_constraintEnd_toStartOf="@+id/v_divider_d_10"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_9"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_9">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/overload_status"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray" />
+
+            <TextView
+                android:id="@+id/tv_overload_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextGray"
+                tools:text="是" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_10"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_overload_status"
+            app:layout_constraintEnd_toStartOf="@+id/ll_placeholder"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ll_overload_status"
+            app:layout_constraintTop_toTopOf="@+id/ll_overload_status" />
+
+        <LinearLayout
+            android:id="@+id/ll_placeholder"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/v_divider_d_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/v_divider_d_10"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_10">
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_divider_d_11"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_wheelbase_cunt" />
+
+        <TextView
+            android:id="@+id/tv_detection_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="@color/colorTextLightGray"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_image_preview"
+            app:layout_constraintEnd_toStartOf="@+id/btn_video_preview"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_image_preview"
+            tools:text="检测时间: 2018-10-02 21:03:10" />
+
+        <ImageButton
+            android:id="@+id/btn_video_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:foreground="?selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_image_preview"
+            app:layout_constraintEnd_toStartOf="@+id/tv_image_preview"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_detection_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_image_preview"
+            app:srcCompat="@drawable/ic_video" />
+
+        <TextView
+            android:id="@+id/tv_image_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_view_picture_bg"
+            android:foreground="?selectableItemBackground"
+            android:padding="8dp"
+            android:text="@string/view_picture"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_video_preview"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_d_11" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="-8dp"
+            android:layout_marginLeft="-8dp"
+            android:background="@drawable/shape_dot_start"
+            app:layout_constraintBottom_toTopOf="@+id/v_divider_d_1"
+            app:layout_constraintStart_toStartOf="@+id/tv_lane"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_1" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="-8dp"
+            android:layout_marginRight="-8dp"
+            android:background="@drawable/shape_dot_end"
+            app:layout_constraintBottom_toTopOf="@+id/v_divider_d_1"
+            app:layout_constraintEnd_toEndOf="@+id/tv_car_no"
+            app:layout_constraintTop_toTopOf="@+id/v_divider_d_1" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

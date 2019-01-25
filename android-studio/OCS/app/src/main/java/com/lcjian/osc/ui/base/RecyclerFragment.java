@@ -175,7 +175,9 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
                     mLoadMoreAdapter.setState(LoadMoreAdapter.STATE_ERROR);
                 }
                 Timber.d(throwable);
-                Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                if (!(throwable instanceof java.io.InterruptedIOException)) {
+                    Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

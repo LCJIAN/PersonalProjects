@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <ImageButton
+            android:id="@+id/btn_pre_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_left" />
+
+        <ImageButton
+            android:id="@+id/btn_next_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_right" />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:background="?selectableItemBackground"
+        android:src="@drawable/ic_close" />
+</LinearLayout>
