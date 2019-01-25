@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">不停车检测系统</string>
+    <string name="empty_results">暂无结果</string>
+    <string name="error_msg">出错了</string>
+    <string name="sign_in">登录</string>
+    <string name="please_input_phone">请输入手机号码</string>
+    <string name="please_input_password">请输入密码</string>
+    <string name="please_input_verification_code">请输入验证码</string>
+    <string name="send_verification_code">发送验证码</string>
+</resources>
