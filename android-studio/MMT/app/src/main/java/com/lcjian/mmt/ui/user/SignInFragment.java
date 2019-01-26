@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lcjian.mmt.App;
@@ -37,6 +38,8 @@ public class SignInFragment extends BaseFragment implements TextWatcher, View.On
     TextInputEditText et_password;
     @BindView(R.id.btn_sign_in)
     Button btn_sign_in;
+    @BindView(R.id.tv_forgot_password)
+    TextView tv_forgot_password;
 
     private Unbinder mUnBinder;
 
@@ -60,6 +63,7 @@ public class SignInFragment extends BaseFragment implements TextWatcher, View.On
         String signInPwd = mUserInfoSp.getString("sign_in_pwd", "");
 
         btn_sign_in.setOnClickListener(this);
+        tv_forgot_password.setOnClickListener(this);
         et_phone.addTextChangedListener(this);
         et_password.addTextChangedListener(this);
 
@@ -81,6 +85,9 @@ public class SignInFragment extends BaseFragment implements TextWatcher, View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_forgot_password:
+                startActivity(new Intent(v.getContext(), ForgotPasswordActivity.class));
+                break;
             case R.id.btn_sign_in:
                 RxPermissions rxPermissions = new RxPermissions(getActivity());
                 mDisposableP = rxPermissions.request(

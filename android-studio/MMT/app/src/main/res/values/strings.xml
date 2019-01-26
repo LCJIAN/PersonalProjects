@@ -15,4 +15,8 @@
     <string name="action_logistics">物流管理</string>
     <string name="action_car">车辆管理</string>
     <string name="action_user">个人中心</string>
+    <string name="forgot_password">忘记密码？</string>
+    <string name="forgot_password_2">忘记密码</string>
+    <string name="modify_password">修改密码</string>
+    <string name="different_pwd">两次输入的密码不一样</string>
 </resources>

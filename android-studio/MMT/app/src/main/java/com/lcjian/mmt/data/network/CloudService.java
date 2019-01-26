@@ -29,7 +29,7 @@ public interface CloudService {
      * 用户注册
      */
     @FormUrlEncoded
-    @POST("mmt/user/checksmscode")
+    @POST("mmt/user/mobileregsubmit")
     Single<ResponseData<String>> signUp(@Field("mobile") String phone,
                                         @Field("smscode") String verificationCode,
                                         @Field("password") String password);
@@ -41,5 +41,14 @@ public interface CloudService {
     @POST("mmt/login/mobile")
     Single<ResponseData<User>> signIn(@Field("username") String phone,
                                       @Field("password") String password);
+
+    /**
+     * 用户忘记密码
+     */
+    @FormUrlEncoded
+    @POST("mmt/user/forgetpassword")
+    Single<ResponseData<String>> setPassword(@Field("mobile") String phone,
+                                             @Field("smscode") String verificationCode,
+                                             @Field("password") String password);
 
 }
