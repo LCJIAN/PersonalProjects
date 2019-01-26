@@ -2,12 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.home.MainActivity">
     <item
-        android:id="@+id/action_detection"
+        android:id="@+id/action_quote"
         android:checked="true"
-        android:icon="@drawable/ic_car"
-        android:title="@string/action_detection" />
+        android:icon="@drawable/ic_quote"
+        android:title="@string/action_quote" />
     <item
-        android:id="@+id/action_overload"
-        android:icon="@drawable/ic_data"
-        android:title="@string/action_overload" />
+        android:id="@+id/action_logistics"
+        android:icon="@drawable/ic_logistics"
+        android:title="@string/action_logistics" />
+    <item
+        android:id="@+id/action_car"
+        android:icon="@drawable/ic_car"
+        android:title="@string/action_car" />
+    <item
+        android:id="@+id/action_user"
+        android:icon="@drawable/ic_user"
+        android:title="@string/action_user" />
 </menu>

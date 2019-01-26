@@ -4,11 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.lcjian.mmt.R;
-import com.lcjian.mmt.ui.DetectionFragment;
-import com.lcjian.mmt.ui.OverloadFragment;
 import com.lcjian.mmt.ui.base.BaseActivity;
 import com.lcjian.mmt.util.FragmentSwitchHelper;
 
@@ -17,8 +14,6 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.tv_title)
-    TextView tv_title;
     @BindView(R.id.bnv_main)
     BottomNavigationView bnv_main;
 
@@ -34,10 +29,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
         mFragmentSwitchHelper = FragmentSwitchHelper.create(R.id.fl_fragment_container,
                 getSupportFragmentManager(), true,
-                new DetectionFragment(), new OverloadFragment());
+                new QuoteManageFragment(), new LogisticsManageFragment(), new CarManageFragment(), new UserCenterFragment());
 
         bnv_main.setOnNavigationItemSelectedListener(this);
-        bnv_main.setSelectedItemId(R.id.action_detection);
+        bnv_main.setSelectedItemId(R.id.action_quote);
     }
 
     @Override
@@ -47,14 +42,20 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
             return false;
         }
         switch (checkedId) {
-            case R.id.action_detection: {
-                tv_title.setText(R.string.action_detection);
-                mFragmentSwitchHelper.changeFragment(DetectionFragment.class);
+            case R.id.action_quote: {
+                mFragmentSwitchHelper.changeFragment(QuoteManageFragment.class);
             }
             break;
-            case R.id.action_overload: {
-                tv_title.setText(R.string.action_overload);
-                mFragmentSwitchHelper.changeFragment(OverloadFragment.class);
+            case R.id.action_logistics: {
+                mFragmentSwitchHelper.changeFragment(LogisticsManageFragment.class);
+            }
+            break;
+            case R.id.action_car: {
+                mFragmentSwitchHelper.changeFragment(CarManageFragment.class);
+            }
+            break;
+            case R.id.action_user: {
+                mFragmentSwitchHelper.changeFragment(UserCenterFragment.class);
             }
             break;
             default:

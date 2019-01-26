@@ -2,18 +2,9 @@ package com.lcjian.mmt.data.network.entity;
 
 public class ResponseData<T> {
 
-    public T result;
+    public Integer code;
+    public String message;
+    public String token;
+    public T data;
 
-    public String targetUrl;
-    public Boolean success;
-    public ErrorMsg error;
-    public Boolean unAuthorizedRequest;
-    public Boolean __abp;
-
-    public static class ErrorMsg {
-        public String code;
-        public String message;
-        public String details;
-        public String validationErrors;
-    }
 }

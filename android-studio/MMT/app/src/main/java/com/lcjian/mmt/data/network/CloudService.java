@@ -1,40 +1,45 @@
 package com.lcjian.mmt.data.network;
 
-import com.lcjian.mmt.data.network.entity.DetectionInfo;
-import com.lcjian.mmt.data.network.entity.DetectionRequestData;
-import com.lcjian.mmt.data.network.entity.PictureRequestData;
-import com.lcjian.mmt.data.network.entity.Pictures;
 import com.lcjian.mmt.data.network.entity.ResponseData;
-import com.lcjian.mmt.data.network.entity.SignInRequestData;
+import com.lcjian.mmt.data.network.entity.User;
 
 import io.reactivex.Single;
-import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface CloudService {
 
     /**
-     * 登陆
+     * 获取短信验证码
      */
-    @POST("Account")
-    Single<ResponseData<String>> signIn(@Body SignInRequestData signInRequestData);
+    @FormUrlEncoded
+    @POST("mmt/user/getsmscode")
+    Single<ResponseData<String>> sendVerificationCode(@Field("mobile") String phone);
+
+    /**
+     * 校验短信验证码有效
+     */
+    @FormUrlEncoded
+    @POST("mmt/user/checksmscode")
+    Single<ResponseData<String>> checkVerificationCode(@Field("mobile") String phone,
+                                                       @Field("smscode") String verificationCode);
+
+    /**
+     * 用户注册
+     */
+    @FormUrlEncoded
+    @POST("mmt/user/checksmscode")
+    Single<ResponseData<String>> signUp(@Field("mobile") String phone,
+                                        @Field("smscode") String verificationCode,
+                                        @Field("password") String password);
 
     /**
      * 登陆
      */
-    @POST("Account")
-    Call<ResponseData<String>> signInSync(@Body SignInRequestData signInRequestData);
+    @FormUrlEncoded
+    @POST("mmt/login/mobile")
+    Single<ResponseData<User>> signIn(@Field("username") String phone,
+                                      @Field("password") String password);
 
-    /**
-     * 预检查询
-     */
-    @POST("services/ocs/detection/GetPreview")
-    Single<ResponseData<DetectionInfo>> getPreview(@Body DetectionRequestData detectionRequestData);
-
-    /**
-     * 查看图片
-     */
-    @POST("services/ocs/detection/ShowPicture")
-    Single<ResponseData<Pictures>> getPictures(@Body PictureRequestData pictureRequestData);
 }

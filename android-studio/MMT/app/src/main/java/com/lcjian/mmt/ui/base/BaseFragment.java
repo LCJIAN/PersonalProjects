@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.RxBus;
 import com.lcjian.mmt.data.db.AppDatabase;
@@ -29,6 +30,8 @@ public class BaseFragment extends Fragment {
     @Named("setting")
     protected SharedPreferences mSettingSp;
 
+    private KProgressHUD mProgressDialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,5 +40,21 @@ public class BaseFragment extends Fragment {
 
     protected void onCreateComponent(AppComponent appComponent) {
         appComponent.inject(this);
+    }
+
+
+    public void showProgress() {
+        if (getContext() == null) {
+            return;
+        }
+        if (mProgressDialog == null)
+            mProgressDialog = KProgressHUD.create(getContext());
+        if (!mProgressDialog.isShowing())
+            mProgressDialog.show();
+    }
+
+    public void hideProgress() {
+        if (mProgressDialog != null && mProgressDialog.isShowing())
+            mProgressDialog.dismiss();
     }
 }

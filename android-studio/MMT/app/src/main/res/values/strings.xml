@@ -3,8 +3,16 @@
     <string name="empty_results">暂无结果</string>
     <string name="error_msg">出错了</string>
     <string name="sign_in">登录</string>
+    <string name="sign_up">注册</string>
     <string name="please_input_phone">请输入手机号码</string>
     <string name="please_input_password">请输入密码</string>
     <string name="please_input_verification_code">请输入验证码</string>
     <string name="send_verification_code">发送验证码</string>
+    <string name="next_step">下一步</string>
+    <string name="please_input_password_again">请再确认密码</string>
+    <string name="confirm">确定</string>
+    <string name="action_quote">报价管理</string>
+    <string name="action_logistics">物流管理</string>
+    <string name="action_car">车辆管理</string>
+    <string name="action_user">个人中心</string>
 </resources>
