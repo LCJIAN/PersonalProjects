@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/shape_card_bg">
+
+    <TextView
+        android:id="@+id/tv_order_no_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/order_no"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_order_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_no_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_order_no_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_no_label"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/in_completed"
+        android:textColor="#ffc9574d"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_no" />
+
+    <View
+        android:id="@+id/v_divider_t"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_no_label" />
+
+    <TextView
+        android:id="@+id/tv_order_product_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/product_name_2"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_no_label"
+        app:layout_constraintTop_toBottomOf="@+id/v_divider_t" />
+
+    <TextView
+        android:id="@+id/tv_order_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_product_name_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_status"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_product_name_label"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_order_product_spec_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/spec"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_product_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_name_label" />
+
+    <TextView
+        android:id="@+id/tv_order_product_spec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_product_spec_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_product_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_product_spec_label"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_order_freight_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/freight"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_product_spec_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_spec_label" />
+
+    <TextView
+        android:id="@+id/tv_order_freight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_order_freight_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_product_spec"
+        app:layout_constraintTop_toTopOf="@+id/tv_order_freight_label"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_view_cars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_delete_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/view_cars"
+        android:textColor="#ffc3382a"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_freight" />
+
+    <TextView
+        android:id="@+id/tv_view_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_quote_not_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/detail"
+        android:textColor="#ffd89f67"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_view_cars"
+        app:layout_constraintEnd_toStartOf="@+id/tv_view_cars"
+        app:layout_constraintTop_toTopOf="@+id/tv_view_cars" />
+</android.support.constraint.ConstraintLayout>

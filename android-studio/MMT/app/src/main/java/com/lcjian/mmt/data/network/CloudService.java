@@ -1,6 +1,11 @@
 package com.lcjian.mmt.data.network;
 
+import com.lcjian.mmt.data.network.entity.Car;
+import com.lcjian.mmt.data.network.entity.Driver;
+import com.lcjian.mmt.data.network.entity.Quote;
 import com.lcjian.mmt.data.network.entity.ResponseData;
+import com.lcjian.mmt.data.network.entity.ResponsePageData;
+import com.lcjian.mmt.data.network.entity.TranOrder;
 import com.lcjian.mmt.data.network.entity.User;
 
 import io.reactivex.Single;
@@ -51,4 +56,42 @@ public interface CloudService {
                                              @Field("smscode") String verificationCode,
                                              @Field("password") String password);
 
+    /**
+     * 物流商获取待报价的报价信息
+     */
+    @FormUrlEncoded
+    @POST("mmt/offer/offerlist")
+    Single<ResponsePageData<Quote>> getQuotes(@Field("offset") Integer offset,
+                                              @Field("limit") Integer limit,
+                                              @Field("status") Integer status);
+
+    /**
+     * 物流商运输总订单列表
+     */
+    @FormUrlEncoded
+    @POST("mmt/transorder/transorderbyorder")
+    Single<ResponsePageData<TranOrder>> getTranOrders(@Field("offset") Integer offset,
+                                                      @Field("limit") Integer limit);
+
+    /**
+     * 车辆管理列表
+     *
+     * @param search 车牌号
+     */
+    @FormUrlEncoded
+    @POST("mmt/cars/list")
+    Single<ResponsePageData<Car>> getCars(@Field("offset") Integer offset,
+                                          @Field("limit") Integer limit,
+                                          @Field("search") String search);
+
+    /**
+     * 车辆管理列表
+     *
+     * @param search 司机名称或手机号
+     */
+    @FormUrlEncoded
+    @POST("mmt/carscontacts/driverlist")
+    Single<ResponsePageData<Driver>> getDrivers(@Field("offset") Integer offset,
+                                                @Field("limit") Integer limit,
+                                                @Field("search") String search);
 }

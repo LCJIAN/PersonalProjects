@@ -4,35 +4,85 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import com.lcjian.mmt.App;
 import com.lcjian.mmt.R;
 import com.lcjian.mmt.data.entity.PageResult;
 import com.lcjian.mmt.data.network.entity.Quote;
 import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.base.RecyclerFragment;
+import com.lcjian.mmt.ui.base.SimpleFragmentPagerAdapter;
 import com.lcjian.mmt.ui.base.SlimAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class QuoteManageFragment extends BaseFragment {
 
+    @BindView(R.id.tab)
+    TabLayout tab;
+    @BindView(R.id.vp)
+    ViewPager vp;
 
-    public class QuotesFragment extends RecyclerFragment<Quote> {
+    Unbinder unbinder;
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_vp_quote, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        vp.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager())
+                .addFragment(QuotesFragment.newInstance(1), "待报价")
+                .addFragment(QuotesFragment.newInstance(2), "已报价")
+                .addFragment(QuotesFragment.newInstance(3), "弃价"));
+        vp.setOffscreenPageLimit(3);
+        tab.setupWithViewPager(vp);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    public static class QuotesFragment extends RecyclerFragment<Quote> {
+
+        private Integer mStatus;
         private SlimAdapter mAdapter;
 
+        public static QuotesFragment newInstance(Integer status) {
+            QuotesFragment fragment = new QuotesFragment();
+            Bundle args = new Bundle();
+            args.putInt("status", status);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                mStatus = getArguments().getInt("status");
+            }
+        }
 
         @Override
         public RecyclerView.Adapter onCreateAdapter(List<Quote> data) {
@@ -42,13 +92,7 @@ public class QuoteManageFragment extends BaseFragment {
 
                         @Override
                         public int onGetLayoutResource() {
-                            return R.layout.detection_info_item;
-                        }
-
-                        @Override
-                        public void onInit(SlimAdapter.SlimViewHolder<Quote> viewHolder) {
-                            viewHolder.clicked(R.id.tv_image_preview, v -> GalleryFragment.newInstance(viewHolder.itemData.id)
-                                    .show(getChildFragmentManager(), "GalleryFragment"));
+                            return R.layout.quote_item;
                         }
 
                         @Override
@@ -62,38 +106,19 @@ public class QuoteManageFragment extends BaseFragment {
 
         @Override
         public Observable<PageResult<Quote>> onCreatePageObservable(int currentPage) {
-
-            DetectionRequestData requestData = new DetectionRequestData();
-            requestData.stationId = mStationId;
-            requestData.axleNumber = TextUtils.isEmpty(et_wheelbase_count.getEditableText().toString()) ? null : Integer.parseInt(et_wheelbase_count.getEditableText().toString());
-            requestData.speed = null;
-            requestData.licensePlate = TextUtils.isEmpty(et_car_no.getEditableText().toString()) ? null : et_car_no.getEditableText().toString();
-            requestData.startDate = mStartDate;
-            requestData.endDate = mEndDate;
-            requestData.startOverRateMass = TextUtils.isEmpty(et_start_over_speed.getEditableText().toString()) ? null : Double.parseDouble(et_start_over_speed.getEditableText().toString());
-            requestData.endOverRateMass = TextUtils.isEmpty(et_end_over_speed.getEditableText().toString()) ? null : Double.parseDouble(et_end_over_speed.getEditableText().toString());
-            requestData.startTotal = TextUtils.isEmpty(et_start_weight.getEditableText().toString()) ? null : Double.parseDouble(et_start_weight.getEditableText().toString());
-            requestData.endTotal = TextUtils.isEmpty(et_end_weight.getEditableText().toString()) ? null : Double.parseDouble(et_end_weight.getEditableText().toString());
-            requestData.laneNumber = TextUtils.isEmpty(et_car_lane.getEditableText().toString()) ? null : et_car_lane.getEditableText().toString();
-            requestData.isOvering = null;
-            requestData.isChecking = mCheck;
-            requestData.directionOff = null;
-            requestData.sorting = "RecordTime DESC";
-            requestData.maxResultCount = 20;
-            requestData.skipCount = (currentPage - 1) * 20;
-
-            return mRestAPI.cloudService().getPreview(requestData)
-                    .map(detectionInfoResponseData -> {
-                        DetectionInfo detectionInfo = detectionInfoResponseData.result;
+            return mRestAPI.cloudService().getQuotes((currentPage - 1) * 20, 20, mStatus)
+                    .map(quoteResponsePageData -> {
                         PageResult<Quote> pageResult = new PageResult<>();
-                        if (detectionInfo.items == null) {
-                            detectionInfo.items = new ArrayList<>();
+                        if (quoteResponsePageData.elements == null) {
+                            quoteResponsePageData.elements = new ArrayList<>();
                         }
-                        pageResult.elements = detectionInfo.items;
+                        pageResult.elements = quoteResponsePageData.elements;
                         pageResult.page_number = currentPage;
                         pageResult.page_size = 20;
-                        pageResult.total_pages = detectionInfo.totalCount % 20 == 0 ? detectionInfo.totalCount / 20 : detectionInfo.totalCount / 20 + 1;
-                        pageResult.total_elements = detectionInfo.totalCount;
+                        pageResult.total_pages = quoteResponsePageData.total_elements % 20 == 0
+                                ? quoteResponsePageData.total_elements / 20
+                                : quoteResponsePageData.total_elements / 20 + 1;
+                        pageResult.total_elements = quoteResponsePageData.total_elements;
                         return pageResult;
                     })
                     .toObservable()
@@ -103,9 +128,6 @@ public class QuoteManageFragment extends BaseFragment {
 
         @Override
         public void notifyDataChanged(List<Quote> data) {
-            if (data == null || data.isEmpty()) {
-                Toast.makeText(App.getInstance(), R.string.empty_results, Toast.LENGTH_LONG).show();
-            }
             mAdapter.updateData(data);
         }
 
@@ -115,7 +137,5 @@ public class QuoteManageFragment extends BaseFragment {
             recycler_view.setLayoutManager(new LinearLayoutManager(view.getContext()));
             super.onViewCreated(view, savedInstanceState);
         }
-
     }
-
 }

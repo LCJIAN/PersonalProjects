@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">不停车检测系统</string>
+    <string name="app_name">买卖通</string>
     <string name="empty_results">暂无结果</string>
     <string name="error_msg">出错了</string>
     <string name="sign_in">登录</string>
@@ -19,4 +19,40 @@
     <string name="forgot_password_2">忘记密码</string>
     <string name="modify_password">修改密码</string>
     <string name="different_pwd">两次输入的密码不一样</string>
+    <string name="product_name">商品名称：</string>
+    <string name="product_name_2">商品名称</string>
+    <string name="quote_it">参与报价</string>
+    <string name="not_quote_it">不报价</string>
+    <string name="delete">删除</string>
+    <string name="starting_place">起始地</string>
+    <string name="destination">目的地</string>
+    <string name="distance">运输产考距离</string>
+    <string name="quote_time">报价时间</string>
+    <string name="car_no">车脾号</string>
+    <string name="car_owner">车主</string>
+    <string name="driver">驾驶员</string>
+    <string name="contact_phone">联系电话</string>
+    <string name="available_goods">可装载货物</string>
+    <string name="available_weight">载重量</string>
+    <string name="car_status">认证状态</string>
+    <string name="name">姓名</string>
+    <string name="bind_car_no">绑定车牌号</string>
+    <string name="recharge">充值</string>
+    <string name="user_balance">账户总额（元）</string>
+    <string name="account_type">账户类型</string>
+    <string name="personal_account">个人账户</string>
+    <string name="bond_balance">保证金余额（元）</string>
+    <string name="my_bank_card">我的银行卡</string>
+    <string name="recharge_bond">保证金充值</string>
+    <string name="withdraw">提现</string>
+    <string name="commission_info">佣金信息</string>
+    <string name="invoice_manage">发票管理</string>
+    <string name="feedback">意见反馈</string>
+    <string name="record">收支记录</string>
+    <string name="detail">详情</string>
+    <string name="view_cars">查看分车</string>
+    <string name="freight">运费</string>
+    <string name="spec">型号规格</string>
+    <string name="in_completed">未完成</string>
+    <string name="order_no">订单号</string>
 </resources>

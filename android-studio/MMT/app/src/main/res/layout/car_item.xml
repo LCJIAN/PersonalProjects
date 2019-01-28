@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/shape_card_bg">
+
+    <TextView
+        android:id="@+id/tv_car_no_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/car_no"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_car_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_car_no_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_car_no_label"
+        tools:text="重庆市江北区" />
+
+    <TextView
+        android:id="@+id/tv_car_owner_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_owner"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_car_no_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_no_label" />
+
+    <TextView
+        android:id="@+id/tv_car_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_car_owner_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_no"
+        app:layout_constraintTop_toTopOf="@+id/tv_car_owner_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_driver_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/driver"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_car_owner_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_owner_label" />
+
+    <TextView
+        android:id="@+id/tv_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_driver_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_owner"
+        app:layout_constraintTop_toTopOf="@+id/tv_driver_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_contact_phone_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/contact_phone"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_driver_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_driver_label" />
+
+    <TextView
+        android:id="@+id/tv_contact_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_contact_phone_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_driver"
+        app:layout_constraintTop_toTopOf="@+id/tv_contact_phone_label"
+        tools:text="2018.9.12-2018.9.13" />
+
+    <View
+        android:id="@+id/v_divider_c"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_contact_phone_label" />
+
+    <TextView
+        android:id="@+id/tv_available_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/available_goods"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_contact_phone_label"
+        app:layout_constraintTop_toBottomOf="@+id/v_divider_c" />
+
+    <TextView
+        android:id="@+id/tv_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_available_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_contact_phone"
+        app:layout_constraintTop_toTopOf="@+id/tv_available_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_available_weight_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/available_weight"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_available_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_available_label" />
+
+    <TextView
+        android:id="@+id/tv_available_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_available_weight_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_available"
+        app:layout_constraintTop_toTopOf="@+id/tv_available_weight_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_car_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_car_status"
+        app:layout_constraintEnd_toEndOf="@+id/tv_available_weight"
+        app:layout_constraintTop_toTopOf="@+id/tv_car_status"
+        tools:text="2018.9.12-2018.9.13" />
+
+    <TextView
+        android:id="@+id/tv_car_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/car_status"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_available_weight_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_available_weight_label" />
+
+    <TextView
+        android:id="@+id/tv_delete_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_delete_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/delete"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ffc3382a"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_status_label" />
+</android.support.constraint.ConstraintLayout>

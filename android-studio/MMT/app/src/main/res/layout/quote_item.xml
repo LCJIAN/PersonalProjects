@@ -1,30 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/shape_card_bg">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_product_name_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="45dp" />
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/product_name"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="45dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_product_name_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_product_name_label"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_name_label"
+        tools:text="钢材" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="315dp"
-        tools:layout_editor_absoluteY="44dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="#ffc9574d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="已过期" />
+
+    <View
+        android:id="@+id/v_divider_q"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#fff2f2f2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_name_label" />
+
+    <TextView
+        android:id="@+id/tv_starting_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/starting_place"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_divider_q" />
+
+    <TextView
+        android:id="@+id/tv_starting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_starting_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_starting_label"
+        tools:text="重庆市江北区" />
+
+    <TextView
+        android:id="@+id/tv_destination_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/destination"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_starting_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_starting_label" />
+
+    <TextView
+        android:id="@+id/tv_distance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/distance"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_destination_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_destination_label" />
+
+    <TextView
+        android:id="@+id/tv_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/quote_time"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_distance_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_distance_label" />
+
+    <TextView
+        android:id="@+id/tv_destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_destination_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_starting"
+        app:layout_constraintTop_toTopOf="@+id/tv_destination_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_distance_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_destination"
+        app:layout_constraintTop_toTopOf="@+id/tv_distance_label"
+        tools:text="XXXXX" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextGray"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_time_label"
+        app:layout_constraintEnd_toEndOf="@+id/tv_distance"
+        app:layout_constraintTop_toTopOf="@+id/tv_time_label"
+        tools:text="2018.9.12-2018.9.13" />
+
+    <TextView
+        android:id="@+id/tv_quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_delete_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/quote_it"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ffc3382a"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+    <TextView
+        android:id="@+id/tv_quote_not"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_quote_not_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/not_quote_it"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ffd89f67"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_quote"
+        app:layout_constraintEnd_toStartOf="@+id/tv_quote"
+        app:layout_constraintTop_toTopOf="@+id/tv_quote" />
+
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_delete_bg"
+        android:paddingLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/delete"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ffc3382a"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_quote_not"
+        app:layout_constraintEnd_toStartOf="@+id/tv_quote_not"
+        app:layout_constraintTop_toTopOf="@+id/tv_quote_not" />
 </android.support.constraint.ConstraintLayout>

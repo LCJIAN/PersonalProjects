@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 public abstract class RecyclerFragment<T> extends BaseFragment {
@@ -81,26 +80,18 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mAdapter = onCreateAdapter(new ArrayList<T>());
+        mAdapter = onCreateAdapter(new ArrayList<>());
         mLoadMoreAdapter = new LoadMoreAdapter(mAdapter);
 
-        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+        swipe_refresh_layout.setOnRefreshListener(this::refresh);
 
         View loadFooter = LayoutInflater.from(getActivity()).inflate(R.layout.loading_footer, recycler_view, false);
         View errorFooter = LayoutInflater.from(getActivity()).inflate(R.layout.error_footer, recycler_view, false);
         mLoadMoreAdapter.setLoadingView(loadFooter).setErrorView(errorFooter);
         mLoadMoreAdapter.setThreshold(2);
-        mLoadMoreAdapter.setOnLoadMoreListener(new LoadMoreAdapter.OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                createNewObservable();
-                getData();
-            }
+        mLoadMoreAdapter.setOnLoadMoreListener(() -> {
+            createNewObservable();
+            getData();
         });
         onLoadMoreAdapterCreated(mLoadMoreAdapter);
         View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, recycler_view, false);
@@ -134,50 +125,43 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         } else {
             mLoadMoreAdapter.setState(LoadMoreAdapter.STATE_LOADING);
         }
-        mDisposable = mObservable.subscribe(new Consumer<PageResult<T>>() {
-
-            @Override
-            public void accept(PageResult<T> tPageResult) {
-                mLoadMoreAdapter.setState(mPrePage < tPageResult.total_pages ? LoadMoreAdapter.STATE_DEFAULT : LoadMoreAdapter.STATE_END);
-                if (mCurrentPage == 1) {
-                    setRefreshing(false);
-                }
-
-                if (tPageResult.total_pages == 0) {
-                    mData.clear();
-                } else if (mCurrentPage <= tPageResult.total_pages && mCurrentPage == mPrePage) {
-                    if (mCurrentPage == 1) {
-                        mData.clear();
-                        mData.addAll(tPageResult.elements);
-                        mLoadMoreAdapter.setEnabled(true);
-                    } else {
-                        mData.addAll(tPageResult.elements);
-                    }
-
-                    mPrePageData = tPageResult.elements;
-                    mCurrentPage++;
-                } else if (mPrePage == tPageResult.page_number) {
-                    if (mPrePageData != null) {
-                        mData.removeAll(mPrePageData);
-                        mData.addAll(tPageResult.elements);
-                    }
-                    mPrePageData = tPageResult.elements;
-                }
-                notifyDataChanged(new ArrayList<>(mData));
+        mDisposable = mObservable.subscribe(tPageResult -> {
+            mLoadMoreAdapter.setState(mPrePage < tPageResult.total_pages ? LoadMoreAdapter.STATE_DEFAULT : LoadMoreAdapter.STATE_END);
+            if (mCurrentPage == 1) {
+                setRefreshing(false);
             }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) {
+
+            if (tPageResult.total_pages == 0) {
+                mData.clear();
+            } else if (mCurrentPage <= tPageResult.total_pages && mCurrentPage == mPrePage) {
                 if (mCurrentPage == 1) {
-                    setRefreshing(false);
-                    mObservable = null;
+                    mData.clear();
+                    mData.addAll(tPageResult.elements);
+                    mLoadMoreAdapter.setEnabled(true);
                 } else {
-                    mLoadMoreAdapter.setState(LoadMoreAdapter.STATE_ERROR);
+                    mData.addAll(tPageResult.elements);
                 }
-                Timber.d(throwable);
-                if (!(throwable instanceof java.io.InterruptedIOException)) {
-                    Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+
+                mPrePageData = tPageResult.elements;
+                mCurrentPage++;
+            } else if (mPrePage == tPageResult.page_number) {
+                if (mPrePageData != null) {
+                    mData.removeAll(mPrePageData);
+                    mData.addAll(tPageResult.elements);
                 }
+                mPrePageData = tPageResult.elements;
+            }
+            notifyDataChanged(new ArrayList<>(mData));
+        }, throwable -> {
+            if (mCurrentPage == 1) {
+                setRefreshing(false);
+                mObservable = null;
+            } else {
+                mLoadMoreAdapter.setState(LoadMoreAdapter.STATE_ERROR);
+            }
+            Timber.d(throwable);
+            if (!(throwable instanceof java.io.InterruptedIOException)) {
+                Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -190,12 +174,9 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     protected void setRefreshing(final boolean refreshing) {
         if (swipe_refresh_layout.isEnabled()) {
-            swipe_refresh_layout.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (swipe_refresh_layout != null) {
-                        swipe_refresh_layout.setRefreshing(refreshing);
-                    }
+            swipe_refresh_layout.post(() -> {
+                if (swipe_refresh_layout != null) {
+                    swipe_refresh_layout.setRefreshing(refreshing);
                 }
             });
         }

@@ -5,10 +5,18 @@ import com.lcjian.mmt.App;
 import com.lcjian.mmt.BuildConfig;
 import com.lcjian.mmt.util.StorageUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -29,11 +37,26 @@ public class RestAPI {
                     .connectTimeout(20, TimeUnit.SECONDS)
                     .writeTimeout(20, TimeUnit.SECONDS)
                     .readTimeout(20, TimeUnit.SECONDS)
-                    .cache(getCache());
+                    .cache(getCache())
+                    .cookieJar(new CookieJar() {
+                        private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+
+                        @Override
+                        public void saveFromResponse(@NotNull HttpUrl url, @NotNull List<Cookie> cookies) {
+                            cookieStore.put(url.host(), cookies);
+                        }
+
+                        @NotNull
+                        @Override
+                        public List<Cookie> loadForRequest(@NotNull HttpUrl url) {
+                            List<Cookie> cookies = cookieStore.get(url.host());
+                            return cookies != null ? cookies : new ArrayList<>();
+                        }
+                    });
 
             clientBuilder
                     .addInterceptor(chain -> chain.proceed(chain.request()
-                                    .newBuilder()
+                            .newBuilder()
                             .header("Authorization", "Bearer ")
                             .build())
                     );

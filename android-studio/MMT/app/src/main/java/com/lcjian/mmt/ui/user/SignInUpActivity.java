@@ -25,8 +25,8 @@ public class SignInUpActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         vp_sign.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager())
-                .addFragment(new SignInFragment(),getString(R.string.sign_in))
-                .addFragment(new SignUpFragment(),getString(R.string.sign_up)));
+                .addFragment(new SignInFragment(), getString(R.string.sign_in))
+                .addFragment(new SignUpFragment(), getString(R.string.sign_up)));
         tab_sign.setupWithViewPager(vp_sign);
     }
 }
