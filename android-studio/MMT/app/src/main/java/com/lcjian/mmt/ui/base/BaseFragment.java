@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.RxBus;
 import com.lcjian.mmt.data.db.AppDatabase;
 import com.lcjian.mmt.data.network.RestAPI;
+import com.lcjian.mmt.data.network.entity.SignInInfo;
 import com.lcjian.mmt.di.component.AppComponent;
 
 import javax.inject.Inject;
@@ -42,7 +44,6 @@ public class BaseFragment extends Fragment {
         appComponent.inject(this);
     }
 
-
     public void showProgress() {
         if (getContext() == null) {
             return;
@@ -56,5 +57,13 @@ public class BaseFragment extends Fragment {
     public void hideProgress() {
         if (mProgressDialog != null && mProgressDialog.isShowing())
             mProgressDialog.dismiss();
+    }
+
+    protected void putSignInInfo(SignInInfo signInInfo) {
+        mUserInfoSp.edit().putString("sign_in_info", new Gson().toJson(signInInfo)).apply();
+    }
+
+    protected SignInInfo getSignInInfo() {
+        return new Gson().fromJson(mUserInfoSp.getString("sign_in_info", ""), SignInInfo.class);
     }
 }

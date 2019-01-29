@@ -1,6 +1,5 @@
 package com.lcjian.mmt.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,8 +53,10 @@ public class LogisticsManageFragment extends BaseFragment {
         btn_nav_right.setVisibility(View.VISIBLE);
         btn_nav_right.setImageResource(R.drawable.ic_msg);
 
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.fl_fragment_container, new TranOrdersFragment(), "TranOrdersFragment").commit();
+        if (getChildFragmentManager().findFragmentByTag("TranOrdersFragment") == null) {
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.fl_fragment_container, new TranOrdersFragment(), "TranOrdersFragment").commit();
+        }
     }
 
     @Override
@@ -81,7 +82,29 @@ public class LogisticsManageFragment extends BaseFragment {
 
                         @Override
                         public void onBind(TranOrder data, SlimAdapter.SlimViewHolder<TranOrder> viewHolder) {
-                            Context context = viewHolder.itemView.getContext();
+                            String status = "";
+                            switch (Integer.parseInt(data.tranStatus)) {
+                                case 0:
+                                    status = "未开始";
+                                    break;
+                                case 1:
+                                    status = "进行中";
+                                    break;
+                                case 2:
+                                    status = "已结束";
+                                    break;
+                                case 3:
+                                    status = "取消中";
+                                    break;
+                                case 4:
+                                    status = "已取消";
+                                    break;
+                            }
+                            viewHolder.text(R.id.tv_order_no, data.tranOrderCode)
+                                    .text(R.id.tv_order_status, status)
+                                    .text(R.id.tv_order_product_name, data.product.name)
+                                    .text(R.id.tv_order_product_spec, data.product.model)
+                                    .text(R.id.tv_order_freight, String.valueOf(data.amount));
                         }
                     })
                     .enableDiff();

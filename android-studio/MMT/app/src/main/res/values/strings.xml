@@ -41,6 +41,7 @@
     <string name="user_balance">账户总额（元）</string>
     <string name="account_type">账户类型</string>
     <string name="personal_account">个人账户</string>
+    <string name="business_account">企业账户</string>
     <string name="bond_balance">保证金余额（元）</string>
     <string name="my_bank_card">我的银行卡</string>
     <string name="recharge_bond">保证金充值</string>
@@ -55,4 +56,19 @@
     <string name="spec">型号规格</string>
     <string name="in_completed">未完成</string>
     <string name="order_no">订单号</string>
+    <string name="balance">账户余额</string>
+    <string name="currency">元</string>
+    <string name="recharge_amount">充值金额</string>
+    <string name="currency_sign">￥</string>
+    <string name="confirm_to_recharge">确定充值</string>
+    <string name="withdrawal_bank_card">到账银行卡</string>
+    <string name="please_choose_bank_card">请选择银行卡</string>
+    <string name="arrival_time">当天24小时到账</string>
+    <string name="withdrawal_amount">提现金额</string>
+    <string name="withdrawal_all">全部提现</string>
+    <string name="submit">提交</string>
+    <string name="bank_card_owner_name">持卡人</string>
+    <string name="card_no">卡号</string>
+    <string name="please_input_card_no">请输入卡号</string>
+    <string name="add_bank_card">添加银行卡</string>
 </resources>

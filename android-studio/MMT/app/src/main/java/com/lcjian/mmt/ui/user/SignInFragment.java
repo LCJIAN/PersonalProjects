@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.R;
+import com.lcjian.mmt.data.network.entity.SignInInfo;
 import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.main.MainActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -74,9 +75,9 @@ public class SignInFragment extends BaseFragment implements TextWatcher, View.On
 
         if (rememberMe) {
             if (autoSignIn) {
-                if (!TextUtils.isEmpty(signInPhone)
-                        && !TextUtils.isEmpty(signInPwd)) {
-                    signIn(signInPhone, signInPwd);
+                SignInInfo signInInfo = getSignInInfo();
+                if (signInInfo != null) {
+                    signIn(signInInfo.token);
                 }
             }
         }
@@ -136,16 +137,44 @@ public class SignInFragment extends BaseFragment implements TextWatcher, View.On
         mDisposableSignIn = mRestAPI.cloudService().signIn(phone, pwd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stringResponseData -> {
+                .subscribe(signInInfoResponseData -> {
                             hideProgress();
-                            if (stringResponseData.code == 1) {
+                            if (signInInfoResponseData.code == 1) {
+                                putSignInInfo(signInInfoResponseData.data);
                                 Activity activity = getActivity();
                                 if (activity != null) {
                                     startActivity(new Intent(activity, MainActivity.class));
                                     activity.finish();
                                 }
                             } else {
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), signInInfoResponseData.message, Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            hideProgress();
+                            Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+    }
+
+    private void signIn(String token) {
+        if (mDisposableSignIn != null) {
+            mDisposableSignIn.dispose();
+        }
+        showProgress();
+        mDisposableSignIn = mRestAPI.cloudService().signIn(token)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(signInInfoResponseData -> {
+                            hideProgress();
+                            if (signInInfoResponseData.code == 1) {
+                                putSignInInfo(signInInfoResponseData.data);
+                                Activity activity = getActivity();
+                                if (activity != null) {
+                                    startActivity(new Intent(activity, MainActivity.class));
+                                    activity.finish();
+                                }
+                            } else {
+                                Toast.makeText(App.getInstance(), signInInfoResponseData.message, Toast.LENGTH_SHORT).show();
                             }
                         },
                         throwable -> {

@@ -7,6 +7,7 @@
     <color name="colorTextBlack">#333333</color>
     <color name="colorTextGray">#666666</color>
     <color name="colorTextLightGray">#ff999999</color>
+    <color name="colorTextLink">#ff0000ff</color>
 
     <color name="colorTextHint">#ffcccccc</color>
     <color name="colorTextTab">#ffcccccc</color>

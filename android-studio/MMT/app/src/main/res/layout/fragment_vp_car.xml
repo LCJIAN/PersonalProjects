@@ -12,12 +12,14 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:minWidth="200dp"
             app:tabIndicator="@color/colorPrimary"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="3dp"
+            app:tabTextAppearance="@style/TextAppearance.AppTheme.Medium"
             app:tabTextColor="@color/selector_tab_text_color">
 
         </android.support.design.widget.TabLayout>
@@ -28,7 +30,7 @@
             android:layout_height="?actionBarSize"
             android:layout_gravity="end|center_vertical"
             android:background="?selectableItemBackground"
-            android:src="@drawable/add" />
+            android:src="@drawable/ic_add" />
     </FrameLayout>
 
     <android.support.v4.view.ViewPager

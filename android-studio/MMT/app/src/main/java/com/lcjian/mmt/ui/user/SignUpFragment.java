@@ -182,16 +182,17 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         mDisposableSignIn = mRestAPI.cloudService().signIn(phone, pwd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stringResponseData -> {
+                .subscribe(signInInfoResponseData -> {
                             hideProgress();
-                            if (stringResponseData.code == 1) {
+                            if (signInInfoResponseData.code == 1) {
+                                putSignInInfo(signInInfoResponseData.data);
                                 Activity activity = getActivity();
                                 if (activity != null) {
                                     startActivity(new Intent(activity, MainActivity.class));
                                     activity.finish();
                                 }
                             } else {
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), signInInfoResponseData.message, Toast.LENGTH_SHORT).show();
                             }
                         },
                         throwable -> {

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/nav_top_bar" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_recharge_card_top_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_withdrawal_bank_card_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/withdrawal_bank_card"
+            android:textColor="@color/colorTextBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_withdrawal_bank_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:text="@string/please_choose_bank_card"
+            android:textColor="@color/colorTextLink"
+            app:layout_constraintStart_toEndOf="@+id/tv_withdrawal_bank_card_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_withdrawal_bank_card_label" />
+
+        <TextView
+            android:id="@+id/tv_withdrawal_arrival_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/arrival_time"
+            android:textColor="#ffc3382a"
+            app:layout_constraintStart_toStartOf="@+id/tv_withdrawal_bank_card"
+            app:layout_constraintTop_toBottomOf="@+id/tv_withdrawal_bank_card" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_recharge_card_bottom_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="48dp"
+            android:text="@string/withdrawal_amount"
+            android:textColor="@color/colorTextBlack" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/currency_sign"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="40sp" />
+
+            <EditText
+                android:id="@+id/et_withdrawal_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:textSize="40sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="?android:listDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextLightGray"
+                tools:text="当前账户余额1110元，" />
+
+            <TextView
+                android:id="@+id/tv_withdrawal_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/withdrawal_all"
+                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                android:textColor="@color/colorTextLink" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm_to_withdrawal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_green_btn_bg"
+            android:text="@string/confirm_to_recharge"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

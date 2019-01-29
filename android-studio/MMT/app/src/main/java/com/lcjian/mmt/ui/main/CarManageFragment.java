@@ -1,6 +1,5 @@
 package com.lcjian.mmt.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,7 +79,25 @@ public class CarManageFragment extends BaseFragment {
 
                         @Override
                         public void onBind(Car data, SlimAdapter.SlimViewHolder<Car> viewHolder) {
-                            Context context = viewHolder.itemView.getContext();
+                            String status = "";
+                            switch (Integer.parseInt(data.checkStatus)) {
+                                case 0:
+                                    status = "审核中";
+                                    break;
+                                case 1:
+                                    status = "已认证";
+                                    break;
+                                case 2:
+                                    status = "未通过";
+                                    break;
+                            }
+                            viewHolder.text(R.id.tv_car_no, data.carCode)
+                                    .text(R.id.tv_car_owner, data.owner.name)
+                                    .text(R.id.tv_driver, data.driver1.realname)
+                                    .text(R.id.tv_contact_phone, data.driver1.mobile)
+                                    .text(R.id.tv_available, data.goodsType)
+                                    .text(R.id.tv_available_weight, String.valueOf(data.loadWeight))
+                                    .text(R.id.tv_car_status_label, status);
                         }
                     })
                     .enableDiff();
@@ -139,7 +156,9 @@ public class CarManageFragment extends BaseFragment {
 
                         @Override
                         public void onBind(Driver data, SlimAdapter.SlimViewHolder<Driver> viewHolder) {
-                            Context context = viewHolder.itemView.getContext();
+                            viewHolder.text(R.id.tv_driver_name, data.realname)
+                                    .text(R.id.tv_driver_phone, data.mobile)
+                                    .text(R.id.tv_driver_car_no, data.remarks);
                         }
                     })
                     .enableDiff();

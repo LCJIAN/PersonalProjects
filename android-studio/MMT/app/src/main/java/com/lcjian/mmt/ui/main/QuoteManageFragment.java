@@ -1,6 +1,5 @@
 package com.lcjian.mmt.ui.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,8 +18,10 @@ import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.base.RecyclerFragment;
 import com.lcjian.mmt.ui.base.SimpleFragmentPagerAdapter;
 import com.lcjian.mmt.ui.base.SlimAdapter;
+import com.lcjian.mmt.util.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -97,7 +98,36 @@ public class QuoteManageFragment extends BaseFragment {
 
                         @Override
                         public void onBind(Quote data, SlimAdapter.SlimViewHolder<Quote> viewHolder) {
-                            Context context = viewHolder.itemView.getContext();
+                            viewHolder.gone(R.id.tv_quote)
+                                    .gone(R.id.tv_quote_not)
+                                    .gone(R.id.tv_delete);
+                            String s = "";
+                            switch (Integer.parseInt(data.status)) {
+                                case 1:
+                                    s = "报价中";
+                                    viewHolder.visible(R.id.tv_quote)
+                                            .visible(R.id.tv_quote_not);
+                                    break;
+                                case 2:
+                                    s = "已报价";
+                                    break;
+                                case 3:
+                                    s = "报价失效";
+                                    viewHolder.visible(R.id.tv_delete);
+                                    break;
+                                case 4:
+                                    s = "已结束";
+                                    break;
+                                case 9:
+                                    s = "运输中";
+                                    break;
+                            }
+                            viewHolder.text(R.id.tv_product_name, data.product.shortName)
+                                    .text(R.id.tv_status, s)
+                                    .text(R.id.tv_starting, data.product.mmtStores.address)
+                                    .text(R.id.tv_destination, data.inquiry.unloadAddr)
+                                    .text(R.id.tv_distance, data.distance + "Km")
+                                    .text(R.id.tv_time, data.quoteTime == null ? "" : DateUtils.convertDateToStr(new Date(data.quoteTime)));
                         }
                     })
                     .enableDiff();
