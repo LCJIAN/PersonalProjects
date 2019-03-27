@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:background="@android:color/white"
+    app:alignContent="flex_start"
+    app:alignItems="flex_start"
+    app:dividerDrawable="@drawable/shape_divider"
+    app:flexWrap="wrap"
+    app:showDivider="beginning|middle|end">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/car"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/driver_2"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/contact_phone"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:id="@+id/tv_car_no"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1"
+        tools:text="渝A1234" />
+
+    <TextView
+        android:id="@+id/tv_car_driver"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1"
+        tools:text="XXX" />
+
+    <TextView
+        android:id="@+id/tv_car_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1"
+        tools:text="12345678910" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/trans_num"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/t_price"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/ut_price"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <EditText
+        android:id="@+id/et_trans_num"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/input_trans_num"
+        android:inputType="number"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <EditText
+        android:id="@+id/et_t_price"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/price"
+        android:inputType="numberDecimal"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <EditText
+        android:id="@+id/et_ut_price"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/price"
+        android:inputType="numberDecimal"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/load_time"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/unload_time"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/time_consuming"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:id="@+id/tv_load_time"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/input_date"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:id="@+id/tv_car_order_unload_time"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/input_date"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <EditText
+        android:id="@+id/et_time_consuming"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/input_time"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:text="@string/carrying_capacity"
+        android:textColor="@color/colorTextBlack"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:visibility="invisible"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:visibility="invisible"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <EditText
+        android:id="@+id/et_carrying_capacity"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:gravity="center"
+        android:hint="@string/input_carrying_capacity"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextGray"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:visibility="invisible"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:background="@null"
+        android:visibility="invisible"
+        app:layout_flexBasisPercent="30%"
+        app:layout_flexGrow="1" />
+</com.google.android.flexbox.FlexboxLayout>

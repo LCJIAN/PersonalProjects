@@ -7,7 +7,7 @@
 
     <include layout="@layout/nav_top_bar" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -78,7 +78,7 @@
             android:layout_marginRight="32dp"
             android:background="@null"
             android:hint="@string/please_input_card_no"
-            android:inputType="text"
+            android:inputType="number|text"
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="@color/colorTextLightGray"
             android:textColorHint="@color/colorTextLightGray"
@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/et_bank_card_owner_name"
             app:layout_constraintTop_toTopOf="@+id/tv_bank_card_no" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_confirm"

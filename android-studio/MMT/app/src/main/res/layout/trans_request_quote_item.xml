@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tv_car_no_q_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/car_no"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_car_no_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="京GNF083" />
+
+    <TextView
+        android:id="@+id/tv_car_driver_q_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/driver"
+        app:layout_constraintStart_toStartOf="@+id/tv_car_no_q_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_no_q_label" />
+
+    <TextView
+        android:id="@+id/tv_car_driver_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_no_q"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_no_q"
+        tools:text="李小山" />
+
+    <TextView
+        android:id="@+id/tv_able_tran_num_q_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/able_tran_num"
+        app:layout_constraintStart_toStartOf="@+id/tv_car_driver_q_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_driver_q_label" />
+
+    <TextView
+        android:id="@+id/tv_able_tran_num_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_driver_q"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_driver_q"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_t_price_q_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/t_price"
+        app:layout_constraintStart_toStartOf="@+id/tv_able_tran_num_q_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_able_tran_num_q_label" />
+
+    <TextView
+        android:id="@+id/tv_t_price_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_able_tran_num_q"
+        app:layout_constraintTop_toBottomOf="@+id/tv_able_tran_num_q"
+        tools:text="xxx元/吨" />
+
+    <TextView
+        android:id="@+id/tv_ut_price_q_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ut_price"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_t_price_q_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_t_price_q_label" />
+
+    <TextView
+        android:id="@+id/tv_ut_price_q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_t_price_q"
+        app:layout_constraintTop_toBottomOf="@+id/tv_t_price_q"
+        tools:text="xxx元/吨" />
+</androidx.constraintlayout.widget.ConstraintLayout>

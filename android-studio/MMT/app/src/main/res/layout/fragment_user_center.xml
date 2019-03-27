@@ -13,9 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_user_header_bg"
-            android:orientation="vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,8 +25,8 @@
                     android:id="@+id/iv_user_avatar"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/default_avatar" />
 
@@ -114,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
                 android:baselineAligned="false"
                 android:orientation="vertical"
                 android:padding="8dp">
@@ -167,7 +166,7 @@
                 android:drawableTop="@drawable/ic_recharge_bond"
                 android:drawablePadding="8dp"
                 android:gravity="center"
-                android:text="@string/recharge_bond"
+                android:text="@string/bond_recharge"
                 android:textColor="@color/colorTextBlack"
                 android:textSize="12sp" />
 
@@ -274,7 +273,7 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="@string/record"
+            android:text="@string/in_out_records"
             android:textColor="@color/colorTextBlack"
             android:textSize="14sp" />
 

@@ -2,9 +2,8 @@ package com.lcjian.mmt.ui.base;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.RxBus;
 import com.lcjian.mmt.data.db.AppDatabase;
@@ -13,6 +12,8 @@ import com.lcjian.mmt.di.component.AppComponent;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import androidx.annotation.Nullable;
 
 public class BaseBottomSheetDialogFragment extends BottomSheetDialogFragment {
 

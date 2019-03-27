@@ -1,9 +1,6 @@
 package com.lcjian.mmt.ui.user;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,8 +12,12 @@ import android.widget.Toast;
 
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.R;
+import com.lcjian.mmt.ThrowableConsumerAdapter;
 import com.lcjian.mmt.ui.base.BaseFragment;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -27,9 +28,9 @@ import io.reactivex.schedulers.Schedulers;
 public class ForgotPasswordTwoFragment extends BaseFragment implements TextWatcher, View.OnClickListener {
 
     @BindView(R.id.et_password_new)
-    TextInputEditText et_password_new;
+    AppCompatEditText et_password_new;
     @BindView(R.id.et_password_confirm)
-    TextInputEditText et_password_confirm;
+    AppCompatEditText et_password_confirm;
     @BindView(R.id.btn_confirm)
     Button btn_confirm;
 
@@ -133,9 +134,12 @@ public class ForgotPasswordTwoFragment extends BaseFragment implements TextWatch
                                 getActivity().finish();
                             } else {
                                 hideProgress();
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 }

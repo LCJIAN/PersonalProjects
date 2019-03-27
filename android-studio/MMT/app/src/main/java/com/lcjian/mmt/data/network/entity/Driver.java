@@ -1,6 +1,8 @@
 package com.lcjian.mmt.data.network.entity;
 
-public class Driver {
+import java.io.Serializable;
+
+public class Driver implements Serializable {
 
     public String userId;
     public String realname;

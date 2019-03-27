@@ -84,11 +84,16 @@
             <EditText
                 android:id="@+id/et_recharge_amount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:gravity="center_vertical"
                 android:inputType="numberDecimal"
-                android:textSize="40sp" />
+                android:textSize="32sp" />
         </LinearLayout>
 
         <View

@@ -1,6 +1,8 @@
 package com.lcjian.mmt.data.network.entity;
 
-public class Inquiry {
+import java.io.Serializable;
+
+public class Inquiry implements Serializable {
 
     public String id;
     public Long inquiryTime;

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_cer_name_label_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="证件名称:"
+        app:layout_constraintEnd_toStartOf="@+id/tv_cer_name_i"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_cer_name_i"
+        android:layout_width="200dp"
+        android:layout_height="32dp"
+        android:background="@drawable/shape_input_bg"
+        android:gravity="center_vertical"
+        android:inputType="text"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_name_label_i"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_cer_name_label_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_name_label_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_no_label_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="证件编号:"
+        app:layout_constraintEnd_toEndOf="@+id/tv_cer_name_label_i"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cer_name_label_i" />
+
+    <EditText
+        android:id="@+id/et_cer_no_i"
+        android:layout_width="200dp"
+        android:layout_height="32dp"
+        android:background="@drawable/shape_input_bg"
+        android:gravity="center_vertical"
+        android:inputType="text"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_no_label_i"
+        app:layout_constraintEnd_toEndOf="@+id/tv_cer_name_i"
+        app:layout_constraintStart_toStartOf="@+id/tv_cer_name_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_no_label_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_image_label_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="上传图片："
+        app:layout_constraintEnd_toEndOf="@+id/tv_cer_no_label_i"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cer_no_label_i" />
+
+    <ImageView
+        android:id="@+id/iv_cer_image_i"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:layout_constraintStart_toStartOf="@+id/et_cer_no_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_image_label_i"
+        app:srcCompat="@drawable/def_img" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_label_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="有效期:"
+        app:layout_constraintEnd_toEndOf="@+id/tv_cer_image_label_i"
+        app:layout_constraintTop_toBottomOf="@+id/iv_cer_image_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_forever_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ff429fcb"
+        android:paddingLeft="8dp"
+        android:paddingTop="2dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="2dp"
+        android:text="永久"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_exp_label_i"
+        app:layout_constraintStart_toStartOf="@+id/iv_cer_image_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_exp_label_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="#ffcdcdcd"
+        android:paddingLeft="8dp"
+        android:paddingTop="2dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="2dp"
+        android:text="有效期"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_exp_forever_i"
+        app:layout_constraintStart_toEndOf="@+id/tv_cer_exp_forever_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_exp_forever_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_time_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="有效时间:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_cer_exp_label_i"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cer_exp_label_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_time_start_i"
+        android:layout_width="100dp"
+        android:layout_height="32dp"
+        android:background="@drawable/shape_input_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_exp_time_i"
+        app:layout_constraintStart_toStartOf="@+id/tv_cer_exp_forever_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_exp_time_i" />
+
+    <TextView
+        android:id="@+id/tv_cer_exp_time_end_i"
+        android:layout_width="100dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:background="@drawable/shape_input_bg"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_exp_time_start_i"
+        app:layout_constraintStart_toEndOf="@+id/tv_cer_exp_time_start_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_exp_time_start_i" />
+
+    <View
+        android:id="@+id/v_to_c"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="?android:listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cer_exp_time_start_i"
+        app:layout_constraintEnd_toStartOf="@+id/tv_cer_exp_time_end_i"
+        app:layout_constraintStart_toEndOf="@+id/tv_cer_exp_time_start_i"
+        app:layout_constraintTop_toTopOf="@+id/tv_cer_exp_time_start_i" />
+</androidx.constraintlayout.widget.ConstraintLayout>

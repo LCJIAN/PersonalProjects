@@ -8,6 +8,7 @@ import com.lcjian.mmt.util.StorageUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import timber.log.Timber;
 
 public class RestAPI {
@@ -52,7 +52,8 @@ public class RestAPI {
                             List<Cookie> cookies = cookieStore.get(url.host());
                             return cookies != null ? cookies : new ArrayList<>();
                         }
-                    });
+                    })
+                    .proxy(Proxy.NO_PROXY);
 
             clientBuilder
                     .addInterceptor(chain -> chain.proceed(chain.request()
@@ -65,12 +66,17 @@ public class RestAPI {
             }
             retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.API_URL)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z").create()))
+                    .addConverterFactory(CGsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z").create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build();
         }
         return retrofit;
+    }
+
+    public void reset() {
+        retrofit = null;
+        cloudService = null;
     }
 
     private Cache getCache() {

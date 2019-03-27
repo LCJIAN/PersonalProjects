@@ -1,10 +1,9 @@
 package com.lcjian.mmt.di.module;
 
-import android.support.annotation.NonNull;
-
 import com.lcjian.mmt.RxBus;
 import com.lcjian.mmt.di.scope.ApplicationScope;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 

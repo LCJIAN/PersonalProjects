@@ -1,12 +1,12 @@
 package com.lcjian.mmt.di.module;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
-import android.support.annotation.NonNull;
 
 import com.lcjian.mmt.data.db.AppDatabase;
 import com.lcjian.mmt.di.scope.ApplicationScope;
 
+import androidx.annotation.NonNull;
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 

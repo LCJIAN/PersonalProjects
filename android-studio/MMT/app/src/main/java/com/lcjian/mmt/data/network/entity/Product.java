@@ -1,6 +1,8 @@
 package com.lcjian.mmt.data.network.entity;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     public String id;
     public String name;
@@ -18,12 +20,12 @@ public class Product {
     public Store mmtStores; // 仓库
     public Merchant merchant;
 
-    public static class Property {
+    public static class Property implements Serializable {
         public String attrname;
         public String attrvalue;
     }
 
-    public static class Merchant {
+    public static class Merchant implements Serializable {
         public String id;
         public String name;
     }

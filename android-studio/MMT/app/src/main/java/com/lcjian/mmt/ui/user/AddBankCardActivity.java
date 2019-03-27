@@ -45,6 +45,7 @@ public class AddBankCardActivity extends BaseActivity implements TextWatcher, Vi
         tv_title.setText(R.string.add_bank_card);
         et_bank_card_owner_name.addTextChangedListener(this);
         et_bank_card_no.addTextChangedListener(this);
+        btn_nav_back.setOnClickListener(this);
         btn_confirm.setOnClickListener(this);
         validate();
     }
@@ -72,6 +73,9 @@ public class AddBankCardActivity extends BaseActivity implements TextWatcher, Vi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_nav_back:
+                onBackPressed();
+                break;
             case R.id.btn_confirm:
                 showProgress();
                 mDisposable = mRestAPI.cloudService().addBankCard(et_bank_card_no.getEditableText().toString(),
@@ -80,10 +84,9 @@ public class AddBankCardActivity extends BaseActivity implements TextWatcher, Vi
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(bankCardResponseData -> {
                                     hideProgress();
+                                    Toast.makeText(App.getInstance(), bankCardResponseData.message, Toast.LENGTH_SHORT).show();
                                     if (bankCardResponseData.code == 1) {
                                         finish();
-                                    } else {
-                                        Toast.makeText(App.getInstance(), bankCardResponseData.message, Toast.LENGTH_SHORT).show();
                                     }
                                 },
                                 throwable -> hideProgress());

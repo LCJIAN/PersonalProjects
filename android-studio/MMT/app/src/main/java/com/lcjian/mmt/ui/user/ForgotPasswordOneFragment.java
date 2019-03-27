@@ -1,9 +1,6 @@
 package com.lcjian.mmt.ui.user;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,10 +12,14 @@ import android.widget.Toast;
 
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.R;
+import com.lcjian.mmt.ThrowableConsumerAdapter;
 import com.lcjian.mmt.ui.base.BaseFragment;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -31,9 +32,9 @@ public class ForgotPasswordOneFragment extends BaseFragment implements TextWatch
 
 
     @BindView(R.id.et_phone_f)
-    TextInputEditText et_phone_f;
+    AppCompatEditText et_phone_f;
     @BindView(R.id.et_verification_code_f)
-    TextInputEditText et_verification_code_f;
+    AppCompatEditText et_verification_code_f;
     @BindView(R.id.btn_next_step)
     Button btn_next_step;
     @BindView(R.id.btn_verification_code_f)
@@ -133,10 +134,13 @@ public class ForgotPasswordOneFragment extends BaseFragment implements TextWatch
                                         et_phone_f.getEditableText().toString(),
                                         et_verification_code_f.getEditableText().toString());
                             } else {
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
     private void sendVerificationCode() {
@@ -152,10 +156,13 @@ public class ForgotPasswordOneFragment extends BaseFragment implements TextWatch
                             if (stringResponseData.code == 1) {
                                 countdown();
                             } else {
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
 

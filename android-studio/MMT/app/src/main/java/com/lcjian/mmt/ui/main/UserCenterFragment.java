@@ -2,8 +2,6 @@ package com.lcjian.mmt.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +12,22 @@ import android.widget.TextView;
 
 import com.lcjian.mmt.GlideApp;
 import com.lcjian.mmt.R;
+import com.lcjian.mmt.ThrowableConsumerAdapter;
 import com.lcjian.mmt.data.network.entity.SignInInfo;
 import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.user.BankCardsActivity;
+import com.lcjian.mmt.ui.user.BrokerageActivity;
 import com.lcjian.mmt.ui.user.FeedbackActivity;
+import com.lcjian.mmt.ui.user.InvoiceManageActivity;
 import com.lcjian.mmt.ui.user.RechargeActivity;
 import com.lcjian.mmt.ui.user.RecordsActivity;
+import com.lcjian.mmt.ui.user.SettingsActivity;
 import com.lcjian.mmt.ui.user.WithdrawalActivity;
 
 import java.text.DecimalFormat;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -82,6 +86,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
         tv_withdraw.setOnClickListener(this);
         tv_feedback.setOnClickListener(this);
         tv_my_bankcard.setOnClickListener(this);
+        tv_commission_info.setOnClickListener(this);
+        tv_invoice_manage.setOnClickListener(this);
+        btn_go_settings.setOnClickListener(this);
 
         SignInInfo signInInfo = getSignInInfo();
         GlideApp.with(this)
@@ -99,8 +106,7 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                             tv_balance.setText(new DecimalFormat("0.00").format(deposit.balance / 100));
                             tv_bond_balance.setText(new DecimalFormat("0.00").format(deposit.bondBalance / 100));
                         },
-                        throwable -> {
-                        });
+                        ThrowableConsumerAdapter::accept);
     }
 
     @Override
@@ -113,6 +119,9 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_go_settings:
+                startActivity(new Intent(v.getContext(), SettingsActivity.class));
+                break;
             case R.id.tv_recharge:
                 startActivity(new Intent(v.getContext(), RechargeActivity.class));
                 break;
@@ -130,6 +139,12 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.tv_my_bankcard:
                 startActivity(new Intent(v.getContext(), BankCardsActivity.class));
+                break;
+            case R.id.tv_commission_info:
+                startActivity(new Intent(v.getContext(), BrokerageActivity.class));
+                break;
+            case R.id.tv_invoice_manage:
+                startActivity(new Intent(v.getContext(), InvoiceManageActivity.class));
                 break;
             default:
                 break;

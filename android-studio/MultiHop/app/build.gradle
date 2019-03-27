@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.lcjian.multihop"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../lcjian.keystore")
+            storePassword "9a11b00c"
+            keyAlias "liaocj"
+            keyPassword "9a11b00c"
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha03'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation 'org.nanohttpd:nanohttpd:2.2.0'
+    implementation 'org.nanohttpd:nanohttpd-nanolets:2.2.0'
+    implementation 'org.nanohttpd:nanohttpd-apache-fileupload:2.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:latest.integration'
+    implementation 'com.squareup.okhttp3:logging-interceptor:latest.integration'
+    implementation 'io.reactivex.rxjava2:rxjava:latest.integration'
+    implementation 'io.reactivex.rxjava2:rxandroid:latest.integration'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:latest.integration'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:latest.integration'
+    implementation 'com.jakewharton:butterknife:latest.integration'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:latest.integration'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+}

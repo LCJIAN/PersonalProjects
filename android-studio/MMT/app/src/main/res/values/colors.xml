@@ -3,6 +3,7 @@
     <color name="colorPrimary">#CC2222</color>
     <color name="colorPrimaryDark">#CC2222</color>
     <color name="colorAccent">#CC2222</color>
+    <color name="colorDivider">#fff2f2f2</color>
 
     <color name="colorTextBlack">#333333</color>
     <color name="colorTextGray">#666666</color>

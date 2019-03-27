@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/nav_top_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/cer_1"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_2"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_3"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_4"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_5"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_6"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_7"
+                layout="@layout/car_certificate_form_item" />
+
+            <include
+                android:id="@+id/cer_8"
+                layout="@layout/car_certificate_form_item" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

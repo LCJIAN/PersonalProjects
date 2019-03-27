@@ -1,17 +1,18 @@
 package com.lcjian.mmt.ui.user;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.lcjian.mmt.App;
 import com.lcjian.mmt.GlideApp;
 import com.lcjian.mmt.R;
 import com.lcjian.mmt.data.entity.PageResult;
@@ -23,10 +24,16 @@ import com.lcjian.mmt.ui.base.SlimAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class BankCardsActivity extends BaseActivity {
@@ -44,7 +51,7 @@ public class BankCardsActivity extends BaseActivity {
         setContentView(R.layout.activity_fragment);
         ButterKnife.bind(this);
 
-        tv_title.setText("银行卡");
+        tv_title.setText(getString(R.string.bank_card));
         btn_nav_back.setOnClickListener(v -> onBackPressed());
         btn_nav_right.setVisibility(View.VISIBLE);
         btn_nav_right.setImageResource(R.drawable.ic_add);
@@ -52,13 +59,38 @@ public class BankCardsActivity extends BaseActivity {
 
         if (getSupportFragmentManager().findFragmentByTag("BankCardsFragment") == null) {
             getSupportFragmentManager().beginTransaction().replace(
-                    R.id.fl_fragment_container, new BankCardsFragment(), "BankCardsFragment").commit();
+                    R.id.fl_fragment_container,
+                    BankCardsFragment.newInstance(TextUtils.equals(WithdrawalActivity.class.getSimpleName(), getIntent().getStringExtra("from"))),
+                    "BankCardsFragment")
+                    .commit();
         }
+    }
+
+    private void ss() {
+
     }
 
     public static class BankCardsFragment extends RecyclerFragment<BankCard> {
 
         private SlimAdapter mAdapter;
+        private CompositeDisposable mDisposables;
+        private boolean mForResult;
+
+        public static BankCardsFragment newInstance(boolean result) {
+            BankCardsFragment fragment = new BankCardsFragment();
+            Bundle args = new Bundle();
+            args.putBoolean("for_result", result);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                mForResult = getArguments().getBoolean("for_result");
+            }
+        }
 
         @Override
         public RecyclerView.Adapter onCreateAdapter(List<BankCard> data) {
@@ -72,11 +104,27 @@ public class BankCardsActivity extends BaseActivity {
                         }
 
                         @Override
+                        public void onInit(SlimAdapter.SlimViewHolder<BankCard> viewHolder) {
+                            viewHolder.clicked(R.id.tv_delete_b, v -> showDeleteDialog(v.getContext(), viewHolder.itemData));
+                            if (mForResult) {
+                                viewHolder.clicked(R.id.sl_bank_card, v -> {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("bank_card", viewHolder.itemData);
+                                    Activity activity = getActivity();
+                                    if (activity != null) {
+                                        activity.setResult(Activity.RESULT_OK, intent);
+                                        activity.finish();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
                         public void onBind(BankCard data, SlimAdapter.SlimViewHolder<BankCard> viewHolder) {
                             viewHolder.text(R.id.tv_bank_card_bank, data.openBank)
                                     .text(R.id.tv_bank_card_no, data.cardNo)
                                     .text(R.id.tv_bank_card_type, data.cardType)
-                                    .with(R.id.cl_bank_card, view -> view.setBackgroundColor(Color.parseColor(data.remarks)))
+                                    .with(R.id.cl_bank_card, view -> view.setBackgroundColor(Color.parseColor("#" + data.remarks)))
                                     .with(R.id.iv_bank_card_bank, view -> GlideApp.with(view).load(data.logoUrl).into((ImageView) view));
                         }
                     })
@@ -116,6 +164,47 @@ public class BankCardsActivity extends BaseActivity {
             swipe_refresh_layout.setColorSchemeResources(R.color.colorPrimary);
             recycler_view.setLayoutManager(new LinearLayoutManager(view.getContext()));
             super.onViewCreated(view, savedInstanceState);
+            mDisposables = new CompositeDisposable();
+        }
+
+        @Override
+        public void onDestroyView() {
+            mDisposables.dispose();
+            super.onDestroyView();
+        }
+
+        private void showDeleteDialog(Context context, BankCard data) {
+            new AlertDialog.Builder(context)
+                    .setMessage(R.string.sure_to_delete)
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton(R.string.confirm, (dialog, which) -> {
+                        dialog.dismiss();
+                        deleteBankCard(data);
+                    })
+                    .create().show();
+        }
+
+        @SuppressWarnings("unchecked")
+        private void deleteBankCard(BankCard data) {
+            showProgress();
+            mDisposables.add(mRestAPI.cloudService()
+                    .deleteBankCards(data.id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(stringResponseData -> {
+                                hideProgress();
+                                if (stringResponseData.code == 1) {
+                                    List<BankCard> list = new ArrayList<>((List<BankCard>) mAdapter.getData());
+                                    list.remove(data);
+                                    mAdapter.updateData(list);
+                                } else {
+                                    Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            throwable -> {
+                                hideProgress();
+                                Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            }));
         }
     }
 }

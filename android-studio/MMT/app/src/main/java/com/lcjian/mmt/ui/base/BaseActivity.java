@@ -2,7 +2,6 @@ package com.lcjian.mmt.ui.base;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcjian.mmt.App;
@@ -13,6 +12,8 @@ import com.lcjian.mmt.di.component.AppComponent;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 

@@ -1,14 +1,14 @@
 package com.lcjian.mmt.ui.user;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lcjian.mmt.R;
 import com.lcjian.mmt.ui.base.BaseActivity;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

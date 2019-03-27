@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tv_order_no_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="订单编号："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_order_no_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_order_product_name_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="产品名称："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_no_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_no_label_b" />
+
+    <TextView
+        android:id="@+id/tv_order_product_name_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_no_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_no_b"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_order_product_spec_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="型号规格："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_product_name_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_name_label_b" />
+
+    <TextView
+        android:id="@+id/tv_order_product_spec_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_product_name_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_name_b"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_company_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="缴纳公司："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_product_spec_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_spec_label_b" />
+
+    <TextView
+        android:id="@+id/tv_company_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_order_product_spec_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_product_spec_b"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_brokerage_amount_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="佣金金额："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_company_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_company_label_b" />
+
+    <TextView
+        android:id="@+id/tv_brokerage_amount_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_company_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_company_b"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_car_order_no_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="分车运单："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintStart_toStartOf="@+id/tv_brokerage_amount_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_brokerage_amount_label_b" />
+
+    <TextView
+        android:id="@+id/tv_car_order_no_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_brokerage_amount_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_brokerage_amount_b"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_status_label_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="状态："
+        android:textColor="@color/colorTextBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_car_order_no_label_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_order_no_label_b" />
+
+    <TextView
+        android:id="@+id/tv_status_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorTextLightGray"
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_order_no_b"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_order_no_b"
+        tools:text="TextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

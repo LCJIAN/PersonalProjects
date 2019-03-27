@@ -3,9 +3,6 @@ package com.lcjian.mmt.ui.user;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,14 +14,19 @@ import android.widget.Toast;
 
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.R;
+import com.lcjian.mmt.ThrowableConsumerAdapter;
 import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -33,11 +35,11 @@ import io.reactivex.schedulers.Schedulers;
 public class SignUpFragment extends BaseFragment implements View.OnClickListener, TextWatcher {
 
     @BindView(R.id.et_phone_u)
-    TextInputEditText et_phone_u;
+    AppCompatEditText et_phone_u;
     @BindView(R.id.et_password_u)
-    TextInputEditText et_password_u;
+    AppCompatEditText et_password_u;
     @BindView(R.id.et_verification_code)
-    TextInputEditText et_verification_code;
+    AppCompatEditText et_verification_code;
     @BindView(R.id.btn_sign_up)
     Button btn_sign_up;
     @BindView(R.id.btn_send_verification_code)
@@ -126,9 +128,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 && !TextUtils.isEmpty(et_password_u.getEditableText())
                 && !TextUtils.isEmpty(et_verification_code.getEditableText()));
         btn_send_verification_code.setEnabled(
-                TextUtils.equals(getString(R.string.send_verification_code),
-                        et_phone_u.getEditableText().toString())
-                        && !TextUtils.isEmpty(et_verification_code.getEditableText()));
+                TextUtils.equals(getString(R.string.send_verification_code), btn_send_verification_code.getText().toString())
+                        && !TextUtils.isEmpty(et_phone_u.getEditableText()));
     }
 
     private void checkVerificationCode() {
@@ -147,10 +148,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                 signUp();
                             } else {
                                 hideProgress();
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
     private void signUp() {
@@ -169,10 +173,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                 signIn();
                             } else {
                                 hideProgress();
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
     private void signIn(String phone, String pwd) {
@@ -188,6 +195,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                 putSignInInfo(signInInfoResponseData.data);
                                 Activity activity = getActivity();
                                 if (activity != null) {
+                                    JPushInterface.resumePush(activity);
+                                    JPushInterface.setAlias(activity, signInInfoResponseData.data.user.userId.hashCode(),
+                                            signInInfoResponseData.data.user.userId);
                                     startActivity(new Intent(activity, MainActivity.class));
                                     activity.finish();
                                 }
@@ -197,7 +207,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                         },
                         throwable -> {
                             hideProgress();
-                            Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            ThrowableConsumerAdapter.accept(throwable);
                         });
     }
 
@@ -233,10 +243,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                             if (stringResponseData.code == 1) {
                                 countdown();
                             } else {
-                                Toast.makeText(App.getInstance(), stringResponseData.message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
                             }
                         },
-                        throwable -> hideProgress());
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
 
@@ -251,12 +264,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                             long left = 60 - aLong;
                             if (left < 0) {
                                 btn_send_verification_code.setText(R.string.send_verification_code);
-                                btn_send_verification_code.setEnabled(true);
                                 mDisposableCountdown.dispose();
                             } else {
                                 String ls = left + "s";
                                 btn_send_verification_code.setText(ls);
                             }
+                            validate();
                         },
                         throwable -> {
                         });

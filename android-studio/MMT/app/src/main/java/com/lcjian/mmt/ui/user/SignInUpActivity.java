@@ -1,13 +1,13 @@
 package com.lcjian.mmt.ui.user;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.lcjian.mmt.R;
 import com.lcjian.mmt.ui.base.BaseActivity;
 import com.lcjian.mmt.ui.base.SimpleFragmentPagerAdapter;
 
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

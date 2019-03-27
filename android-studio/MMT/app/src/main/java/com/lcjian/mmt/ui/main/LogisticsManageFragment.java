@@ -1,10 +1,7 @@
 package com.lcjian.mmt.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +10,21 @@ import android.widget.TextView;
 
 import com.lcjian.mmt.R;
 import com.lcjian.mmt.data.entity.PageResult;
-import com.lcjian.mmt.data.network.entity.TranOrder;
+import com.lcjian.mmt.data.network.entity.TransOrder;
 import com.lcjian.mmt.ui.base.BaseFragment;
 import com.lcjian.mmt.ui.base.RecyclerFragment;
 import com.lcjian.mmt.ui.base.SlimAdapter;
+import com.lcjian.mmt.ui.logistics.CarOrdersActivity;
+import com.lcjian.mmt.ui.logistics.MessagesActivity;
+import com.lcjian.mmt.ui.logistics.OrderDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -52,7 +56,7 @@ public class LogisticsManageFragment extends BaseFragment {
         btn_nav_back.setVisibility(View.GONE);
         btn_nav_right.setVisibility(View.VISIBLE);
         btn_nav_right.setImageResource(R.drawable.ic_msg);
-
+        btn_nav_right.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), MessagesActivity.class)));
         if (getChildFragmentManager().findFragmentByTag("TranOrdersFragment") == null) {
             getChildFragmentManager().beginTransaction()
                     .replace(R.id.fl_fragment_container, new TranOrdersFragment(), "TranOrdersFragment").commit();
@@ -65,15 +69,15 @@ public class LogisticsManageFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    public static class TranOrdersFragment extends RecyclerFragment<TranOrder> {
+    public static class TranOrdersFragment extends RecyclerFragment<TransOrder> {
 
         private SlimAdapter mAdapter;
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<TranOrder> data) {
+        public RecyclerView.Adapter onCreateAdapter(List<TransOrder> data) {
             mAdapter = SlimAdapter
                     .create()
-                    .register(new SlimAdapter.SlimInjector<TranOrder>() {
+                    .register(new SlimAdapter.SlimInjector<TransOrder>() {
 
                         @Override
                         public int onGetLayoutResource() {
@@ -81,7 +85,15 @@ public class LogisticsManageFragment extends BaseFragment {
                         }
 
                         @Override
-                        public void onBind(TranOrder data, SlimAdapter.SlimViewHolder<TranOrder> viewHolder) {
+                        public void onInit(SlimAdapter.SlimViewHolder<TransOrder> viewHolder) {
+                            viewHolder.clicked(R.id.tv_view_detail, v -> v.getContext().startActivity(
+                                    new Intent(v.getContext(), OrderDetailActivity.class).putExtra("trans_order_id", viewHolder.itemData.id)))
+                                    .clicked(R.id.tv_view_cars, v -> v.getContext().startActivity(
+                                            new Intent(v.getContext(), CarOrdersActivity.class).putExtra("trans_order_id", viewHolder.itemData.id)));
+                        }
+
+                        @Override
+                        public void onBind(TransOrder data, SlimAdapter.SlimViewHolder<TransOrder> viewHolder) {
                             String status = "";
                             switch (Integer.parseInt(data.tranStatus)) {
                                 case 0:
@@ -104,7 +116,7 @@ public class LogisticsManageFragment extends BaseFragment {
                                     .text(R.id.tv_order_status, status)
                                     .text(R.id.tv_order_product_name, data.product.name)
                                     .text(R.id.tv_order_product_spec, data.product.model)
-                                    .text(R.id.tv_order_freight, String.valueOf(data.amount));
+                                    .text(R.id.tv_order_freight, String.valueOf(data.amount / 100) + "元");
                         }
                     })
                     .enableDiff();
@@ -112,10 +124,10 @@ public class LogisticsManageFragment extends BaseFragment {
         }
 
         @Override
-        public Observable<PageResult<TranOrder>> onCreatePageObservable(int currentPage) {
-            return mRestAPI.cloudService().getTranOrders((currentPage - 1) * 20, 20)
+        public Observable<PageResult<TransOrder>> onCreatePageObservable(int currentPage) {
+            return mRestAPI.cloudService().getTransOrders((currentPage - 1) * 20, 20)
                     .map(quoteResponsePageData -> {
-                        PageResult<TranOrder> pageResult = new PageResult<>();
+                        PageResult<TransOrder> pageResult = new PageResult<>();
                         if (quoteResponsePageData.elements == null) {
                             quoteResponsePageData.elements = new ArrayList<>();
                         }
@@ -134,7 +146,7 @@ public class LogisticsManageFragment extends BaseFragment {
         }
 
         @Override
-        public void notifyDataChanged(List<TranOrder> data) {
+        public void notifyDataChanged(List<TransOrder> data) {
             mAdapter.updateData(data);
         }
 

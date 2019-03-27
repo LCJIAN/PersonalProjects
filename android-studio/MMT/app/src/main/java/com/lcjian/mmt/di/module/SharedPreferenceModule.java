@@ -4,13 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 
 import com.lcjian.mmt.di.scope.ApplicationScope;
 import com.lcjian.mmt.util.ObscuredSharedPreferences;
 
 import javax.inject.Named;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 

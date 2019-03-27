@@ -16,7 +16,9 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/shape_input_multi_bg"
-        android:inputType="textMultiLine" />
+        android:gravity="start"
+        android:inputType="textMultiLine"
+        android:padding="8dp" />
 
     <Button
         android:id="@+id/btn_submit"

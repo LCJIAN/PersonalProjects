@@ -1,8 +1,9 @@
 package com.lcjian.mmt.data.network.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Car {
+public class Car implements Serializable {
 
     public String id;
     public String carCode; // 车牌号
@@ -19,8 +20,9 @@ public class Car {
     public String checkStatus; // 车辆认证状态0.审核中(未认证)1.已认证2.未通过
     public List<ProductType> productTypes; // 危化品时，需要指明商品类型 K(id)-V商品类型ID，K(name)-V商品类型名称
     public Owner owner;
+    public Escort escort;
 
-    public static class Owner {
+    public static class Owner implements Serializable {
         public String id;
         public String name;
         public String phone;
