@@ -71,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         logger.addHandler(new Handler() {
             @Override
             public void publish(LogRecord record) {
+                if (!TextUtils.isEmpty(tv_log.getText())
+                        && tv_log.getText().length() > 2000) {
+                    tv_log.setText("");
+                }
                 tv_log.append(record.getMessage());
                 tv_log.append("\n");
             }

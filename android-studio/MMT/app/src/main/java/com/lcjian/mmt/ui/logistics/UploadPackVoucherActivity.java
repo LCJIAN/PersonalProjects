@@ -48,6 +48,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import timber.log.Timber;
+import top.zibin.luban.Luban;
 
 public class UploadPackVoucherActivity extends BaseActivity implements TextWatcher {
 
@@ -222,7 +223,7 @@ public class UploadPackVoucherActivity extends BaseActivity implements TextWatch
                     if (s.startsWith("http")) {
                         return Single.just(s);
                     }
-                    File file = new File(s);
+                    File file = Luban.with(this).load(s).get().get(0);
                     return mRestAPI
                             .cloudService()
                             .uploadImage(MultipartBody.Part.createFormData(

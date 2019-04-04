@@ -1,0 +1,361 @@
+<resources>
+    <string name="app_name" translatable="false">DrinkWater</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+
+    <string name="a">Navigate home</string>
+    <string name="b">%1$s, %2$s</string>
+    <string name="c">%1$s, %2$s, %3$s</string>
+    <string name="d">Navigate up</string>
+    <string name="e">More options</string>
+    <string name="f">Done</string>
+    <string name="g">See all</string>
+    <string name="h">Choose an app</string>
+    <string name="i">OFF</string>
+    <string name="j">ON</string>
+    <string name="k" translatable="false">sans-serif</string>
+    <string name="l" translatable="false">sans-serif-medium</string>
+    <string name="m" translatable="false">sans-serif-medium</string>
+    <string name="n" translatable="false">sans-serif</string>
+    <string name="o" translatable="false">sans-serif</string>
+    <string name="p" translatable="false">sans-serif</string>
+    <string name="q" translatable="false">sans-serif</string>
+    <string name="r" translatable="false">sans-serif-light</string>
+    <string name="s" translatable="false">sans-serif</string>
+    <string name="t" translatable="false">sans-serif</string>
+    <string name="u" translatable="false">sans-serif</string>
+    <string name="v" translatable="false">sans-serif-medium</string>
+    <string name="w">Search…</string>
+    <string name="x">Clear query</string>
+    <string name="y">Search query</string>
+    <string name="z">Search</string>
+    <string name="a0">Submit query</string>
+    <string name="a1">Voice search</string>
+    <string name="a2">Share with</string>
+    <string name="a3">Share with %s</string>
+    <string name="a4">Collapse</string>
+    <string name="a5" translatable="false">Add apps</string>
+    <string name="a6">Adjust intake goal</string>
+    <string name="a7" translatable="false">and tap</string>
+    <string name="a8">Drink Water Reminder</string>
+    <string name="a9" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="a_" translatable="false">Athletic</string>
+    <string name="aa">Auto</string>
+    <string name="ab">Average completion</string>
+    <string name="ac">%d%%</string>
+    <string name="ad" translatable="false">/6499/example/banner</string>
+    <string name="ae" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+    <string name="af" translatable="false">Bravo! Let\'s start!</string>
+    <string name="ag">CANCEL</string>
+    <string name="ah" translatable="false">%1$d / %2$d</string>
+    <string name="ai" translatable="false">Classic</string>
+    <string name="aj" translatable="false">Close</string>
+    <string name="ak" translatable="false">Cold</string>
+    <string name="al" translatable="false">:</string>
+    <string name="am">Visit &lt;b&gt;facebook.com/device&lt;/b&gt; and enter the code shown above.</string>
+    <string name="an">Unexpected error while downloading an image.</string>
+    <string name="ao">WebView login requires INTERNET permission</string>
+    <string name="ap">AndroidManifest Error</string>
+    <string name="aq">Liked</string>
+    <string name="ar">Like</string>
+    <string name="as">Loading…</string>
+    <string name="at">Cancel</string>
+    <string name="au">Log in</string>
+    <string name="av">Continue with Facebook</string>
+    <string name="aw">Log in with Facebook</string>
+    <string name="ax">Log out</string>
+    <string name="ay">Log out</string>
+    <string name="az">Logged in as: %1$s</string>
+    <string name="b0">Logged in using Facebook</string>
+    <string name="b1">Send</string>
+    <string name="b2">Share</string>
+    <string name="b3">To connect your account, open the Facebook app on your mobile device and check for notifications.</string>
+    <string name="b4">- OR -</string>
+    <string name="b5">Not you?</string>
+    <string name="b6" translatable="false">Continue as %1$s</string>
+    <string name="b7">Confirm Login</string>
+    <string name="b8">You\'re in control - choose what info you want to share with apps.</string>
+    <string name="b9">Enable</string>
+    <string name="b_">%1$s won\'t work unless you enable Google Play services.</string>
+    <string name="ba">Enable Google Play services</string>
+    <string name="bb">Install</string>
+    <string name="bc">%1$s won\'t run without Google Play services, which are missing from your device.</string>
+    <string name="bd">Get Google Play services</string>
+    <string name="be">Google Play services availability</string>
+    <string name="bf">Google Play services error</string>
+    <string name="bg">%1$s is having trouble with Google Play services. Please try again.</string>
+    <string name="bh">%1$s won\'t run without Google Play services, which are not supported by your device.</string>
+    <string name="bi">Update</string>
+    <string name="bj">%1$s won\'t run unless you update Google Play services.</string>
+    <string name="bk">Update Google Play services</string>
+    <string name="bl">%1$s won\'t run without Google Play services, which are currently updating.</string>
+    <string name="bm">New version of Google Play services needed. It will update itself shortly.</string>
+    <string name="bn">Open on phone</string>
+    <string name="bo">Sign in</string>
+    <string name="bp">Sign in with Google</string>
+    <string name="bq">Customize</string>
+    <string name="br">Customize your drinking cup</string>
+    <string name="bs">Daily Drink Target</string>
+    <string name="bt" translatable="false">Daily intake</string>
+    <string name="bu">Daily Target</string>
+    <string name="bv" translatable="false">H5Game</string>
+    <string name="bw">Delete</string>
+    <string name="bx" translatable="false">Dismiss</string>
+    <string name="by" translatable="false">Done</string>
+    <string name="bz" translatable="false">Download</string>
+    <string name="c0">DRINK</string>
+    <string name="c1">Drink frequency</string>
+    <string name="c2">Remember to Drink Later.</string>
+    <string name="c3">Drink Water</string>
+    <string name="c4">Drink water report</string>
+    <string name="c5">Edit</string>
+    <string name="c6" translatable="false">every time</string>
+    <string name="facebook_app_id" translatable="false">923071751189490</string>
+    <string name="c7">FAQ</string>
+    <string name="c8">Sometimes %%s does not ring at the scheduled time, because of cleaner apps or phone system shut off %%s.\10\10If you have installed cleaner apps such as CM Security, please make sure that they do not to stop %%s.\10\10Some devices, especially Samsung, have strict power plans, the system will shut off %%s after locking your screen. We suggest you add %%s to the Unmonitored Apps list to avoid missing reminders.</string>
+    <string name="c9">We are a small team that want to provide a better experience for users. Advertisements are the only source of income to keep team operating. The free version include ads, which we try our best not to bother users with.\10\10The premium version (without ads) will be coming soon. Thank you for your support.</string>
+    <string name="c_">We do not use any abnormal method to prevent our app been uninstalled from your devices.\10\10If you insist to uninstall %s (we will miss you), please go to system settings and check Prevent app uninstall is turned off, and then go to the app list, click the uninstall button. Wish happiness and good health :-)</string>
+    <string name="ca" translatable="false">GO TO SETTINGS</string>
+    <string name="cb">Why does %s not work?</string>
+    <string name="cc">Why does %s show advertisements?</string>
+    <string name="cd">I can\'t uninstall this app, what happened?</string>
+    <string name="ce">Miscellaneous</string>
+    <string name="female">Female</string>
+    <string name="cg" translatable="false">Please enter your basic information, and we\'ll customize drink water plan for you.</string>
+    <string name="ch" translatable="false">Female</string>
+    <string name="ci" translatable="false">Gender</string>
+    <string name="cj" translatable="false">Male</string>
+    <string name="ck" translatable="false">We sincerely hope that you can spend a few minutes on this survey, and we definitely value your opinions!</string>
+    <string name="cl" translatable="false">fl oz</string>
+    <string name="cm">Fri</string>
+    <string name="cn">You\'ve achieved your intake goal! Do you still want to receive reminders after achieving the goal?</string>
+    <string name="co">Congratulations!</string>
+    <string name="cp">Further reminder</string>
+    <string name="cq">Still remind after achieving the goal</string>
+    <string name="cr" translatable="false">Loading …</string>
+    <string name="cs" translatable="false">Nice game is about to start!</string>
+    <string name="ct" translatable="false">Wanna take a break?Let\'s play some instant games!</string>
+    <string name="cu" translatable="false">Cancel</string>
+    <string name="cv" translatable="false">Are you sure to quit?</string>
+    <string name="cw" translatable="false">Quit</string>
+    <string name="cx" translatable="false">Wanna take a break?Let\'s drive the car!</string>
+    <string name="cy" translatable="false">Unstable Internet connection. Please try again later.</string>
+    <string name="cz" translatable="false">Wanna take a break?Let\'s eliminate the stone!</string>
+    <string name="d0" translatable="false">{percent}%\10Loaded</string>
+    <string name="d1" translatable="false">Miscellaneous</string>
+    <string name="d2" translatable="false">Yes, I agree</string>
+    <string name="d3" translatable="false">CONTINUE</string>
+    <string name="d4" translatable="false">No, thank you</string>
+    <string name="d5" translatable="false">READ</string>
+    <string name="d6" translatable="false">We’ve embraced a few changes in our Privacy Policy to make it even easier to understand what data we collect, how it’s processed and the controls you have. You can find more details about our updates for new European data protection laws (GDPR) by reading our Privacy Policy. By continuing, you are confirming that you are over the age of 16 or under guidance of the holder of your parental responsibility and agree to our revisions. $1READ$2</string>
+    <string name="d7" translatable="false">We’ve embraced a few changes in our Privacy Policy to make it even easier to understand what data we collect, how it’s processed and the controls you have. You can find more details about our updates for new European data protection laws (GDPR) by reading our Privacy Policy, and keep in mind that by using our app on or after May 25, 2018, you agree to our revisions. By continuing, you are confirming that you are over the age of 16 or under guidance of the holder of your parental responsibility. $1READ$2</string>
+    <string name="d8" translatable="false">Privacy Policy Updates</string>
+    <string name="d9">Allow Permission</string>
+    <string name="allow_to_collect_information">Allow %s to collect your information to provide better service and a better user experience.</string>
+    <string name="da">Gender</string>
+    <string name="db">General</string>
+    <string name="dc">GRANT PERMISSION</string>
+    <string name="dd" translatable="false">Go to Drink Water</string>
+    <string name="de">It\'s lunch time, have a glass of water to help you eat healthier!</string>
+    <string name="df">GOT IT</string>
+    <string name="dg">Your proper daily water intake</string>
+    <string name="dh">Check your hydration report and see your ratio</string>
+    <string name="di">How to effectively monitor</string>
+    <string name="dj">Generating your hydration plan…</string>
+    <string name="dk">%1$s times a day\10%2$s each time</string>
+    <string name="dl">How much should you drink</string>
+    <string name="dm">Don\'t worry I\'ll remind you on time</string>
+    <string name="dn">What is the right time</string>
+    <string name="doo">Personal hydration plan</string>
+    <string name="info_before_start">In order to provide tailored hydration advice, I need to get some basic data. And I\'ll keep this a secret.</string>
+    <string name="hello">Hi,\nI\'m your personal hydration companion</string>
+    <string name="dr">Hey, have some water</string>
+    <string name="ds">History</string>
+    <string name="dt">%1$s %2$d</string>
+    <string name="du">%1$d</string>
+    <string name="dv">Home</string>
+    <string name="dw" translatable="false">Hot</string>
+    <string name="dx">How long since you had a drink? Remember to drink water.</string>
+    <string name="dy" translatable="false">%1$02d:%2$02d</string>
+    <string name="dz" translatable="false">I Know</string>
+    <string name="e0">Intake goal</string>
+    <string name="e1">Intake time</string>
+    <string name="e2" translatable="false">Keep it in balance!</string>
+    <string name="e3">kg</string>
+    <string name="e4">kg, ml</string>
+    <string name="e5">LATER</string>
+    <string name="e6">lbs</string>
+    <string name="e7">lbs, fl oz</string>
+    <string name="let_s_go">Let\'s Go</string>
+    <string name="e9" translatable="false">LET\'S HYDRATE!</string>
+    <string name="male">Male</string>
+    <string name="ea">Start drinking water!</string>
+    <string name="eb">Tap to record.</string>
+    <string name="ec">Send</string>
+    <string name="ed" translatable="false">min</string>
+    <string name="ee">minutes</string>
+    <string name="ef">30 minutes</string>
+    <string name="eg">45 minutes</string>
+    <string name="eh">60 minutes</string>
+    <string name="ei">90 minutes</string>
+    <string name="ej">ml</string>
+    <string name="ek" translatable="false">Moderate</string>
+    <string name="el">Mon</string>
+    <string name="em">Month</string>
+    <string name="en">Monthly average</string>
+    <string name="eo">%s / day</string>
+    <string name="ep">Mute</string>
+    <string name="eq">RETRY</string>
+    <string name="er">Sorry, something went wrong,\10 please try again later.</string>
+    <string name="es">NEXT</string>
+    <string name="et">The next reminder will be sent at:</string>
+    <string name="eu">Next time</string>
+    <string name="ev">No</string>
+    <string name="ew">No available Email app was found</string>
+    <string name="ex">No pop-up ads</string>
+    <string name="ey">No promotion ads</string>
+    <string name="ez">No reminder ads</string>
+    <string name="f0">NO, THANKS</string>
+    <string name="f1" translatable="false">NOT NOW</string>
+    <string name="f2">CONTINUE WITH ADS</string>
+    <string name="f3" translatable="false">Notification toggle</string>
+    <string name="f4">OK</string>
+    <string name="f5" translatable="false">Tap again to exit</string>
+    <string name="f6">Others</string>
+    <string name="f7" translatable="false">%d/4</string>
+    <string name="f8" translatable="false">Toggle password visibility</string>
+    <string name="f9" translatable="false">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
+    <string name="f_" translatable="false">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
+    <string name="fa" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
+    <string name="fb" translatable="false">M3.27,4.27 L19.74,20.74</string>
+    <string name="fc">Personal data</string>
+    <string name="fd">Please enter a number between 1 and 500</string>
+    <string name="fe" translatable="false">+ Drink Water</string>
+    <string name="ff">To avoid missing reminders (due to the system limitation), please add %s to the unmonitored apps list.</string>
+    <string name="fg">PREVENT MISSING REMINDERS</string>
+    <string name="fh">Privacy Policy</string>
+    <string name="fi" translatable="false">http://cdn.appcloudbox.net/smoothappsstudio/apps/watertracker/privacy.html</string>
+    <string name="fj" translatable="false">Questionnaire</string>
+    <string name="fk">Please leave your review on Google Play. We appreciate your 5-Stars Rating!</string>
+    <string name="fl">RATE 5-STARS</string>
+    <string name="fm">ADVISE US</string>
+    <string name="fn">Please leave your feedback and we will continue to improve performance.</string>
+    <string name="fo">If you like %s, show us some love with a 5-Stars Rating: it really helps.</string>
+    <string name="fp">Rate us</string>
+    <string name="fq">Recommended</string>
+    <string name="fr">Records</string>
+    <string name="fs">Reminder alert</string>
+    <string name="ft">Remind you when you unlock the phone</string>
+    <string name="fu">Reminder interval</string>
+    <string name="fv" translatable="false">reminder interval</string>
+    <string name="fw">Reminder mode</string>
+    <string name="fx">Reminder settings</string>
+    <string name="fy">Remove ads</string>
+    <string name="fz">This app is supported by personalized advertising.</string>
+    <string name="g0">The paid version allows you to enjoy %s out of ads FOREVER!</string>
+    <string name="g1">$1.99 UPGRADE NOW</string>
+    <string name="g2" translatable="false">Rest Now</string>
+    <string name="g3" translatable="false">Reach your own water intake goal</string>
+    <string name="g4">Rewrite water intake</string>
+    <string name="g5">Save image</string>
+    <string name="g6">Allow Ad to store image in Picture gallery?</string>
+    <string name="g7">Accept</string>
+    <string name="g8">Decline</string>
+    <string name="g9">Create calendar event</string>
+    <string name="g_">Allow Ad to create a calendar event?</string>
+    <string name="ga">Test Ad</string>
+    <string name="gb">Sat</string>
+    <string name="gc">Search</string>
+    <string name="gd" translatable="false">Please enter your basic information, and we\'ll customize drink water plan for you.</string>
+    <string name="ge" translatable="false">kg</string>
+    <string name="gf" translatable="false">lb</string>
+    <string name="gg" translatable="false">Weight</string>
+    <string name="gh" translatable="false">Sedentary</string>
+    <string name="gi">See you next time…</string>
+    <string name="gj" translatable="false">Select</string>
+    <string name="gk">Setting</string>
+    <string name="gl">User Data Permission</string>
+    <string name="gm" translatable="false">@string/gl</string>
+    <string name="gn">Language</string>
+    <string name="skip">Skip</string>
+    <string name="sleep_time">Sleep time</string>
+    <string name="gq" translatable="false">Help you sleep well</string>
+    <string name="gr">Sleeping Time</string>
+    <string name="gs" translatable="false">Snooze</string>
+    <string name="start">START</string>
+    <string name="gu">Start off with a glass of water to fire up your metabolism!</string>
+    <string name="gv">999+</string>
+    <string name="gw">SUBMIT</string>
+    <string name="gx">Sun</string>
+    <string name="gy">Switch cup</string>
+    <string name="gz" translatable="false">Sync Data</string>
+    <string name="h0" translatable="false">com.health.lab.drink.water.tracker</string>
+    <string name="h1" translatable="false">System</string>
+    <string name="h2">Drink a glass of water right now to help you keep fit and relieve fatigue!</string>
+    <string name="h3">(Tap to use custom goal)</string>
+    <string name="h4" translatable="false">Temperate</string>
+    <string name="h5" translatable="false">http://cdn.appcloudbox.net/smoothappsstudio/apps/watertracker/terms-of-use.html</string>
+    <string name="h6">Terms of Service</string>
+    <string name="h7" translatable="false">Time to awake</string>
+    <string name="h8" translatable="false">Time to sleep</string>
+    <string name="h9" translatable="false">Smart reminder will reminds you on time</string>
+    <string name="h_" translatable="false">Set drink water hours</string>
+    <string name="ha" translatable="false">3</string>
+    <string name="hb">Thu</string>
+    <string name="hc" translatable="false">Improve your digestion</string>
+    <string name="hd" translatable="false">Help you keep fit</string>
+    <string name="he" translatable="false">%1$s:%2$s</string>
+    <string name="hf">It\'s time to DRINK!</string>
+    <string name="hg" translatable="false">It\'s time to hydrate</string>
+    <string name="hh" translatable="false">It\'s time to hydrate!</string>
+    <string name="hi">A healthy mind and body is a hydrated one. Come and have a try!</string>
+    <string name="hj">Your habits of hydration are better than %d%% people.</string>
+    <string name="hk">Start drinking first cup of water!</string>
+    <string name="hl">Little by little and bit, just believe yourself!</string>
+    <string name="hm">You can achieve goal of hydration, we believe in you!</string>
+    <string name="hn">Every journey begins with a single cup of water.</string>
+    <string name="ho">You\'ve achieved %d%% of goal yesterday. Keep up the good work!</string>
+    <string name="hp">You\'ve achieved %d%% of goal yesterday. Good job, carry on!</string>
+    <string name="hq">You are getting fitter, do you feel it?</string>
+    <string name="hr">You\'ve achieved %d%% of goal yesterday. Well done, goal achieved!</string>
+    <string name="hs">You\'ve achieved %d%% of goal yesterday. We are proud of you!</string>
+    <string name="ht">You\'ve achieved %d%% of goal yesterday. Excellent! You did it!</string>
+    <string name="hu">Tap again to exit</string>
+    <string name="hv">Tap again to skip</string>
+    <string name="hw">Please enter a number greater than 0</string>
+    <string name="hx">Tue</string>
+    <string name="hy">Turn Off</string>
+    <string name="hz" translatable="false">Unfinished</string>
+    <string name="i0">Unit</string>
+    <string name="i1" translatable="false">Remember to Drink Later.</string>
+    <string name="i2" translatable="false">Well Done!</string>
+    <string name="i3">UPDATE</string>
+    <string name="i4">New Version</string>
+    <string name="get_up_time">Wake up time</string>
+    <string name="i6" translatable="false">Active internal organs</string>
+    <string name="i7" translatable="false">Water</string>
+    <string name="i8" translatable="false">Water, Check</string>
+    <string name="i9" translatable="false">Water Reminder</string>
+    <string name="i_">Water your body~</string>
+    <string name="ia" translatable="false">Water your body</string>
+    <string name="ib">Wed</string>
+    <string name="ic">Weekly average</string>
+    <string name="id">%s / day</string>
+    <string name="ie">Weekly completion</string>
+    <string name="iff">Weight</string>
+    <string name="ig" translatable="false">Well done!</string>
+    <string name="ih">Well done, stay hydrated!</string>
+    <string name="ii">Year</string>
+    <string name="ij">Yes</string>
+    <string name="ik">%s has been shut off due to the system limitation. Please add it to the unmonitored apps list to avoid missing your reminders.</string>
+    <string name="il">YOU HAVE MISSED REMINDERS!</string>
+    <string name="im">Your body is dehydrated now and needs enough WATER to function properly!</string>
+    <string name="your_gender">Your Gender</string>
+    <string name="your_weight">Your Weight</string>
+
+
+</resources>

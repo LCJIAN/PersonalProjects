@@ -1,0 +1,2 @@
+include ':app', ':picker-view'
+project(':picker-view').projectDir = new File('./picker-view')

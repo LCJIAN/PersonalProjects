@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
 import com.lcjian.multihop.lib.connect.WifiP2pGC;
@@ -19,8 +17,11 @@ import com.lcjian.multihop.lib.send.TaskRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 public class Manager {
 
@@ -30,6 +31,8 @@ public class Manager {
     private int status = STATUS_IDLE;
 
     private Logger logger;
+    private Disposable disposable1;
+    private Disposable disposable2;
 
     private Role role;
     private int port;
@@ -46,9 +49,16 @@ public class Manager {
     private WifiP2pGO wifiP2pGO;
     private WifiP2pGC wifiP2pGC;
 
-    private TaskRunner.OnNoTaskListener onNoTaskListener = () -> {
-        if (role == Role.FORWARDER) {
-            new Handler(Looper.getMainLooper()).post(this::go);
+    private TaskRunner.OnTaskListener onTaskListener = new TaskRunner.OnTaskListener() {
+
+        @Override
+        public void onNoTask() {
+            RxBus.getInstance().send("on_no_task");
+        }
+
+        @Override
+        public void onAddTask() {
+            RxBus.getInstance().send("on_add_task");
         }
     };
 
@@ -87,7 +97,9 @@ public class Manager {
 
         @Override
         public void onConnectionInfoAvailable(WifiP2pInfo wifiP2pInfo) {
-            taskRunner.resume(wifiP2pInfo.groupOwnerAddress.getHostAddress(), port);
+            if (wifiP2pInfo.groupOwnerAddress != null) {
+                taskRunner.resume(wifiP2pInfo.groupOwnerAddress.getHostAddress(), port);
+            }
         }
 
         @Override
@@ -109,7 +121,7 @@ public class Manager {
                     }
                 }
                 if (needGC) {
-                    gc();
+                    switchToGC();
                 }
             }
         }
@@ -131,9 +143,38 @@ public class Manager {
     }
 
     public void start() {
+        disposable1 = RxBus.getInstance().asFlowable()
+                .filter(o -> o instanceof String)
+                .debounce(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                            if (TextUtils.equals(o.toString(), "on_no_task")) {
+                                if (role == Role.FORWARDER) {
+                                    switchToGO();
+                                } else if (role == Role.SENDER) {
+                                    stopGC();
+                                }
+                            }
+                        },
+                        throwable -> {
+                        });
+        disposable2 = RxBus.getInstance().asFlowable()
+                .filter(o -> o instanceof String)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                            if (TextUtils.equals(o.toString(), "on_add_task")) {
+                                if (role == Role.SENDER) {
+                                    startGC();
+                                }
+                            }
+                        },
+                        throwable -> {
+                        });
+
+
         if (role == Role.SENDER || role == Role.FORWARDER) {
             taskRunner = new TaskRunner();
-            taskRunner.addOnNoTaskListener(onNoTaskListener);
+            taskRunner.addOnNoTaskListener(onTaskListener);
             taskRunner.start();
         }
         if (role == Role.FORWARDER || role == Role.RECEIVER) {
@@ -161,10 +202,10 @@ public class Manager {
         wifiP2pGC = new WifiP2pGC(context, wifiP2pManager, channel);
 
         if (role == Role.SENDER) {
-            gc();
+            switchToGC();
         } else if (role == Role.FORWARDER
                 || role == Role.RECEIVER) {
-            go();
+            switchToGO();
         }
     }
 
@@ -174,55 +215,67 @@ public class Manager {
 
     public void stop() {
         if (taskRunner != null) {
-            taskRunner.removeOnNoTaskListener(onNoTaskListener);
+            taskRunner.removeOnNoTaskListener(onTaskListener);
             taskRunner.stop();
         }
         if (httpServer != null) {
             httpServer.removeOnReceivedListener(onReceivedListener);
             httpServer.stop();
         }
-        if (status == STATUS_GC) {
-            wifiP2pGC.stopDiscover();
-            wifiP2pGC.disconnect();
-            wifiP2pGC.stop();
-            wifiP2pGC.removeListener(gcListenerAdapter);
+        stopGC();
+        stopGO();
+        if (disposable1 != null) {
+            disposable1.dispose();
         }
-        if (status == STATUS_GO) {
-            wifiP2pGO.removeGroup();
-            wifiP2pGO.stop();
-            wifiP2pGO.removeListener(goListenerAdapter);
-        }
-        status = STATUS_IDLE;
-    }
-
-    private void go() {
-        if (status == STATUS_GC) {
-            wifiP2pGC.stopDiscover();
-            wifiP2pGC.disconnect();
-            wifiP2pGC.stop();
-            wifiP2pGC.removeListener(gcListenerAdapter);
-        }
-        if (status != STATUS_GO) {
-            wifiP2pGO.addListener(goListenerAdapter);
-            wifiP2pGO.start();
-            wifiP2pGO.createGroup();
-
-            status = STATUS_GO;
+        if (disposable2 != null) {
+            disposable2.dispose();
         }
     }
 
-    private void gc() {
-        if (status == STATUS_GO) {
-            wifiP2pGO.removeGroup();
-            wifiP2pGO.stop();
-            wifiP2pGO.removeListener(goListenerAdapter);
-        }
+    private void switchToGO() {
+        stopGC();
+        startGO();
+    }
+
+    private void switchToGC() {
+        stopGO();
+        startGC();
+    }
+
+    private void startGC() {
         if (status != STATUS_GC) {
             wifiP2pGC.addListener(gcListenerAdapter);
             wifiP2pGC.start();
             wifiP2pGC.discover();
-
             status = STATUS_GC;
+        }
+    }
+
+    private void stopGC() {
+        if (status == STATUS_GC) {
+            wifiP2pGC.stopDiscover();
+            wifiP2pGC.disconnect();
+            wifiP2pGC.stop();
+            wifiP2pGC.removeListener(gcListenerAdapter);
+            status = STATUS_IDLE;
+        }
+    }
+
+    private void startGO() {
+        if (status != STATUS_GO) {
+            wifiP2pGO.addListener(goListenerAdapter);
+            wifiP2pGO.start();
+            wifiP2pGO.createGroup();
+            status = STATUS_GO;
+        }
+    }
+
+    private void stopGO() {
+        if (status == STATUS_GO) {
+            wifiP2pGO.removeGroup();
+            wifiP2pGO.stop();
+            wifiP2pGO.removeListener(goListenerAdapter);
+            status = STATUS_IDLE;
         }
     }
 

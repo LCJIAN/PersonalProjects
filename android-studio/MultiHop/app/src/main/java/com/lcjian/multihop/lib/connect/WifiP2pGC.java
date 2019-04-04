@@ -99,6 +99,10 @@ public final class WifiP2pGC extends WifiP2pNode<WifiP2pGC.GCListenerAdapter> {
         @Override
         public void onConnectionInfoUnavailable() {
             connected = false;
+            if (connectPendingDevice != null) {
+                connectPendingDevice = null;
+                discover();
+            }
         }
 
     };

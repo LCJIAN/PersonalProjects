@@ -20,9 +20,9 @@ android {
     signingConfigs {
         release {
             storeFile file("../lcjian.keystore")
-            storePassword "9a11b00c"
-            keyAlias "liaocj"
-            keyPassword "9a11b00c"
+            storePassword "*"
+            keyAlias "*"
+            keyPassword "*"
         }
     }
 

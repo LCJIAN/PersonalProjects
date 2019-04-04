@@ -207,7 +207,9 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 onBackPressed();
                 break;
             case R.id.tv_nav_right: {
-                mCarPrepare = new CarPrepare();
+                if (mCarPrepare == null) {
+                    mCarPrepare = new CarPrepare();
+                }
                 mCarPrepare.carCode = et_car_no.getEditableText().toString();
                 mCarPrepare.carSize = et_car_length.getEditableText().toString() + "*" + et_car_width.getEditableText().toString() + "*" + et_car_height.getEditableText().toString();
                 mCarPrepare.boxSize = et_car_box_length.getEditableText().toString() + "*" + et_car_box_width.getEditableText().toString() + "*" + et_car_box_height.getEditableText().toString();
@@ -263,8 +265,8 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                     mCarPrepare.images.add(image);
                 }
 
-                v.getContext().startActivity(new Intent(v.getContext(), CarCertificatesFormActivity.class)
-                        .putExtra("car_prepare", mCarPrepare));
+                startActivityForResult(new Intent(v.getContext(), CarCertificatesFormActivity.class)
+                        .putExtra("car_prepare", mCarPrepare), 1006);
             }
             break;
             case R.id.tv_car_driver:
@@ -401,8 +403,10 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 GlideApp.with(this)
                         .load(mCarTailsUri)
                         .into(iv_car_tails_image);
-            } else {
+            } else if (requestCode == 1005) {
                 mProductTypes = (ArrayList<ProductType>) data.getSerializableExtra("data");
+            } else {
+                mCarPrepare = (CarPrepare) data.getSerializableExtra("car_prepare");
             }
         }
     }

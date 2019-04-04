@@ -17,13 +17,13 @@ public class TaskRunner {
 
     private Task mCurrentTask;
 
-    private CopyOnWriteArrayList<OnNoTaskListener> mOnNoTaskListeners;
+    private CopyOnWriteArrayList<OnTaskListener> mOnTaskListeners;
 
     public TaskRunner() {
         this.mAtomicIP = new AtomicReference<>();
         this.mAtomicPort = new AtomicInteger();
         this.mTasksQueue = new LinkedBlockingDeque<>();
-        this.mOnNoTaskListeners = new CopyOnWriteArrayList<>();
+        this.mOnTaskListeners = new CopyOnWriteArrayList<>();
         this.mTaskConsumerThread = new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -38,6 +38,11 @@ public class TaskRunner {
                     }
                     mCurrentTask = mTasksQueue.take();
                     mCurrentTask.run(ip, port);
+                    if (mTasksQueue.isEmpty()) {
+                        for (OnTaskListener listener : mOnTaskListeners) {
+                            listener.onNoTask();
+                        }
+                    }
                 } catch (Exception e) {
                     if (mCurrentTask != null) {
                         try {
@@ -47,12 +52,6 @@ public class TaskRunner {
                         }
                     }
                     e.printStackTrace();
-                } finally {
-                    if (mTasksQueue.isEmpty()) {
-                        for (OnNoTaskListener listener : mOnNoTaskListeners) {
-                            listener.onNoTask();
-                        }
-                    }
                 }
             }
         });
@@ -79,20 +78,25 @@ public class TaskRunner {
     public void addTask(Task task) {
         try {
             mTasksQueue.put(task);
+            for (OnTaskListener listener : mOnTaskListeners) {
+                listener.onAddTask();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public void addOnNoTaskListener(OnNoTaskListener onNoTaskListener) {
-        this.mOnNoTaskListeners.add(onNoTaskListener);
+    public void addOnNoTaskListener(OnTaskListener onTaskListener) {
+        this.mOnTaskListeners.add(onTaskListener);
     }
 
-    public void removeOnNoTaskListener(OnNoTaskListener onNoTaskListener) {
-        this.mOnNoTaskListeners.remove(onNoTaskListener);
+    public void removeOnNoTaskListener(OnTaskListener onTaskListener) {
+        this.mOnTaskListeners.remove(onTaskListener);
     }
 
-    public interface OnNoTaskListener {
+    public interface OnTaskListener {
         void onNoTask();
+
+        void onAddTask();
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/fl">
+    <target
+        android:name="first_line"
+        android:animation="@animator/a" />
+    <target
+        android:name="second_line"
+        android:animation="@animator/a" />
+    <target
+        android:name="third_line"
+        android:animation="@animator/a" />
+    <target
+        android:name="forth_line"
+        android:animation="@animator/a" />
+</animated-vector>

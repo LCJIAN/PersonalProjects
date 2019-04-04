@@ -37,6 +37,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -52,6 +53,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import timber.log.Timber;
+import top.zibin.luban.Luban;
 
 public class CarCertificatesFormActivity extends BaseActivity {
 
@@ -89,29 +91,38 @@ public class CarCertificatesFormActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         mCarPrepare = (CarPrepare) getIntent().getSerializableExtra("car_prepare");
-        mCarPrepare.certificates = new ArrayList<>();
+        if (mCarPrepare.certificates == null) {
+            mCarPrepare.certificates = new ArrayList<>();
+            for (int i = 0; i < 8; i++) {
+                Certificate certificate = new Certificate();
+                certificate.sortId = "0";
+                certificate.picturePath = "";
+                mCarPrepare.certificates.add(certificate);
+            }
+        }
         tv_title.setText(R.string.car_cer);
         tv_nav_right.setText("去认证");
         tv_nav_right.setVisibility(View.VISIBLE);
-        btn_nav_back.setOnClickListener(v -> onBackPressed());
+        btn_nav_back.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("car_prepare", mCarPrepare);
+            setResult(RESULT_OK, intent);
+            finish();
+        });
         tv_nav_right.setOnClickListener(v -> submit());
 
-        setupItem(cer_1);
-        setupItem(cer_2);
-        setupItem(cer_3);
-        setupItem(cer_4);
-        setupItem(cer_5);
-        setupItem(cer_6);
-        setupItem(cer_7);
-        setupItem(cer_8);
+        setupItem(cer_1, 0);
+        setupItem(cer_2, 1);
+        setupItem(cer_3, 2);
+        setupItem(cer_4, 3);
+        setupItem(cer_5, 4);
+        setupItem(cer_6, 5);
+        setupItem(cer_7, 6);
+        setupItem(cer_8, 7);
     }
 
-    private void setupItem(ConstraintLayout parent) {
-        Certificate certificate = new Certificate();
-        certificate.sortId = "0";
-        certificate.picturePath = "";
-        mCarPrepare.certificates.add(certificate);
-        int position = mCarPrepare.certificates.indexOf(certificate);
+    private void setupItem(ConstraintLayout parent, int position) {
+        Certificate certificate = mCarPrepare.certificates.get(position);
 
         TextView tv_cer_name_i = parent.findViewById(R.id.tv_cer_name_i);
         EditText et_cer_no_i = parent.findViewById(R.id.et_cer_no_i);
@@ -159,6 +170,21 @@ public class CarCertificatesFormActivity extends BaseActivity {
                 certificate.cerName = "挂靠公司营业执照";
                 break;
         }
+        if (!TextUtils.isEmpty(certificate.cerNo)) {
+            et_cer_no_i.setText(certificate.cerNo);
+        }
+        if (!TextUtils.isEmpty(certificate.picturePath)) {
+            GlideApp.with(this)
+                    .load(certificate.picturePath)
+                    .into(iv_cer_image_i);
+        }
+        switchExpiry(tv_cer_exp_forever_i, tv_cer_exp_i, tv_cer_exp_time_start_i, tv_cer_exp_time_end_i, certificate);
+        if (certificate.expStart != null) {
+            tv_cer_exp_time_start_i.setText(DateUtils.convertDateToStr(new Date(certificate.expStart)));
+        }
+        if (certificate.expEnd != null) {
+            tv_cer_exp_time_end_i.setText(DateUtils.convertDateToStr(new Date(certificate.expEnd)));
+        }
 
         iv_cer_image_i.setOnClickListener(v -> chooseImage(mCarPrepare.certificates.indexOf(certificate)));
         tv_cer_exp_forever_i.setOnClickListener(v -> {
@@ -169,7 +195,6 @@ public class CarCertificatesFormActivity extends BaseActivity {
             certificate.isForever = "0";
             switchExpiry(tv_cer_exp_forever_i, tv_cer_exp_i, tv_cer_exp_time_start_i, tv_cer_exp_time_end_i, certificate);
         });
-        switchExpiry(tv_cer_exp_forever_i, tv_cer_exp_i, tv_cer_exp_time_start_i, tv_cer_exp_time_end_i, certificate);
         tv_cer_exp_time_start_i.setOnClickListener(v -> showDatePickDialog(tv_cer_exp_time_start_i, tv_cer_exp_time_end_i, 0, certificate));
         tv_cer_exp_time_end_i.setOnClickListener(v -> showDatePickDialog(tv_cer_exp_time_start_i, tv_cer_exp_time_end_i, 1, certificate));
         et_cer_no_i.addTextChangedListener(new TextWatcher() {
@@ -361,7 +386,7 @@ public class CarCertificatesFormActivity extends BaseActivity {
                     if (s.startsWith("http") || TextUtils.isEmpty(s)) {
                         return Single.just(s);
                     }
-                    File file = new File(s);
+                    File file = Luban.with(this).load(s).get().get(0);
                     return mRestAPI
                             .cloudService()
                             .uploadImage(MultipartBody.Part.createFormData(
@@ -388,7 +413,7 @@ public class CarCertificatesFormActivity extends BaseActivity {
                     if (s.startsWith("http") || TextUtils.isEmpty(s)) {
                         return Single.just(s);
                     }
-                    File file = new File(s);
+                    File file = Luban.with(this).load(s).get().get(0);
                     return mRestAPI
                             .cloudService()
                             .uploadCer(MultipartBody.Part.createFormData(
@@ -415,7 +440,7 @@ public class CarCertificatesFormActivity extends BaseActivity {
                     if (s.startsWith("http") || TextUtils.isEmpty(s)) {
                         return Single.just(s);
                     }
-                    File file = new File(s);
+                    File file = Luban.with(this).load(s).get().get(0);
                     return mRestAPI
                             .cloudService()
                             .uploadCer(MultipartBody.Part.createFormData(

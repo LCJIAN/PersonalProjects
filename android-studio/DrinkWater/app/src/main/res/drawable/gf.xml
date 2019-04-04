@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="42dp"
+    android:height="42dp"
+    android:viewportWidth="42"
+    android:viewportHeight="42">
+    <group
+        android:translateX="-995"
+        android:translateY="-1546">
+        <path
+            android:fillColor="#ffffff"
+            android:fillType="evenOdd"
+            android:pathData="M 1037 1550.2 L 1032.8 1546 L 1016 1562.8 L 999.2 1546 L 995 1550.2 L 1011.8 1567 L 995 1583.8 L 999.2 1588 L 1016 1571.2 L 1032.8 1588 L 1037 1583.8 L 1020.2 1567 Z"
+            android:strokeWidth="1" />
+    </group>
+</vector>

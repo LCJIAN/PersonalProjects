@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="a">
+        <item>您已经做了足够多的工作！一杯水可以帮助您减轻焦虑。</item>
+        <item>觉得累了？喝杯水缓解一下。</item>
+        <!--<item>嗨，提醒一下，是时候喝一杯水，休息一下了〜</item>-->
+        <item>下午喝一杯水可以促进新陈代谢！</item>
+        <item>喝一杯水，保持健康，缓解疲劳！</item>
+        <item>只需一杯水即可为您的大脑充电！</item>
+    </array>
+    <array name="b">
+        <item>充足的饮水将为您提供更好的心情。</item>
+        <item>多喝水可以缓解焦虑，整理思路！</item>
+        <item>充足的饮水可以增强您的免疫系统，使您更健康！</item>
+        <item>水是生命活动的基本元素，喝点水吧！</item>
+    </array>
+    <array name="d">
+        <item>慢慢来！喝杯水放松一下~</item>
+        <item>慢慢来！深呼吸一下，喝一杯水~</item>
+        <item>喝一杯水可以帮助您为崭新的一天做好准备！</item>
+        <item>喝一杯水可以改善您的心情。</item>
+    </array>
+    <array name="f">
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
+    </array>
+</resources>

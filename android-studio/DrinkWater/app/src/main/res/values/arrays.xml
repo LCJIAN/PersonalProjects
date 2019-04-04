@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="a">
+        <item>You have done enough work! A glass of water will help you relieve anxiety~</item>
+        <item>Feel tired? Drink some water to supercharge your mind!</item>
+        <!--<item>Hi~ A kindly reminder that it&apos;s time to have a glass of water and take break~</item>-->
+        <item>Having a glass of water in the afternoon will boost your metabolism!</item>
+        <item>Drink a glass of water right now to help you keep fit and relieve fatigue!</item>
+        <item>Supercharge your mind right now by simply drinking a glass of water!</item>
+    </array>
+    <array name="b">
+        <item>Enough water intake will provide you with a better mood~</item>
+        <item>Consistently drinking water calms your nerves and organizes your thoughts!</item>
+        <item>Sufficient water intake can boost your immune system so that you will be healthier!
+        </item>
+        <item>Water is the basic element for our body to function properly and you need to have some
+            water now!
+        </item>
+    </array>
+    <array name="c">
+        <item>Awake? Start off with a glass of water to fire up your metabolism!</item>
+        <item>Awake? Start off with a glass of water and flush out toxins!</item>
+        <item>Awake? Start off with a glass of water and give your brain fuel!</item>
+    </array>
+    <array name="d">
+        <item>Take it easy! Treat yourself to a glass of water to be calm~</item>
+        <item>Take it easy! Take a breath and have a glass of water~</item>
+        <item>A glass of water can help you get prepared for a brand new day!</item>
+        <item>A glass of water will improve your mood!</item>
+    </array>
+    <array name="e">
+        <item>Bring heart ratio back to normal</item>
+        <item>Clear up your skin</item>
+        <item>Maintain proper blood pressure</item>
+        <item>Hydrate body for proper function</item>
+        <item>Refresh your mind</item>
+        <item>Refresh your body</item>
+        <item>Remove excretory material </item>
+        <item>Help relieve constipation</item>
+        <item>Help to relieve fatigue</item>
+        <item>Replenish any fluid loss</item>
+        <item>Boost immune system</item>
+        <item>Help lubricate the joints</item>
+        <item>Help deliver oxygen </item>
+        <item>Cushion the brain</item>
+        <item>Regulate body temperature</item>
+        <item>Prevent kidney damage</item>
+        <item>Provide more energy</item>
+        <item>Improve your complexion</item>
+        <item>Help to maintain regularity</item>
+        <item>Help to prevent headaches </item>
+        <item>Prevent cramps and sprains</item>
+        <item>Help to prevent backaches</item>
+        <item>Help to prevent bad breath</item>
+        <item>Help to cheer you up</item>
+        <item>Help nourishing your hair</item>
+        <item>Reduce hangover symptoms</item>
+        <item>Prevent heart disease</item>
+        <item>Balance PH levels</item>
+        <item>Help reduce anxiety</item>
+    </array>
+    <array name="f">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+    <array name="g">
+        <item>Deutsch</item>
+        <item>Dutch</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Indonesia</item>
+        <item>Italiano</item>
+        <item>Português</item>
+        <item>ไทย</item>
+        <item>Türkçe</item>
+        <item>русский</item>
+        <item>한국어</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+        <item>日本語</item>
+        <item>العربية</item>
+        <item>Tiếng Việt</item>
+        <item>हिंदी</item>
+    </array>
+    <array name="h">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </array>
+</resources>

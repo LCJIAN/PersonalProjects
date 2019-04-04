@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="a">
+        <item quantity="one">%d time / day</item>
+        <item quantity="other">%d times / day</item>
+    </plurals>
+    <!--<plurals name="b">-->
+    <!--<item quantity="one">You&apos;ve stay hydrated for\10%d DAY.</item>-->
+    <!--<item quantity="other">You&apos;ve stay hydrated for\10%d DAYs.</item>-->
+    <!--</plurals>-->
+</resources>

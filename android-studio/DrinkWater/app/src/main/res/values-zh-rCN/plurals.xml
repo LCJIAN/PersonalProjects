@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="a">
+        <item quantity="one">%d 次 / 天</item>
+        <item quantity="other">%d 次 / 天</item>
+    </plurals>
+    <!--<plurals name="b">-->
+    <!--<item quantity="one">您已经保持饮水%d天。</item>-->
+    <!--<item quantity="other">您已经保持饮水%d天。</item>-->
+    <!--</plurals>-->
+</resources>
