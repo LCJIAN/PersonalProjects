@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_guide"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <com.gelitenight.waveview.library.WaveView
+        android:id="@+id/wave_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <FrameLayout
+        android:id="@+id/fl_scene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/vs_fragment_guide_0" />
+
+    </FrameLayout>
+
+    <ViewStub
+        android:id="@+id/vs_fragment_guide_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/vs_fragment_guide_1" />
+
+    <ViewStub
+        android:id="@+id/vs_fragment_guide_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/vs_fragment_guide_2" />
+
+    <ViewStub
+        android:id="@+id/vs_fragment_guide_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/vs_fragment_guide_3" />
+
+    <ViewStub
+        android:id="@+id/vs_fragment_guide_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/vs_fragment_guide_4" />
+
+
+    <TextView
+        android:id="@+id/tv_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:minWidth="?actionBarSize"
+        android:minHeight="?actionBarSize"
+        android:text="@string/skip"
+        android:textColor="@color/colorTextLight" />
+
+    <LinearLayout
+        android:id="@+id/ll_next_step"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_right_white"
+            android:drawableRight="@drawable/ic_arrow_right_white"
+            android:drawablePadding="8dp"
+            android:text="@string/es"
+            android:textAppearance="@style/TextAppearance.AppTheme.Large"
+            android:textColor="@color/colorTextLight" />
+
+        <TextView
+            android:id="@+id/tv_step_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorTextLight" />
+    </LinearLayout>
+</FrameLayout>

@@ -92,6 +92,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:latest.integration'
     // other
     implementation 'com.gelitenight.waveview:waveview:latest.integration'
+    implementation 'com.pnikosis:materialish-progress:latest.integration'
+    implementation 'com.robinhood.ticker:ticker:latest.integration'
     // leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:latest.integration'

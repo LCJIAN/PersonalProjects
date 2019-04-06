@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_avatar"
+        android:layout_width="136dp"
+        android:layout_height="136dp"
+        android:alpha="0">
+
+        <ImageView
+            android:id="@+id/iv_avatar_l"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            app:srcCompat="@drawable/ic_avatar_male_plan_generating" />
+
+        <com.pnikosis.materialishprogress.ProgressWheel
+            android:id="@+id/progress_wheel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:matProg_barColor="@color/colorAccent"
+            app:matProg_fillRadius="true"
+            app:matProg_progressIndeterminate="true" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_plan_generating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="100dp"
+        android:alpha="0"
+        android:gravity="center"
+        android:text="@string/dj"
+        android:textColor="@color/colorTextLightGray" />
+</LinearLayout>

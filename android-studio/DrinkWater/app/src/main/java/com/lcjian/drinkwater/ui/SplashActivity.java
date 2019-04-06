@@ -60,6 +60,7 @@ public class SplashActivity extends BaseActivity {
                     if (configs.isEmpty()) {
                         DefaultConfig defaultConfig = new DefaultConfig();
                         defaultConfig.defaultGender = 0;
+                        defaultConfig.defaultMinWeight = 1d;
                         defaultConfig.defaultMaxWeight = 440d;
                         defaultConfig.defaultWeight = 70d;
                         defaultConfig.defaultUnitId = mAppDatabase.unitDao().getAllSyncByName("kg,ml").get(0).id;

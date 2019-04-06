@@ -77,9 +77,9 @@
     <string name="c4">饮水报告</string>
     <string name="c5">修改</string>
     <string name="c7">常见问答</string>
-    <string name="c8">有时候%%s没有按时提醒，是因为清理应用或者手机系统在后台关闭了%%s。\10\10如果您安装了清理类应用，比如CM Security，请确保他们没有关闭%%s。\10\10有一部分手机，特别是Samsung，它有非常严格的省电策略，当您锁屏时，系统会关闭%%s。为了避免错过提醒，我们建议您把%%s加入到Samsung的不监控名单中。</string>
-    <string name="c9">我们是一个小团队，广告是我们唯一的收入来源。我们会尽力减少广告对您的打扰。\10\10没有广告的高级版即将推出，谢谢您的支持。</string>
-    <string name="c_">我们没有使用任何不合规的方法来阻止我们的程序被您卸载。\10\10如果您坚持卸载%s（我们会想念您的），请转到系统设置并检查“防止应用程序卸载”是否已关闭，然后转到应用列表，点击“卸载”按钮。 祝您幸福健康。</string>
+    <string name="c8">有时候%%s没有按时提醒，是因为清理应用或者手机系统在后台关闭了%%s。\n\n如果您安装了清理类应用，比如CM Security，请确保他们没有关闭%%s。\n\n有一部分手机，特别是Samsung，它有非常严格的省电策略，当您锁屏时，系统会关闭%%s。为了避免错过提醒，我们建议您把%%s加入到Samsung的不监控名单中。</string>
+    <string name="c9">我们是一个小团队，广告是我们唯一的收入来源。我们会尽力减少广告对您的打扰。\n\n没有广告的高级版即将推出，谢谢您的支持。</string>
+    <string name="c_">我们没有使用任何不合规的方法来阻止我们的程序被您卸载。\n\n如果您坚持卸载%s（我们会想念您的），请转到系统设置并检查“防止应用程序卸载”是否已关闭，然后转到应用列表，点击“卸载”按钮。 祝您幸福健康。</string>
     <string name="cb">为什么%s不工作？</string>
     <string name="cc">为什么%s会展示广告？</string>
     <string name="cd">我为什么无法卸载这个应用？</string>
@@ -103,7 +103,7 @@
     <string name="dh">查看您的喝水报告</string>
     <string name="di">如何有效监控</string>
     <string name="dj">正在生成您的饮水计划</string>
-    <string name="dk">%1$s 次/天 \10%2$s /次</string>
+    <string name="dk">%1$s 次/天 \n%2$s /次</string>
     <string name="dl">您该如何饮水</string>
     <string name="dm">不要担心，我会按时提醒您</string>
     <string name="dn">什么时候喝合适</string>

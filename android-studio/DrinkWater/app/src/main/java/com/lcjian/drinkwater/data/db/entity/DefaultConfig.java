@@ -13,6 +13,9 @@ public class DefaultConfig {
     @ColumnInfo(name = "default_gender")
     public Integer defaultGender;
 
+    @ColumnInfo(name = "default_min_weight")
+    public Double defaultMinWeight;
+
     @ColumnInfo(name = "default_max_weight")
     public Double defaultMaxWeight;
 

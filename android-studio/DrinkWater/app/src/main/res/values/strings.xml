@@ -116,9 +116,9 @@
     <string name="c6" translatable="false">every time</string>
     <string name="facebook_app_id" translatable="false">923071751189490</string>
     <string name="c7">FAQ</string>
-    <string name="c8">Sometimes %%s does not ring at the scheduled time, because of cleaner apps or phone system shut off %%s.\10\10If you have installed cleaner apps such as CM Security, please make sure that they do not to stop %%s.\10\10Some devices, especially Samsung, have strict power plans, the system will shut off %%s after locking your screen. We suggest you add %%s to the Unmonitored Apps list to avoid missing reminders.</string>
-    <string name="c9">We are a small team that want to provide a better experience for users. Advertisements are the only source of income to keep team operating. The free version include ads, which we try our best not to bother users with.\10\10The premium version (without ads) will be coming soon. Thank you for your support.</string>
-    <string name="c_">We do not use any abnormal method to prevent our app been uninstalled from your devices.\10\10If you insist to uninstall %s (we will miss you), please go to system settings and check Prevent app uninstall is turned off, and then go to the app list, click the uninstall button. Wish happiness and good health :-)</string>
+    <string name="c8">Sometimes %%s does not ring at the scheduled time, because of cleaner apps or phone system shut off %%s.\n\nIf you have installed cleaner apps such as CM Security, please make sure that they do not to stop %%s.\n\nSome devices, especially Samsung, have strict power plans, the system will shut off %%s after locking your screen. We suggest you add %%s to the Unmonitored Apps list to avoid missing reminders.</string>
+    <string name="c9">We are a small team that want to provide a better experience for users. Advertisements are the only source of income to keep team operating. The free version include ads, which we try our best not to bother users with.\n\nThe premium version (without ads) will be coming soon. Thank you for your support.</string>
+    <string name="c_">We do not use any abnormal method to prevent our app been uninstalled from your devices.\n\nIf you insist to uninstall %s (we will miss you), please go to system settings and check Prevent app uninstall is turned off, and then go to the app list, click the uninstall button. Wish happiness and good health :-)</string>
     <string name="ca" translatable="false">GO TO SETTINGS</string>
     <string name="cb">Why does %s not work?</string>
     <string name="cc">Why does %s show advertisements?</string>
@@ -145,7 +145,7 @@
     <string name="cx" translatable="false">Wanna take a break?Let\'s drive the car!</string>
     <string name="cy" translatable="false">Unstable Internet connection. Please try again later.</string>
     <string name="cz" translatable="false">Wanna take a break?Let\'s eliminate the stone!</string>
-    <string name="d0" translatable="false">{percent}%\10Loaded</string>
+    <string name="d0" translatable="false">{percent}%\nLoaded</string>
     <string name="d1" translatable="false">Miscellaneous</string>
     <string name="d2" translatable="false">Yes, I agree</string>
     <string name="d3" translatable="false">CONTINUE</string>
@@ -166,7 +166,7 @@
     <string name="dh">Check your hydration report and see your ratio</string>
     <string name="di">How to effectively monitor</string>
     <string name="dj">Generating your hydration plan…</string>
-    <string name="dk">%1$s times a day\10%2$s each time</string>
+    <string name="dk">%1$s times a day\n%2$s each time</string>
     <string name="dl">How much should you drink</string>
     <string name="dm">Don\'t worry I\'ll remind you on time</string>
     <string name="dn">What is the right time</string>
@@ -210,7 +210,7 @@
     <string name="eo">%s / day</string>
     <string name="ep">Mute</string>
     <string name="eq">RETRY</string>
-    <string name="er">Sorry, something went wrong,\10 please try again later.</string>
+    <string name="er">Sorry, something went wrong,\n please try again later.</string>
     <string name="es">NEXT</string>
     <string name="et">The next reminder will be sent at:</string>
     <string name="eu">Next time</string>
