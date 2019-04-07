@@ -1,6 +1,6 @@
 package com.lcjian.drinkwater.data.db.dao;
 
-import com.lcjian.drinkwater.data.db.entity.User;
+import com.lcjian.drinkwater.data.db.entity.Setting;
 
 import java.util.List;
 
@@ -13,20 +13,20 @@ import androidx.room.Update;
 import io.reactivex.Flowable;
 
 @Dao
-public interface UserDao {
+public interface SettingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(User... users);
+    void insert(Setting... settings);
 
     @Delete
-    void delete(User... users);
+    void delete(Setting... settings);
 
     @Update
-    void update(User... users);
+    void update(Setting... settings);
 
-    @Query("SELECT * FROM user")
-    List<User> getAllSync();
+    @Query("SELECT * FROM setting")
+    List<Setting> getAllSync();
 
-    @Query("SELECT * FROM user")
-    Flowable<List<User>> getAllAsync();
+    @Query("SELECT * FROM setting")
+    Flowable<List<Setting>> getAllAsync();
 }

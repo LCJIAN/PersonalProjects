@@ -3,16 +3,16 @@
     package="com.lcjian.drinkwater">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".App"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.C"
@@ -37,6 +37,13 @@
             android:name=".ui.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Guide" />
+
+        <activity
+            android:name=".ui.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.DrinkReportActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

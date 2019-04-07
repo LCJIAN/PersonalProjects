@@ -31,16 +31,16 @@
 
         <FrameLayout
             android:id="@+id/fl_daily_intake_times"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:layout_marginStart="86dp"
             android:layout_marginLeft="86dp"
             android:layout_marginBottom="172dp">
 
             <ImageView
                 android:id="@+id/iv_daily_intake_times"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:rotation="30"
                 app:srcCompat="@drawable/ic_daily_intake_times" />
 
@@ -66,6 +66,20 @@
                     android:textStyle="bold"
                     app:ticker_animationDuration="400" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_alert_clock"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                app:srcCompat="@drawable/ic_alert_clock" />
+
+            <ImageView
+                android:id="@+id/iv_alert"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0"
+                app:srcCompat="@drawable/ic_alert" />
         </FrameLayout>
 
     </FrameLayout>

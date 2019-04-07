@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 
-import com.lcjian.drinkwater.MainActivity;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.DefaultConfig;
 import com.lcjian.drinkwater.data.db.entity.Unit;

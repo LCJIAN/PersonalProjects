@@ -3,9 +3,9 @@ package com.lcjian.drinkwater.di.component;
 import android.app.Application;
 import android.content.SharedPreferences;
 
-
 import com.lcjian.drinkwater.RxBus;
 import com.lcjian.drinkwater.data.db.AppDatabase;
+import com.lcjian.drinkwater.data.network.RestAPI;
 import com.lcjian.drinkwater.di.module.AppModule;
 import com.lcjian.drinkwater.di.module.DbModule;
 import com.lcjian.drinkwater.di.module.RestAPIModule;
@@ -16,7 +16,6 @@ import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.ui.base.BaseBottomSheetDialogFragment;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
-import com.lcjian.drinkwater.data.network.RestAPI;
 
 import javax.inject.Named;
 
