@@ -34,21 +34,6 @@
         android:layout_gravity="center"
         android:layout="@layout/vs_fragment_guide_2" />
 
-    <ViewStub
-        android:id="@+id/vs_fragment_guide_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout="@layout/vs_fragment_guide_3" />
-
-    <ViewStub
-        android:id="@+id/vs_fragment_guide_4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout="@layout/vs_fragment_guide_4" />
-
-
     <TextView
         android:id="@+id/tv_skip"
         android:layout_width="wrap_content"
@@ -72,12 +57,14 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/tv_next_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_arrow_right_white"
             android:drawableRight="@drawable/ic_arrow_right_white"
             android:drawablePadding="8dp"
             android:text="@string/es"
+            android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.AppTheme.Large"
             android:textColor="@color/colorTextLight" />
 
@@ -85,7 +72,7 @@
             android:id="@+id/tv_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:textColor="@color/colorTextLight" />
     </LinearLayout>
 </FrameLayout>

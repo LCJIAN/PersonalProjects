@@ -22,7 +22,8 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.lcjian.drinkwater.R;
-import com.lcjian.drinkwater.data.db.entity.DefaultConfig;
+import com.lcjian.drinkwater.data.db.entity.Config;
+import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.Utils;
@@ -89,7 +90,8 @@ public class GuideActivity extends BaseActivity {
     private NumberPickerView pv_sleep_time_minute;
 
     private List<Unit> mUnits;
-    private DefaultConfig mDefaultConfig;
+    private Config mConfig;
+    private Setting mSetting;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,7 +113,8 @@ public class GuideActivity extends BaseActivity {
         btn_next.setOnClickListener(v -> next());
 
 
-        mDefaultConfig = mAppDatabase.defaultConfigDao().getAllSync().get(0);
+        mConfig = mAppDatabase.configDao().getAllSync().get(0);
+        mSetting = mAppDatabase.settingDao().getAllSync().get(0);
         mUnits = mAppDatabase.unitDao().getAllSync();
     }
 
@@ -327,6 +330,7 @@ public class GuideActivity extends BaseActivity {
                     set.setDuration(400);
                     set.start();
                 });
+                mState++;
                 break;
         }
     }
@@ -448,7 +452,7 @@ public class GuideActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mState == 0 || mState == 4) {
+        if (mState == 0 || mState == 5) {
             super.onBackPressed();
         } else {
             pre();
@@ -469,17 +473,17 @@ public class GuideActivity extends BaseActivity {
 
 
     private void setupWeightPicker() {
-        Unit defaultUnit = null;
+        Unit currentUnit = null;
         for (Unit u : mUnits) {
-            if (u.id.equals(mDefaultConfig.defaultUnitId)) {
-                defaultUnit = u;
+            if (u.id.equals(mSetting.unitId)) {
+                currentUnit = u;
                 break;
             }
         }
-        if (defaultUnit != null) {
-            int minValue = (int) (mDefaultConfig.defaultMinWeight * defaultUnit.rate);
-            int maxValue = (int) (mDefaultConfig.defaultMaxWeight * defaultUnit.rate);
-            int value = (int) (mDefaultConfig.defaultWeight * defaultUnit.rate) - 1;
+        if (currentUnit != null) {
+            int minValue = (int) (mConfig.minWeight * currentUnit.rate);
+            int maxValue = (int) (mConfig.maxWeight * currentUnit.rate);
+            int value = (int) (mSetting.weight * currentUnit.rate) - 1;
 
             List<String> strings = new ArrayList<>();
             for (int i = minValue; i <= maxValue; i++) {
@@ -494,20 +498,20 @@ public class GuideActivity extends BaseActivity {
                 strings.add(unit.name.split(",")[0]);
             }
             String[] a = new String[strings.size()];
-            pv_weight_unit.setDisplayedValuesAndPickedIndex(strings.toArray(a), mUnits.indexOf(defaultUnit), true);
+            pv_weight_unit.setDisplayedValuesAndPickedIndex(strings.toArray(a), mUnits.indexOf(currentUnit), true);
         }
     }
 
 
     private void setupGetUpTimePicker() {
-        setTimePickerData(pv_get_up_time_hour, 0, 23, Integer.parseInt(mDefaultConfig.defaultWakeUpTime.split(":")[0]));
-        setTimePickerData(pv_get_up_time_minute, 0, 59, Integer.parseInt(mDefaultConfig.defaultWakeUpTime.split(":")[1]));
+        setTimePickerData(pv_get_up_time_hour, 0, 23, Integer.parseInt(mSetting.wakeUpTime.split(":")[0]));
+        setTimePickerData(pv_get_up_time_minute, 0, 59, Integer.parseInt(mSetting.wakeUpTime.split(":")[1]));
         setTimePickerData(pv_get_up_time_colon, 0, 0, 0);
     }
 
     private void setupSleepTimePicker() {
-        setTimePickerData(pv_sleep_time_hour, 0, 23, Integer.parseInt(mDefaultConfig.defaultSleepTime.split(":")[0]));
-        setTimePickerData(pv_sleep_time_minute, 0, 59, Integer.parseInt(mDefaultConfig.defaultSleepTime.split(":")[1]));
+        setTimePickerData(pv_sleep_time_hour, 0, 23, Integer.parseInt(mSetting.sleepTime.split(":")[0]));
+        setTimePickerData(pv_sleep_time_minute, 0, 59, Integer.parseInt(mSetting.sleepTime.split(":")[1]));
         setTimePickerData(pv_sleep_time_colon, 0, 0, 0);
     }
 

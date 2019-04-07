@@ -3,15 +3,18 @@ package com.lcjian.drinkwater.ui;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.transition.Fade;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.lcjian.drinkwater.data.db.entity.DefaultConfig;
+import com.lcjian.drinkwater.data.db.entity.Config;
+import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,17 +59,31 @@ public class SplashActivity extends BaseActivity {
                         unit2.rate = 2d;
                         mAppDatabase.unitDao().insert(unit1, unit2);
                     }
-                    List<DefaultConfig> configs = mAppDatabase.defaultConfigDao().getAllSync();
+                    List<Config> configs = mAppDatabase.configDao().getAllSync();
                     if (configs.isEmpty()) {
-                        DefaultConfig defaultConfig = new DefaultConfig();
-                        defaultConfig.defaultGender = 0;
-                        defaultConfig.defaultMinWeight = 1d;
-                        defaultConfig.defaultMaxWeight = 440d;
-                        defaultConfig.defaultWeight = 70d;
-                        defaultConfig.defaultUnitId = mAppDatabase.unitDao().getAllSyncByName("kg,ml").get(0).id;
-                        defaultConfig.defaultWakeUpTime = "08:00";
-                        defaultConfig.defaultSleepTime = "22:00";
-                        mAppDatabase.defaultConfigDao().insert(defaultConfig);
+                        Config config = new Config();
+                        config.minWeight = 1d;
+                        config.maxWeight = 440d;
+                        config.reminderInterval = TextUtils.join(",", Arrays.asList("30", "45", "60", "90"));
+                        mAppDatabase.configDao().insert(config);
+                    }
+
+                    List<Setting> settings = mAppDatabase.settingDao().getAllSync();
+                    if (settings.isEmpty()) {
+                        Setting setting = new Setting();
+
+                        setting.unitId = mAppDatabase.unitDao().getAllSyncByName("kg,ml").get(0).id;
+                        setting.gender = 0;
+                        setting.weight = 70d;
+                        setting.wakeUpTime = "08:00";
+                        setting.sleepTime = "22:00";
+
+                        setting.reminderInterval = 60;
+                        setting.reminderMode = 2;
+                        setting.reminderAlert = true;
+                        setting.furtherReminder = true;
+
+                        mAppDatabase.settingDao().insert(setting);
                     }
                     return aBoolean;
                 })

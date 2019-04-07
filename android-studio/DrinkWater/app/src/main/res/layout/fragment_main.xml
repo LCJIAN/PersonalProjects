@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/message" />
+
         <include layout="@layout/daily_intake_progress" />
 
         <include layout="@layout/daily_intake_record" />

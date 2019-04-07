@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.animation.CycleInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.gelitenight.waveview.library.WaveView;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
+import com.lcjian.drinkwater.util.DimenUtils;
 import com.lcjian.drinkwater.util.Utils;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.robinhood.ticker.TickerUtils;
@@ -55,6 +57,8 @@ public class GuideFragment extends BaseFragment {
     TextView tv_skip;
     @BindView(R.id.ll_next_step)
     LinearLayout ll_next_step;
+    @BindView(R.id.tv_next_step)
+    TextView tv_next_step;
     @BindView(R.id.tv_step_indicator)
     TextView tv_step_indicator;
 
@@ -71,13 +75,29 @@ public class GuideFragment extends BaseFragment {
     ViewStub vs_fragment_guide_1;
     @BindView(R.id.vs_fragment_guide_2)
     ViewStub vs_fragment_guide_2;
-    @BindView(R.id.vs_fragment_guide_3)
-    ViewStub vs_fragment_guide_3;
-    @BindView(R.id.vs_fragment_guide_4)
-    ViewStub vs_fragment_guide_4;
 
     private View v_fragment_guide_1;
+    private TextView tv_daily_target;
+    private TextView tv_unit;
+
     private View v_fragment_guide_2;
+    private ImageView iv_daily_intake_cup;
+    private TextView tv_daily_intake_cup;
+    private FrameLayout fl_daily_intake_times;
+
+    private ImageView iv_daily_intake_times;
+    private LinearLayout ll_daily_intake_times;
+    private TickerView tv_daily_intake_times;
+
+    private ImageView iv_alert_clock;
+    private ImageView iv_alert;
+
+    private LinearLayout tv_how_to_drink_label;
+    private TextView tv_how_to_drink;
+
+    private LinearLayout tv_how_to_monitor_label;
+    private LinearLayout ll_how_to_monitor;
+
 
     private Unbinder unbinder;
 
@@ -98,21 +118,25 @@ public class GuideFragment extends BaseFragment {
                 ContextCompat.getColor(wave_view.getContext(), R.color.colorPrimaryDark));
         wave_view.setShapeType(WaveView.ShapeType.SQUARE);
         wave_view.setShowWave(true);
+        wave_view.setWaterLevelRatio(0);
 
         fl_avatar.post(() -> {
             AnimatorSet set = new AnimatorSet();
-            set.playTogether(Utils.slideVFadeIn(fl_avatar, 0.3f),
-                    Utils.slideVFadeIn(tv_plan_generating, 0.3f));
+            set.playTogether(Utils.slideVFadeIn(fl_avatar, 0.5f),
+                    Utils.slideVFadeIn(tv_plan_generating, 0.5f));
             set.setDuration(400);
             set.start();
             animWaveView();
+
+            animStep1();
         });
-        animStep1();
     }
 
     @Override
     public void onDestroyView() {
-        mDisposable.dispose();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         unbinder.unbind();
         super.onDestroyView();
     }
@@ -156,12 +180,13 @@ public class GuideFragment extends BaseFragment {
                     mAnimatorSet.cancel();
 
                     v_fragment_guide_1 = vs_fragment_guide_1.inflate();
-                    TextView tv_daily_target = v_fragment_guide_1.findViewById(R.id.tv_daily_target);
-                    TextView tv_unit = v_fragment_guide_1.findViewById(R.id.tv_unit);
+                    tv_daily_target = v_fragment_guide_1.findViewById(R.id.tv_daily_target);
+                    tv_unit = v_fragment_guide_1.findViewById(R.id.tv_unit);
+
                     tv_daily_target.setText("2000");
                     tv_unit.setText("ml");
-                    v_fragment_guide_1.setAlpha(0);
 
+                    v_fragment_guide_1.setAlpha(0);
                     TransitionManager.go(Scene.getSceneForLayout(fl_scene, R.layout.vs_fragment_guide_0_scene, fl_scene.getContext()),
                             new TransitionSet().addTransition(new ChangeBounds()).addTransition(new Fade()));
                     ObjectAnimator waterLevelAnim = ObjectAnimator.ofFloat(
@@ -195,17 +220,34 @@ public class GuideFragment extends BaseFragment {
                 .subscribe(aBoolean -> {
 
                     v_fragment_guide_2 = vs_fragment_guide_2.inflate();
-                    ImageView iv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_cup);
-                    FrameLayout fl_daily_intake_times = v_fragment_guide_2.findViewById(R.id.fl_daily_intake_times);
-                    TickerView tv_daily_intake_times = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_times);
-                    TextView tv_how_to_drink_label = v_fragment_guide_2.findViewById(R.id.tv_how_to_drink_label);
-                    TextView tv_how_to_drink = v_fragment_guide_2.findViewById(R.id.tv_how_to_drink);
-                    TextView tv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_cup);
+                    iv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_cup);
+                    tv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_cup);
+                    fl_daily_intake_times = v_fragment_guide_2.findViewById(R.id.fl_daily_intake_times);
+
+                    iv_daily_intake_times = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_times);
+                    ll_daily_intake_times = v_fragment_guide_2.findViewById(R.id.ll_daily_intake_times);
+                    tv_daily_intake_times = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_times);
+
+                    iv_alert_clock = v_fragment_guide_2.findViewById(R.id.iv_alert_clock);
+                    iv_alert = v_fragment_guide_2.findViewById(R.id.iv_alert);
+
+                    tv_how_to_drink_label = v_fragment_guide_2.findViewById(R.id.tv_how_to_drink_label);
+                    tv_how_to_drink = v_fragment_guide_2.findViewById(R.id.tv_how_to_drink);
+
+                    tv_how_to_monitor_label = v_fragment_guide_2.findViewById(R.id.tv_how_to_monitor_label);
+                    ll_how_to_monitor = v_fragment_guide_2.findViewById(R.id.ll_how_to_monitor);
+
+                    tv_daily_intake_cup.setText("100ml");
+                    tv_how_to_drink.setText(getString(R.string.dk, "14", "100ml"));
+
                     fl_daily_intake_times.setScaleX(0);
+                    fl_daily_intake_times.setScaleY(0);
+
                     iv_daily_intake_cup.setScaleX(10);
                     iv_daily_intake_cup.setScaleY(10);
+
                     tv_how_to_drink_label.setTranslationY(1000);
-                    tv_how_to_drink.setTranslationY(1000);
+
                     tv_daily_intake_times.setCharacterLists(TickerUtils.provideNumberList());
                     tv_daily_intake_times.setText("00");
 
@@ -214,11 +256,14 @@ public class GuideFragment extends BaseFragment {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             tv_daily_intake_cup.setVisibility(View.VISIBLE);
+                            tv_next_step.setTextColor(ContextCompat.getColor(tv_next_step.getContext(), R.color.colorTextBlack));
+                            tv_next_step.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right_black, 0);
+                            tv_step_indicator.setTextColor(ContextCompat.getColor(tv_next_step.getContext(), R.color.colorTextBlack));
+                            tv_step_indicator.setText("2/4");
 
                             AnimatorSet set = new AnimatorSet();
                             set.playTogether(Utils.scaleIn(fl_daily_intake_times, 0f),
-                                    Utils.slideVFadeIn(tv_how_to_drink_label, 0.6f),
-                                    Utils.slideVFadeIn(tv_how_to_drink, 0.6f));
+                                    Utils.slideVFadeIn(tv_how_to_drink_label, 0.6f));
                             set.addListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
@@ -234,7 +279,6 @@ public class GuideFragment extends BaseFragment {
                         public void onAnimationStart(Animator animation) {
                             vs_fragment_guide_1.setVisibility(View.GONE);
                             fl_guide.setBackgroundColor(ContextCompat.getColor(fl_guide.getContext(), android.R.color.transparent));
-
                         }
                     });
                     set.start();
@@ -247,22 +291,72 @@ public class GuideFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> {
 
-                    ImageView iv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_cup);
-                    FrameLayout fl_daily_intake_times = v_fragment_guide_2.findViewById(R.id.fl_daily_intake_times);
-                    ImageView iv_daily_intake_times = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_times);
-                    ImageView iv_alert_clock = v_fragment_guide_2.findViewById(R.id.iv_alert_clock);
-                    ImageView iv_alert = v_fragment_guide_2.findViewById(R.id.iv_alert);
-                    TextView tv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_cup);
-                    tv_daily_intake_cup.setVisibility(View.GONE);
-
-                    iv_daily_intake_cup.animate().scaleX(0.6f).scaleY(0.6f).translationY(60).start();
-                    fl_daily_intake_times.animate().scaleX(1.8f).scaleY(1.8f).translationX(-120).start();
+                    iv_daily_intake_cup.animate().scaleX(0.55f).scaleY(0.55f)
+                            .translationY(DimenUtils.dipToPixels(16, iv_daily_intake_cup.getContext())).start();
+                    fl_daily_intake_times.animate().scaleX(1.7f).scaleY(1.7f)
+                            .translationX(-DimenUtils.dipToPixels(43, fl_daily_intake_times.getContext())).start();
                     iv_daily_intake_times.animate().rotation(0).start();
                     iv_alert_clock.animate().alpha(1f).start();
                     iv_alert.animate().alpha(1f).start();
 
-                    startActivity(new Intent(v_fragment_guide_2.getContext(), MainActivity.class));
+                    ll_daily_intake_times.animate().alpha(0).start();
+                    tv_daily_intake_cup.animate().alpha(0).start();
 
+                    tv_how_to_monitor_label.setVisibility(View.VISIBLE);
+                    tv_how_to_monitor_label.setTranslationX(1000);
+
+                    tv_how_to_monitor_label.post(() -> {
+                        AnimatorSet set = new AnimatorSet();
+                        set.playTogether(Utils.slideHOut(tv_how_to_drink_label, -2f),
+                                Utils.slideHIn(tv_how_to_monitor_label, 2f));
+                        set.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                ll_daily_intake_times.setVisibility(View.INVISIBLE);
+                                tv_daily_intake_cup.setVisibility(View.INVISIBLE);
+                                tv_how_to_drink_label.setVisibility(View.INVISIBLE);
+
+                                iv_alert.animate().rotation(30f).setInterpolator(new CycleInterpolator(4)).start();
+                            }
+                        });
+                        set.start();
+                    });
+
+                    animStep4();
                 });
+    }
+
+    private void animStep4() {
+        mDisposable = Single.just(true)
+                .delay(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> {
+
+                    ll_how_to_monitor.setVisibility(View.VISIBLE);
+                    ll_how_to_monitor.setTranslationX(1000);
+
+                    ll_how_to_monitor.post(() -> {
+                        AnimatorSet set = new AnimatorSet();
+                        set.playTogether(Utils.slideHOut(iv_daily_intake_cup, -4f),
+                                Utils.slideHOut(fl_daily_intake_times, -4f),
+                                Utils.slideHOut(tv_how_to_monitor_label, -2f),
+                                Utils.slideHIn(ll_how_to_monitor, 2f));
+                        set.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                tv_how_to_monitor_label.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                        set.start();
+                    });
+                    animStep5();
+                });
+    }
+
+    private void animStep5() {
+        mDisposable = Single.just(true)
+                .delay(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> startActivity(new Intent(v_fragment_guide_2.getContext(), MainActivity.class)));
     }
 }

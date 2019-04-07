@@ -11,9 +11,17 @@ public class Setting {
     @PrimaryKey(autoGenerate = true)
     public Long id;
 
+    // general
     @ColumnInfo(name = "unit_id")
     public Long unitId;
 
+    @ColumnInfo(name = "intake_goal")
+    public Double intakeGoal;
+
+    @ColumnInfo(name = "language")
+    public String language;
+
+    // user
     @ColumnInfo(name = "gender")
     public Integer gender;
 
@@ -26,4 +34,16 @@ public class Setting {
     @ColumnInfo(name = "sleep_time")
     public String sleepTime;
 
+    // alert
+    @ColumnInfo(name = "reminder_interval")
+    public Integer reminderInterval; // minutes
+
+    @ColumnInfo(name = "reminder_mode")
+    public Integer reminderMode; // 0:off, 1:mute, 2:auto
+
+    @ColumnInfo(name = "reminder_alert")
+    public Boolean reminderAlert;
+
+    @ColumnInfo(name = "further_reminder")
+    public Boolean furtherReminder;
 }
