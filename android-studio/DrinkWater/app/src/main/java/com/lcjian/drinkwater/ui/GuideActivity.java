@@ -33,12 +33,18 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.carbswang.android.numberpickerview.library.NumberPickerView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.tv_skip)
     TextView tv_skip;
@@ -89,9 +95,9 @@ public class GuideActivity extends BaseActivity {
     private NumberPickerView pv_sleep_time_colon;
     private NumberPickerView pv_sleep_time_minute;
 
-    private List<Unit> mUnits;
-    private Config mConfig;
-    private Setting mSetting;
+    private PublishSubject<Boolean> mSubject;
+    private Disposable mDisposable;
+    private Disposable mDisposableU;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,16 +112,80 @@ public class GuideActivity extends BaseActivity {
         }
         btn_next.setText(R.string.start);
 
-        tv_skip.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-        btn_next.setOnClickListener(v -> next());
+        tv_skip.setOnClickListener(this);
+        btn_next.setOnClickListener(this);
 
+        mSubject = PublishSubject.create();
+        mDisposable = Observable
+                .combineLatest(mSubject,
+                        mAppDatabase.configDao().getAllAsync().toObservable().flatMap(Observable::fromIterable),
+                        mAppDatabase.settingDao().getAllAsync().toObservable().flatMap(Observable::fromIterable),
+                        mAppDatabase.unitDao().getAllAsync().toObservable(),
+                        (aBoolean, config, setting, units) -> new DataHolder(config, setting, units))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dataHolder -> {
+                            if (v_gender != null) {
+                                setupGender(dataHolder.setting);
+                            }
+                            if (v_weight != null) {
+                                setupWeight(dataHolder.config, dataHolder.units, dataHolder.setting);
+                            }
+                            if (v_get_up_time != null) {
+                                setupGetUpTime(dataHolder.setting);
+                            }
+                            if (v_sleep_time != null) {
+                                setupSleepTime(dataHolder.setting);
+                            }
+                        },
+                        throwable -> {
+                        });
+    }
 
-        mConfig = mAppDatabase.configDao().getAllSync().get(0);
-        mSetting = mAppDatabase.settingDao().getAllSync().get(0);
-        mUnits = mAppDatabase.unitDao().getAllSync();
+    @Override
+    public void onBackPressed() {
+        if (mState == 0 || mState == 5) {
+            super.onBackPressed();
+        } else {
+            pre();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDisposable.dispose();
+        if (mDisposableU != null) {
+            mDisposableU.dispose();
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_skip:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            case R.id.btn_next:
+                next();
+                break;
+            case R.id.ll_gender_male: {
+                Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+                setting.gender = 0;
+                setting.weight = 70d;
+                mAppDatabase.settingDao().update(setting);
+            }
+            break;
+            case R.id.ll_gender_female: {
+                Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+                setting.gender = 1;
+                setting.weight = 60d;
+                mAppDatabase.settingDao().update(setting);
+            }
+            default:
+                break;
+        }
     }
 
     private void setupWindowAnimations() {
@@ -137,6 +207,95 @@ public class GuideActivity extends BaseActivity {
         }
     }
 
+    private void setupGender(Setting setting) {
+        if (setting.gender == 0) {
+            iv_gender_male.setImageResource(R.drawable.ic_avatar_male_checked);
+            iv_gender_female.setImageResource(R.drawable.ic_avatar_female_unchecked);
+            tv_gender_male.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+            tv_gender_female.setTextColor(ContextCompat.getColor(this, R.color.colorTextLight));
+        } else {
+            iv_gender_male.setImageResource(R.drawable.ic_avatar_male_unchecked);
+            iv_gender_female.setImageResource(R.drawable.ic_avatar_female_checked);
+            tv_gender_male.setTextColor(ContextCompat.getColor(this, R.color.colorTextLight));
+            tv_gender_female.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+        }
+    }
+
+    private void setupWeight(Config config, List<Unit> units, Setting setting) {
+        Unit currentUnit = null;
+        for (Unit u : units) {
+            if (u.id.equals(setting.unitId)) {
+                currentUnit = u;
+                break;
+            }
+        }
+        if (currentUnit != null) {
+            int minValue = (int) (config.minWeight * currentUnit.rate);
+            int maxValue = (int) (config.maxWeight * currentUnit.rate);
+            int value = (int) (setting.weight * currentUnit.rate) - 1;
+
+            List<String> strings = new ArrayList<>();
+            for (int i = minValue; i <= maxValue; i++) {
+                strings.add(String.valueOf(i));
+            }
+            String[] a = new String[strings.size()];
+            pv_weight.refreshByNewDisplayedValues(strings.toArray(a));
+            pv_weight.setValue(value);
+        }
+        {
+            List<String> strings = new ArrayList<>();
+            for (Unit unit : units) {
+                strings.add(unit.name.split(",")[0]);
+            }
+            String[] a = new String[strings.size()];
+            pv_weight_unit.setDisplayedValuesAndPickedIndex(strings.toArray(a), units.indexOf(currentUnit), true);
+        }
+
+        if (setting.gender == 0) {
+            iv_weight.setImageResource(R.drawable.ic_weight_male);
+        } else {
+            iv_weight.setImageResource(R.drawable.ic_weight_female);
+        }
+    }
+
+    private void setupGetUpTime(Setting setting) {
+        setTimePickerData(pv_get_up_time_hour, 0, 23, Integer.parseInt(setting.wakeUpTime.split(":")[0]));
+        setTimePickerData(pv_get_up_time_minute, 0, 59, Integer.parseInt(setting.wakeUpTime.split(":")[1]));
+        setTimePickerData(pv_get_up_time_colon, 0, 0, 0);
+
+        if (setting.gender == 0) {
+            iv_get_up.setImageResource(R.drawable.ic_get_up_time_male);
+        } else {
+            iv_get_up.setImageResource(R.drawable.ic_get_up_time_female);
+        }
+    }
+
+    private void setupSleepTime(Setting setting) {
+        setTimePickerData(pv_sleep_time_hour, 0, 23, Integer.parseInt(setting.sleepTime.split(":")[0]));
+        setTimePickerData(pv_sleep_time_minute, 0, 59, Integer.parseInt(setting.sleepTime.split(":")[1]));
+        setTimePickerData(pv_sleep_time_colon, 0, 0, 0);
+
+        if (setting.gender == 0) {
+            iv_sleep.setImageResource(R.drawable.ic_sleep_time_male);
+        } else {
+            iv_sleep.setImageResource(R.drawable.ic_sleep_time_female);
+        }
+    }
+
+    private void setTimePickerData(NumberPickerView picker, int minValue, int maxValue, int value) {
+        List<String> strings = new ArrayList<>();
+        if (minValue == maxValue) {
+            strings.add(":");
+        } else {
+            for (int i = minValue; i <= maxValue; i++) {
+                strings.add(String.format(Locale.ENGLISH, "%02d", i));
+            }
+        }
+        String[] a = new String[strings.size()];
+        picker.refreshByNewDisplayedValues(strings.toArray(a));
+        picker.setValue(value);
+    }
+
     private void next() {
         switch (mState) {
             case 0:
@@ -151,6 +310,10 @@ public class GuideActivity extends BaseActivity {
 
                     ll_gender_male.setTranslationX(1000);
                     ll_gender_female.setTranslationX(1000);
+
+                    ll_gender_male.setOnClickListener(this);
+                    ll_gender_female.setOnClickListener(this);
+                    mSubject.onNext(true);
                 }
                 showNextTitle(getString(R.string.your_gender));
 
@@ -175,6 +338,7 @@ public class GuideActivity extends BaseActivity {
                     set.setInterpolator(new FastOutSlowInInterpolator());
                     set.start();
                 });
+                btn_next.setText(R.string.es);
                 mState++;
                 break;
             case 1:
@@ -188,7 +352,7 @@ public class GuideActivity extends BaseActivity {
                     pv_weight.setTranslationX(1000);
                     pv_weight_unit.setTranslationX(1000);
 
-                    setupWeightPicker();
+                    mSubject.onNext(true);
                 }
                 showNextTitle(getString(R.string.your_weight));
 
@@ -218,6 +382,7 @@ public class GuideActivity extends BaseActivity {
                     set.setInterpolator(new FastOutSlowInInterpolator());
                     set.start();
                 });
+                v_weight.postDelayed(() -> pv_weight.smoothScrollToValue(pv_weight.getValue() - 1, pv_weight.getValue()), 200);
                 mState++;
                 break;
             case 2:
@@ -233,7 +398,7 @@ public class GuideActivity extends BaseActivity {
                     pv_get_up_time_colon.setTranslationY(1000);
                     pv_get_up_time_minute.setTranslationY(1000);
 
-                    setupGetUpTimePicker();
+                    mSubject.onNext(true);
                 }
                 showNextTitle(getString(R.string.get_up_time));
 
@@ -261,6 +426,8 @@ public class GuideActivity extends BaseActivity {
                     set.setInterpolator(new FastOutSlowInInterpolator());
                     set.start();
                 });
+                v_get_up_time.postDelayed(() -> pv_get_up_time_hour
+                        .smoothScrollToValue(pv_get_up_time_hour.getValue() - 1, pv_get_up_time_hour.getValue()), 100);
                 mState++;
                 break;
             case 3:
@@ -276,7 +443,7 @@ public class GuideActivity extends BaseActivity {
                     pv_sleep_time_colon.setTranslationY(1000);
                     pv_sleep_time_minute.setTranslationY(1000);
 
-                    setupSleepTimePicker();
+                    mSubject.onNext(true);
                 }
                 showNextTitle(getString(R.string.sleep_time));
 
@@ -305,6 +472,8 @@ public class GuideActivity extends BaseActivity {
                     set.setInterpolator(new FastOutSlowInInterpolator());
                     set.start();
                 });
+                v_sleep_time.postDelayed(() -> pv_sleep_time_hour
+                        .smoothScrollToValue(pv_sleep_time_hour.getValue() - 1, pv_sleep_time_hour.getValue()), 100);
                 mState++;
                 break;
             default:
@@ -329,6 +498,22 @@ public class GuideActivity extends BaseActivity {
                     });
                     set.setDuration(400);
                     set.start();
+
+                    mDisposableU = mAppDatabase.settingDao().getAllAsync().toObservable()
+                            .flatMap(Observable::fromIterable)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe(setting -> {
+                                        Unit unit = mAppDatabase.unitDao().getAllSyncByName(pv_weight_unit.getContentByCurrValue()).get(0);
+                                        setting.unitId = unit.id;
+                                        setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) * unit.rate;
+                                        setting.wakeUpTime = pv_get_up_time_hour.getContentByCurrValue() + ":" + pv_get_up_time_minute.getContentByCurrValue();
+                                        setting.sleepTime = pv_sleep_time_hour.getContentByCurrValue() + ":" + pv_sleep_time_minute.getContentByCurrValue();
+                                        setting.intakeGoal = setting.weight * (setting.gender + 1);
+                                        mAppDatabase.settingDao().update(setting);
+                                    },
+                                    throwable -> {
+                                    });
                 });
                 mState++;
                 break;
@@ -359,6 +544,7 @@ public class GuideActivity extends BaseActivity {
                     set.setInterpolator(new FastOutSlowInInterpolator());
                     set.start();
                 });
+                btn_next.setText(R.string.start);
 
                 mState--;
                 break;
@@ -450,15 +636,6 @@ public class GuideActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mState == 0 || mState == 5) {
-            super.onBackPressed();
-        } else {
-            pre();
-        }
-    }
-
     private void showPreTitle(String title) {
         ts_title.setInAnimation(ts_title.getContext(), R.anim.slide_in_left);
         ts_title.setOutAnimation(ts_title.getContext(), R.anim.slide_out_right);
@@ -471,61 +648,15 @@ public class GuideActivity extends BaseActivity {
         ts_title.setText(title);
     }
 
+    private static class DataHolder {
+        private Config config;
+        private Setting setting;
+        private List<Unit> units;
 
-    private void setupWeightPicker() {
-        Unit currentUnit = null;
-        for (Unit u : mUnits) {
-            if (u.id.equals(mSetting.unitId)) {
-                currentUnit = u;
-                break;
-            }
-        }
-        if (currentUnit != null) {
-            int minValue = (int) (mConfig.minWeight * currentUnit.rate);
-            int maxValue = (int) (mConfig.maxWeight * currentUnit.rate);
-            int value = (int) (mSetting.weight * currentUnit.rate) - 1;
-
-            List<String> strings = new ArrayList<>();
-            for (int i = minValue; i <= maxValue; i++) {
-                strings.add(String.valueOf(i));
-            }
-            String[] a = new String[strings.size()];
-            pv_weight.setDisplayedValuesAndPickedIndex(strings.toArray(a), value, true);
-        }
-        {
-            List<String> strings = new ArrayList<>();
-            for (Unit unit : mUnits) {
-                strings.add(unit.name.split(",")[0]);
-            }
-            String[] a = new String[strings.size()];
-            pv_weight_unit.setDisplayedValuesAndPickedIndex(strings.toArray(a), mUnits.indexOf(currentUnit), true);
+        private DataHolder(Config config, Setting setting, List<Unit> units) {
+            this.config = config;
+            this.setting = setting;
+            this.units = units;
         }
     }
-
-
-    private void setupGetUpTimePicker() {
-        setTimePickerData(pv_get_up_time_hour, 0, 23, Integer.parseInt(mSetting.wakeUpTime.split(":")[0]));
-        setTimePickerData(pv_get_up_time_minute, 0, 59, Integer.parseInt(mSetting.wakeUpTime.split(":")[1]));
-        setTimePickerData(pv_get_up_time_colon, 0, 0, 0);
-    }
-
-    private void setupSleepTimePicker() {
-        setTimePickerData(pv_sleep_time_hour, 0, 23, Integer.parseInt(mSetting.sleepTime.split(":")[0]));
-        setTimePickerData(pv_sleep_time_minute, 0, 59, Integer.parseInt(mSetting.sleepTime.split(":")[1]));
-        setTimePickerData(pv_sleep_time_colon, 0, 0, 0);
-    }
-
-    private void setTimePickerData(NumberPickerView picker, int minValue, int maxValue, int value) {
-        List<String> strings = new ArrayList<>();
-        if (minValue == maxValue) {
-            strings.add(":");
-        } else {
-            for (int i = minValue; i <= maxValue; i++) {
-                strings.add(String.format(Locale.ENGLISH, "%02d", i));
-            }
-        }
-        String[] a = new String[strings.size()];
-        picker.setDisplayedValuesAndPickedIndex(strings.toArray(a), value, true);
-    }
-
 }

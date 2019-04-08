@@ -75,4 +75,17 @@
             android:layout_marginTop="8dp"
             android:textColor="@color/colorTextLight" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginLeft="?actionBarSize"
+        android:layout_marginRight="?actionBarSize"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/shape_primary_btn_bg"
+        android:text="@string/let_s_go"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 </FrameLayout>

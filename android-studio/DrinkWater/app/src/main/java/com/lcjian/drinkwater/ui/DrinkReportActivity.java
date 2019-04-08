@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 
+import androidx.appcompat.app.ActionBar;
+
 public class DrinkReportActivity extends BaseActivity {
 
     @Override
@@ -13,7 +15,11 @@ public class DrinkReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_report);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.ds);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
 

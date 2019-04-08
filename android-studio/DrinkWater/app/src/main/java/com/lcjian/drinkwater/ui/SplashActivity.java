@@ -63,7 +63,7 @@ public class SplashActivity extends BaseActivity {
                     if (configs.isEmpty()) {
                         Config config = new Config();
                         config.minWeight = 1d;
-                        config.maxWeight = 440d;
+                        config.maxWeight = 400d;
                         config.reminderInterval = TextUtils.join(",", Arrays.asList("30", "45", "60", "90"));
                         mAppDatabase.configDao().insert(config);
                     }

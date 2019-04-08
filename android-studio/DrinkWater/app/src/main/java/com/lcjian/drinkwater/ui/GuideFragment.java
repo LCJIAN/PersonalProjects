@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,13 +15,16 @@ import android.view.ViewStub;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.gelitenight.waveview.library.WaveView;
 import com.lcjian.drinkwater.R;
+import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
 import com.lcjian.drinkwater.util.DimenUtils;
 import com.lcjian.drinkwater.util.Utils;
@@ -61,6 +65,8 @@ public class GuideFragment extends BaseFragment {
     TextView tv_next_step;
     @BindView(R.id.tv_step_indicator)
     TextView tv_step_indicator;
+    @BindView(R.id.btn_go)
+    Button btn_go;
 
     @BindView(R.id.iv_avatar_l)
     ImageView iv_avatar_l;
@@ -81,6 +87,7 @@ public class GuideFragment extends BaseFragment {
     private TextView tv_unit;
 
     private View v_fragment_guide_2;
+    private LottieAnimationView animation_view;
     private ImageView iv_daily_intake_cup;
     private TextView tv_daily_intake_cup;
     private FrameLayout fl_daily_intake_times;
@@ -103,6 +110,8 @@ public class GuideFragment extends BaseFragment {
 
     private Disposable mDisposable;
     private AnimatorSet mAnimatorSet;
+
+    private Setting mSetting;
 
     @Nullable
     @Override
@@ -130,6 +139,17 @@ public class GuideFragment extends BaseFragment {
 
             animStep1();
         });
+
+        mSetting = mAppDatabase.settingDao().getAllSync().get(0);
+        setupAvatar();
+
+        btn_go.setOnClickListener(v -> {
+            startActivity(new Intent(v.getContext(), MainActivity.class));
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.finish();
+            }
+        });
     }
 
     @Override
@@ -139,6 +159,22 @@ public class GuideFragment extends BaseFragment {
         }
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    private void setupAvatar() {
+        if (mSetting.gender == 0) {
+            iv_avatar_l.setImageResource(R.drawable.ic_avatar_male_plan_generating);
+        } else {
+            iv_avatar_l.setImageResource(R.drawable.ic_avatar_female_plan_generating);
+        }
+    }
+
+    private void setupAvatar2() {
+        if (mSetting.gender == 0) {
+            iv_avatar_l.setImageResource(R.drawable.ic_avatar_male_plan);
+        } else {
+            iv_avatar_l.setImageResource(R.drawable.ic_avatar_female_plan);
+        }
     }
 
     private void animWaveView() {
@@ -189,6 +225,10 @@ public class GuideFragment extends BaseFragment {
                     v_fragment_guide_1.setAlpha(0);
                     TransitionManager.go(Scene.getSceneForLayout(fl_scene, R.layout.vs_fragment_guide_0_scene, fl_scene.getContext()),
                             new TransitionSet().addTransition(new ChangeBounds()).addTransition(new Fade()));
+
+                    iv_avatar_l = fl_scene.findViewById(R.id.iv_avatar_l);
+                    setupAvatar();
+
                     ObjectAnimator waterLevelAnim = ObjectAnimator.ofFloat(
                             wave_view, "waterLevelRatio", 0.05f, 1f);
                     waterLevelAnim.setDuration(400);
@@ -220,6 +260,7 @@ public class GuideFragment extends BaseFragment {
                 .subscribe(aBoolean -> {
 
                     v_fragment_guide_2 = vs_fragment_guide_2.inflate();
+                    animation_view = v_fragment_guide_2.findViewById(R.id.animation_view);
                     iv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.iv_daily_intake_cup);
                     tv_daily_intake_cup = v_fragment_guide_2.findViewById(R.id.tv_daily_intake_cup);
                     fl_daily_intake_times = v_fragment_guide_2.findViewById(R.id.fl_daily_intake_times);
@@ -255,6 +296,8 @@ public class GuideFragment extends BaseFragment {
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            setupAvatar2();
+
                             tv_daily_intake_cup.setVisibility(View.VISIBLE);
                             tv_next_step.setTextColor(ContextCompat.getColor(tv_next_step.getContext(), R.color.colorTextBlack));
                             tv_next_step.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_right_black, 0);
@@ -281,6 +324,7 @@ public class GuideFragment extends BaseFragment {
                             fl_guide.setBackgroundColor(ContextCompat.getColor(fl_guide.getContext(), android.R.color.transparent));
                         }
                     });
+                    set.setDuration(400);
                     set.start();
                 });
     }
@@ -315,10 +359,11 @@ public class GuideFragment extends BaseFragment {
                                 ll_daily_intake_times.setVisibility(View.INVISIBLE);
                                 tv_daily_intake_cup.setVisibility(View.INVISIBLE);
                                 tv_how_to_drink_label.setVisibility(View.INVISIBLE);
-
+                                tv_step_indicator.setText("3/4");
                                 iv_alert.animate().rotation(30f).setInterpolator(new CycleInterpolator(4)).start();
                             }
                         });
+                        set.setDuration(400);
                         set.start();
                     });
 
@@ -334,6 +379,7 @@ public class GuideFragment extends BaseFragment {
 
                     ll_how_to_monitor.setVisibility(View.VISIBLE);
                     ll_how_to_monitor.setTranslationX(1000);
+                    animation_view.setVisibility(View.VISIBLE);
 
                     ll_how_to_monitor.post(() -> {
                         AnimatorSet set = new AnimatorSet();
@@ -345,8 +391,11 @@ public class GuideFragment extends BaseFragment {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 tv_how_to_monitor_label.setVisibility(View.INVISIBLE);
+                                animation_view.playAnimation();
+                                tv_step_indicator.setText("4/4");
                             }
                         });
+                        set.setDuration(400);
                         set.start();
                     });
                     animStep5();
@@ -357,6 +406,24 @@ public class GuideFragment extends BaseFragment {
         mDisposable = Single.just(true)
                 .delay(3, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> startActivity(new Intent(v_fragment_guide_2.getContext(), MainActivity.class)));
+                .subscribe(aBoolean -> {
+
+                    btn_go.setVisibility(View.VISIBLE);
+                    btn_go.setTranslationY(1000);
+
+                    btn_go.post(() -> {
+                        AnimatorSet set = new AnimatorSet();
+                        set.playTogether(Utils.slideHFadeOut(ll_next_step, 0f),
+                                Utils.slideVFadeIn(btn_go, 2f));
+                        set.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                ll_next_step.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                        set.setDuration(400);
+                        set.start();
+                    });
+                });
     }
 }
