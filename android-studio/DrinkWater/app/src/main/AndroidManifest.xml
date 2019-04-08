@@ -37,10 +37,10 @@
             android:name=".ui.GuideActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Guide" />
-
         <activity
             android:name=".ui.SettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Setting" />
         <activity
             android:name=".ui.DrinkReportActivity"
             android:screenOrientation="portrait" />

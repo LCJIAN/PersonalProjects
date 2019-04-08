@@ -357,5 +357,7 @@
     <string name="your_gender">Your Gender</string>
     <string name="your_weight">Your Weight</string>
 
+    <string name="communicate" translatable="false">Communicate</string>
+    <string name="feedback" translatable="false">Feedback</string>
 
 </resources>

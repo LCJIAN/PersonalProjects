@@ -18,13 +18,13 @@
             android:title="@string/ds" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/communicate">
         <menu>
 
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_feedback"
-                android:title="Send" />
+                android:title="@string/feedback" />
             <item
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_rate"
