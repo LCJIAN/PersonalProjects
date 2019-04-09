@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/message" />
+        <include layout="@layout/message_history_top" />
 
         <include layout="@layout/bar_chart_report" />
 
@@ -16,7 +16,12 @@
 
         <include layout="@layout/analysis_report" />
 
-        <include layout="@layout/message" />
+        <include
+            layout="@layout/message_history_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="48dp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -6,174 +6,174 @@
     android:background="@drawable/shape_week_report_bg">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_weekly_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/ie"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/iv_sun_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toStartOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_mon_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_mon_completion"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/iv_mon_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/iv_mon_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_tue_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_tue_completion"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/iv_sun_completion"
+        app:layout_constraintTop_toTopOf="@+id/iv_tue_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/iv_tue_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_wed_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_wed_completion"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView8"
+        app:layout_constraintStart_toEndOf="@+id/iv_mon_completion"
+        app:layout_constraintTop_toTopOf="@+id/iv_wed_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/iv_thu_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_fri_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_fri_completion"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView8"
-        app:layout_constraintTop_toTopOf="@+id/imageView9"
+        app:layout_constraintStart_toEndOf="@+id/iv_wed_completion"
+        app:layout_constraintTop_toTopOf="@+id/iv_fri_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/iv_sat_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/iv_fri_completion"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekly_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/iv_wed_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_thu_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_thu_completion"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintStart_toEndOf="@+id/iv_tue_completion"
+        app:layout_constraintTop_toTopOf="@+id/iv_thu_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/iv_fri_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_sat_completion"
+        app:layout_constraintEnd_toStartOf="@+id/iv_sat_completion"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintStart_toEndOf="@+id/iv_thu_completion"
+        app:layout_constraintTop_toTopOf="@+id/iv_sat_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_sun_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/gx"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_sun_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_sun_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sun_completion" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tv_mon_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/el"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_mon_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_mon_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_mon_completion" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_tue_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/hx"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_tue_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_tue_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_tue_completion" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tv_wed_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/ib"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView8"
-        app:layout_constraintStart_toStartOf="@+id/imageView8"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_wed_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_wed_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_wed_completion" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tv_thu_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/hb"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_thu_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_thu_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_thu_completion" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tv_fri_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/cm"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView9"
-        app:layout_constraintStart_toStartOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_fri_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_fri_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_fri_completion" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tv_sat_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/gb"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="@+id/imageView7"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_sat_completion"
+        app:layout_constraintStart_toStartOf="@+id/iv_sat_completion"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sat_completion" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

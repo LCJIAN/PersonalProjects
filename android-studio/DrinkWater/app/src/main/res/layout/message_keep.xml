@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="32dp"
+    android:paddingTop="16dp"
+    android:paddingRight="32dp"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/iv_water_keep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/water_drink" />
+
+    <com.lcjian.drinkwater.ui.widget.RatioLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/ic_message_bg"
+        app:ratio="0.28571">
+
+        <TextView
+            android:id="@+id/tv_message_keep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/hl"
+            android:textColor="@color/colorTextBlack" />
+    </com.lcjian.drinkwater.ui.widget.RatioLayout>
+
+</LinearLayout>

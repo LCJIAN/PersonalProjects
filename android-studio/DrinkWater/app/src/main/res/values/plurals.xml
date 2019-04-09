@@ -4,8 +4,8 @@
         <item quantity="one">%d time / day</item>
         <item quantity="other">%d times / day</item>
     </plurals>
-    <!--<plurals name="b">-->
-    <!--<item quantity="one">You&apos;ve stay hydrated for\10%d DAY.</item>-->
-    <!--<item quantity="other">You&apos;ve stay hydrated for\10%d DAYs.</item>-->
-    <!--</plurals>-->
+    <plurals name="b">
+        <item quantity="one">You\'ve stay hydrated for %d DAY.</item>
+        <item quantity="other">You\'ve stay hydrated for %d DAYs.</item>
+    </plurals>
 </resources>

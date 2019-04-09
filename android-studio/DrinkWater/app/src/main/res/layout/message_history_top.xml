@@ -11,26 +11,29 @@
     android:paddingBottom="16dp">
 
     <ImageView
-        android:id="@+id/iv_water"
+        android:id="@+id/iv_water_history_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/jy" />
+        app:srcCompat="@drawable/water_drink" />
 
     <com.lcjian.drinkwater.ui.widget.RatioLayout
         android:layout_width="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_height="60dp"
-        android:layout_marginLeft="24dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_weight="1"
         android:background="@drawable/ic_message_bg"
         app:ratio="0.28571">
 
         <TextView
-            android:id="@+id/tv_message"
+            android:id="@+id/tv_message_history_top"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-medium"
+            android:text="@string/hl"
             android:textColor="@color/colorTextBlack" />
     </com.lcjian.drinkwater.ui.widget.RatioLayout>
 

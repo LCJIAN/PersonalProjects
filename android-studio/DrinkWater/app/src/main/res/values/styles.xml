@@ -25,7 +25,15 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.C.Main">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
     <style name="AppTheme.Setting">
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.History">
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 

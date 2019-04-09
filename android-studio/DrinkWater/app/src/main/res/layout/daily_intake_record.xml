@@ -7,10 +7,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="@color/colorTextLightGray"
         android:text="@string/fr" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="64dp"
         android:layout_height="wrap_content">
 
         <LinearLayout

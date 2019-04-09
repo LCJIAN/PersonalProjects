@@ -51,7 +51,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginRight="100dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/shape_white_circle_bg"
+        android:background="@drawable/change_cup_bg"
         android:gravity="center"
         app:srcCompat="@drawable/ic_cup_200_ml_full" />
 
