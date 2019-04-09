@@ -51,6 +51,9 @@ public class IntakeGoalFragment extends BaseDialogFragment {
         tv_recommend = view.findViewById(R.id.tv_recommend);
         v_recommend_indicator = view.findViewById(R.id.v_recommend_indicator);
 
+        btn_reset_recommend.setOnClickListener(v->{
+
+        });
         setup();
 
         return new AlertDialog.Builder(getContext())

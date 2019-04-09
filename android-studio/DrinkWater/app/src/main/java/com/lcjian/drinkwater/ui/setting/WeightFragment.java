@@ -12,6 +12,7 @@ import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
+import com.lcjian.drinkwater.util.ComputeUtils;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class WeightFragment extends BaseDialogFragment {
                             String s = et_weight.getEditableText().toString();
                             if (!TextUtils.isEmpty(s)) {
                                 mSetting.weight = Double.parseDouble(s);
+                                mSetting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
                                 mAppDatabase.settingDao().update(mSetting);
                                 dismiss();
                             }

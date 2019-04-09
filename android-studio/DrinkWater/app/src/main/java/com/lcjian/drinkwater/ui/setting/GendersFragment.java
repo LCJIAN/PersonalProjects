@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
+import com.lcjian.drinkwater.util.ComputeUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +33,10 @@ public class GendersFragment extends BaseDialogFragment {
                 .setSingleChoiceItems(
                         arr,
                         mSetting.gender.equals(0) ? 0 : 1,
-                        (dialog, which) -> mSetting.gender = which)
+                        (dialog, which) -> {
+                            mSetting.gender = which;
+                            mSetting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
+                        })
                 .setNegativeButton(R.string.at,
                         (dialog, which) -> dismiss())
                 .setPositiveButton(R.string.f4,

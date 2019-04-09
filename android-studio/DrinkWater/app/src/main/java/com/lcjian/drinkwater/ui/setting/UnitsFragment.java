@@ -7,6 +7,7 @@ import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
+import com.lcjian.drinkwater.util.ComputeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class UnitsFragment extends BaseDialogFragment {
                                 }
                                 mSetting.unitId = mNewUnit.id;
                                 mSetting.weight = mNewUnit.rate / rate * mSetting.weight;
-                                mSetting.intakeGoal = mNewUnit.rate / rate * mSetting.intakeGoal;
+                                mSetting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
                                 mAppDatabase.settingDao().update(mSetting);
                             }
                             dismiss();

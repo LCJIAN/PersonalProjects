@@ -27,6 +27,7 @@ import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.AnimUtils;
+import com.lcjian.drinkwater.util.ComputeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,6 +176,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
                 setting.gender = 0;
                 setting.weight = 70d;
+                setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                 mAppDatabase.settingDao().update(setting);
             }
             break;
@@ -182,6 +184,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
                 setting.gender = 1;
                 setting.weight = 60d;
+                setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                 mAppDatabase.settingDao().update(setting);
             }
             default:
@@ -510,7 +513,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                                         setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) * unit.rate;
                                         setting.wakeUpTime = pv_get_up_time_hour.getContentByCurrValue() + ":" + pv_get_up_time_minute.getContentByCurrValue();
                                         setting.sleepTime = pv_sleep_time_hour.getContentByCurrValue() + ":" + pv_sleep_time_minute.getContentByCurrValue();
-                                        setting.intakeGoal = setting.weight * (setting.gender + 1);
+                                        setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                                         mAppDatabase.settingDao().update(setting);
                                     },
                                     throwable -> {

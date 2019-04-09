@@ -13,6 +13,7 @@ import com.lcjian.drinkwater.data.db.entity.Config;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
+import com.lcjian.drinkwater.util.ComputeUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +76,7 @@ public class SplashActivity extends BaseActivity {
                         setting.unitId = mAppDatabase.unitDao().getAllSyncByName("kg,ml").get(0).id;
                         setting.gender = 0;
                         setting.weight = 70d;
-                        setting.intakeGoal = 2320d;
+                        setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                         setting.wakeUpTime = "08:00";
                         setting.sleepTime = "22:00";
 
