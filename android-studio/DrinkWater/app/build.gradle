@@ -97,6 +97,7 @@ dependencies {
     implementation 'com.github.lzyzsd:circleprogress:latest.integration'
     implementation 'com.github.PhilJay:MPAndroidChart:latest.integration'
     implementation 'com.airbnb.android:lottie:latest.integration'
+    implementation 'com.wdullaer:materialdatetimepicker:latest.integration'
     // leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:latest.integration'

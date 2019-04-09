@@ -26,8 +26,8 @@ import com.gelitenight.waveview.library.WaveView;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
+import com.lcjian.drinkwater.util.AnimUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
-import com.lcjian.drinkwater.util.Utils;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -131,8 +131,8 @@ public class GuideFragment extends BaseFragment {
 
         fl_avatar.post(() -> {
             AnimatorSet set = new AnimatorSet();
-            set.playTogether(Utils.slideVFadeIn(fl_avatar, 0.5f),
-                    Utils.slideVFadeIn(tv_plan_generating, 0.5f));
+            set.playTogether(AnimUtils.slideVFadeIn(fl_avatar, 0.5f),
+                    AnimUtils.slideVFadeIn(tv_plan_generating, 0.5f));
             set.setDuration(400);
             set.start();
             animWaveView();
@@ -162,7 +162,7 @@ public class GuideFragment extends BaseFragment {
     }
 
     private void setupAvatar() {
-        if (mSetting.gender == 0) {
+        if (mSetting.gender.equals(0)) {
             iv_avatar_l.setImageResource(R.drawable.ic_avatar_male_plan_generating);
         } else {
             iv_avatar_l.setImageResource(R.drawable.ic_avatar_female_plan_generating);
@@ -170,7 +170,7 @@ public class GuideFragment extends BaseFragment {
     }
 
     private void setupAvatar2() {
-        if (mSetting.gender == 0) {
+        if (mSetting.gender.equals(0)) {
             iv_avatar_l.setImageResource(R.drawable.ic_avatar_male_plan);
         } else {
             iv_avatar_l.setImageResource(R.drawable.ic_avatar_female_plan);
@@ -243,7 +243,7 @@ public class GuideFragment extends BaseFragment {
                             ll_next_step.setVisibility(View.VISIBLE);
                             tv_step_indicator.setText("1/4");
 
-                            Utils.slideVFadeIn(v_fragment_guide_1, 0.6f).start();
+                            AnimUtils.slideVFadeIn(v_fragment_guide_1, 0.6f).start();
 
                             animStep2();
                         }
@@ -292,7 +292,7 @@ public class GuideFragment extends BaseFragment {
                     tv_daily_intake_times.setCharacterLists(TickerUtils.provideNumberList());
                     tv_daily_intake_times.setText("00");
 
-                    AnimatorSet set = Utils.scaleIn(iv_daily_intake_cup, 10f);
+                    AnimatorSet set = AnimUtils.scaleIn(iv_daily_intake_cup, 10f);
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -305,8 +305,8 @@ public class GuideFragment extends BaseFragment {
                             tv_step_indicator.setText("2/4");
 
                             AnimatorSet set = new AnimatorSet();
-                            set.playTogether(Utils.scaleIn(fl_daily_intake_times, 0f),
-                                    Utils.slideVFadeIn(tv_how_to_drink_label, 0.6f));
+                            set.playTogether(AnimUtils.scaleIn(fl_daily_intake_times, 0f),
+                                    AnimUtils.slideVFadeIn(tv_how_to_drink_label, 0.6f));
                             set.addListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
@@ -351,8 +351,8 @@ public class GuideFragment extends BaseFragment {
 
                     tv_how_to_monitor_label.post(() -> {
                         AnimatorSet set = new AnimatorSet();
-                        set.playTogether(Utils.slideHOut(tv_how_to_drink_label, -2f),
-                                Utils.slideHIn(tv_how_to_monitor_label, 2f));
+                        set.playTogether(AnimUtils.slideHOut(tv_how_to_drink_label, -2f),
+                                AnimUtils.slideHIn(tv_how_to_monitor_label, 2f));
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -383,10 +383,10 @@ public class GuideFragment extends BaseFragment {
 
                     ll_how_to_monitor.post(() -> {
                         AnimatorSet set = new AnimatorSet();
-                        set.playTogether(Utils.slideHOut(iv_daily_intake_cup, -4f),
-                                Utils.slideHOut(fl_daily_intake_times, -4f),
-                                Utils.slideHOut(tv_how_to_monitor_label, -2f),
-                                Utils.slideHIn(ll_how_to_monitor, 2f));
+                        set.playTogether(AnimUtils.slideHOut(iv_daily_intake_cup, -4f),
+                                AnimUtils.slideHOut(fl_daily_intake_times, -4f),
+                                AnimUtils.slideHOut(tv_how_to_monitor_label, -2f),
+                                AnimUtils.slideHIn(ll_how_to_monitor, 2f));
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -413,8 +413,8 @@ public class GuideFragment extends BaseFragment {
 
                     btn_go.post(() -> {
                         AnimatorSet set = new AnimatorSet();
-                        set.playTogether(Utils.slideHFadeOut(ll_next_step, 0f),
-                                Utils.slideVFadeIn(btn_go, 2f));
+                        set.playTogether(AnimUtils.slideHFadeOut(ll_next_step, 0f),
+                                AnimUtils.slideVFadeIn(btn_go, 2f));
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {

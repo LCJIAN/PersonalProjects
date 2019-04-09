@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -21,6 +22,7 @@
             android:textColor="@color/colorTextLightGray" />
 
         <RelativeLayout
+            android:id="@+id/rl_unit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -34,18 +36,20 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="kg, ml"
+                tools:text="kg, ml"
                 android:textAppearance="@style/TextAppearance.AppTheme"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_intake_goal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -58,16 +62,34 @@
                 android:text="@string/e0"
                 android:textColor="@color/colorTextBlack" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:text="2320 ml"
-                android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_intake_goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppTheme"
+                    android:textColor="@color/colorAccent"
+                    tools:text="2320" />
+
+                <TextView
+                    android:id="@+id/tv_unit_for_intake_goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppTheme"
+                    android:textColor="@color/colorAccent"
+                    tools:text="ml" />
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
@@ -113,6 +135,7 @@
             android:textColor="@color/colorTextLightGray" />
 
         <RelativeLayout
+            android:id="@+id/rl_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -126,6 +149,7 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -138,6 +162,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -150,19 +175,38 @@
                 android:text="@string/iff"
                 android:textColor="@color/colorTextBlack" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="sans-serif-medium"
-                android:text="70 kg"
-                android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppTheme"
+                    android:textColor="@color/colorAccent"
+                    tools:text="70" />
+
+                <TextView
+                    android:id="@+id/tv_unit_for_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textAppearance="@style/TextAppearance.AppTheme"
+                    android:textColor="@color/colorAccent"
+                    tools:text="kg" />
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_wake_up_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -176,18 +220,20 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_wake_up_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="08:00 AM"
+                tools:text="08:00 AM"
                 android:textAppearance="@style/TextAppearance.AppTheme"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_sleep_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -201,13 +247,14 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_sleep_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="10:00 PM"
+                tools:text="10:00 PM"
                 android:textAppearance="@style/TextAppearance.AppTheme"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
@@ -230,6 +277,7 @@
             android:textColor="@color/colorTextLightGray" />
 
         <RelativeLayout
+            android:id="@+id/rl_reminder_interval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -243,18 +291,20 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_reminder_interval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="60 Minutes"
+                tools:text="60 Minutes"
                 android:textAppearance="@style/TextAppearance.AppTheme"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_reminder_mode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -268,18 +318,20 @@
                 android:textColor="@color/colorTextBlack" />
 
             <TextView
+                android:id="@+id/tv_reminder_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="Auto"
+                tools:text="Auto"
                 android:textAppearance="@style/TextAppearance.AppTheme"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_reminder_alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -306,6 +358,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_reminder_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -314,6 +367,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_further_reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
@@ -341,6 +395,7 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="wrap_content"
+                android:id="@+id/switch_further_reminder"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
