@@ -75,6 +75,7 @@ public class SplashActivity extends BaseActivity {
                         setting.unitId = mAppDatabase.unitDao().getAllSyncByName("kg,ml").get(0).id;
                         setting.gender = 0;
                         setting.weight = 70d;
+                        setting.intakeGoal = 2320d;
                         setting.wakeUpTime = "08:00";
                         setting.sleepTime = "22:00";
 

@@ -14,7 +14,7 @@
         android:id="@+id/iv_water"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/jy" />
+        app:srcCompat="@drawable/water_board" />
 
     <com.lcjian.drinkwater.ui.widget.RatioLayout
         android:layout_width="0dp"

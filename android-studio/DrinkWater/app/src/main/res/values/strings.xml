@@ -198,10 +198,7 @@
     <string name="ec">Send</string>
     <string name="ed" translatable="false">min</string>
     <string name="ee">minutes</string>
-    <string name="ef">30 minutes</string>
-    <string name="eg">45 minutes</string>
-    <string name="eh">60 minutes</string>
-    <string name="ei">90 minutes</string>
+    <string name="ef">%s minutes</string>
     <string name="ej">ml</string>
     <string name="ek" translatable="false">Moderate</string>
     <string name="el">Mon</string>

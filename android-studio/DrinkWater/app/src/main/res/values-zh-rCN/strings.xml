@@ -129,10 +129,7 @@
     <string name="eb">点击记录</string>
     <string name="ec">发送</string>
     <string name="ee">分钟</string>
-    <string name="ef">30分钟</string>
-    <string name="eg">45分钟</string>
-    <string name="eh">60分钟</string>
-    <string name="ei">90分钟</string>
+    <string name="ef">%s分钟</string>
     <string name="ej">ml</string>
     <string name="el">周一</string>
     <string name="em">月</string>

@@ -4,7 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.view.View;
 
-public class Utils {
+public class AnimUtils {
 
     public static ObjectAnimator slideHIn(View view, float percent) {
         return ObjectAnimator.ofFloat(view, View.TRANSLATION_X, view.getWidth() * percent, 0);

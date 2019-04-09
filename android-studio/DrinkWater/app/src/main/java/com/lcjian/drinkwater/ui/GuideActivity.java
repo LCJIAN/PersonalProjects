@@ -26,7 +26,7 @@ import com.lcjian.drinkwater.data.db.entity.Config;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
-import com.lcjian.drinkwater.util.Utils;
+import com.lcjian.drinkwater.util.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.carbswang.android.numberpickerview.library.NumberPickerView;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -118,8 +119,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         mSubject = PublishSubject.create();
         mDisposable = Observable
                 .combineLatest(mSubject,
-                        mAppDatabase.configDao().getAllAsync().toObservable().flatMap(Observable::fromIterable),
-                        mAppDatabase.settingDao().getAllAsync().toObservable().flatMap(Observable::fromIterable),
+                        mAppDatabase.configDao().getAllAsync().toObservable().flatMap(configs -> Observable.fromIterable(configs).firstOrError().toObservable()),
+                        mAppDatabase.settingDao().getAllAsync().toObservable().flatMap(settings -> Observable.fromIterable(settings).firstOrError().toObservable()),
                         mAppDatabase.unitDao().getAllAsync().toObservable(),
                         (aBoolean, config, setting, units) -> new DataHolder(config, setting, units))
                 .subscribeOn(Schedulers.io())
@@ -208,7 +209,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void setupGender(Setting setting) {
-        if (setting.gender == 0) {
+        if (setting.gender.equals(0)) {
             iv_gender_male.setImageResource(R.drawable.ic_avatar_male_checked);
             iv_gender_female.setImageResource(R.drawable.ic_avatar_female_unchecked);
             tv_gender_male.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
@@ -251,7 +252,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             pv_weight_unit.setDisplayedValuesAndPickedIndex(strings.toArray(a), units.indexOf(currentUnit), true);
         }
 
-        if (setting.gender == 0) {
+        if (setting.gender.equals(0)) {
             iv_weight.setImageResource(R.drawable.ic_weight_male);
         } else {
             iv_weight.setImageResource(R.drawable.ic_weight_female);
@@ -263,7 +264,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         setTimePickerData(pv_get_up_time_minute, 0, 59, Integer.parseInt(setting.wakeUpTime.split(":")[1]));
         setTimePickerData(pv_get_up_time_colon, 0, 0, 0);
 
-        if (setting.gender == 0) {
+        if (setting.gender.equals(0)) {
             iv_get_up.setImageResource(R.drawable.ic_get_up_time_male);
         } else {
             iv_get_up.setImageResource(R.drawable.ic_get_up_time_female);
@@ -275,7 +276,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         setTimePickerData(pv_sleep_time_minute, 0, 59, Integer.parseInt(setting.sleepTime.split(":")[1]));
         setTimePickerData(pv_sleep_time_colon, 0, 0, 0);
 
-        if (setting.gender == 0) {
+        if (setting.gender.equals(0)) {
             iv_sleep.setImageResource(R.drawable.ic_sleep_time_male);
         } else {
             iv_sleep.setImageResource(R.drawable.ic_sleep_time_female);
@@ -319,10 +320,10 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
                 v_gender.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    ObjectAnimator in = Utils.slideHIn(ll_gender_female, 2.5f);
+                    ObjectAnimator in = AnimUtils.slideHIn(ll_gender_female, 2.5f);
                     in.setStartDelay(100);
-                    set.playTogether(Utils.slideHIn(ll_gender_male, 2.5f), in,
-                            Utils.slideHOut(ll_hello, -1f));
+                    set.playTogether(AnimUtils.slideHIn(ll_gender_male, 2.5f), in,
+                            AnimUtils.slideHOut(ll_hello, -1f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -358,15 +359,15 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
                 v_weight.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    AnimatorSet out = Utils.slideHFadeOut(ll_gender_female, -1f);
+                    AnimatorSet out = AnimUtils.slideHFadeOut(ll_gender_female, -1f);
                     out.setStartDelay(50);
-                    AnimatorSet in = Utils.slideHFadeIn(iv_weight, 1.5f);
+                    AnimatorSet in = AnimUtils.slideHFadeIn(iv_weight, 1.5f);
                     in.setStartDelay(50);
-                    set.playTogether(Utils.slideHOut(ll_gender_male, -2f),
+                    set.playTogether(AnimUtils.slideHOut(ll_gender_male, -2f),
                             out,
                             in,
-                            Utils.slideHFadeIn(pv_weight, 3f),
-                            Utils.slideHFadeIn(pv_weight_unit, 3f));
+                            AnimUtils.slideHFadeIn(pv_weight, 3f),
+                            AnimUtils.slideHFadeIn(pv_weight_unit, 3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -404,13 +405,13 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
                 v_get_up_time.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHFadeOut(iv_weight, -0.3f),
-                            Utils.slideVFadeOut(pv_weight, -0.3f),
-                            Utils.slideVFadeOut(pv_weight_unit, -0.3f),
-                            Utils.slideHFadeIn(iv_get_up, 0.5f),
-                            Utils.slideVFadeIn(pv_get_up_time_hour, 0.3f),
-                            Utils.slideVFadeIn(pv_get_up_time_colon, 0.3f),
-                            Utils.slideVFadeIn(pv_get_up_time_minute, 0.3f));
+                    set.playTogether(AnimUtils.slideHFadeOut(iv_weight, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_weight, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_weight_unit, -0.3f),
+                            AnimUtils.slideHFadeIn(iv_get_up, 0.5f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_hour, 0.3f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_colon, 0.3f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_minute, 0.3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -449,14 +450,14 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
                 v_sleep_time.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHFadeOut(iv_get_up, -0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_hour, -0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_colon, -0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_minute, -0.3f),
-                            Utils.slideHFadeIn(iv_sleep, 0.5f),
-                            Utils.slideVFadeIn(pv_sleep_time_hour, 0.3f),
-                            Utils.slideVFadeIn(pv_sleep_time_colon, 0.3f),
-                            Utils.slideVFadeIn(pv_sleep_time_minute, 0.3f));
+                    set.playTogether(AnimUtils.slideHFadeOut(iv_get_up, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_hour, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_colon, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_minute, -0.3f),
+                            AnimUtils.slideHFadeIn(iv_sleep, 0.5f),
+                            AnimUtils.slideVFadeIn(pv_sleep_time_hour, 0.3f),
+                            AnimUtils.slideVFadeIn(pv_sleep_time_colon, 0.3f),
+                            AnimUtils.slideVFadeIn(pv_sleep_time_minute, 0.3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -479,12 +480,12 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             default:
                 v_sleep_time.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideVFadeOut(ts_title, 0f),
-                            Utils.slideVFadeOut(btn_next, 0f),
-                            Utils.slideVFadeOut(iv_sleep, -0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_hour, -0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_colon, -0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_minute, -0.3f));
+                    set.playTogether(AnimUtils.slideVFadeOut(ts_title, 0f),
+                            AnimUtils.slideVFadeOut(btn_next, 0f),
+                            AnimUtils.slideVFadeOut(iv_sleep, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_hour, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_colon, -0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_minute, -0.3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -499,8 +500,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.setDuration(400);
                     set.start();
 
-                    mDisposableU = mAppDatabase.settingDao().getAllAsync().toObservable()
-                            .flatMap(Observable::fromIterable)
+                    mDisposableU = mAppDatabase.settingDao().getAllAsync()
+                            .flatMap(settings -> Flowable.fromIterable(settings).firstOrError().toFlowable())
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
                             .subscribe(setting -> {
@@ -526,9 +527,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 showPreTitle("");
                 v_gender.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHOut(ll_gender_male, 2.5f),
-                            Utils.slideHOut(ll_gender_female, 2.5f),
-                            Utils.slideHIn(ll_hello, -1f));
+                    set.playTogether(AnimUtils.slideHOut(ll_gender_male, 2.5f),
+                            AnimUtils.slideHOut(ll_gender_female, 2.5f),
+                            AnimUtils.slideHIn(ll_hello, -1f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -552,11 +553,11 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 showPreTitle(getString(R.string.your_gender));
                 v_gender.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHIn(ll_gender_male, -2f),
-                            Utils.slideHFadeIn(ll_gender_female, -1f),
-                            Utils.slideHFadeOut(iv_weight, 1.5f),
-                            Utils.slideHFadeOut(pv_weight, 3f),
-                            Utils.slideHFadeOut(pv_weight_unit, 3f));
+                    set.playTogether(AnimUtils.slideHIn(ll_gender_male, -2f),
+                            AnimUtils.slideHFadeIn(ll_gender_female, -1f),
+                            AnimUtils.slideHFadeOut(iv_weight, 1.5f),
+                            AnimUtils.slideHFadeOut(pv_weight, 3f),
+                            AnimUtils.slideHFadeOut(pv_weight_unit, 3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -578,13 +579,13 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 showPreTitle(getString(R.string.your_weight));
                 v_weight.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHFadeIn(iv_weight, -0.5f),
-                            Utils.slideVFadeIn(pv_weight, -0.3f),
-                            Utils.slideVFadeIn(pv_weight_unit, -0.3f),
-                            Utils.slideHFadeOut(iv_get_up, 0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_hour, 0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_colon, 0.3f),
-                            Utils.slideVFadeOut(pv_get_up_time_minute, 0.3f));
+                    set.playTogether(AnimUtils.slideHFadeIn(iv_weight, -0.5f),
+                            AnimUtils.slideVFadeIn(pv_weight, -0.3f),
+                            AnimUtils.slideVFadeIn(pv_weight_unit, -0.3f),
+                            AnimUtils.slideHFadeOut(iv_get_up, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_hour, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_colon, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_get_up_time_minute, 0.3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -606,14 +607,14 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 showPreTitle(getString(R.string.get_up_time));
                 v_get_up_time.post(() -> {
                     AnimatorSet set = new AnimatorSet();
-                    set.playTogether(Utils.slideHFadeIn(iv_get_up, -0.5f),
-                            Utils.slideVFadeIn(pv_get_up_time_hour, -0.3f),
-                            Utils.slideVFadeIn(pv_get_up_time_colon, -0.3f),
-                            Utils.slideVFadeIn(pv_get_up_time_minute, -0.3f),
-                            Utils.slideHFadeOut(iv_sleep, 0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_hour, 0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_colon, 0.3f),
-                            Utils.slideVFadeOut(pv_sleep_time_minute, 0.3f));
+                    set.playTogether(AnimUtils.slideHFadeIn(iv_get_up, -0.5f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_hour, -0.3f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_colon, -0.3f),
+                            AnimUtils.slideVFadeIn(pv_get_up_time_minute, -0.3f),
+                            AnimUtils.slideHFadeOut(iv_sleep, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_hour, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_colon, 0.3f),
+                            AnimUtils.slideVFadeOut(pv_sleep_time_minute, 0.3f));
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
