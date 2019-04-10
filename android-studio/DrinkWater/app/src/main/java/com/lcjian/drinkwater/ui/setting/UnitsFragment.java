@@ -7,7 +7,6 @@ import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
-import com.lcjian.drinkwater.util.ComputeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +53,7 @@ public class UnitsFragment extends BaseDialogFragment {
                 .setPositiveButton(R.string.f4,
                         (dialog, which) -> {
                             if (mOldUnit != mNewUnit) {
-                                double rate = 1;
-                                if (mOldUnit != null) {
-                                    rate = mOldUnit.rate;
-                                }
                                 mSetting.unitId = mNewUnit.id;
-                                mSetting.weight = mNewUnit.rate / rate * mSetting.weight;
-                                mSetting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
                                 mAppDatabase.settingDao().update(mSetting);
                             }
                             dismiss();

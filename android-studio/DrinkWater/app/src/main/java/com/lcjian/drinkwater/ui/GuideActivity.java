@@ -122,8 +122,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         mSubject = PublishSubject.create();
         mDisposable = Observable
                 .combineLatest(mSubject,
-                        mAppDatabase.configDao().getAllAsync().toObservable().flatMap(configs -> Observable.fromIterable(configs).firstOrError().toObservable()),
-                        mAppDatabase.settingDao().getAllAsync().toObservable().flatMap(settings -> Observable.fromIterable(settings).firstOrError().toObservable()),
+                        mAppDatabase.configDao().getAllAsync().toObservable().map(configs -> configs.get(0)),
+                        mAppDatabase.settingDao().getAllAsync().toObservable().map(settings -> settings.get(0)),
                         mAppDatabase.unitDao().getAllAsync().toObservable(),
                         (aBoolean, config, setting, units) -> new DataHolder(config, setting, units))
                 .subscribeOn(Schedulers.io())
@@ -528,10 +528,10 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                             .subscribe(setting -> {
                                         Unit unit = mAppDatabase.unitDao().getAllSyncByName(pv_weight_unit.getContentByCurrValue()).get(0);
                                         setting.unitId = unit.id;
-                                        setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) * unit.rate;
+                                        setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) / unit.rate;
+                                        setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                                         setting.wakeUpTime = pv_get_up_time_hour.getContentByCurrValue() + ":" + pv_get_up_time_minute.getContentByCurrValue();
                                         setting.sleepTime = pv_sleep_time_hour.getContentByCurrValue() + ":" + pv_sleep_time_minute.getContentByCurrValue();
-                                        setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
                                         mAppDatabase.settingDao().update(setting);
                                     },
                                     throwable -> {

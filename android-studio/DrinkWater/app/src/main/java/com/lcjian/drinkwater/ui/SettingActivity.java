@@ -1,6 +1,7 @@
 package com.lcjian.drinkwater.ui;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -88,7 +89,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     SwitchCompat switch_further_reminder;
 
     private Disposable mDisposable;
-    private Disposable mDisposable2;
 
     private Setting mSetting;
 
@@ -119,40 +119,32 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         mDisposable = Flowable.combineLatest(
                 mAppDatabase.settingDao().getAllAsync()
-                        .flatMap(settings -> Flowable.fromIterable(settings).firstOrError().toFlowable()),
-                mAppDatabase.unitDao().getAllAsync(),
-                (setting, units) -> {
-                    for (Unit unit : units) {
-                        if (unit.id.equals(setting.unitId)) {
-                            return unit;
-                        }
-                    }
-                    return null;
-                })
+                        .map(settings -> settings.get(0)),
+                mAppDatabase.unitDao().getCurrentUnitAsync()
+                        .map(units -> units.get(0)),
+                Pair::create)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(unit -> {
+                .subscribe(pair -> {
+                    Setting setting = pair.first;
+                    Unit unit = pair.second;
+
+                    mSetting = setting;
+
+                    tv_intake_goal.setText(String.valueOf(setting.intakeGoal * unit.rate));
+                    tv_gender.setText(setting.gender.equals(0) ? R.string.male : R.string.female);
+                    tv_weight.setText(String.valueOf(setting.weight * unit.rate));
+                    tv_wake_up_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(setting.wakeUpTime, "HH:mm"), "HH:mm a"));
+                    tv_sleep_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(setting.sleepTime, "HH:mm"), "HH:mm a"));
+                    tv_reminder_interval.setText(getString(R.string.ef, String.valueOf(setting.reminderInterval)));
+                    tv_reminder_mode.setText(setting.reminderMode.equals(0) ? R.string.hy
+                            : ((setting.reminderMode.equals(1) ? R.string.ep : R.string.aa)));
+                    switch_further_reminder.setChecked(setting.furtherReminder);
+                    switch_reminder_alert.setChecked(setting.reminderAlert);
+
                     tv_unit.setText(unit.name);
                     tv_unit_for_weight.setText(unit.name.split(",")[0]);
                     tv_unit_for_intake_goal.setText(unit.name.split(",")[1]);
-                });
-
-        mDisposable2 = mAppDatabase.settingDao().getAllAsync()
-                .flatMap(settings -> Flowable.fromIterable(settings).firstOrError().toFlowable())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(setting -> {
-                    mSetting = setting;
-                    tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal));
-                    tv_gender.setText(mSetting.gender.equals(0) ? R.string.male : R.string.female);
-                    tv_weight.setText(String.valueOf(mSetting.weight));
-                    tv_wake_up_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(mSetting.wakeUpTime, "HH:mm"), "HH:mm a"));
-                    tv_sleep_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(mSetting.sleepTime, "HH:mm"), "HH:mm a"));
-                    tv_reminder_interval.setText(getString(R.string.ef, String.valueOf(mSetting.reminderInterval)));
-                    tv_reminder_mode.setText(mSetting.reminderMode.equals(0) ? R.string.hy
-                            : ((mSetting.reminderMode.equals(1) ? R.string.ep : R.string.aa)));
-                    switch_further_reminder.setChecked(mSetting.furtherReminder);
-                    switch_reminder_alert.setChecked(mSetting.reminderAlert);
                 });
     }
 
@@ -228,7 +220,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onDestroy() {
         mDisposable.dispose();
-        mDisposable2.dispose();
         super.onDestroy();
     }
 

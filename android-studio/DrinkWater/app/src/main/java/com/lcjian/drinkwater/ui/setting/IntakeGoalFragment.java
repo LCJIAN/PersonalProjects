@@ -14,8 +14,6 @@ import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.util.ComputeUtils;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -29,7 +27,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
     private TextView tv_recommend;
     private View v_recommend_indicator;
 
-    private List<Unit> mUnits;
+    private Unit mCurrentUnit;
     private Setting mSetting;
 
     private Double mIntakeGoal;
@@ -37,7 +35,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUnits = mAppDatabase.unitDao().getAllSync();
+        mCurrentUnit = mAppDatabase.unitDao().getCurrentUnitSync().get(0);
         mSetting = mAppDatabase.settingDao().getAllSync().get(0);
     }
 
@@ -54,7 +52,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
         v_recommend_indicator = view.findViewById(R.id.v_recommend_indicator);
 
         btn_reset_recommend.setOnClickListener(v ->
-                sb_intake_goal.setProgress((int) (ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) - 800))
+                sb_intake_goal.setProgress((int) (ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) * mCurrentUnit.rate - 800))
         );
         sb_intake_goal.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -81,7 +79,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
                         (dialog, which) -> dismiss())
                 .setPositiveButton(R.string.f4,
                         (dialog, which) -> {
-                            mSetting.intakeGoal = mIntakeGoal;
+                            mSetting.intakeGoal = mIntakeGoal / mCurrentUnit.rate;
                             mAppDatabase.settingDao().update(mSetting);
                             dismiss();
                         })
@@ -91,22 +89,14 @@ public class IntakeGoalFragment extends BaseDialogFragment {
     private void setup() {
         sb_intake_goal.post(() -> {
             sb_intake_goal.setMax(4500 - 800);
-            sb_intake_goal.setProgress((int) (mSetting.intakeGoal - 800));
+            sb_intake_goal.setProgress((int) (mSetting.intakeGoal * mCurrentUnit.rate - 800));
 
-            double recommend = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
+            double recommend = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) * mCurrentUnit.rate;
             v_recommend_indicator.setTranslationX((float) ((recommend - 800) / (4500 - 800) * sb_intake_goal.getWidth()));
             tv_recommend.setTranslationX((float) ((recommend - 800) / (4500 - 800) * sb_intake_goal.getWidth() - tv_recommend.getWidth() / 2d));
 
-            Unit currentUnit = null;
-            for (Unit unit : mUnits) {
-                if (unit.id.equals(mSetting.unitId)) {
-                    currentUnit = unit;
-                }
-            }
-            if (currentUnit != null) {
-                tv_unit_for_intake_goal.setText(currentUnit.name.split(",")[1]);
-            }
-            tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal));
+            tv_unit_for_intake_goal.setText(mCurrentUnit.name.split(",")[1]);
+            tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal * mCurrentUnit.rate));
         });
 
     }

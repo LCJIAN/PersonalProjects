@@ -30,6 +30,9 @@ public interface UnitDao {
     @Query("SELECT * FROM unit WHERE name = :name")
     List<Unit> getAllSyncByName(String name);
 
+    @Query("SELECT * FROM unit INNER JOIN setting ON setting.unit_id = unit.id")
+    List<Unit> getCurrentUnitSync();
+
     @Query("SELECT * FROM unit")
     Flowable<List<Unit>> getAllAsync();
 
