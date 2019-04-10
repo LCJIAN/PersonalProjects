@@ -40,7 +40,8 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mAppDatabase.settingDao().getAllAsync().map(settings -> settings.get(0))
+        mAppDatabase.settingDao().getAllAsync()
+                .map(settings -> settings.get(0))
                 .subscribe();
 
     }

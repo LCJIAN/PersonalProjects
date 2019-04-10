@@ -49,4 +49,8 @@ public class Setting {
 
     @ColumnInfo(name = "further_reminder")
     public Boolean furtherReminder;
+
+    // cup
+    @ColumnInfo(name = "cup_capacity")
+    public Double cupCapacity;
 }
