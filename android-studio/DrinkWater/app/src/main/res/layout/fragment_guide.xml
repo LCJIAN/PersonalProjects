@@ -63,8 +63,8 @@
             android:drawableEnd="@drawable/ic_arrow_right_white"
             android:drawableRight="@drawable/ic_arrow_right_white"
             android:drawablePadding="8dp"
-            android:text="@string/es"
             android:gravity="center_vertical"
+            android:text="@string/es"
             android:textAppearance="@style/TextAppearance.AppTheme.Large"
             android:textColor="@color/colorTextLight" />
 

@@ -101,6 +101,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     private Disposable mDisposable;
     private Disposable mDisposableU;
 
+    private boolean mDestroyed;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +161,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         if (mDisposableU != null) {
             mDisposableU.dispose();
         }
+        mDestroyed = true;
         super.onDestroy();
     }
 
@@ -198,7 +201,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
             window.setAllowEnterTransitionOverlap(false);
             window.setEnterTransition(new TransitionSet()
-                    .addTransition(new Slide(Gravity.END)
+                    .addTransition(new Slide(Gravity.RIGHT)
                             .addTarget(R.id.tv_skip)
                             .addTarget(R.id.tv_hello)
                             .addTarget(R.id.tv_info_before_start)
@@ -330,6 +333,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_hello.setVisibility(View.GONE);
                         }
 
@@ -374,6 +380,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_gender.setVisibility(View.GONE);
                         }
 
@@ -418,6 +427,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_weight.setVisibility(View.GONE);
                         }
 
@@ -464,6 +476,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_get_up_time.setVisibility(View.GONE);
                         }
 
@@ -492,6 +507,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             ts_title.setVisibility(View.GONE);
                             btn_next.setVisibility(View.GONE);
                             vs_guide_sleep_time.setVisibility(View.GONE);
@@ -536,6 +554,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_gender.setVisibility(View.GONE);
                         }
 
@@ -564,6 +585,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_weight.setVisibility(View.GONE);
                         }
 
@@ -592,6 +616,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_get_up_time.setVisibility(View.GONE);
                         }
 
@@ -621,6 +648,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mDestroyed) {
+                                return;
+                            }
                             vs_guide_sleep_time.setVisibility(View.GONE);
                         }
 

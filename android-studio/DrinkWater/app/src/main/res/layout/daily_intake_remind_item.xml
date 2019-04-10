@@ -9,14 +9,15 @@
         android:id="@+id/iv_time_line_top"
         android:layout_width="1dp"
         android:layout_height="11.5dp"
-        app:layout_constraintBottom_toTopOf="@+id/iv_cup"
-        app:layout_constraintEnd_toEndOf="@+id/iv_cup"
-        app:layout_constraintStart_toStartOf="@+id/iv_cup"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/iv_clock"
+        app:layout_constraintEnd_toEndOf="@+id/iv_clock"
+        app:layout_constraintStart_toStartOf="@+id/iv_clock"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/time_line_2" />
 
     <ImageView
-        android:id="@+id/iv_cup"
+        android:id="@+id/iv_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -25,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="@+id/iv_time_line_bottom"
         app:layout_constraintStart_toStartOf="@+id/iv_time_line_bottom"
         app:layout_constraintTop_toBottomOf="@+id/iv_time_line_top"
-        app:srcCompat="@drawable/ic_cup_200_ml_full" />
+        app:srcCompat="@drawable/ic_clock" />
 
     <ImageView
         android:id="@+id/iv_time_line_bottom"
@@ -35,11 +36,11 @@
         android:layout_marginLeft="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_cup"
+        app:layout_constraintTop_toBottomOf="@+id/iv_clock"
         app:srcCompat="@drawable/time_line_1" />
 
     <TextView
-        android:id="@+id/tv_record_time"
+        android:id="@+id/tv_next_remind_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -49,7 +50,7 @@
         android:textAppearance="@style/TextAppearance.AppTheme"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/tv_next_remind"
-        app:layout_constraintStart_toEndOf="@+id/iv_cup"
+        app:layout_constraintStart_toEndOf="@+id/iv_clock"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -60,10 +61,9 @@
         android:text="@string/eu"
         android:textAppearance="@style/TextAppearance.AppTheme.Small"
         android:textColor="@color/colorTextGray"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_record_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_record_time" />
+        app:layout_constraintStart_toStartOf="@+id/tv_next_remind_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_next_remind_time" />
 
     <TextView
         android:id="@+id/tv_intake"

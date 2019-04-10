@@ -32,6 +32,8 @@ public class IntakeGoalFragment extends BaseDialogFragment {
     private List<Unit> mUnits;
     private Setting mSetting;
 
+    private Double mIntakeGoal;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +53,24 @@ public class IntakeGoalFragment extends BaseDialogFragment {
         tv_recommend = view.findViewById(R.id.tv_recommend);
         v_recommend_indicator = view.findViewById(R.id.v_recommend_indicator);
 
-        btn_reset_recommend.setOnClickListener(v->{
+        btn_reset_recommend.setOnClickListener(v ->
+                sb_intake_goal.setProgress((int) (ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) - 800))
+        );
+        sb_intake_goal.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mIntakeGoal = progress + 800d;
+                tv_intake_goal.setText(String.valueOf(mIntakeGoal));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
         setup();
 
@@ -63,12 +81,9 @@ public class IntakeGoalFragment extends BaseDialogFragment {
                         (dialog, which) -> dismiss())
                 .setPositiveButton(R.string.f4,
                         (dialog, which) -> {
-//                            String s = et_weight.getEditableText().toString();
-//                            if (!TextUtils.isEmpty(s)) {
-//                                mSetting.weight = Double.parseDouble(s);
-//                                mAppDatabase.settingDao().update(mSetting);
-//                                dismiss();
-//                            }
+                            mSetting.intakeGoal = mIntakeGoal;
+                            mAppDatabase.settingDao().update(mSetting);
+                            dismiss();
                         })
                 .create();
     }

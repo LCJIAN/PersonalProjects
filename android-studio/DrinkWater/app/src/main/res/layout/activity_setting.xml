@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -12,9 +12,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/db"
@@ -43,9 +43,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                tools:text="kg, ml"
                 android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                tools:text="kg, ml" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -125,9 +125,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/fc"
@@ -227,9 +227,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                tools:text="08:00 AM"
                 android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                tools:text="08:00 AM" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -254,9 +254,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                tools:text="10:00 PM"
                 android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                tools:text="10:00 PM" />
         </RelativeLayout>
 
         <View
@@ -267,9 +267,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/fx"
@@ -298,9 +298,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                tools:text="60 Minutes"
                 android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                tools:text="60 Minutes" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -325,9 +325,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                tools:text="Auto"
                 android:textAppearance="@style/TextAppearance.AppTheme"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                tools:text="Auto" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -394,8 +394,8 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
                 android:id="@+id/switch_further_reminder"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -410,9 +410,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/d1"
@@ -422,17 +422,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:background="?selectableItemBackground"
             android:text="@string/c7"
             android:textColor="@color/colorTextBlack" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
             android:padding="16dp"
             android:text="@string/fh"
             android:textColor="@color/colorTextBlack" />
@@ -440,10 +440,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="16dp"
             android:layout_marginBottom="64dp"
             android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="16dp"
             android:text="@string/h6"
             android:textColor="@color/colorTextBlack" />
 

@@ -32,4 +32,7 @@ public interface UnitDao {
 
     @Query("SELECT * FROM unit")
     Flowable<List<Unit>> getAllAsync();
+
+    @Query("SELECT * FROM unit INNER JOIN setting ON setting.unit_id = unit.id")
+    Flowable<List<Unit>> getCurrentUnitAsync();
 }

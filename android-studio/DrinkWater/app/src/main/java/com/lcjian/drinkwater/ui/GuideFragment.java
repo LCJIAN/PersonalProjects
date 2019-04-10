@@ -105,9 +105,8 @@ public class GuideFragment extends BaseFragment {
     private LinearLayout tv_how_to_monitor_label;
     private LinearLayout ll_how_to_monitor;
 
-
     private Unbinder unbinder;
-
+    private boolean mViewDestroyed;
     private Disposable mDisposable;
     private AnimatorSet mAnimatorSet;
 
@@ -157,6 +156,7 @@ public class GuideFragment extends BaseFragment {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+        mViewDestroyed = true;
         unbinder.unbind();
         super.onDestroyView();
     }
@@ -235,7 +235,7 @@ public class GuideFragment extends BaseFragment {
                     waterLevelAnim.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            if (fl_guide == null || wave_view == null) {
+                            if (mViewDestroyed) {
                                 return;
                             }
                             fl_guide.setBackgroundColor(ContextCompat.getColor(fl_guide.getContext(), R.color.colorPrimaryDark));
@@ -296,6 +296,9 @@ public class GuideFragment extends BaseFragment {
                     set.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (mViewDestroyed) {
+                                return;
+                            }
                             setupAvatar2();
 
                             tv_daily_intake_cup.setVisibility(View.VISIBLE);
@@ -310,6 +313,9 @@ public class GuideFragment extends BaseFragment {
                             set.addListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
+                                    if (mViewDestroyed) {
+                                        return;
+                                    }
                                     tv_daily_intake_times.setText("14");
                                 }
                             });
@@ -356,6 +362,9 @@ public class GuideFragment extends BaseFragment {
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
+                                if (mViewDestroyed) {
+                                    return;
+                                }
                                 ll_daily_intake_times.setVisibility(View.INVISIBLE);
                                 tv_daily_intake_cup.setVisibility(View.INVISIBLE);
                                 tv_how_to_drink_label.setVisibility(View.INVISIBLE);
@@ -390,6 +399,9 @@ public class GuideFragment extends BaseFragment {
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
+                                if (mViewDestroyed) {
+                                    return;
+                                }
                                 tv_how_to_monitor_label.setVisibility(View.INVISIBLE);
                                 animation_view.playAnimation();
                                 tv_step_indicator.setText("4/4");
@@ -418,6 +430,9 @@ public class GuideFragment extends BaseFragment {
                         set.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
+                                if (mViewDestroyed) {
+                                    return;
+                                }
                                 ll_next_step.setVisibility(View.INVISIBLE);
                             }
                         });

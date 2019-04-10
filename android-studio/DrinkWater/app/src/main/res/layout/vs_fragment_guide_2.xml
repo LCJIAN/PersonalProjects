@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:clipChildren="false"
     android:gravity="center"
     android:orientation="vertical">
@@ -34,10 +34,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:textAppearance="@style/TextAppearance.AppTheme"
-            tools:text="100ml"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="100ml" />
 
         <FrameLayout
             android:id="@+id/fl_daily_intake_times"
@@ -71,12 +71,12 @@
                     android:id="@+id/tv_daily_intake_times"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
                     android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:layout_marginBottom="3dp"
                     android:textSize="35sp"
-                    android:typeface="serif"
                     android:textStyle="bold"
+                    android:typeface="serif"
                     app:ticker_animationDuration="400" />
             </LinearLayout>
 

@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
         android:layout_marginRight="24dp"
+        android:text="@string/c4"
         android:textAppearance="@style/TextAppearance.AppTheme.Medium"
-        android:textColor="@color/colorTextBlack"
-        android:text="@string/c4" />
+        android:textColor="@color/colorTextBlack" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,13 +32,14 @@
             android:textColor="@color/colorTextGray" />
 
         <TextView
+            android:id="@+id/tv_weekly_average"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="0 ml / day"
             android:fontFamily="sans-serif-medium"
+            tools:text="0 ml / day"
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="@color/colorAccent" />
     </RelativeLayout>
@@ -58,21 +60,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/en"
             android:drawableStart="@drawable/shape_dot_2"
             android:drawableLeft="@drawable/shape_dot_2"
             android:drawablePadding="12dp"
+            android:text="@string/en"
             android:textAppearance="@style/TextAppearance.AppTheme.Micro"
             android:textColor="@color/colorTextGray" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_monthly_average"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif-medium"
             android:layout_centerVertical="true"
-            android:text="0 ml / day"
+            android:fontFamily="sans-serif-medium"
+            tools:text="0 ml / day"
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="@color/colorAccent" />
     </RelativeLayout>
@@ -92,22 +95,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:drawableStart="@drawable/shape_dot_3"
             android:drawableLeft="@drawable/shape_dot_3"
             android:drawablePadding="12dp"
-            android:layout_centerVertical="true"
             android:text="@string/ab"
             android:textAppearance="@style/TextAppearance.AppTheme.Micro"
             android:textColor="@color/colorTextGray" />
 
         <TextView
+            android:id="@+id/tv_average_completion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:fontFamily="sans-serif-medium"
-            android:text="0%"
+            tools:text="0%"
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="@color/colorAccent" />
     </RelativeLayout>
@@ -128,21 +132,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/c1"
             android:drawableStart="@drawable/shape_dot_4"
             android:drawableLeft="@drawable/shape_dot_4"
             android:drawablePadding="12dp"
+            android:text="@string/c1"
             android:textAppearance="@style/TextAppearance.AppTheme.Micro"
             android:textColor="@color/colorTextGray" />
 
         <TextView
+            android:id="@+id/tv_drink_frequency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:fontFamily="sans-serif-medium"
-            android:text="kg,ml"
+            tools:text="1 次/天"
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="@color/colorAccent" />
     </RelativeLayout>

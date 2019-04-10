@@ -2,10 +2,13 @@ package com.lcjian.drinkwater.data.db.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "setting", indices = {@Index(value = "unit_id", unique = true)})
+@Entity(tableName = "setting",
+        indices = {@Index(value = "unit_id", unique = true)},
+        foreignKeys = @ForeignKey(entity = Unit.class, parentColumns = "id", childColumns = "unit_id"))
 public class Setting {
 
     @PrimaryKey(autoGenerate = true)

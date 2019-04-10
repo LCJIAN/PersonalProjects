@@ -134,6 +134,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 .subscribe(unit -> {
                     tv_unit.setText(unit.name);
                     tv_unit_for_weight.setText(unit.name.split(",")[0]);
+                    tv_unit_for_intake_goal.setText(unit.name.split(",")[1]);
                 });
 
         mDisposable2 = mAppDatabase.settingDao().getAllAsync()
@@ -142,6 +143,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(setting -> {
                     mSetting = setting;
+                    tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal));
                     tv_gender.setText(mSetting.gender.equals(0) ? R.string.male : R.string.female);
                     tv_weight.setText(String.valueOf(mSetting.weight));
                     tv_wake_up_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(mSetting.wakeUpTime, "HH:mm"), "HH:mm a"));

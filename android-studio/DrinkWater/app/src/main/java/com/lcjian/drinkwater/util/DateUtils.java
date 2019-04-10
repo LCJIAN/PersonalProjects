@@ -228,6 +228,10 @@ public class DateUtils {
         return new Date();
     }
 
+    public static Date today() {
+        return convertStrToDate(convertDateToStr(new Date()));
+    }
+
     /**
      * 获取星期几
      */
@@ -247,7 +251,7 @@ public class DateUtils {
     /**
      * 返回当月第一天的日期
      */
-    public static Date firstDay(Date date) {
+    public static Date firstDayMonthly(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.DATE, 1);
@@ -257,10 +261,43 @@ public class DateUtils {
     /**
      * 返回当月最后一天的日期
      */
-    public static Date lastDay(Date date) {
+    public static Date lastDayMonthly(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+        return calendar.getTime();
+    }
+
+    /**
+     * 返回当周第一天的日期
+     */
+    public static Date firstDayWeekly(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int d;
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+            d = -6;
+        } else {
+            d = 2 - calendar.get(Calendar.DAY_OF_WEEK);
+        }
+        calendar.add(Calendar.DAY_OF_WEEK, d);
+        return calendar.getTime();
+    }
+
+    /**
+     * 返回当周最后一天的日期
+     */
+    public static Date lastDayWeekly(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int d;
+        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
+            d = -6;
+        } else {
+            d = 2 - calendar.get(Calendar.DAY_OF_WEEK);
+        }
+        calendar.add(Calendar.DAY_OF_WEEK, d);
+        calendar.add(Calendar.DAY_OF_WEEK, 6);
         return calendar.getTime();
     }
 
