@@ -10,12 +10,15 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.lcjian.drinkwater.data.db.entity.Config;
+import com.lcjian.drinkwater.data.db.entity.Cup;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.ComputeUtils;
+import com.lcjian.drinkwater.util.DateUtils;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -60,12 +63,26 @@ public class SplashActivity extends BaseActivity {
                         unit2.rate = 2d;
                         mAppDatabase.unitDao().insert(unit1, unit2);
                     }
+                    List<Cup> cups = mAppDatabase.cupDao().getAllSync();
+                    if (cups.isEmpty()) {
+                        double[] capacity = new double[]{100, 200, 300, 400, 500};
+                        Cup[] cupArr = new Cup[capacity.length];
+                        for (int i = 0; i < capacity.length; i++) {
+                            Cup cup = new Cup();
+                            Date now = DateUtils.now();
+                            cup.cupCapacity = capacity[i];
+                            cup.timeAdded = now;
+                            cup.timeModified = now;
+                            cupArr[i] = cup;
+                        }
+                        mAppDatabase.cupDao().insert(cupArr);
+                    }
                     List<Config> configs = mAppDatabase.configDao().getAllSync();
                     if (configs.isEmpty()) {
                         Config config = new Config();
                         config.minWeight = 1d;
                         config.maxWeight = 400d;
-                        config.reminderInterval = TextUtils.join(",", Arrays.asList("30", "45", "60", "90"));
+                        config.reminderIntervals = TextUtils.join(",", Arrays.asList("30", "45", "60", "90"));
                         mAppDatabase.configDao().insert(config);
                     }
 
@@ -84,6 +101,8 @@ public class SplashActivity extends BaseActivity {
                         setting.reminderMode = 2;
                         setting.reminderAlert = true;
                         setting.furtherReminder = true;
+
+                        setting.cupId = mAppDatabase.cupDao().getAllSyncByCapacity(200).get(0).id;
 
                         mAppDatabase.settingDao().insert(setting);
                     }

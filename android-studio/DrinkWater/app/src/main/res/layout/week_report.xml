@@ -29,7 +29,6 @@
         app:layout_constraintTop_toTopOf="@+id/iv_mon_completion"
         app:srcCompat="@drawable/ic_week_day_report_bg" />
 
-
     <ImageView
         android:id="@+id/iv_mon_completion"
         android:layout_width="wrap_content"

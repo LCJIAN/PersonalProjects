@@ -31,12 +31,12 @@ public interface RecordDao {
     @Query("SELECT * FROM record")
     Flowable<List<Record>> getAllAsync();
 
-    @Query("SELECT * FROM record ORDER BY time_added LIMIT 0,1")
+    @Query("SELECT * FROM record ORDER BY time_added DESC LIMIT 0,1")
     Flowable<List<Record>> getFirstAsync();
 
-    @Query("SELECT * FROM record WHERE time_added >= :startTime AND time_added < :endTime")
+    @Query("SELECT * FROM record WHERE time_added >= :startTime AND time_added < :endTime ORDER BY time_added DESC")
     Flowable<List<Record>> getAllAsyncByTime(Date startTime, Date endTime);
 
-    @Query("SELECT * FROM record WHERE time_added >= :startTime AND time_added < :endTime")
+    @Query("SELECT * FROM record WHERE time_added >= :startTime AND time_added < :endTime ORDER BY time_added DESC")
     List<Record> getAllSyncByTime(Date startTime, Date endTime);
 }

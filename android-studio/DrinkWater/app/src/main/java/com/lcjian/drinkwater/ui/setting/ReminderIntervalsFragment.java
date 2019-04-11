@@ -27,7 +27,7 @@ public class ReminderIntervalsFragment extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String[] arr = mConfig.reminderInterval.split(",");
+        String[] arr = mConfig.reminderIntervals.split(",");
         String[] arr2 = new String[arr.length];
         int index = 0;
         for (int i = 0; i < arr.length; i++) {

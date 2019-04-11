@@ -16,7 +16,7 @@ public class Config {
     @ColumnInfo(name = "max_weight")
     public Double maxWeight;
 
-    @ColumnInfo(name = "reminder_interval")
-    public String reminderInterval;
+    @ColumnInfo(name = "reminder_intervals")
+    public String reminderIntervals;
 
 }

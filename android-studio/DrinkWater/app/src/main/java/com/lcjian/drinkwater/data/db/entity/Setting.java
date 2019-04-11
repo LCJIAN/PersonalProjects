@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "setting",
         indices = {@Index(value = "unit_id", unique = true)},
-        foreignKeys = @ForeignKey(entity = Unit.class, parentColumns = "id", childColumns = "unit_id"))
+        foreignKeys = {@ForeignKey(entity = Unit.class, parentColumns = "id", childColumns = "unit_id")
+                , @ForeignKey(entity = Cup.class, parentColumns = "id", childColumns = "cup_id")})
 public class Setting {
 
     @PrimaryKey(autoGenerate = true)
@@ -51,6 +52,6 @@ public class Setting {
     public Boolean furtherReminder;
 
     // cup
-    @ColumnInfo(name = "cup_capacity")
-    public Double cupCapacity;
+    @ColumnInfo(name = "cup_id")
+    public Long cupId;
 }

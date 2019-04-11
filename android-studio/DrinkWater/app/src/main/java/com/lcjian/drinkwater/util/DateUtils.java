@@ -274,13 +274,7 @@ public class DateUtils {
     public static Date firstDayWeekly(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int d;
-        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-            d = -6;
-        } else {
-            d = 2 - calendar.get(Calendar.DAY_OF_WEEK);
-        }
-        calendar.add(Calendar.DAY_OF_WEEK, d);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         return calendar.getTime();
     }
 
@@ -290,14 +284,7 @@ public class DateUtils {
     public static Date lastDayWeekly(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        int d;
-        if (calendar.get(Calendar.DAY_OF_WEEK) == 1) {
-            d = -6;
-        } else {
-            d = 2 - calendar.get(Calendar.DAY_OF_WEEK);
-        }
-        calendar.add(Calendar.DAY_OF_WEEK, d);
-        calendar.add(Calendar.DAY_OF_WEEK, 6);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         return calendar.getTime();
     }
 
