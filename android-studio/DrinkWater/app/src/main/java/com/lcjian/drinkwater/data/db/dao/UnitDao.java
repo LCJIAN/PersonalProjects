@@ -27,7 +27,7 @@ public interface UnitDao {
     @Query("SELECT * FROM unit")
     List<Unit> getAllSync();
 
-    @Query("SELECT * FROM unit WHERE name = :name")
+    @Query("SELECT * FROM unit WHERE name LIKE :name")
     List<Unit> getAllSyncByName(String name);
 
     @Query("SELECT * FROM unit INNER JOIN setting ON setting.unit_id = unit.id")

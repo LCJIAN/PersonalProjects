@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.C.Main"
@@ -38,7 +38,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar.Guide" />
         <activity
-            android:name=".ui.SettingActivity"
+            android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Setting" />
         <activity

@@ -26,6 +26,7 @@ import com.lcjian.drinkwater.data.db.entity.Config;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
+import com.lcjian.drinkwater.ui.home.MainActivity;
 import com.lcjian.drinkwater.util.AnimUtils;
 import com.lcjian.drinkwater.util.ComputeUtils;
 
@@ -39,7 +40,6 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.carbswang.android.numberpickerview.library.NumberPickerView;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -100,6 +100,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     private PublishSubject<Boolean> mSubject;
     private Disposable mDisposable;
     private Disposable mDisposableU;
+    private DataHolder mDataHolder;
 
     private boolean mDestroyed;
 
@@ -129,6 +130,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataHolder -> {
+                            mDataHolder = dataHolder;
                             if (v_gender != null) {
                                 setupGender(dataHolder.setting);
                             }
@@ -176,19 +178,17 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 next();
                 break;
             case R.id.ll_gender_male: {
-                Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
-                setting.gender = 0;
-                setting.weight = 70d;
-                setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
-                mAppDatabase.settingDao().update(setting);
+                mDataHolder.setting.gender = 0;
+                mDataHolder.setting.weight = 70d;
+                mDataHolder.setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mDataHolder.setting.weight, mDataHolder.setting.gender);
+                mAppDatabase.settingDao().update(mDataHolder.setting);
             }
             break;
             case R.id.ll_gender_female: {
-                Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
-                setting.gender = 1;
-                setting.weight = 60d;
-                setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
-                mAppDatabase.settingDao().update(setting);
+                mDataHolder.setting.gender = 1;
+                mDataHolder.setting.weight = 60d;
+                mDataHolder.setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mDataHolder.setting.weight, mDataHolder.setting.gender);
+                mAppDatabase.settingDao().update(mDataHolder.setting);
             }
             default:
                 break;
@@ -444,6 +444,12 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 });
                 v_get_up_time.postDelayed(() -> pv_get_up_time_hour
                         .smoothScrollToValue(pv_get_up_time_hour.getValue() - 1, pv_get_up_time_hour.getValue()), 100);
+
+                Unit unit = mAppDatabase.unitDao().getAllSyncByName(pv_weight_unit.getContentByCurrValue() + "%").get(0);
+                mDataHolder.setting.unitId = unit.id;
+                mDataHolder.setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) / unit.rate;
+                mDataHolder.setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mDataHolder.setting.weight, mDataHolder.setting.gender);
+                mAppDatabase.settingDao().update(mDataHolder.setting);
                 mState++;
                 break;
             case 3:
@@ -493,6 +499,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                 });
                 v_sleep_time.postDelayed(() -> pv_sleep_time_hour
                         .smoothScrollToValue(pv_sleep_time_hour.getValue() - 1, pv_sleep_time_hour.getValue()), 100);
+                mDataHolder.setting.wakeUpTime = pv_get_up_time_hour.getContentByCurrValue() + ":" + pv_get_up_time_minute.getContentByCurrValue();
+                mAppDatabase.settingDao().update(mDataHolder.setting);
                 mState++;
                 break;
             default:
@@ -520,23 +528,9 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
                     });
                     set.setDuration(400);
                     set.start();
-
-                    mDisposableU = mAppDatabase.settingDao().getAllAsync()
-                            .flatMap(settings -> Flowable.fromIterable(settings).firstOrError().toFlowable())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
-                            .subscribe(setting -> {
-                                        Unit unit = mAppDatabase.unitDao().getAllSyncByName(pv_weight_unit.getContentByCurrValue()).get(0);
-                                        setting.unitId = unit.id;
-                                        setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) / unit.rate;
-                                        setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(setting.weight, setting.gender);
-                                        setting.wakeUpTime = pv_get_up_time_hour.getContentByCurrValue() + ":" + pv_get_up_time_minute.getContentByCurrValue();
-                                        setting.sleepTime = pv_sleep_time_hour.getContentByCurrValue() + ":" + pv_sleep_time_minute.getContentByCurrValue();
-                                        mAppDatabase.settingDao().update(setting);
-                                    },
-                                    throwable -> {
-                                    });
                 });
+                mDataHolder.setting.sleepTime = pv_sleep_time_hour.getContentByCurrValue() + ":" + pv_sleep_time_minute.getContentByCurrValue();
+                mAppDatabase.settingDao().update(mDataHolder.setting);
                 mState++;
                 break;
         }

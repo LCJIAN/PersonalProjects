@@ -1,28 +1,33 @@
 package com.lcjian.drinkwater.ui;
 
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.model.GradientColor;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.DateUtils;
+import com.lcjian.drinkwater.util.DimenUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.ActionBar;
@@ -36,8 +41,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DrinkReportActivity extends BaseActivity {
 
+    @BindView(R.id.btn_pre)
+    ImageButton btn_pre;
+    @BindView(R.id.btn_next)
+    ImageButton btn_next;
+    @BindView(R.id.tv_month_or_year)
+    TextView tv_month_or_year;
     @BindView(R.id.bar_chart)
     BarChart bar_chart;
+    @BindView(R.id.tv_monthly)
+    TextView tv_monthly;
+    @BindView(R.id.tv_yearly)
+    TextView tv_yearly;
 
     @BindView(R.id.iv_sun_completion)
     ImageView iv_sun_completion;
@@ -65,6 +80,9 @@ public class DrinkReportActivity extends BaseActivity {
 
     private CompositeDisposable mDisposables;
 
+    private Date mDate;
+    private Boolean mMonthly;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,36 +95,66 @@ public class DrinkReportActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        bar_chart.setTouchEnabled(false);
+        bar_chart.getDescription().setEnabled(false);
+        bar_chart.getLegend().setEnabled(false);
+        bar_chart.getAxisRight().setEnabled(false);
+
+        YAxis leftAxis = bar_chart.getAxisLeft();
+        leftAxis.setLabelCount(7, false);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(20);
+        leftAxis.setAxisMinimum(1f);
+        leftAxis.setGridDashedLine(new DashPathEffect(new float[]{DimenUtils.dipToPixels(3, this), DimenUtils.dipToPixels(3, this)}, 0));
+        leftAxis.setGridColor(ContextCompat.getColor(this, R.color.colorTextLight));
+        leftAxis.setValueFormatter(new DefaultAxisValueFormatter(0) {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return super.getAxisLabel(value, axis) + "%";
+            }
+        });
+
+        XAxis xAxis = bar_chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGridColor(ContextCompat.getColor(this, R.color.colorTextLight));
+        xAxis.setLabelCount(5, true);
+
         mDisposables = new CompositeDisposable();
         setupWeeklyDay();
         setupWeeklyAverage();
         setupMonthlyAverage();
         setupAverageCompletionAndDrinkFrequency();
+        setBarData();
 
-        YAxis leftAxis = bar_chart.getAxisLeft();
-        leftAxis.setLabelCount(8, true);
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f);
-        setData(30, 100);
+        mDate = DateUtils.now();
+        mMonthly = true;
 
+        bar_chart.post(() -> {
+            mRxBus.send(mMonthly);
+            mRxBus.send(mDate);
+            setupIndicator();
+        });
 
-        YAxis rightAxis = bar_chart.getAxisRight();
-        rightAxis.setEnabled(false);
-//        rightAxis.setDrawGridLines(false);
-////        rightAxis.setTypeface(tfLight);
-//        rightAxis.setLabelCount(8, false);
-////        rightAxis.setValueFormatter(custom);
-//        rightAxis.setSpaceTop(15f);
-//        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        XAxis xAxis = bar_chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setTypeface(tfLight);
-        xAxis.setDrawGridLines(true);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-        xAxis.setLabelCount(7);
-//        xAxis.setValueFormatter(xAxisFormatter);
+        btn_pre.setOnClickListener(v -> {
+            mDate = DateUtils.addMonths(mDate, -1);
+            mRxBus.send(mDate);
+            setupIndicator();
+        });
+        btn_next.setOnClickListener(v -> {
+            mDate = DateUtils.addMonths(mDate, +1);
+            mRxBus.send(mDate);
+            setupIndicator();
+        });
+        tv_monthly.setOnClickListener(v -> {
+            mMonthly = true;
+            mRxBus.send(true);
+            setupIndicator();
+        });
+        tv_yearly.setOnClickListener(v -> {
+            mMonthly = false;
+            mRxBus.send(false);
+            setupIndicator();
+        });
     }
 
     @Override
@@ -124,72 +172,99 @@ public class DrinkReportActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private void setData(int count, float range) {
-
-        float start = 1f;
-
-        ArrayList<BarEntry> values = new ArrayList<>();
-
-        for (int i = (int) start; i < start + count; i++) {
-            float val = (float) (Math.random() * (range + 1));
-
-            if (Math.random() * 100 < 25) {
-                values.add(new BarEntry(i, val, getResources().getDrawable(R.drawable.medal_win)));
-            } else {
-                values.add(new BarEntry(i, val));
-            }
-        }
-
-        BarDataSet set1;
-
-        if (bar_chart.getData() != null &&
-                bar_chart.getData().getDataSetCount() > 0) {
-            set1 = (BarDataSet) bar_chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            bar_chart.getData().notifyDataChanged();
-            bar_chart.notifyDataSetChanged();
-
+    private void setupIndicator() {
+        if (mMonthly) {
+            tv_monthly.setBackgroundResource(R.drawable.shape_switch_on_bg);
+            tv_monthly.setTextColor(ContextCompat.getColor(this, R.color.colorTextBlack));
+            tv_yearly.setBackground(null);
+            tv_yearly.setTextColor(ContextCompat.getColor(this, android.R.color.white));
         } else {
-            set1 = new BarDataSet(values, "The year 2017");
-
-            set1.setDrawIcons(false);
-
-//            set1.setColors(ColorTemplate.MATERIAL_COLORS);
-
-            /*int startColor = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor = ContextCompat.getColor(this, android.R.color.holo_blue_bright);
-            set1.setGradientColor(startColor, endColor);*/
-
-            int startColor1 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor2 = ContextCompat.getColor(this, android.R.color.holo_blue_light);
-            int startColor3 = ContextCompat.getColor(this, android.R.color.holo_orange_light);
-            int startColor4 = ContextCompat.getColor(this, android.R.color.holo_green_light);
-            int startColor5 = ContextCompat.getColor(this, android.R.color.holo_red_light);
-            int endColor1 = ContextCompat.getColor(this, android.R.color.holo_blue_dark);
-            int endColor2 = ContextCompat.getColor(this, android.R.color.holo_purple);
-            int endColor3 = ContextCompat.getColor(this, android.R.color.holo_green_dark);
-            int endColor4 = ContextCompat.getColor(this, android.R.color.holo_red_dark);
-            int endColor5 = ContextCompat.getColor(this, android.R.color.holo_orange_dark);
-
-            List<GradientColor> gradientColors = new ArrayList<>();
-            gradientColors.add(new GradientColor(startColor1, endColor1));
-            gradientColors.add(new GradientColor(startColor2, endColor2));
-            gradientColors.add(new GradientColor(startColor3, endColor3));
-            gradientColors.add(new GradientColor(startColor4, endColor4));
-            gradientColors.add(new GradientColor(startColor5, endColor5));
-
-            set1.setGradientColors(gradientColors);
-
-            ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1);
-
-            BarData data = new BarData(dataSets);
-            data.setValueTextSize(10f);
-//            data.setValueTypeface(tfLight);
-            data.setBarWidth(0.9f);
-
-            bar_chart.setData(data);
+            tv_monthly.setBackground(null);
+            tv_monthly.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+            tv_yearly.setBackgroundResource(R.drawable.shape_switch_on_bg);
+            tv_yearly.setTextColor(ContextCompat.getColor(this, R.color.colorTextBlack));
         }
+        tv_month_or_year.setText(DateUtils.convertDateToStr(mDate, mMonthly ? "yyyy-MM" : "yyyy"));
+    }
+
+    private void setBarData() {
+        mDisposables.add(Flowable.combineLatest(
+                mRxBus.asFlowable().filter(o -> o instanceof Boolean),
+                mRxBus.asFlowable().filter(o -> o instanceof Date),
+                (o1, o2) -> {
+                    Boolean aBoolean = (Boolean) o1;
+                    Date date = (Date) o2;
+                    List<Pair<Date, Date>> dates = new ArrayList<>();
+                    if (aBoolean) {  // monthly
+                        Date startDate = DateUtils.firstDayMonthly(date);
+                        Date endDate = DateUtils.addDays(DateUtils.lastDayMonthly(date), 3);
+
+                        while (DateUtils.isBefore(startDate, endDate)) {
+                            dates.add(Pair.create(startDate, DateUtils.addDays(startDate, 1)));
+                            startDate = DateUtils.addDays(startDate, 1);
+                        }
+                    } else {
+                        String year = DateUtils.convertDateToStr(date, "yyyy");
+                        for (int i = 1; i <= 12; i++) {
+                            Date d = DateUtils.convertStrToDate(year + "-" + String.format(Locale.ENGLISH, "%02d", i), "yyyy-MM");
+                            dates.add(Pair.create(DateUtils.firstDayMonthly(d), DateUtils.addDays(DateUtils.lastDayMonthly(d), 1)));
+                        }
+                    }
+                    return dates;
+                })
+                .map(dates -> {
+                    Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+                    List<Double> percents = new ArrayList<>();
+                    for (Pair<Date, Date> pair : dates) {
+                        List<Record> records = mAppDatabase.recordDao().getAllSyncByTime(pair.first, pair.second);
+                        double total = 0d;
+                        for (Record record : records) {
+                            total += record.intake;
+                        }
+                        percents.add(total * 100 / (setting.intakeGoal * DateUtils.dayDiff(pair.second, pair.first)));
+                    }
+                    return percents;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(doubles -> {
+
+                            ArrayList<BarEntry> values = new ArrayList<>();
+                            int i = 1;
+                            for (Double d : doubles) {
+                                if (d > 80) {
+                                    values.add(new BarEntry((float) i, d.floatValue(), getResources().getDrawable(R.drawable.ic_star)));
+                                } else {
+                                    values.add(new BarEntry((float) i, d.floatValue()));
+                                }
+                                i++;
+                            }
+
+                            BarDataSet set1;
+
+                            if (bar_chart.getData() != null && bar_chart.getData().getDataSetCount() > 0) {
+                                set1 = (BarDataSet) bar_chart.getData().getDataSetByIndex(0);
+                                set1.setValues(values);
+                                bar_chart.getData().notifyDataChanged();
+                                bar_chart.notifyDataSetChanged();
+                                bar_chart.animateY(1000);
+                            } else {
+                                set1 = new BarDataSet(values, null);
+                                set1.setColor(ContextCompat.getColor(this, R.color.colorAccent));
+
+                                ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+                                dataSets.add(set1);
+
+                                BarData data = new BarData(dataSets);
+                                data.setHighlightEnabled(false);
+                                data.setDrawValues(false);
+                                data.setBarWidth(0.7f);
+
+                                bar_chart.setData(data);
+                                bar_chart.animateY(1000);
+                            }
+                        }
+                ));
     }
 
     private void setupWeeklyDay() {

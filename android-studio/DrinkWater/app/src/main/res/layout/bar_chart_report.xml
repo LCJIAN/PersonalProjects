@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -13,6 +14,7 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/btn_pre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -20,15 +22,17 @@
             app:srcCompat="@drawable/ic_pre_disabled" />
 
         <TextView
+            android:id="@+id/tv_month_or_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="2019"
+            tools:text="2019"
             android:textColor="@color/colorTextBlack" />
 
         <ImageButton
+            android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -53,6 +57,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_monthly"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
@@ -66,6 +71,7 @@
             android:textColor="@color/colorTextBlack" />
 
         <TextView
+            android:id="@+id/tv_yearly"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"

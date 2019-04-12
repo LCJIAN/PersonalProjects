@@ -1,17 +1,21 @@
-package com.lcjian.drinkwater.ui;
+package com.lcjian.drinkwater.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.google.android.material.navigation.NavigationView;
 import com.lcjian.drinkwater.R;
+import com.lcjian.drinkwater.ui.DrinkReportActivity;
+import com.lcjian.drinkwater.ui.setting.SettingActivity;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +36,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.post(() -> {
+            new QBadgeView(this).bindTarget(
+                    ((ViewGroup) ((ViewGroup) navigationView
+                            .getChildAt(0))
+                            .getChildAt(1)).getChildAt(0)).setBadgeText("NEW");
+        });
         if (getSupportFragmentManager().findFragmentByTag("MainFragment") == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fl_fragment_container, new MainFragment(), "MainFragment").commit();

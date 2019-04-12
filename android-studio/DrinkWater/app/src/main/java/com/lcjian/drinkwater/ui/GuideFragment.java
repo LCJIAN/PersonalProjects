@@ -26,6 +26,7 @@ import com.gelitenight.waveview.library.WaveView;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
+import com.lcjian.drinkwater.ui.home.MainActivity;
 import com.lcjian.drinkwater.util.AnimUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
 import com.pnikosis.materialishprogress.ProgressWheel;

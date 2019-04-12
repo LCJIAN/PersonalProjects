@@ -1,4 +1,4 @@
-package com.lcjian.drinkwater.ui;
+package com.lcjian.drinkwater.ui.setting;
 
 import android.os.Bundle;
 import android.util.Pair;
@@ -12,12 +12,6 @@ import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
-import com.lcjian.drinkwater.ui.setting.GendersFragment;
-import com.lcjian.drinkwater.ui.setting.IntakeGoalFragment;
-import com.lcjian.drinkwater.ui.setting.ReminderIntervalsFragment;
-import com.lcjian.drinkwater.ui.setting.ReminderModesFragment;
-import com.lcjian.drinkwater.ui.setting.UnitsFragment;
-import com.lcjian.drinkwater.ui.setting.WeightFragment;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 

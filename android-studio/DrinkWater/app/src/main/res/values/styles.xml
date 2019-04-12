@@ -27,6 +27,7 @@
 
     <style name="AppTheme.NoActionBar.C.Main">
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="dialogTheme">?attr/alertDialogTheme</item>
     </style>
 
     <style name="AppTheme.Setting">

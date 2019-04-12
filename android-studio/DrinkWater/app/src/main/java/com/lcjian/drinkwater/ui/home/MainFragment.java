@@ -1,4 +1,4 @@
-package com.lcjian.drinkwater.ui;
+package com.lcjian.drinkwater.ui.home;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.lcjian.drinkwater.ui.base.SlimAdapter;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
 import com.lcjian.drinkwater.util.Spans;
+import com.lcjian.drinkwater.util.StringUtils;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
@@ -57,6 +59,8 @@ public class MainFragment extends BaseFragment {
     ImageView iv_cup_type;
     @BindView(R.id.tv_cup_capacity)
     TextView tv_cup_capacity;
+    @BindView(R.id.fl_change_cup)
+    FrameLayout fl_change_cup;
     @BindView(R.id.iv_cup_type_full)
     ImageView iv_cup_type_full;
 
@@ -87,12 +91,13 @@ public class MainFragment extends BaseFragment {
 
         ll_drink.setOnClickListener(v -> {
             Record record = new Record();
-            record.intake = 200d;
-            record.cupCapacity = 200d;
+            record.intake = mDataHolder.cup.cupCapacity;
+            record.cupCapacity = mDataHolder.cup.cupCapacity;
             record.timeAdded = DateUtils.now();
             record.timeModified = record.timeAdded;
             mAppDatabase.recordDao().insert(record);
         });
+        fl_change_cup.setOnClickListener(v -> new ChangeCupFragment().show(getChildFragmentManager(), "ChangeCupFragment"));
 
         rv_today_records.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mAdapter = SlimAdapter.create()
@@ -173,9 +178,9 @@ public class MainFragment extends BaseFragment {
                             ObjectAnimator.ofInt(arc_progress, "progress", arc_progress.getProgress(), progress).start();
 
                             Context context = tv_daily_intake.getContext();
-                            tv_daily_intake.setText(String.valueOf(intake * dataHolder.unit.rate));
+                            tv_daily_intake.setText(StringUtils.formatDecimal(intake * dataHolder.unit.rate));
                             tv_daily_intake_goal.setText(new Spans()
-                                    .append("/" + dataHolder.setting.intakeGoal * dataHolder.unit.rate,
+                                    .append("/" + StringUtils.formatDecimal(dataHolder.setting.intakeGoal * dataHolder.unit.rate),
                                             new ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorTextBlack)),
                                             new AbsoluteSizeSpan(DimenUtils.spToPixels(40, context)))
                                     .append(dataHolder.unit.name.split(",")[1],
