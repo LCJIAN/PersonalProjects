@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,6 +111,27 @@ public class MainFragment extends BaseFragment {
                     }
 
                     @Override
+                    public void onInit(SlimAdapter.SlimViewHolder<Record> viewHolder) {
+                        viewHolder.clicked(v -> {
+                            PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.END);
+                            popupMenu.inflate(R.menu.menu_record);
+                            popupMenu.setOnMenuItemClickListener(item -> {
+                                switch (item.getItemId()) {
+                                    case R.id.action_delete:
+                                        mAppDatabase.recordDao().delete(viewHolder.itemData);
+                                        break;
+                                    case R.id.action_modify:
+                                        ModifyRecordFragment.newInstance(viewHolder.itemData.id)
+                                                .show(getChildFragmentManager(), "ModifyRecordFragment");
+                                        break;
+                                }
+                                return true;
+                            });
+                            popupMenu.show();
+                        });
+                    }
+
+                    @Override
                     public void onBind(Record data, SlimAdapter.SlimViewHolder<Record> viewHolder) {
                         switch ((int) Math.round(data.cupCapacity)) {
                             case 100:
@@ -143,7 +166,8 @@ public class MainFragment extends BaseFragment {
 
                     @Override
                     public boolean areContentsTheSame(Object oldItem, Object newItem) {
-                        return ((Record) oldItem).intake.equals(((Record) newItem).intake);
+                        return ((Record) oldItem).intake.equals(((Record) newItem).intake)
+                                && ((Record) oldItem).timeAdded.equals(((Record) newItem).timeAdded);
                     }
                 });
         AdvanceAdapter advanceAdapter = new AdvanceAdapter(mAdapter);

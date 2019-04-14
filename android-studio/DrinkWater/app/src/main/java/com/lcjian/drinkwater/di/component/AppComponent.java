@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.lcjian.drinkwater.RxBus;
+import com.lcjian.drinkwater.android.NotifyService;
 import com.lcjian.drinkwater.data.db.AppDatabase;
 import com.lcjian.drinkwater.data.network.RestAPI;
 import com.lcjian.drinkwater.di.module.AppModule;
@@ -48,5 +49,7 @@ public interface AppComponent {
     void inject(BaseDialogFragment baseDialogFragment);
 
     void inject(BaseBottomSheetDialogFragment baseBottomSheetDialogFragment);
+
+    void inject(NotifyService notifyService);
 
 }

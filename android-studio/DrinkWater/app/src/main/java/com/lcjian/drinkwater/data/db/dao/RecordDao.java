@@ -31,6 +31,9 @@ public interface RecordDao {
     @Query("SELECT * FROM record")
     Flowable<List<Record>> getAllAsync();
 
+    @Query("SELECT * FROM record WHERE id = :id")
+    Flowable<List<Record>> getAllAsyncById(Long id);
+
     @Query("SELECT * FROM record ORDER BY time_added DESC LIMIT 0,1")
     Flowable<List<Record>> getFirstAsync();
 

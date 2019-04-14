@@ -221,12 +221,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()) {
             case R.id.switch_further_reminder:
-                mSetting.furtherReminder = isChecked;
-                mAppDatabase.settingDao().update(mSetting);
+                if (mSetting.furtherReminder != isChecked) {
+                    mSetting.furtherReminder = isChecked;
+                    mAppDatabase.settingDao().update(mSetting);
+                }
                 break;
             case R.id.switch_reminder_alert:
-                mSetting.reminderAlert = isChecked;
-                mAppDatabase.settingDao().update(mSetting);
+                if (mSetting.reminderAlert != isChecked) {
+                    mSetting.reminderAlert = isChecked;
+                    mAppDatabase.settingDao().update(mSetting);
+                }
                 break;
             default:
                 break;
