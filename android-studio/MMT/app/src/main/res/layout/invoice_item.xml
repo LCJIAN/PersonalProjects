@@ -9,7 +9,7 @@
     android:background="@drawable/shape_card_bg">
 
     <TextView
-        android:id="@+id/textView119"
+        android:id="@+id/tv_order_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -25,11 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="产品名称"
-        app:layout_constraintStart_toStartOf="@+id/textView119"
+        app:layout_constraintStart_toStartOf="@+id/tv_order_no"
         app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
     <TextView
-        android:id="@+id/textView121"
+        android:id="@+id/tv_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -49,13 +49,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView120" />
 
     <TextView
-        android:id="@+id/textView123"
+        android:id="@+id/tv_car_order_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView121"
-        app:layout_constraintTop_toBottomOf="@+id/textView121" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_product_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
 
     <TextView
         android:id="@+id/textView126"
@@ -67,13 +67,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView122" />
 
     <TextView
-        android:id="@+id/textView127"
+        android:id="@+id/tv_company"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView123"
-        app:layout_constraintTop_toBottomOf="@+id/textView123" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_car_order_no"
+        app:layout_constraintTop_toBottomOf="@+id/tv_car_order_no" />
 
     <TextView
         android:id="@+id/textView128"
@@ -85,13 +85,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView126" />
 
     <TextView
-        android:id="@+id/textView129"
+        android:id="@+id/tv_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView127"
-        app:layout_constraintTop_toBottomOf="@+id/textView127" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_company"
+        app:layout_constraintTop_toBottomOf="@+id/tv_company" />
 
     <TextView
         android:id="@+id/textView130"
@@ -103,13 +103,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView128" />
 
     <TextView
-        android:id="@+id/textView131"
+        android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView129"
-        app:layout_constraintTop_toBottomOf="@+id/textView129" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_quantity"
+        app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
 
     <TextView
         android:id="@+id/textView132"
@@ -121,13 +121,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView130" />
 
     <TextView
-        android:id="@+id/textView133"
+        android:id="@+id/tv_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView131"
-        app:layout_constraintTop_toBottomOf="@+id/textView131" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_price"
+        app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
     <TextView
         android:id="@+id/textView134"
@@ -139,13 +139,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView132" />
 
     <TextView
-        android:id="@+id/textView135"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView133"
-        app:layout_constraintTop_toBottomOf="@+id/textView133" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_amount"
+        app:layout_constraintTop_toBottomOf="@+id/tv_amount" />
 
     <TextView
         android:id="@+id/textView136"
@@ -159,13 +159,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView134" />
 
     <TextView
-        android:id="@+id/textView137"
+        android:id="@+id/tv_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toEndOf="@+id/textView135"
-        app:layout_constraintTop_toBottomOf="@+id/textView135" />
+        app:layout_constraintEnd_toEndOf="@+id/tv_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time" />
 
     <View
         android:id="@+id/divider8"
@@ -175,5 +175,5 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView119" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_no" />
 </androidx.constraintlayout.widget.ConstraintLayout>

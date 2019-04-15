@@ -213,9 +213,9 @@ public class AddCarActivity extends BaseActivity implements View.OnClickListener
                 mCarPrepare.carCode = et_car_no.getEditableText().toString();
                 mCarPrepare.carSize = et_car_length.getEditableText().toString() + "*" + et_car_width.getEditableText().toString() + "*" + et_car_height.getEditableText().toString();
                 mCarPrepare.boxSize = et_car_box_length.getEditableText().toString() + "*" + et_car_box_width.getEditableText().toString() + "*" + et_car_box_height.getEditableText().toString();
-                mCarPrepare.boxType = mDictCarBox == null ? null : mDictCarBox.type;
+                mCarPrepare.boxType = mDictCarBox == null ? null : mDictCarBox.value;
                 mCarPrepare.goodsType = a1 + "" + a2;
-                mCarPrepare.carType = mDictCar == null ? null : mDictCar.type;
+                mCarPrepare.carType = mDictCar == null ? null : mDictCar.value;
                 mCarPrepare.loadWeight = TextUtils.isEmpty(et_car_carrying_capacity.getEditableText()) ? null : Double.parseDouble(et_car_carrying_capacity.getEditableText().toString());
                 mCarPrepare.driverId1 = mDriver == null ? null : mDriver.userId;
                 mCarPrepare.ownerId = null;

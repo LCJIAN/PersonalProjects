@@ -9,6 +9,7 @@ import com.lcjian.mmt.data.network.entity.Deposit;
 import com.lcjian.mmt.data.network.entity.Dict;
 import com.lcjian.mmt.data.network.entity.Driver;
 import com.lcjian.mmt.data.network.entity.DriverPrepare;
+import com.lcjian.mmt.data.network.entity.ErrorMsg;
 import com.lcjian.mmt.data.network.entity.Invoice;
 import com.lcjian.mmt.data.network.entity.Message;
 import com.lcjian.mmt.data.network.entity.ProductType;
@@ -374,7 +375,7 @@ public interface CloudService {
      * 车辆添加
      */
     @POST("mmt/cars/create")
-    Single<ResponseData<String>> addCar(@Body CarPrepare carPrepare);
+    Single<ResponseData<List<ErrorMsg>>> addCar(@Body CarPrepare carPrepare);
 
     /**
      * 获取商品的分类信息

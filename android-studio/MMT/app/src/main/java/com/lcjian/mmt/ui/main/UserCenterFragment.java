@@ -98,7 +98,11 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
                 .into(iv_user_avatar);
         tv_user_name.setText(signInInfo.user.realname);
         tv_account_type.setText(TextUtils.equals("1", signInInfo.user.userSort) ? R.string.personal_account : R.string.business_account);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         mDisposable = mRestAPI.cloudService().getDeposit()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,8 +114,13 @@ public class UserCenterFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public void onDestroyView() {
+    public void onPause() {
         mDisposable.dispose();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }

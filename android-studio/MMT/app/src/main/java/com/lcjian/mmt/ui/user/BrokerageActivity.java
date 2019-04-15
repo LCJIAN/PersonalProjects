@@ -79,12 +79,12 @@ public class BrokerageActivity extends BaseActivity {
                                     break;
                             }
                             viewHolder
-                                    .text(R.id.tv_order_no_b, data.mmtOrder.tranOrderCode)
-                                    .text(R.id.tv_order_product_name_b, data.mmtProducts.name)
-                                    .text(R.id.tv_order_product_spec_b, data.mmtProducts.special)
+                                    .text(R.id.tv_order_no_b, data.mmtOrder == null ? "" : data.mmtOrder.tranOrderCode)
+                                    .text(R.id.tv_order_product_name_b, data.mmtProducts == null ? "" : data.mmtProducts.name)
+                                    .text(R.id.tv_order_product_spec_b, data.mmtProducts == null ? "" : data.mmtProducts.special)
                                     .text(R.id.tv_company_b, data.mmtMerchants.name)
                                     .text(R.id.tv_brokerage_amount_b, data.amount / 100 + "元")
-                                    .text(R.id.tv_car_order_no_b, data.mmtTransOrder.tranOrderCode)
+                                    .text(R.id.tv_car_order_no_b, data.mmtTransOrder == null ? "" : data.mmtTransOrder.tranOrderCode)
                                     .text(R.id.tv_status_b, s);
                         }
                     })

@@ -13,8 +13,10 @@ import com.lcjian.mmt.ui.base.BaseActivity;
 import com.lcjian.mmt.ui.base.RecyclerFragment;
 import com.lcjian.mmt.ui.base.SimpleFragmentPagerAdapter;
 import com.lcjian.mmt.ui.base.SlimAdapter;
+import com.lcjian.mmt.util.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -94,6 +96,16 @@ public class InvoiceManageActivity extends BaseActivity {
 
                         @Override
                         public void onBind(Invoice data, SlimAdapter.SlimViewHolder<Invoice> viewHolder) {
+                            viewHolder.text(R.id.tv_order_no, data.orderPid)
+                                    .text(R.id.tv_product_name, "")
+                                    .text(R.id.tv_car_order_no, "")
+                                    .text(R.id.tv_company, "")
+                                    .text(R.id.tv_quantity, String.valueOf(data.quantity))
+                                    .text(R.id.tv_price, "")
+                                    .text(R.id.tv_amount, data.amount)
+                                    .text(R.id.tv_time, DateUtils.convertDateToStr(new Date(data.createDate)))
+                                    .text(R.id.tv_region, "")
+                            ;
                         }
                     })
                     .enableDiff();

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.aitangba.pickdatetime.DatePickDialog;
 import com.aitangba.pickdatetime.bean.DateParams;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lcjian.mmt.App;
 import com.lcjian.mmt.BuildConfig;
 import com.lcjian.mmt.GlideApp;
@@ -24,6 +26,7 @@ import com.lcjian.mmt.R;
 import com.lcjian.mmt.data.network.entity.CarPrepare;
 import com.lcjian.mmt.data.network.entity.Certificate;
 import com.lcjian.mmt.data.network.entity.Image;
+import com.lcjian.mmt.data.network.entity.ResponseData;
 import com.lcjian.mmt.ui.base.BaseActivity;
 import com.lcjian.mmt.ui.main.MainActivity;
 import com.lcjian.mmt.util.DateUtils;
@@ -52,7 +55,8 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import timber.log.Timber;
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import top.zibin.luban.Luban;
 
 public class CarCertificatesFormActivity extends BaseActivity {
@@ -303,18 +307,33 @@ public class CarCertificatesFormActivity extends BaseActivity {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stringResponseData -> {
+                .subscribe(listResponseData -> {
                             hideProgress();
-                            Toast.makeText(App.getInstance(), stringResponseData.data, Toast.LENGTH_SHORT).show();
-                            if (stringResponseData.code == 1) {
+                            if (listResponseData.code == 1) {
                                 startActivity(new Intent(CarCertificatesFormActivity.this, MainActivity.class)
                                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            } else {
+                                if (listResponseData.data != null && !listResponseData.data.isEmpty()) {
+                                    Toast.makeText(App.getInstance(), listResponseData.data.get(0).errorMsg, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         },
                         throwable -> {
                             hideProgress();
-                            Timber.e(throwable);
-                            Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            if (throwable instanceof HttpException) {
+                                ResponseBody errorBody = ((HttpException) throwable).response().errorBody();
+                                if (errorBody != null) {
+                                    ResponseData<String> r = new Gson().fromJson(errorBody.charStream(), new TypeToken<ResponseData<String>>() {
+                                    }.getType());
+                                    errorBody.close();
+                                    if (r.code == 1) {
+                                        startActivity(new Intent(CarCertificatesFormActivity.this, MainActivity.class)
+                                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                    } else {
+                                        Toast.makeText(App.getInstance(), r.data, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
                         });
     }
 
