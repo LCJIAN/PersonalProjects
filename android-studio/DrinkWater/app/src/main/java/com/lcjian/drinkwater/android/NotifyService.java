@@ -1,5 +1,7 @@
 package com.lcjian.drinkwater.android;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,11 +36,14 @@ public class NotifyService extends Service {
     @Inject
     protected AppDatabase mAppDatabase;
 
-    private NotifyReceiver mReceiver;
+    private NotifyReceiver mNotifyReceiver;
+    private ScreenReceiver mScreenReceiver;
 
     private Disposable mDisposable;
 
-    private Setting mLastSetting;
+
+    private boolean mScreenOn;
+
 
     @Nullable
     @Override
@@ -51,10 +56,19 @@ public class NotifyService extends Service {
         super.onCreate();
         onCreateComponent(App.getInstance().appComponent());
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(NotifyReceiver.ACTION_NOTIFY);
-        mReceiver = new NotifyReceiver();
-        registerReceiver(mReceiver, intentFilter);
+        {
+            mNotifyReceiver = new NotifyReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(NotifyReceiver.ACTION_NOTIFY);
+            registerReceiver(mNotifyReceiver, intentFilter);
+        }
+        {
+            mScreenReceiver = new ScreenReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+            registerReceiver(mScreenReceiver, intentFilter);
+        }
 
         setupWorker();
     }
@@ -65,7 +79,8 @@ public class NotifyService extends Service {
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(mReceiver);
+        unregisterReceiver(mNotifyReceiver);
+        unregisterReceiver(mScreenReceiver);
         mDisposable.dispose();
         super.onDestroy();
     }
@@ -75,20 +90,44 @@ public class NotifyService extends Service {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(setting -> {
-                    if (mLastSetting == null || mLastSetting.reminderAlert != setting.reminderAlert) {
-                        if (setting.reminderAlert) {
-                            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest
-                                    .Builder(NotifyWorker.class, setting.reminderInterval, TimeUnit.MINUTES)
-                                    .build();
-                            WorkManager.getInstance().enqueueUniquePeriodicWork(
-                                    "NotifyWorker",
-                                    ExistingPeriodicWorkPolicy.REPLACE,
-                                    periodicWorkRequest);
-                        } else {
-                            WorkManager.getInstance().cancelUniqueWork("NotifyWorker");
+                    if (setting.reminderMode == 0) {     // off
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        alarmManager.cancel(PendingIntent.getBroadcast(this,
+                                0, new Intent(this, NotifyReceiver.class), 0));
+                    } else {
+                        if (setting.reminderMode == 1) { // mute
+
+                        } else {                         // auto
+
                         }
-                        mLastSetting = setting;
+
+                        if (setting.reminderAlert) {     // 解锁提醒
+
+                        } else {
+
+                        }
+
+                        if (setting.furtherReminder) {   // 持续提醒
+
+                        } else {
+
+                        }
                     }
+
+//                    if (mLastSetting == null || mLastSetting.reminderAlert != setting.reminderAlert) {
+//                        if (setting.reminderAlert) {
+//                            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest
+//                                    .Builder(NotifyWorker.class, setting.reminderInterval, TimeUnit.MINUTES)
+//                                    .build();
+//                            WorkManager.getInstance().enqueueUniquePeriodicWork(
+//                                    "NotifyWorker",
+//                                    ExistingPeriodicWorkPolicy.REPLACE,
+//                                    periodicWorkRequest);
+//                        } else {
+//                            WorkManager.getInstance().cancelUniqueWork("NotifyWorker");
+//                        }
+//                        mLastSetting = setting;
+//                    }
                 }, throwable -> {
                 });
     }
@@ -107,8 +146,19 @@ public class NotifyService extends Service {
                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 floating.dismiss();
             });
+
+            floating.setViewDismissHandler(() -> {
+
+            });
             floating.show();
         }
     }
 
+    public class ScreenReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+
+        }
+    }
 }

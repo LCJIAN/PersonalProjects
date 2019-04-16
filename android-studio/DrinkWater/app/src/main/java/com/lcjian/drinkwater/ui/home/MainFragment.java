@@ -192,14 +192,16 @@ public class MainFragment extends BaseFragment {
                 mAppDatabase.unitDao().getCurrentUnitAsync().map(units -> units.get(0)),
                 mAppDatabase.cupDao().getCurrentCupAsync().map(cups -> cups.get(0)),
                 mAppDatabase.recordDao().getAllAsyncByTime(today, DateUtils.addDays(today, 1)),
-                mAppDatabase.recordDao().getFirstAsync().map(records -> records.get(0)),
+                mAppDatabase.recordDao().getFirstAsync().map(records -> records.get(0))
+                        .onErrorReturnItem(new Record()),
                 DataHolder::new)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataHolder -> {
                             mDataHolder = dataHolder;
 
-                            int a = DateUtils.dayDiff(DateUtils.today(), dataHolder.firstRecord.timeAdded) + 1;
+                            int a = dataHolder.firstRecord.timeAdded == null ? 0
+                                    : DateUtils.dayDiff(DateUtils.today(), dataHolder.firstRecord.timeAdded) + 1;
                             tv_message_keep.setText(getResources().getQuantityString(R.plurals.b, a, a));
 
                             double intake = 0d;
