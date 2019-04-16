@@ -34,8 +34,5 @@ public interface CupDao {
     List<Cup> getAllSyncByCapacity(double cupCapacity);
 
     @Query("SELECT * FROM cup INNER JOIN setting ON setting.cup_id = cup.id")
-    List<Cup> getCurrentCupSync();
-
-    @Query("SELECT * FROM cup INNER JOIN setting ON setting.cup_id = cup.id")
     Flowable<List<Cup>> getCurrentCupAsync();
 }

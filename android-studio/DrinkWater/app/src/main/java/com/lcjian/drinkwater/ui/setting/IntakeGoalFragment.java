@@ -14,6 +14,7 @@ import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.util.ComputeUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
+import com.lcjian.drinkwater.util.StringUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +62,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mIntakeGoal = progress + 800d;
-                tv_intake_goal.setText(String.valueOf(mIntakeGoal));
+                tv_intake_goal.setText(StringUtils.formatDecimalToString(mIntakeGoal));
             }
 
             @Override
@@ -99,7 +100,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
             tv_recommend.setTranslationX((float) ((recommend - 800) / (4500 - 800) * w - tv_recommend.getWidth() / 2d));
 
             tv_unit_for_intake_goal.setText(mCurrentUnit.name.split(",")[1]);
-            tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal * Double.parseDouble(mCurrentUnit.rate.split(",")[1])));
+            tv_intake_goal.setText(StringUtils.formatDecimalToString(mSetting.intakeGoal * Double.parseDouble(mCurrentUnit.rate.split(",")[1])));
         });
 
     }
