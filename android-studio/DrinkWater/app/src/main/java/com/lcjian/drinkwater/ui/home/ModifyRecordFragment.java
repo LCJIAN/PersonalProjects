@@ -110,6 +110,12 @@ public class ModifyRecordFragment extends BaseDialogFragment {
                                 DateUtils.convertDateToStr(mRecord.timeAdded) + " " +
                                         hourOfDay + ":" + minute, "yyyy-MM-dd H:m");
                         mRecord.timeModified = mRecord.timeAdded;
+
+                        tv_change_record_time.setText(new Spans()
+                                .append(getString(R.string.e1))
+                                .append(":")
+                                .append(DateUtils.convertDateToStr(mRecord.timeAdded, "HH:mm a"),
+                                        new ForegroundColorSpan(ContextCompat.getColor(tv_change_record_time.getContext(), R.color.colorAccent))));
                     },
                     Integer.parseInt(DateUtils.convertDateToStr(date, "H")),
                     Integer.parseInt(DateUtils.convertDateToStr(date, "m")),
@@ -117,7 +123,6 @@ public class ModifyRecordFragment extends BaseDialogFragment {
             );
             dpd.show(requireFragmentManager(), "TimePickerDialog");
         });
-
 
         mDisposable = Flowable
                 .combineLatest(
@@ -168,6 +173,15 @@ public class ModifyRecordFragment extends BaseDialogFragment {
                     tv_percent_75_number.setText(s3);
                     tv_percent_100_number.setText(s4);
 
+                    if (Math.abs(record.intake - (record.cupCapacity * rate / 4)) < 0.1) {
+                        switchIntake(1);
+                    } else if (Math.abs(record.intake - (record.cupCapacity * rate / 2)) < 0.1) {
+                        switchIntake(2);
+                    } else if (Math.abs(record.intake - (record.cupCapacity * rate / 4 * 3)) < 0.1) {
+                        switchIntake(3);
+                    } else {
+                        switchIntake(4);
+                    }
                 }, throwable -> {
 
                 });

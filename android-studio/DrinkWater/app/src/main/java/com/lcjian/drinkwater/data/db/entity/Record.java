@@ -4,9 +4,10 @@ import java.util.Date;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "record")
+@Entity(tableName = "record", indices = {@Index(value = "time_added", unique = true)})
 public class Record {
 
     @PrimaryKey(autoGenerate = true)

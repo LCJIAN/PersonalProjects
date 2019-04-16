@@ -35,6 +35,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChangeCupFragment extends BaseDialogFragment {
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
     @BindView(R.id.rv_cups)
     RecyclerView rv_cups;
     @BindView(R.id.ll_add_custom_cup)
@@ -71,6 +73,8 @@ public class ChangeCupFragment extends BaseDialogFragment {
             } else {
                 rv_cups.setVisibility(View.VISIBLE);
                 ll_add_custom_cup.setVisibility(View.GONE);
+
+                tv_title.setText(R.string.gy);
             }
         });
         btn_ok.setOnClickListener(v -> {
@@ -85,6 +89,8 @@ public class ChangeCupFragment extends BaseDialogFragment {
                 mAppDatabase.cupDao().insert(cup);
                 rv_cups.setVisibility(View.VISIBLE);
                 ll_add_custom_cup.setVisibility(View.GONE);
+
+                tv_title.setText(R.string.gy);
             } else {
                 dismiss();
             }
@@ -93,8 +99,6 @@ public class ChangeCupFragment extends BaseDialogFragment {
         rv_cups.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
         mAdapter = SlimAdapter.create()
                 .register(new SlimAdapter.SlimInjector<Cup>() {
-
-
 
                     @Override
                     public int onGetLayoutResource() {
@@ -108,6 +112,8 @@ public class ChangeCupFragment extends BaseDialogFragment {
                             if (viewHolder.itemData.cupCapacity.intValue() == 0) {
                                 rv_cups.setVisibility(View.GONE);
                                 ll_add_custom_cup.setVisibility(View.VISIBLE);
+
+                                tv_title.setText(R.string.br);
                             } else {
                                 Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
                                 setting.cupId = viewHolder.itemData.id;
@@ -123,11 +129,12 @@ public class ChangeCupFragment extends BaseDialogFragment {
                         TextView tv_cup = viewHolder.findViewById(R.id.tv_cup);
 
                         String s = StringUtils.formatDecimalToString(data.cupCapacity * Double.parseDouble(mUnit.rate.split(",")[1]))
-                                + mUnit.name.split(",")[1];
+                                + " " + mUnit.name.split(",")[1];
                         tv_cup.setText(s);
                         switch (data.cupCapacity.intValue()) {
                             case 0:
                                 iv_cup.setImageResource(R.drawable.ic_cup_custom_ml_add);
+                                tv_cup.setText(R.string.bq);
                                 break;
                             case 100:
                                 iv_cup.setImageResource(R.drawable.ic_cup_100_ml_for_change);
@@ -146,7 +153,6 @@ public class ChangeCupFragment extends BaseDialogFragment {
                                 break;
                             default:
                                 iv_cup.setImageResource(R.drawable.ic_cup_custom_ml);
-                                tv_cup.setText("");
                                 break;
                         }
                     }

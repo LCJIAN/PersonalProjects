@@ -9,12 +9,14 @@
 
     <ImageView
         android:id="@+id/iv_cup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="90dp"
         app:srcCompat="@drawable/ic_cup_100_ml_for_change" />
 
     <TextView
         android:id="@+id/tv_cup"
         android:layout_width="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextBlack"
         android:layout_height="wrap_content" />
 </LinearLayout>

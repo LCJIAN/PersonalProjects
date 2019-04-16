@@ -32,6 +32,7 @@ import com.robinhood.ticker.TickerView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,12 +44,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainFragment extends BaseFragment {
 
+    @BindView(R.id.tv_message_keep)
+    TextView tv_message_keep;
     @BindView(R.id.arc_progress)
     ArcProgress arc_progress;
     @BindView(R.id.tv_daily_intake)
@@ -72,6 +76,7 @@ public class MainFragment extends BaseFragment {
     private Unbinder unbinder;
 
     private Disposable mDisposable;
+    private Disposable mDisposable2;
 
     private SlimAdapter mAdapter;
 
@@ -98,6 +103,11 @@ public class MainFragment extends BaseFragment {
             record.timeAdded = DateUtils.now();
             record.timeModified = record.timeAdded;
             mAppDatabase.recordDao().insert(record);
+
+            mDisposable2 = Single.just(true)
+                    .delay(600, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aBoolean -> new WellDoneFragment().show(getChildFragmentManager(), "WellDoneFragment"));
         });
         fl_change_cup.setOnClickListener(v -> new ChangeCupFragment().show(getChildFragmentManager(), "ChangeCupFragment"));
 
@@ -182,11 +192,15 @@ public class MainFragment extends BaseFragment {
                 mAppDatabase.unitDao().getCurrentUnitAsync().map(units -> units.get(0)),
                 mAppDatabase.cupDao().getCurrentCupAsync().map(cups -> cups.get(0)),
                 mAppDatabase.recordDao().getAllAsyncByTime(today, DateUtils.addDays(today, 1)),
+                mAppDatabase.recordDao().getFirstAsync().map(records -> records.get(0)),
                 DataHolder::new)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataHolder -> {
                             mDataHolder = dataHolder;
+
+                            int a = DateUtils.dayDiff(DateUtils.today(), dataHolder.firstRecord.timeAdded) + 1;
+                            tv_message_keep.setText(getResources().getQuantityString(R.plurals.b, a, a));
 
                             double intake = 0d;
                             if (!dataHolder.records.isEmpty()) {
@@ -253,6 +267,9 @@ public class MainFragment extends BaseFragment {
     public void onDestroyView() {
         unbinder.unbind();
         mDisposable.dispose();
+        if (mDisposable2 != null) {
+            mDisposable2.dispose();
+        }
         super.onDestroyView();
     }
 
@@ -261,12 +278,14 @@ public class MainFragment extends BaseFragment {
         private Unit unit;
         private Cup cup;
         private List<Record> records;
+        private Record firstRecord;
 
-        private DataHolder(Setting setting, Unit unit, Cup cup, List<Record> records) {
+        private DataHolder(Setting setting, Unit unit, Cup cup, List<Record> records, Record firstRecord) {
             this.unit = unit;
             this.cup = cup;
             this.setting = setting;
             this.records = records;
+            this.firstRecord = firstRecord;
         }
     }
 }

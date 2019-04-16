@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="24dp"
+    android:background="@drawable/shape_round_corner_white_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:lottie_fileName="congrats.json" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:text="@string/ih"
+        android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+        android:textColor="@color/colorTextBlack" />
+
+    <Button
+        android:id="@+id/btn_got_it"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_primary_btn_bg"
+        android:text="@string/df"
+        android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

@@ -41,8 +41,8 @@
 
             <TextView
                 android:id="@+id/tv_percent_25"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/shape_blue_circle_bg"
                 android:gravity="center"
                 android:text="1/4"
@@ -53,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                 android:textColor="@color/colorAccent"
                 tools:text="50 ml" />
@@ -68,8 +69,8 @@
 
             <TextView
                 android:id="@+id/tv_percent_50"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/shape_white_circle_stroke_bg"
                 android:gravity="center"
                 android:text="2/4"
@@ -79,6 +80,7 @@
                 android:id="@+id/tv_percent_50_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginTop="8dp"
                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                 android:textColor="@color/colorTextGray"
@@ -95,8 +97,8 @@
 
             <TextView
                 android:id="@+id/tv_percent_75"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/shape_white_circle_stroke_bg"
                 android:gravity="center"
                 android:text="3/4"
@@ -107,6 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                 android:textColor="@color/colorTextGray"
                 tools:text="150 ml" />
@@ -122,8 +125,8 @@
 
             <TextView
                 android:id="@+id/tv_percent_100"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="@drawable/shape_white_circle_stroke_bg"
                 android:gravity="center"
                 android:text="4/4"
@@ -134,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-medium"
                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                 android:textColor="@color/colorTextGray"
                 tools:text="200 ml" />
