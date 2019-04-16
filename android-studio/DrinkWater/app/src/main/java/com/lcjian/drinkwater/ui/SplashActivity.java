@@ -57,10 +57,10 @@ public class SplashActivity extends BaseActivity {
                     if (units.isEmpty()) {
                         Unit unit1 = new Unit();
                         unit1.name = "kg,ml";
-                        unit1.rate = 1d;
+                        unit1.rate = "1,1";
                         Unit unit2 = new Unit();
                         unit2.name = "lbs,fl oz";
-                        unit2.rate = 2d;
+                        unit2.rate = "0.45359237,0.033814";
                         mAppDatabase.unitDao().insert(unit1, unit2);
                     }
                     List<Cup> cups = mAppDatabase.cupDao().getAllSync();

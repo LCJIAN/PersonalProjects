@@ -121,7 +121,10 @@ public class ChangeCupFragment extends BaseDialogFragment {
                     public void onBind(Cup data, SlimAdapter.SlimViewHolder<Cup> viewHolder) {
                         ImageView iv_cup = viewHolder.findViewById(R.id.iv_cup);
                         TextView tv_cup = viewHolder.findViewById(R.id.tv_cup);
-                        tv_cup.setText(StringUtils.formatDecimal(data.cupCapacity * mUnit.rate) + mUnit.name.split(",")[1]);
+
+                        String s = StringUtils.formatDecimalToString(data.cupCapacity * Double.parseDouble(mUnit.rate.split(",")[1]))
+                                + mUnit.name.split(",")[1];
+                        tv_cup.setText(s);
                         switch (data.cupCapacity.intValue()) {
                             case 0:
                                 iv_cup.setImageResource(R.drawable.ic_cup_custom_ml_add);
@@ -143,6 +146,7 @@ public class ChangeCupFragment extends BaseDialogFragment {
                                 break;
                             default:
                                 iv_cup.setImageResource(R.drawable.ic_cup_custom_ml);
+                                tv_cup.setText("");
                                 break;
                         }
                     }

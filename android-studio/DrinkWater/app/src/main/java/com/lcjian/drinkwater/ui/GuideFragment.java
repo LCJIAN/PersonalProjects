@@ -25,10 +25,13 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.gelitenight.waveview.library.WaveView;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Setting;
+import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseFragment;
 import com.lcjian.drinkwater.ui.home.MainActivity;
 import com.lcjian.drinkwater.util.AnimUtils;
+import com.lcjian.drinkwater.util.ComputeUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
+import com.lcjian.drinkwater.util.StringUtils;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -112,6 +115,7 @@ public class GuideFragment extends BaseFragment {
     private AnimatorSet mAnimatorSet;
 
     private Setting mSetting;
+    private Unit mUnit;
 
     @Nullable
     @Override
@@ -141,6 +145,7 @@ public class GuideFragment extends BaseFragment {
         });
 
         mSetting = mAppDatabase.settingDao().getAllSync().get(0);
+        mUnit = mAppDatabase.unitDao().getCurrentUnitSync().get(0);
         setupAvatar();
 
         btn_go.setOnClickListener(v -> {
@@ -220,8 +225,11 @@ public class GuideFragment extends BaseFragment {
                     tv_daily_target = v_fragment_guide_1.findViewById(R.id.tv_daily_target);
                     tv_unit = v_fragment_guide_1.findViewById(R.id.tv_unit);
 
-                    tv_daily_target.setText("2000");
-                    tv_unit.setText("ml");
+                    Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+                    Unit unit = mAppDatabase.unitDao().getCurrentUnitSync().get(0);
+                    tv_daily_target.setText(StringUtils.formatDecimalToString(setting.intakeGoal *
+                            Double.parseDouble(unit.rate.split(",")[1])));
+                    tv_unit.setText(unit.name.split(",")[1]);
 
                     v_fragment_guide_1.setAlpha(0);
                     TransitionManager.go(Scene.getSceneForLayout(fl_scene, R.layout.vs_fragment_guide_0_scene, fl_scene.getContext()),
@@ -253,7 +261,6 @@ public class GuideFragment extends BaseFragment {
                 });
     }
 
-
     private void animStep2() {
         mDisposable = Single.just(true)
                 .delay(3, TimeUnit.SECONDS)
@@ -279,8 +286,13 @@ public class GuideFragment extends BaseFragment {
                     tv_how_to_monitor_label = v_fragment_guide_2.findViewById(R.id.tv_how_to_monitor_label);
                     ll_how_to_monitor = v_fragment_guide_2.findViewById(R.id.ll_how_to_monitor);
 
-                    tv_daily_intake_cup.setText("100ml");
-                    tv_how_to_drink.setText(getString(R.string.dk, "14", "100ml"));
+                    int minutes = ComputeUtils.computeDailyTimeInMinutes(mSetting.wakeUpTime, mSetting.sleepTime);
+                    int times = minutes / mSetting.reminderInterval;
+                    String intakeCup = StringUtils.formatDecimalToString(mSetting.intakeGoal / times)
+                            + mUnit.name.split(",")[1];
+
+                    tv_daily_intake_cup.setText(intakeCup);
+                    tv_how_to_drink.setText(getString(R.string.dk, String.valueOf(times), intakeCup));
 
                     fl_daily_intake_times.setScaleX(0);
                     fl_daily_intake_times.setScaleY(0);
@@ -317,7 +329,7 @@ public class GuideFragment extends BaseFragment {
                                     if (mViewDestroyed) {
                                         return;
                                     }
-                                    tv_daily_intake_times.setText("14");
+                                    tv_daily_intake_times.setText(String.valueOf(times));
                                 }
                             });
                             set.start();

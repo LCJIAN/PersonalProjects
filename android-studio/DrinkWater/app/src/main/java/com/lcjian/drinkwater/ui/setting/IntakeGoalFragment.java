@@ -13,6 +13,7 @@ import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.util.ComputeUtils;
+import com.lcjian.drinkwater.util.DimenUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,7 +53,8 @@ public class IntakeGoalFragment extends BaseDialogFragment {
         v_recommend_indicator = view.findViewById(R.id.v_recommend_indicator);
 
         btn_reset_recommend.setOnClickListener(v ->
-                sb_intake_goal.setProgress((int) (ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) * mCurrentUnit.rate - 800))
+                sb_intake_goal.setProgress((int) (ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender)
+                        * Double.parseDouble(mCurrentUnit.rate.split(",")[1]) - 800))
         );
         sb_intake_goal.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -79,7 +81,7 @@ public class IntakeGoalFragment extends BaseDialogFragment {
                         (dialog, which) -> dismiss())
                 .setPositiveButton(R.string.f4,
                         (dialog, which) -> {
-                            mSetting.intakeGoal = mIntakeGoal / mCurrentUnit.rate;
+                            mSetting.intakeGoal = mIntakeGoal / Double.parseDouble(mCurrentUnit.rate.split(",")[1]);
                             mAppDatabase.settingDao().update(mSetting);
                             dismiss();
                         })
@@ -89,14 +91,15 @@ public class IntakeGoalFragment extends BaseDialogFragment {
     private void setup() {
         sb_intake_goal.post(() -> {
             sb_intake_goal.setMax(4500 - 800);
-            sb_intake_goal.setProgress((int) (mSetting.intakeGoal * mCurrentUnit.rate - 800));
+            sb_intake_goal.setProgress((int) (mSetting.intakeGoal * Double.parseDouble(mCurrentUnit.rate.split(",")[1]) - 800));
 
-            double recommend = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) * mCurrentUnit.rate;
-            v_recommend_indicator.setTranslationX((float) ((recommend - 800) / (4500 - 800) * sb_intake_goal.getWidth()));
-            tv_recommend.setTranslationX((float) ((recommend - 800) / (4500 - 800) * sb_intake_goal.getWidth() - tv_recommend.getWidth() / 2d));
+            int w = sb_intake_goal.getWidth() - (int) DimenUtils.dipToPixels(30, sb_intake_goal.getContext());
+            double recommend = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender) * Double.parseDouble(mCurrentUnit.rate.split(",")[1]);
+            v_recommend_indicator.setTranslationX((float) ((recommend - 800) / (4500 - 800) * w));
+            tv_recommend.setTranslationX((float) ((recommend - 800) / (4500 - 800) * w - tv_recommend.getWidth() / 2d));
 
             tv_unit_for_intake_goal.setText(mCurrentUnit.name.split(",")[1]);
-            tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal * mCurrentUnit.rate));
+            tv_intake_goal.setText(String.valueOf(mSetting.intakeGoal * Double.parseDouble(mCurrentUnit.rate.split(",")[1])));
         });
 
     }

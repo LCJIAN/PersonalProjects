@@ -13,6 +13,7 @@ import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.util.ComputeUtils;
+import com.lcjian.drinkwater.util.StringUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,7 +53,7 @@ public class WeightFragment extends BaseDialogFragment {
                         (dialog, which) -> {
                             String s = et_weight.getEditableText().toString();
                             if (!TextUtils.isEmpty(s)) {
-                                mSetting.weight = Double.parseDouble(s) / mCurrentUnit.rate;
+                                mSetting.weight = Double.parseDouble(s) / Double.parseDouble(mCurrentUnit.rate.split(",")[0]);
                                 mSetting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mSetting.weight, mSetting.gender);
                                 mAppDatabase.settingDao().update(mSetting);
                                 dismiss();
@@ -63,6 +64,6 @@ public class WeightFragment extends BaseDialogFragment {
 
     private void setup() {
         tv_unit.setText(mCurrentUnit.name.split(",")[0]);
-        et_weight.setText(String.valueOf(mSetting.weight * mCurrentUnit.rate));
+        et_weight.setText(StringUtils.formatDecimalToString(mSetting.weight * Double.parseDouble(mCurrentUnit.rate.split(",")[0])));
     }
 }

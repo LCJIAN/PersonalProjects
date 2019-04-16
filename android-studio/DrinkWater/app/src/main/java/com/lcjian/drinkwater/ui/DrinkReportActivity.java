@@ -23,6 +23,7 @@ import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.lcjian.drinkwater.util.DimenUtils;
+import com.lcjian.drinkwater.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -358,7 +359,7 @@ public class DrinkReportActivity extends BaseActivity {
                             return total / (Integer.parseInt(DateUtils.convertDateToStr(DateUtils.addDays(endDate, -1), "d"))
                                     - Integer.parseInt(DateUtils.convertDateToStr(startDate, "d")));
                         }),
-                (unit, aDouble) -> aDouble + " " + unit.name.split(",")[1])
+                (unit, aDouble) -> StringUtils.formatDecimalToString(aDouble) + " " + unit.name.split(",")[1])
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aString -> tv_weekly_average.setText(getString(R.string.id, aString)),
@@ -389,7 +390,7 @@ public class DrinkReportActivity extends BaseActivity {
                             return total / (Integer.parseInt(DateUtils.convertDateToStr(DateUtils.addDays(endDate, -1), "d"))
                                     - Integer.parseInt(DateUtils.convertDateToStr(startDate, "d")));
                         }),
-                (unit, aDouble) -> aDouble + " " + unit.name.split(",")[1])
+                (unit, aDouble) -> StringUtils.formatDecimalToString(aDouble) + " " + unit.name.split(",")[1])
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aString -> tv_monthly_average.setText(getString(R.string.eo, aString)),
@@ -435,7 +436,7 @@ public class DrinkReportActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pair -> {
-                            int a = (int) Math.round(pair.second);
+                            int a = StringUtils.formatDecimalToInt(pair.second);
                             tv_average_completion.setText(getString(R.string.ac, (int) (pair.first * 100)));
                             tv_drink_frequency.setText(getResources().getQuantityString(R.plurals.a, a, a));
                         },

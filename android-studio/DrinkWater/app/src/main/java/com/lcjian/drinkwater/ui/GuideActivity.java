@@ -99,7 +99,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
     private PublishSubject<Boolean> mSubject;
     private Disposable mDisposable;
-    private Disposable mDisposableU;
     private DataHolder mDataHolder;
 
     private boolean mDestroyed;
@@ -160,9 +159,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onDestroy() {
         mDisposable.dispose();
-        if (mDisposableU != null) {
-            mDisposableU.dispose();
-        }
         mDestroyed = true;
         super.onDestroy();
     }
@@ -237,9 +233,10 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         if (currentUnit != null) {
-            int minValue = (int) (config.minWeight * currentUnit.rate);
-            int maxValue = (int) (config.maxWeight * currentUnit.rate);
-            int value = (int) (setting.weight * currentUnit.rate) - 1;
+            double rate = Double.parseDouble(currentUnit.rate.split(",")[0]);
+            int minValue = (int) (config.minWeight * rate);
+            int maxValue = (int) (config.maxWeight * rate);
+            int value = (int) (setting.weight * rate) - 1;
 
             List<String> strings = new ArrayList<>();
             for (int i = minValue; i <= maxValue; i++) {
@@ -447,7 +444,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
                 Unit unit = mAppDatabase.unitDao().getAllSyncByName(pv_weight_unit.getContentByCurrValue() + "%").get(0);
                 mDataHolder.setting.unitId = unit.id;
-                mDataHolder.setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) / unit.rate;
+                mDataHolder.setting.weight = Integer.parseInt(pv_weight.getContentByCurrValue()) / Double.parseDouble(unit.rate.split(",")[0]);
                 mDataHolder.setting.intakeGoal = ComputeUtils.computeDailyRecommendIntakeGoal(mDataHolder.setting.weight, mDataHolder.setting.gender);
                 mAppDatabase.settingDao().update(mDataHolder.setting);
                 mState++;

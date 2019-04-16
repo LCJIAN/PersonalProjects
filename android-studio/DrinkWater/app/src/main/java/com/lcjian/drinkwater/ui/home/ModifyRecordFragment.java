@@ -16,6 +16,7 @@ import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseDialogFragment;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.lcjian.drinkwater.util.Spans;
+import com.lcjian.drinkwater.util.StringUtils;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Date;
@@ -130,7 +131,7 @@ public class ModifyRecordFragment extends BaseDialogFragment {
                     Unit unit = pair.second;
 
                     mRecord = record;
-                    switch ((int) Math.round(record.cupCapacity)) {
+                    switch (StringUtils.formatDecimalToInt(record.cupCapacity)) {
                         case 100:
                             iv_cup.setImageResource(R.drawable.ic_cup_100_ml);
                             break;
@@ -157,10 +158,11 @@ public class ModifyRecordFragment extends BaseDialogFragment {
                                     new ForegroundColorSpan(ContextCompat.getColor(tv_change_record_time.getContext(), R.color.colorAccent))));
 
                     String us = unit.name.split(",")[1];
-                    String s1 = record.cupCapacity * unit.rate / 4 + " " + us;
-                    String s2 = record.cupCapacity * unit.rate / 2 + " " + us;
-                    String s3 = record.cupCapacity * unit.rate / 4 * 3 + " " + us;
-                    String s4 = record.cupCapacity * unit.rate + " " + us;
+                    double rate = Double.parseDouble(unit.rate.split(",")[1]);
+                    String s1 = record.cupCapacity * rate / 4 + " " + us;
+                    String s2 = record.cupCapacity * rate / 2 + " " + us;
+                    String s3 = record.cupCapacity * rate / 4 * 3 + " " + us;
+                    String s4 = record.cupCapacity * rate + " " + us;
                     tv_percent_25_number.setText(s1);
                     tv_percent_50_number.setText(s2);
                     tv_percent_75_number.setText(s3);

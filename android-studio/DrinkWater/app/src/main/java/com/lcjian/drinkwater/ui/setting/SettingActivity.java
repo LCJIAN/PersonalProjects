@@ -13,6 +13,7 @@ import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.util.DateUtils;
+import com.lcjian.drinkwater.util.StringUtils;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.util.Date;
@@ -125,9 +126,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                     mSetting = setting;
 
-                    tv_intake_goal.setText(String.valueOf(setting.intakeGoal * unit.rate));
+                    tv_intake_goal.setText(StringUtils.formatDecimalToString(setting.intakeGoal * Double.parseDouble(unit.rate.split(",")[1])));
                     tv_gender.setText(setting.gender.equals(0) ? R.string.male : R.string.female);
-                    tv_weight.setText(String.valueOf(setting.weight * unit.rate));
+                    tv_weight.setText(StringUtils.formatDecimalToString(setting.weight * Double.parseDouble(unit.rate.split(",")[0])));
                     tv_wake_up_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(setting.wakeUpTime, "HH:mm"), "HH:mm a"));
                     tv_sleep_time.setText(DateUtils.convertDateToStr(DateUtils.convertStrToDate(setting.sleepTime, "HH:mm"), "HH:mm a"));
                     tv_reminder_interval.setText(getString(R.string.ef, String.valueOf(setting.reminderInterval)));

@@ -1,12 +1,12 @@
 package com.lcjian.drinkwater.util;
 
-import java.text.DecimalFormat;
-
 public class StringUtils {
 
-    private static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#");
+    public static String formatDecimalToString(Double aDouble) {
+        return String.valueOf(Math.round(aDouble));
+    }
 
-    public static String formatDecimal(Double aDouble) {
-        return DECIMAL_FORMAT.format(aDouble);
+    public static int formatDecimalToInt(Double aDouble) {
+        return (int) Math.round(aDouble);
     }
 }

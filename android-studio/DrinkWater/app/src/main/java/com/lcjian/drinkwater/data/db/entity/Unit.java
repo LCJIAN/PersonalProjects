@@ -15,6 +15,6 @@ public class Unit {
     public String name;
 
     @ColumnInfo(name = "rate")
-    public Double rate;
+    public String rate;
 
 }

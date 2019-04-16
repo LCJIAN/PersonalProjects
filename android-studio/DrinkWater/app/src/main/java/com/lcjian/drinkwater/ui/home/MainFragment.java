@@ -133,7 +133,7 @@ public class MainFragment extends BaseFragment {
 
                     @Override
                     public void onBind(Record data, SlimAdapter.SlimViewHolder<Record> viewHolder) {
-                        switch ((int) Math.round(data.cupCapacity)) {
+                        switch (StringUtils.formatDecimalToInt(data.cupCapacity)) {
                             case 100:
                                 viewHolder.image(R.id.iv_cup, R.drawable.ic_cup_100_ml_full);
                                 break;
@@ -155,7 +155,9 @@ public class MainFragment extends BaseFragment {
                         }
 
                         viewHolder.text(R.id.tv_record_time, DateUtils.convertDateToStr(data.timeAdded, "HH:mm"))
-                                .text(R.id.tv_intake, data.intake * mDataHolder.unit.rate + " " + mDataHolder.unit.name.split(",")[1]);
+                                .text(R.id.tv_intake,
+                                        StringUtils.formatDecimalToString(data.intake * Double.parseDouble(mDataHolder.unit.rate.split(",")[1]))
+                                                + " " + mDataHolder.unit.name.split(",")[1]);
                     }
                 })
                 .enableDiff(new SlimAdapter.DiffCallback() {
@@ -194,7 +196,7 @@ public class MainFragment extends BaseFragment {
                             }
 
                             int progress;
-                            if (Math.min(intake, dataHolder.setting.intakeGoal) == intake) {
+                            if (intake < dataHolder.setting.intakeGoal) {
                                 progress = (int) (intake * 100 / dataHolder.setting.intakeGoal);
                             } else {
                                 progress = 100;
@@ -202,18 +204,19 @@ public class MainFragment extends BaseFragment {
                             ObjectAnimator.ofInt(arc_progress, "progress", arc_progress.getProgress(), progress).start();
 
                             Context context = tv_daily_intake.getContext();
-                            tv_daily_intake.setText(StringUtils.formatDecimal(intake * dataHolder.unit.rate));
+                            double rate = Double.parseDouble(dataHolder.unit.rate.split(",")[1]);
+                            tv_daily_intake.setText(StringUtils.formatDecimalToString(intake * rate));
                             tv_daily_intake_goal.setText(new Spans()
-                                    .append("/" + StringUtils.formatDecimal(dataHolder.setting.intakeGoal * dataHolder.unit.rate),
+                                    .append("/" + StringUtils.formatDecimalToString(dataHolder.setting.intakeGoal * rate),
                                             new ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorTextBlack)),
                                             new AbsoluteSizeSpan(DimenUtils.spToPixels(40, context)))
                                     .append(dataHolder.unit.name.split(",")[1],
                                             new ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorTextBlack)),
                                             new AbsoluteSizeSpan(DimenUtils.spToPixels(25, context))));
-                            tv_cup_capacity.setText(new Spans().append(String.valueOf(dataHolder.cup.cupCapacity * dataHolder.unit.rate))
+                            tv_cup_capacity.setText(new Spans().append(StringUtils.formatDecimalToString(dataHolder.cup.cupCapacity * rate))
                                     .append(" ").append(dataHolder.unit.name.split(",")[1]));
 
-                            switch ((int) Math.round(dataHolder.cup.cupCapacity)) {
+                            switch (StringUtils.formatDecimalToInt(dataHolder.cup.cupCapacity)) {
                                 case 100:
                                     iv_cup_type.setImageResource(R.drawable.ic_cup_100_ml_drink);
                                     iv_cup_type_full.setImageResource(R.drawable.ic_cup_100_ml_full);
