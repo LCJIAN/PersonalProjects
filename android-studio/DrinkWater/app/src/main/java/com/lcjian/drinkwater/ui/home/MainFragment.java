@@ -73,6 +73,9 @@ public class MainFragment extends BaseFragment {
     @BindView(R.id.rv_today_records)
     RecyclerView rv_today_records;
 
+    private TextView tv_next_remind_time;
+    private TextView tv_next_remind_intake;
+
     private Unbinder unbinder;
 
     private Disposable mDisposable;
@@ -184,6 +187,8 @@ public class MainFragment extends BaseFragment {
                 });
         AdvanceAdapter advanceAdapter = new AdvanceAdapter(mAdapter);
         View header = LayoutInflater.from(view.getContext()).inflate(R.layout.daily_intake_remind_item, rv_today_records, false);
+        tv_next_remind_time = header.findViewById(R.id.tv_next_remind_time);
+        tv_next_remind_intake = header.findViewById(R.id.tv_intake);
         advanceAdapter.addHeader(header);
         rv_today_records.setAdapter(advanceAdapter);
 
@@ -192,8 +197,7 @@ public class MainFragment extends BaseFragment {
                 mAppDatabase.unitDao().getCurrentUnitAsync().map(units -> units.get(0)),
                 mAppDatabase.cupDao().getCurrentCupAsync().map(cups -> cups.get(0)),
                 mAppDatabase.recordDao().getAllAsyncByTime(today, DateUtils.addDays(today, 1)),
-                mAppDatabase.recordDao().getFirstAsync().map(records -> records.get(0))
-                        .onErrorReturnItem(new Record()),
+                mAppDatabase.recordDao().getFirstAsync().map(records -> records.isEmpty() ? new Record() : records.get(0)),
                 DataHolder::new)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -258,6 +262,11 @@ public class MainFragment extends BaseFragment {
                                     iv_cup_type_full.setImageResource(R.drawable.ic_cup_custom_ml_full);
                                     break;
                             }
+
+                            String nextIntake = StringUtils.formatDecimalToString(dataHolder.cup.cupCapacity * Double.parseDouble(dataHolder.unit.rate.split(",")[1]))
+                                    + " " + dataHolder.unit.name.split(",")[1];
+                            tv_next_remind_time.setText(mSettingSp.getString("next_notify_time", "13:00"));
+                            tv_next_remind_intake.setText(nextIntake);
 
                             mAdapter.updateData(dataHolder.records);
                         },
