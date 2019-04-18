@@ -17,7 +17,7 @@
             android:name=".ui.home.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.C.Main"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>

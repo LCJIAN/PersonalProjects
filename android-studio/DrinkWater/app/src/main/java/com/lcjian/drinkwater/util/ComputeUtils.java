@@ -16,4 +16,10 @@ public class ComputeUtils {
         }
         return (int) (s.getTime() - w.getTime()) / (60 * 1000);
     }
+
+    public static int computeDailyIntakeTimes(int minutes, int reminderInterval) {
+        return minutes % reminderInterval == 0 ? minutes / reminderInterval : minutes / reminderInterval + 1;
+    }
+
+
 }

@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -22,6 +21,7 @@ import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.di.component.AppComponent;
 import com.lcjian.drinkwater.ui.home.MainActivity;
+import com.lcjian.drinkwater.ui.home.MainFragment;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.lcjian.drinkwater.util.Utils;
 import com.lcjian.lib.window.Floating;
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -43,15 +42,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NotifyService extends Service {
 
-
     @Inject
     protected AppDatabase mAppDatabase;
 
     @Inject
     protected RxBus mRxBus;
-
-    @Named("setting")
-    protected SharedPreferences mSettingSp;
 
     private NotifyReceiver mNotifyReceiver;
     private ScreenOnOffReceiver mScreenOnOffReceiver;
@@ -183,9 +178,9 @@ public class NotifyService extends Service {
                                                 aBoolean -> sendBroadcast(new Intent().setAction(NotifyReceiver.ACTION_NOTIFY)),
                                                 throwable -> {
                                                 });
-                                mSettingSp.edit()
-                                        .putString("next_notify_time", DateUtils.convertDateToStr(new Date(System.currentTimeMillis() + delayTime), "HH:mm"))
-                                        .apply();
+                                sendBroadcast(new Intent()
+                                        .putExtra("next_notify_time", DateUtils.convertDateToStr(new Date(System.currentTimeMillis() + delayTime), "HH:mm"))
+                                        .setAction(MainFragment.NextNotifyTimeReceiver.ACTION_NEXT_NOTIFY_TIME));
                             }
                         },
                         throwable -> {
@@ -258,7 +253,8 @@ public class NotifyService extends Service {
             View view = floating.setContentView(R.layout.floating_pop_view);
             view.findViewById(R.id.btn_drink).setOnClickListener(v -> {
                 startActivity(new Intent(v.getContext(), MainActivity.class)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        .putExtra("drunk_water", true));
                 floating.dismiss();
             });
 

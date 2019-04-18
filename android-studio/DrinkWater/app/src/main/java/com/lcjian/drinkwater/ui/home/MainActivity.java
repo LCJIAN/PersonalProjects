@@ -18,10 +18,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +39,26 @@ public class MainActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.post(() -> {
-            new QBadgeView(this).bindTarget(
-                    ((ViewGroup) ((ViewGroup) navigationView
-                            .getChildAt(0))
-                            .getChildAt(1)).getChildAt(0)).setBadgeText("NEW");
-        });
         if (getSupportFragmentManager().findFragmentByTag("MainFragment") == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fl_fragment_container, new MainFragment(), "MainFragment").commit();
         }
 
         startService(new Intent(this, NotifyService.class));
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getBooleanExtra("drunk_water", false)) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag("MainFragment");
+            if (fragment != null) {
+                ((MainFragment) fragment).performDrink();
+            }
+        }
     }
 
     @Override
@@ -69,7 +77,9 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_setting) {
+        if (id == R.id.nav_remove_ads) {
+            mSettingSp.edit().putBoolean("ad_clicked", true).apply();
+        } else if (id == R.id.nav_setting) {
             startActivity(new Intent(this, SettingActivity.class));
         } else if (id == R.id.nav_history) {
             startActivity(new Intent(this, DrinkReportActivity.class));
@@ -78,5 +88,22 @@ public class MainActivity extends BaseActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupAdBadge();
+    }
+
+    private void setupAdBadge() {
+        if (!mSettingSp.getBoolean("ad_clicked", false)) {
+            navigationView.post(() -> new QBadgeView(this)
+                    .bindTarget(((ViewGroup) ((ViewGroup) navigationView
+                            .getChildAt(0))
+                            .getChildAt(1))
+                            .getChildAt(0))
+                    .setBadgeText("NEW"));
+        }
     }
 }

@@ -287,7 +287,7 @@ public class GuideFragment extends BaseFragment {
                     ll_how_to_monitor = v_fragment_guide_2.findViewById(R.id.ll_how_to_monitor);
 
                     int minutes = ComputeUtils.computeDailyTimeInMinutes(mSetting.wakeUpTime, mSetting.sleepTime);
-                    int times = minutes / mSetting.reminderInterval;
+                    int times = ComputeUtils.computeDailyIntakeTimes(minutes, mSetting.reminderInterval);
                     String intakeCup = StringUtils.formatDecimalToString(mSetting.intakeGoal / times)
                             + mUnit.name.split(",")[1];
 

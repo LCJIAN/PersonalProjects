@@ -1,7 +1,10 @@
 package com.lcjian.drinkwater.ui.home;
 
 import android.animation.ObjectAnimator;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -80,6 +83,7 @@ public class MainFragment extends BaseFragment {
 
     private Disposable mDisposable;
     private Disposable mDisposable2;
+    private Disposable mDisposable3;
 
     private SlimAdapter mAdapter;
 
@@ -92,6 +96,8 @@ public class MainFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
+
+    private NextNotifyTimeReceiver mNextNotifyTimeReceiver;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -265,13 +271,20 @@ public class MainFragment extends BaseFragment {
 
                             String nextIntake = StringUtils.formatDecimalToString(dataHolder.cup.cupCapacity * Double.parseDouble(dataHolder.unit.rate.split(",")[1]))
                                     + " " + dataHolder.unit.name.split(",")[1];
-                            tv_next_remind_time.setText(mSettingSp.getString("next_notify_time", "13:00"));
                             tv_next_remind_intake.setText(nextIntake);
 
                             mAdapter.updateData(dataHolder.records);
                         },
                         throwable -> {
                         });
+
+        Context context = getContext();
+        if (context != null) {
+            mNextNotifyTimeReceiver = new NextNotifyTimeReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(NextNotifyTimeReceiver.ACTION_NEXT_NOTIFY_TIME);
+            context.registerReceiver(mNextNotifyTimeReceiver, intentFilter);
+        }
     }
 
     @Override
@@ -280,6 +293,13 @@ public class MainFragment extends BaseFragment {
         mDisposable.dispose();
         if (mDisposable2 != null) {
             mDisposable2.dispose();
+        }
+        if (mDisposable3 != null) {
+            mDisposable3.dispose();
+        }
+        Context context = getContext();
+        if (context != null) {
+            context.unregisterReceiver(mNextNotifyTimeReceiver);
         }
         super.onDestroyView();
     }
@@ -297,6 +317,25 @@ public class MainFragment extends BaseFragment {
             this.setting = setting;
             this.records = records;
             this.firstRecord = firstRecord;
+        }
+    }
+
+    void performDrink() {
+        mDisposable3 = Single.just(true)
+                .delay(600, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> ll_drink.performClick());
+    }
+
+    public class NextNotifyTimeReceiver extends BroadcastReceiver {
+
+        public static final String ACTION_NEXT_NOTIFY_TIME = "drink.water.ACTION_NEXT_NOTIFY_TIME";
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            if (ACTION_NEXT_NOTIFY_TIME.equals(intent.getAction())) {
+                tv_next_remind_time.setText(intent.getStringExtra("next_notify_time"));
+            }
         }
     }
 }

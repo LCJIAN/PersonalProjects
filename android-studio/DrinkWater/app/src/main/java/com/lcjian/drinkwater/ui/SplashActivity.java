@@ -14,6 +14,7 @@ import com.lcjian.drinkwater.data.db.entity.Cup;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.data.db.entity.Unit;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
+import com.lcjian.drinkwater.ui.home.MainActivity;
 import com.lcjian.drinkwater.util.ComputeUtils;
 import com.lcjian.drinkwater.util.DateUtils;
 
@@ -111,13 +112,19 @@ public class SplashActivity extends BaseActivity {
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> {
-                            startActivity(new Intent(this, GuideActivity.class),
-                                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                getWindow().setExitTransition(new Fade().addTarget(getWindow().getDecorView()));
-                                finishAfterTransition();
-                            } else {
+                            if (mSettingSp.getBoolean("guided", false)) {
+                                startActivity(new Intent(this, MainActivity.class));
                                 finish();
+                            } else {
+                                mSettingSp.edit().putBoolean("guided", true).apply();
+                                startActivity(new Intent(this, GuideActivity.class),
+                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    getWindow().setExitTransition(new Fade().addTarget(getWindow().getDecorView()));
+                                    finishAfterTransition();
+                                } else {
+                                    finish();
+                                }
                             }
                         },
                         throwable -> {
