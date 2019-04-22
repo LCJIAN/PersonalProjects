@@ -1,11 +1,12 @@
 package com.lcjian.drinkwater.ui.home;
 
 import android.animation.ObjectAnimator;
-import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.lcjian.drinkwater.R;
+import com.lcjian.drinkwater.android.NotifyService;
 import com.lcjian.drinkwater.data.db.entity.Cup;
 import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
@@ -96,8 +98,6 @@ public class MainFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
-
-    private NextNotifyTimeReceiver mNextNotifyTimeReceiver;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -282,10 +282,11 @@ public class MainFragment extends BaseFragment {
 
         Context context = getContext();
         if (context != null) {
-            mNextNotifyTimeReceiver = new NextNotifyTimeReceiver();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(NextNotifyTimeReceiver.ACTION_NEXT_NOTIFY_TIME);
-            context.registerReceiver(mNextNotifyTimeReceiver, intentFilter);
+            Intent intent = new Intent(context, NotifyService.class);
+            context.startService(intent);
+            if (!bind) {
+                context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+            }
         }
     }
 
@@ -301,7 +302,10 @@ public class MainFragment extends BaseFragment {
         }
         Context context = getContext();
         if (context != null) {
-            context.unregisterReceiver(mNextNotifyTimeReceiver);
+            if (bind) {
+                context.unbindService(conn);
+                bind = false;
+            }
         }
         super.onDestroyView();
     }
@@ -324,6 +328,7 @@ public class MainFragment extends BaseFragment {
             }
         }
     }
+
     private static class DataHolder {
         private Setting setting;
         private Unit unit;
@@ -347,15 +352,22 @@ public class MainFragment extends BaseFragment {
                 .subscribe(aBoolean -> ll_drink.performClick());
     }
 
-    public class NextNotifyTimeReceiver extends BroadcastReceiver {
+    private boolean bind;
 
-        public static final String ACTION_NEXT_NOTIFY_TIME = "drink.water.ACTION_NEXT_NOTIFY_TIME";
+    private ServiceConnection conn = new ServiceConnection() {
 
         @Override
-        public void onReceive(final Context context, final Intent intent) {
-            if (ACTION_NEXT_NOTIFY_TIME.equals(intent.getAction())) {
-                tv_next_remind_time.setText(intent.getStringExtra("next_notify_time"));
-            }
+        public void onServiceDisconnected(ComponentName name) {
+            bind = false;
         }
-    }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            NotifyService.LocalBinder binder = (NotifyService.LocalBinder) service;
+            NotifyService bindService = binder.getService();
+            tv_next_remind_time.setText(bindService.getNextNotifyTime());
+            bindService.setListener(nextNotifyTime -> tv_next_remind_time.setText(nextNotifyTime));
+            bind = true;
+        }
+    };
 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.google.android.material.navigation.NavigationView;
 import com.lcjian.drinkwater.R;
-import com.lcjian.drinkwater.android.NotifyService;
 import com.lcjian.drinkwater.ui.DrinkReportActivity;
 import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.ui.setting.SettingActivity;
@@ -46,8 +45,6 @@ public class MainActivity extends BaseActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fl_fragment_container, new MainFragment(), "MainFragment").commit();
         }
-
-        startService(new Intent(this, NotifyService.class));
     }
 
     @Override

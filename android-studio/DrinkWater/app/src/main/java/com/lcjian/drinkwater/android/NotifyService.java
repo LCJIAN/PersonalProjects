@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Binder;
 import android.os.IBinder;
 import android.view.View;
 
@@ -21,7 +22,6 @@ import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
 import com.lcjian.drinkwater.di.component.AppComponent;
 import com.lcjian.drinkwater.ui.home.MainActivity;
-import com.lcjian.drinkwater.ui.home.MainFragment;
 import com.lcjian.drinkwater.util.DateUtils;
 import com.lcjian.drinkwater.util.Utils;
 import com.lcjian.lib.window.Floating;
@@ -62,7 +62,7 @@ public class NotifyService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
     }
 
     @Override
@@ -193,9 +193,10 @@ public class NotifyService extends Service {
                                                 aBoolean -> sendBroadcast(new Intent().setAction(NotifyReceiver.ACTION_NOTIFY)),
                                                 throwable -> {
                                                 });
-                                sendBroadcast(new Intent()
-                                        .putExtra("next_notify_time", DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm"))
-                                        .setAction(MainFragment.NextNotifyTimeReceiver.ACTION_NEXT_NOTIFY_TIME));
+                                mNextNotifyTime = DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm");
+                                if (mListener != null) {
+                                    mListener.onNextNotifyTimeChange(mNextNotifyTime);
+                                }
                             }
                         },
                         Timber::e);
@@ -289,5 +290,31 @@ public class NotifyService extends Service {
                 mRxBus.send(new ScreenOnOffEvent(true));
             }
         }
+    }
+
+    private String mNextNotifyTime;
+
+    private OnNextNotifyTimeChangeListener mListener;
+
+    private LocalBinder mBinder = new LocalBinder();
+
+    public String getNextNotifyTime() {
+        return mNextNotifyTime;
+    }
+
+    public void setListener(OnNextNotifyTimeChangeListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface OnNextNotifyTimeChangeListener {
+        void onNextNotifyTimeChange(String nextNotifyTime);
+    }
+
+    public class LocalBinder extends Binder {
+
+        public NotifyService getService() {
+            return NotifyService.this;
+        }
+
     }
 }
