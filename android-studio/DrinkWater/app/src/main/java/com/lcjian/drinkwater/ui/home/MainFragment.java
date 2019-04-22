@@ -366,7 +366,7 @@ public class MainFragment extends BaseFragment {
             NotifyService.LocalBinder binder = (NotifyService.LocalBinder) service;
             NotifyService bindService = binder.getService();
             tv_next_remind_time.setText(bindService.getNextNotifyTime());
-            bindService.setListener(nextNotifyTime -> tv_next_remind_time.setText(nextNotifyTime));
+            bindService.setListener(nextNotifyTime -> tv_next_remind_time.post(() -> tv_next_remind_time.setText(nextNotifyTime)));
             bind = true;
         }
     };
