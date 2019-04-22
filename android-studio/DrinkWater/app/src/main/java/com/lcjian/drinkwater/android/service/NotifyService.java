@@ -187,7 +187,7 @@ public class NotifyService extends Service {
                                                 aBoolean -> sendBroadcast(new Intent().setAction(NotifyReceiver.ACTION_NOTIFY)),
                                                 throwable -> {
                                                 });
-                                notifyScanStateChanged(DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm"));
+                                notifyNextNotifyTimeChanged(DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm"));
                             }
                         },
                         Timber::e);
@@ -247,7 +247,7 @@ public class NotifyService extends Service {
 
     };
 
-    private void notifyScanStateChanged(String nextNotifyTime) {
+    private void notifyNextNotifyTimeChanged(String nextNotifyTime) {
         mNextNotifyTime = nextNotifyTime;
         // Broadcast to all clients the new value.
         final int N = mCallbacks.beginBroadcast();
