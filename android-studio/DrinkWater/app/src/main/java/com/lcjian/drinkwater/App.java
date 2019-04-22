@@ -10,6 +10,8 @@ import com.lcjian.drinkwater.di.module.RestAPIModule;
 import com.lcjian.drinkwater.di.module.RxBusModule;
 import com.lcjian.drinkwater.di.module.SharedPreferenceModule;
 import com.squareup.leakcanary.LeakCanary;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -41,8 +43,13 @@ public class App extends Application {
                 .sharedPreferenceModule(new SharedPreferenceModule())
                 .build();
 
+        UMConfigure.init(this, Constants.U_KEY, Constants.U_CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, null);
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new ErrorTree());
         }
         LeakCanary.install(this);
 

@@ -39,6 +39,7 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class NotifyService extends Service {
 
@@ -122,7 +123,11 @@ public class NotifyService extends Service {
                             if (dataHolder.isShowing) {
                                 return;
                             }
+
+                            Date today = DateUtils.today();
+                            Date now = DateUtils.now();
                             boolean shouldNotify = false;
+
                             if (dataHolder.setting.reminderMode != 0) {     // mute & auto
                                 if (dataHolder.setting.reminderAlert) {     // 解锁提醒
                                     if (dataHolder.isScreenOn) {
@@ -134,7 +139,6 @@ public class NotifyService extends Service {
 
                                 if (shouldNotify) {
                                     if (!dataHolder.setting.furtherReminder) {   // 持续提醒关闭
-                                        Date today = DateUtils.today();
                                         List<Record> records = mAppDatabase.recordDao().getAllSyncByTime(today, DateUtils.addDays(today, 1));
                                         double total = 0d;
                                         for (Record record : records) {
@@ -145,29 +149,40 @@ public class NotifyService extends Service {
                                         }
                                     }
                                 }
-
-                                if (shouldNotify) { // 判断时间是否在睡觉之后
-                                    Date now = DateUtils.now();
-                                    String nowStr = DateUtils.convertDateToStr(now);
-                                    Date wakeUpTime = DateUtils.convertStrToDate(nowStr + " " + dataHolder.setting.wakeUpTime, "yyyy-MM-dd HH:mm");
-                                    Date sleepTime = DateUtils.convertStrToDate(nowStr + " " + dataHolder.setting.sleepTime, "yyyy-MM-dd HH:mm");
-                                    if (DateUtils.isAfter(wakeUpTime, sleepTime)) {
-                                        sleepTime = DateUtils.addDays(sleepTime, 1);
-                                    }
-                                    if (DateUtils.isAfter(now, sleepTime)) {
-                                        shouldNotify = false;
-                                    }
-                                }
                             }
 
                             if (shouldNotify) {
-                                long delayTime;
-                                if (dataHolder.record.timeAdded == null) {
-                                    delayTime = 60 * 1000;
+
+                                long delayTime = 0;
+
+                                boolean isSleeping;
+                                String nowStr = DateUtils.convertDateToStr(now);
+                                Date wakeUpTime = DateUtils.convertStrToDate(nowStr + " " + dataHolder.setting.wakeUpTime, "yyyy-MM-dd HH:mm");
+                                Date sleepTime = DateUtils.convertStrToDate(nowStr + " " + dataHolder.setting.sleepTime, "yyyy-MM-dd HH:mm");
+                                if (DateUtils.isBefore(wakeUpTime, sleepTime)) {
+                                    isSleeping = DateUtils.isBefore(now, wakeUpTime) || DateUtils.isAfter(now, sleepTime);
+                                    if (isSleeping) {
+                                        if (DateUtils.isBefore(now, wakeUpTime)) {
+                                            delayTime = wakeUpTime.getTime() + 10 * 60 * 1000 - now.getTime(); // 起床10分钟后
+                                        } else {
+                                            delayTime = DateUtils.addDays(wakeUpTime, 1).getTime() + 10 * 60 * 1000 - now.getTime(); // 起床10分钟后
+                                        }
+                                    }
                                 } else {
-                                    delayTime = dataHolder.record.timeAdded.getTime() + dataHolder.setting.reminderInterval * 60 * 1000 - DateUtils.now().getTime();
-                                    if (delayTime < 0) {
-                                        delayTime = 20 * 60 * 1000;
+                                    isSleeping = DateUtils.isBefore(now, wakeUpTime) && DateUtils.isAfter(now, sleepTime);
+                                    if (isSleeping) {
+                                        delayTime = wakeUpTime.getTime() + 10 * 60 * 1000 - now.getTime(); // 起床10分钟后
+                                    }
+                                }
+
+                                if (!isSleeping) {
+                                    if (dataHolder.latestRecord.timeAdded == null) {  // 未喝过水
+                                        delayTime = 60 * 1000;                  // 1分钟后
+                                    } else {
+                                        delayTime = dataHolder.latestRecord.timeAdded.getTime() + dataHolder.setting.reminderInterval * 60 * 1000 - now.getTime();
+                                        if (delayTime < 0) {                    // 时间到了未喝水
+                                            delayTime = 20 * 60 * 1000;         // 20分钟后
+                                        }
                                     }
                                 }
 
@@ -179,12 +194,11 @@ public class NotifyService extends Service {
                                                 throwable -> {
                                                 });
                                 sendBroadcast(new Intent()
-                                        .putExtra("next_notify_time", DateUtils.convertDateToStr(new Date(System.currentTimeMillis() + delayTime), "HH:mm"))
+                                        .putExtra("next_notify_time", DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm"))
                                         .setAction(MainFragment.NextNotifyTimeReceiver.ACTION_NEXT_NOTIFY_TIME));
                             }
                         },
-                        throwable -> {
-                        });
+                        Timber::e);
 
         mDisposable3 = Flowable.just(true)
                 .delay(2, TimeUnit.SECONDS)
@@ -201,13 +215,13 @@ public class NotifyService extends Service {
         private Boolean isShowing;
         private Boolean isScreenOn;
         private Setting setting;
-        private Record record;
+        private Record latestRecord;
 
-        private DataHolder(Boolean isShowing, Boolean isScreenOn, Setting setting, Record record) {
+        private DataHolder(Boolean isShowing, Boolean isScreenOn, Setting setting, Record latestRecord) {
             this.isShowing = isShowing;
             this.isScreenOn = isScreenOn;
             this.setting = setting;
-            this.record = record;
+            this.latestRecord = latestRecord;
         }
     }
 

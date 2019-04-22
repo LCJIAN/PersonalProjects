@@ -21,5 +21,4 @@ public class ComputeUtils {
         return minutes % reminderInterval == 0 ? minutes / reminderInterval : minutes / reminderInterval + 1;
     }
 
-
 }

@@ -1,5 +1,6 @@
 package com.lcjian.drinkwater.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.lcjian.drinkwater.ui.base.BaseActivity;
 import com.lcjian.drinkwater.ui.home.MainActivity;
 import com.lcjian.drinkwater.util.ComputeUtils;
 import com.lcjian.drinkwater.util.DateUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -25,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -52,7 +53,8 @@ public class SplashActivity extends BaseActivity {
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
 
-        mDisposable = Single.just(true)
+        mDisposable = new RxPermissions(this)
+                .request(Manifest.permission.READ_PHONE_STATE)
                 .map(aBoolean -> {
                     List<Unit> units = mAppDatabase.unitDao().getAllSync();
                     if (units.isEmpty()) {
@@ -112,18 +114,20 @@ public class SplashActivity extends BaseActivity {
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> {
-                            if (mSettingSp.getBoolean("guided", false)) {
-                                startActivity(new Intent(this, MainActivity.class));
-                                finish();
-                            } else {
-                                mSettingSp.edit().putBoolean("guided", true).apply();
-                                startActivity(new Intent(this, GuideActivity.class),
-                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    getWindow().setExitTransition(new Fade().addTarget(getWindow().getDecorView()));
-                                    finishAfterTransition();
-                                } else {
+                            if (aBoolean) {
+                                if (mSettingSp.getBoolean("guided", false)) {
+                                    startActivity(new Intent(this, MainActivity.class));
                                     finish();
+                                } else {
+                                    mSettingSp.edit().putBoolean("guided", true).apply();
+                                    startActivity(new Intent(this, GuideActivity.class),
+                                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        getWindow().setExitTransition(new Fade().addTarget(getWindow().getDecorView()));
+                                        finishAfterTransition();
+                                    } else {
+                                        finish();
+                                    }
                                 }
                             }
                         },
