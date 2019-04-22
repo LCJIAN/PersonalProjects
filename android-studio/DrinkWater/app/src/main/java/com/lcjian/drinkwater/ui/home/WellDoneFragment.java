@@ -1,5 +1,6 @@
 package com.lcjian.drinkwater.ui.home;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,8 @@ public class WellDoneFragment extends BaseDialogFragment {
 
     private Unbinder unbinder;
 
+    private OnDismissListener mOnDismissListener;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,5 +46,22 @@ public class WellDoneFragment extends BaseDialogFragment {
     public void onDestroyView() {
         unbinder.unbind();
         super.onDestroyView();
+    }
+
+    public WellDoneFragment setOnDismissListener(OnDismissListener onDismissListener) {
+        this.mOnDismissListener = onDismissListener;
+        return this;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss();
+        }
+    }
+
+    public interface OnDismissListener {
+        void onDismiss();
     }
 }

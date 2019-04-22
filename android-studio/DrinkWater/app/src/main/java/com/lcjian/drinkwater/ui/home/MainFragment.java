@@ -116,7 +116,9 @@ public class MainFragment extends BaseFragment {
             mDisposable2 = Single.just(true)
                     .delay(600, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aBoolean -> new WellDoneFragment().show(getChildFragmentManager(), "WellDoneFragment"));
+                    .subscribe(aBoolean -> new WellDoneFragment()
+                            .setOnDismissListener(this::showReachedIntakeGoal)
+                            .show(getChildFragmentManager(), "WellDoneFragment"));
         });
         fl_change_cup.setOnClickListener(v -> new ChangeCupFragment().show(getChildFragmentManager(), "ChangeCupFragment"));
 
@@ -304,6 +306,24 @@ public class MainFragment extends BaseFragment {
         super.onDestroyView();
     }
 
+    private void showReachedIntakeGoal() {
+        if (!mSettingSp.getBoolean("reach_intake_goal_fragment_showed", false)) {
+            Date today = DateUtils.today();
+            Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+            List<Record> records = mAppDatabase.recordDao().getAllSyncByTime(today, DateUtils.addDays(today, 1));
+
+            double intake = 0d;
+            if (!records.isEmpty()) {
+                for (Record record : records) {
+                    intake += record.intake;
+                }
+            }
+            if (intake >= setting.intakeGoal) {
+                new ReachIntakeGoalFragment().show(getChildFragmentManager(), "ReachIntakeGoalFragment");
+                mSettingSp.edit().putBoolean("reach_intake_goal_fragment_showed", true).apply();
+            }
+        }
+    }
     private static class DataHolder {
         private Setting setting;
         private Unit unit;
