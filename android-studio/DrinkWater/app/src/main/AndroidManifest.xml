@@ -53,7 +53,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.History" />
 
-        <service android:name=".android.NotifyService" />
+        <service
+            android:name=".android.service.NotifyService"
+            android:exported="false"
+            android:process=":remote" />
     </application>
 
 </manifest>

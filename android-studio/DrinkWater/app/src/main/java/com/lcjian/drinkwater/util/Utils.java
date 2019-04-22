@@ -13,7 +13,7 @@ public class Utils {
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager
                 .getRunningAppProcesses();
         for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.processName.equals(context.getPackageName())) {
+            if (appProcess.processName.contains(context.getPackageName())) {
                 /*
                  *  BACKGROUND=400 EMPTY=500 FOREGROUND=100
                  *  GONE=1000 PERCEPTIBLE=130 SERVICE=300 ISIBLE=200

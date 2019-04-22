@@ -1,4 +1,4 @@
-package com.lcjian.drinkwater.android;
+package com.lcjian.drinkwater.android.service;
 
 import android.app.Notification;
 import android.app.Service;
@@ -9,8 +9,9 @@ import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
 import android.view.View;
 
 import com.lcjian.drinkwater.App;
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.util.Pair;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -51,6 +53,7 @@ public class NotifyService extends Service {
 
     private NotifyReceiver mNotifyReceiver;
     private ScreenOnOffReceiver mScreenOnOffReceiver;
+    private SettingRecordChangeReceiver mSettingRecordChangeReceiver;
 
     private Disposable mDisposable;
     private Disposable mDisposable2;
@@ -59,11 +62,7 @@ public class NotifyService extends Service {
     private SoundPool mSoundPool;
     private int mSoundID;
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
+    private String mNextNotifyTime;
 
     @Override
     public void onCreate() {
@@ -83,6 +82,12 @@ public class NotifyService extends Service {
             intentFilter.addAction(Intent.ACTION_USER_PRESENT);
             registerReceiver(mScreenOnOffReceiver, intentFilter);
         }
+        {
+            mSettingRecordChangeReceiver = new SettingRecordChangeReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(SettingRecordChangeReceiver.ACTION_SETTING_RECORD_CHANGE);
+            registerReceiver(mSettingRecordChangeReceiver, intentFilter);
+        }
         mSoundPool = new SoundPool(1,// 同时播放的音效
                 AudioManager.STREAM_MUSIC, 0);
         mSoundID = mSoundPool.load(this, R.raw.water, 1);
@@ -93,27 +98,16 @@ public class NotifyService extends Service {
         appComponent.inject(this);
     }
 
-    @Override
-    public void onDestroy() {
-        unregisterReceiver(mNotifyReceiver);
-        unregisterReceiver(mScreenOnOffReceiver);
-        mDisposable.dispose();
-        if (mDisposable2 != null) {
-            mDisposable2.dispose();
-        }
-        if (mDisposable3 != null) {
-            mDisposable3.dispose();
-        }
-        mSoundPool.release();
-        super.onDestroy();
-    }
-
     private void setupWorker() {
         mDisposable = Flowable.combineLatest(
                 mRxBus.asFlowable().filter(o -> o instanceof FloatingShowDismissEvent).map(o -> ((FloatingShowDismissEvent) o).isShowing),
                 mRxBus.asFlowable().filter(o -> o instanceof ScreenOnOffEvent).map(o -> ((ScreenOnOffEvent) o).isScreenOn),
-                mAppDatabase.settingDao().getAllAsync().map(settings -> settings.get(0)),
-                mAppDatabase.recordDao().getLatestAsync().map(records -> records.isEmpty() ? new Record() : records.get(0)),
+                mRxBus.asFlowable().filter(o -> o instanceof SettingRecordChangeEvent).map(o -> {
+                    Setting setting = mAppDatabase.settingDao().getAllSync().get(0);
+                    List<Record> records = mAppDatabase.recordDao().getLatestSync();
+                    Record record = records.isEmpty() ? new Record() : records.get(0);
+                    return Pair.create(setting, record);
+                }),
                 DataHolder::new)
                 .subscribeOn(Schedulers.io())
                 .subscribe(dataHolder -> {
@@ -193,10 +187,7 @@ public class NotifyService extends Service {
                                                 aBoolean -> sendBroadcast(new Intent().setAction(NotifyReceiver.ACTION_NOTIFY)),
                                                 throwable -> {
                                                 });
-                                mNextNotifyTime = DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm");
-                                if (mListener != null) {
-                                    mListener.onNextNotifyTimeChange(mNextNotifyTime);
-                                }
+                                notifyScanStateChanged(DateUtils.convertDateToStr(new Date(now.getTime() + delayTime), "HH:mm"));
                             }
                         },
                         Timber::e);
@@ -212,18 +203,83 @@ public class NotifyService extends Service {
                         });
     }
 
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(mNotifyReceiver);
+        unregisterReceiver(mScreenOnOffReceiver);
+        unregisterReceiver(mSettingRecordChangeReceiver);
+        mDisposable.dispose();
+        if (mDisposable2 != null) {
+            mDisposable2.dispose();
+        }
+        if (mDisposable3 != null) {
+            mDisposable3.dispose();
+        }
+        mSoundPool.release();
+        mCallbacks.kill();
+        super.onDestroy();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    final RemoteCallbackList<INotifierCallback> mCallbacks = new RemoteCallbackList<>();
+
+    private final INotifier.Stub mBinder = new INotifier.Stub() {
+
+        @Override
+        public String getNextNotifyTime() {
+            return mNextNotifyTime;
+        }
+
+        @Override
+        public void registerCallback(INotifierCallback cb) {
+            if (cb != null) mCallbacks.register(cb);
+        }
+
+        @Override
+        public void unregisterCallback(INotifierCallback cb) {
+            if (cb != null) mCallbacks.unregister(cb);
+        }
+
+    };
+
+    private void notifyScanStateChanged(String nextNotifyTime) {
+        mNextNotifyTime = nextNotifyTime;
+        // Broadcast to all clients the new value.
+        final int N = mCallbacks.beginBroadcast();
+        for (int i = 0; i < N; i++) {
+            try {
+                mCallbacks.getBroadcastItem(i).onNextNotifyTimeChanged(nextNotifyTime);
+            } catch (RemoteException e) {
+                // The RemoteCallbackList will take care of removing
+                // the dead object for us.
+                Timber.d(e);
+            }
+        }
+        mCallbacks.finishBroadcast();
+    }
+
+
     private static class DataHolder {
         private Boolean isShowing;
         private Boolean isScreenOn;
         private Setting setting;
         private Record latestRecord;
 
-        private DataHolder(Boolean isShowing, Boolean isScreenOn, Setting setting, Record latestRecord) {
+        private DataHolder(Boolean isShowing, Boolean isScreenOn, Pair<Setting, Record> pair) {
             this.isShowing = isShowing;
             this.isScreenOn = isScreenOn;
-            this.setting = setting;
-            this.latestRecord = latestRecord;
+            this.setting = pair.first;
+            this.latestRecord = pair.second;
         }
+    }
+
+    private static class SettingRecordChangeEvent {
+
     }
 
     private static class ScreenOnOffEvent {
@@ -292,29 +348,15 @@ public class NotifyService extends Service {
         }
     }
 
-    private String mNextNotifyTime;
+    public class SettingRecordChangeReceiver extends BroadcastReceiver {
 
-    private OnNextNotifyTimeChangeListener mListener;
+        public static final String ACTION_SETTING_RECORD_CHANGE = "drink.water.ACTION_SETTING_RECORD_CHANGE";
 
-    private LocalBinder mBinder = new LocalBinder();
-
-    public String getNextNotifyTime() {
-        return mNextNotifyTime;
-    }
-
-    public void setListener(OnNextNotifyTimeChangeListener listener) {
-        this.mListener = listener;
-    }
-
-    public interface OnNextNotifyTimeChangeListener {
-        void onNextNotifyTimeChange(String nextNotifyTime);
-    }
-
-    public class LocalBinder extends Binder {
-
-        public NotifyService getService() {
-            return NotifyService.this;
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_SETTING_RECORD_CHANGE.equals(intent.getAction())) {
+                mRxBus.send(new SettingRecordChangeEvent());
+            }
         }
-
     }
 }

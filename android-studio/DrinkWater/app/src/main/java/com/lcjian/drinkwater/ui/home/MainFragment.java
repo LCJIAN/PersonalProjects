@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
@@ -20,7 +23,9 @@ import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.lcjian.drinkwater.R;
-import com.lcjian.drinkwater.android.NotifyService;
+import com.lcjian.drinkwater.android.service.INotifier;
+import com.lcjian.drinkwater.android.service.INotifierCallback;
+import com.lcjian.drinkwater.android.service.NotifyService;
 import com.lcjian.drinkwater.data.db.entity.Cup;
 import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
@@ -35,6 +40,7 @@ import com.lcjian.drinkwater.util.StringUtils;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
+import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -276,22 +282,37 @@ public class MainFragment extends BaseFragment {
                             tv_next_remind_intake.setText(nextIntake);
 
                             mAdapter.updateData(dataHolder.records);
+
+                            context.sendBroadcast(new Intent().setAction(NotifyService.SettingRecordChangeReceiver.ACTION_SETTING_RECORD_CHANGE));
                         },
                         throwable -> {
                         });
+
+        mHandler = new NotifierHandler(this);
 
         Context context = getContext();
         if (context != null) {
             Intent intent = new Intent(context, NotifyService.class);
             context.startService(intent);
-            if (!bind) {
-                context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
-            }
+            context.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
         }
     }
 
     @Override
     public void onDestroyView() {
+        try {
+            if (mNotifier != null) {
+                mNotifier.unregisterCallback(mNotifierCallback);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mNotifier = null;
+        Context context = getContext();
+        if (context != null) {
+            context.unbindService(mServiceConnection);
+        }
+
         unbinder.unbind();
         mDisposable.dispose();
         if (mDisposable2 != null) {
@@ -300,14 +321,73 @@ public class MainFragment extends BaseFragment {
         if (mDisposable3 != null) {
             mDisposable3.dispose();
         }
-        Context context = getContext();
-        if (context != null) {
-            if (bind) {
-                context.unbindService(conn);
-                bind = false;
+        super.onDestroyView();
+    }
+
+    private INotifier mNotifier;
+
+    private Handler mHandler;
+
+    private INotifierCallback mNotifierCallback = new INotifierCallback.Stub() {
+
+        @Override
+        public void onNextNotifyTimeChanged(String nextNotifyTime) {
+            Message message = Message.obtain();
+            message.what = 0;
+            message.obj = nextNotifyTime;
+            mHandler.sendMessage(message);
+        }
+    };
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mNotifier = INotifier.Stub.asInterface(service);
+            String nextNotifyTime = null;
+            try {
+                nextNotifyTime = mNotifier.getNextNotifyTime();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            Message message = Message.obtain();
+            message.what = 0;
+            message.obj = nextNotifyTime;
+            mHandler.sendMessage(message);
+            try {
+                mNotifier.registerCallback(mNotifierCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
         }
-        super.onDestroyView();
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            try {
+                mNotifier.unregisterCallback(mNotifierCallback);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            mNotifier = null;
+        }
+    };
+
+    private static class NotifierHandler extends Handler {
+        private WeakReference<MainFragment> mMainFragment;
+
+        NotifierHandler(MainFragment mainFragment) {
+            mMainFragment = new WeakReference<>(mainFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainFragment mainFragment = mMainFragment.get();
+            if (mainFragment != null && mainFragment.tv_next_remind_time != null) {
+                if (msg.what == 0) {
+                    mainFragment.tv_next_remind_time.setText(msg.obj == null ? "" : msg.obj.toString());
+                }
+            }
+        }
     }
 
     private void showReachedIntakeGoal() {
@@ -351,23 +431,4 @@ public class MainFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> ll_drink.performClick());
     }
-
-    private boolean bind;
-
-    private ServiceConnection conn = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            bind = false;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            NotifyService.LocalBinder binder = (NotifyService.LocalBinder) service;
-            NotifyService bindService = binder.getService();
-            tv_next_remind_time.setText(bindService.getNextNotifyTime());
-            bindService.setListener(nextNotifyTime -> tv_next_remind_time.post(() -> tv_next_remind_time.setText(nextNotifyTime)));
-            bind = true;
-        }
-    };
 }
