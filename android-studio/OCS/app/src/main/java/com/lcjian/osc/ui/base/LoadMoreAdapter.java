@@ -2,7 +2,7 @@ package com.lcjian.osc.ui.base;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 public class LoadMoreAdapter extends AdvanceAdapter {

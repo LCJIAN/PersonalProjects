@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.lcjian.lib.areader.widget.RatioLayout
+        android:id="@+id/ratioLayout"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:fixedSide="width"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:ratio="1.4">
+
+        <ImageView
+            android:id="@+id/iv_book_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </com.lcjian.lib.areader.widget.RatioLayout>
+
+    <TextView
+        android:id="@+id/tv_book_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Large"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@+id/ratioLayout"
+        app:layout_constraintTop_toTopOf="@+id/ratioLayout"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_book_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@+id/ratioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tv_book_name"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_book_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@+id/ratioLayout"
+        app:layout_constraintTop_toBottomOf="@+id/tv_book_author"
+        tools:text="TextView" />
+</android.support.constraint.ConstraintLayout>

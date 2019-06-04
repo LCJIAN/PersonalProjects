@@ -2,8 +2,8 @@ package com.lcjian.osc.ui.base;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import com.lcjian.osc.App;
 import com.lcjian.osc.RxBus;

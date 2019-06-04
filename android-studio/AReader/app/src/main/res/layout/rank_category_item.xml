@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_rank_category_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_rank_category_bg"
+    android:drawableLeft="@drawable/selector_indicator_longer"
+    android:drawablePadding="8dp"
+    android:drawableStart="@drawable/selector_indicator_longer"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:paddingTop="16dp"
+    android:textAppearance="@style/TextAppearance.AppTheme.Small"
+    android:textColor="@color/selector_rank_category_text">
+
+</CheckedTextView>

@@ -1,6 +1,6 @@
 package com.lcjian.osc.di.module;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.lcjian.osc.RxBus;
 import com.lcjian.osc.di.scope.ApplicationScope;

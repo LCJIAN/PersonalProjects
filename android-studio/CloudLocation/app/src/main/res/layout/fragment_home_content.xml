@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/v_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fl_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_click_to_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/shape_circle_half_white_bg"
+            android:gravity="center"
+            android:paddingLeft="48dp"
+            android:paddingRight="16dp"
+            android:text="@string/click_to_refresh"
+            android:textAppearance="@style/TextAppearance.AppTheme.Small"
+            android:textColor="#ff666666" />
+
+        <TextView
+            android:id="@+id/tv_countdown"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/shape_circle_blue"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+            android:textColor="@android:color/white"
+            tools:text="15" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/cv_change_map_layer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shape_circle_white"
+        android:elevation="16dp"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_map_layer" />
+
+    <ImageView
+        android:id="@+id/cv_change_to_panorama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/shape_circle_white"
+        android:elevation="16dp"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="@+id/cv_change_map_layer"
+        app:layout_constraintTop_toBottomOf="@+id/cv_change_map_layer"
+        app:srcCompat="@drawable/ic_panorama" />
+
+    <ImageView
+        android:id="@+id/iv_show_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="27dp"
+        android:background="@drawable/shape_circle_white"
+        android:elevation="16dp"
+        android:padding="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_distance" />
+
+    <ImageView
+        android:id="@+id/iv_go_to_device_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/shape_circle_white"
+        android:elevation="16dp"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_show_distance"
+        app:layout_constraintStart_toStartOf="@+id/iv_show_distance"
+        app:srcCompat="@drawable/ic_device_location" />
+
+    <ImageView
+        android:id="@+id/iv_go_to_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/shape_circle_white"
+        android:elevation="16dp"
+        android:padding="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_go_to_device_location"
+        app:layout_constraintStart_toStartOf="@+id/iv_go_to_device_location"
+        app:srcCompat="@drawable/ic_my_location" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_go_to_map_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="21dp"
+        app:cardElevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="7.5dp"
+            app:srcCompat="@drawable/ic_map_navigation" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_zoom_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cv_go_to_map_navigation"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="82dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_zoom_in"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="7.5dp"
+                app:srcCompat="@drawable/sy_fd" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/iv_zoom_out"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="7.5dp"
+                app:srcCompat="@drawable/sy_suoxiao" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/btn_search_device"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_search_device_btn_bg"
+        android:gravity="center"
+        android:text="@string/search_device"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/sy_jlbj"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ff333333"
+        app:layout_constraintBottom_toTopOf="@+id/btn_search_device"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="TextView" />
+
+</android.support.constraint.ConstraintLayout>

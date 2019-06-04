@@ -14,15 +14,15 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
 //        release {
 //            storeFile file("../lcjian.keystore")
-//            storePassword "9a11b00c"
-//            keyAlias "liaocj"
-//            keyPassword "9a11b00c"
+//            storePassword "*"
+//            keyAlias "*"
+//            keyPassword "*"
 //        }
 //        myConfig {
 //            storeFile file("C:\\Users\\成见\\Desktop\\lcjian.keystore")
@@ -59,9 +59,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     implementation 'com.google.dagger:dagger:latest.integration'
     annotationProcessor 'com.google.dagger:dagger-compiler:latest.integration'
@@ -73,10 +73,10 @@ dependencies {
     implementation 'com.jakewharton.rxrelay2:rxrelay:latest.integration'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:latest.integration'
     // database
-    implementation "android.arch.persistence.room:runtime:latest.integration"
-    implementation "android.arch.persistence.room:rxjava2:latest.integration"
-    annotationProcessor "android.arch.persistence.room:compiler:latest.integration"
-    testImplementation "android.arch.persistence.room:testing:latest.integration"
+    implementation 'androidx.room:room-runtime:2.0.0'
+    implementation 'androidx.room:room-rxjava2:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    testImplementation 'androidx.room:room-testing:2.0.0'
     // http
     implementation 'com.squareup.okhttp3:okhttp:latest.integration'
     implementation 'com.squareup.okhttp3:logging-interceptor:latest.integration'
@@ -99,6 +99,6 @@ dependencies {
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:latest.integration'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }

@@ -2,8 +2,8 @@ package com.lcjian.osc.ui.base;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.lcjian.osc.App;
 import com.lcjian.osc.RxBus;

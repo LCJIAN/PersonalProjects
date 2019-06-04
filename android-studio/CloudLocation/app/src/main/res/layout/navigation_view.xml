@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="280dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="280dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_user_avatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginRight="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/default_avatar" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff232323"
+                app:layout_constraintEnd_toEndOf="@+id/iv_user_avatar"
+                app:layout_constraintStart_toStartOf="@+id/iv_user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/iv_user_avatar"
+                tools:text="测试小吴" />
+
+            <View
+                android:id="@+id/v_divider_1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="32dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
+
+            <TextView
+                android:id="@+id/tv_user_info"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_user_info"
+                android:drawableLeft="@drawable/ic_user_info"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/user_info"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_1" />
+
+            <View
+                android:id="@+id/v_divider_2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_user_info" />
+
+            <TextView
+                android:id="@+id/tv_message_setting"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_message"
+                android:drawableLeft="@drawable/ic_message"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/message_setting"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_2" />
+
+            <View
+                android:id="@+id/v_divider_3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_message_setting" />
+
+            <TextView
+                android:id="@+id/tv_search_car"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_search_car"
+                android:drawableLeft="@drawable/ic_search_car"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/car_search"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_3" />
+
+            <View
+                android:id="@+id/v_divider_4"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_search_car" />
+
+            <TextView
+                android:id="@+id/tv_geo_fence"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_search_car"
+                android:drawableLeft="@drawable/ic_search_car"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/geo_fence"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_4" />
+
+            <View
+                android:id="@+id/v_divider_6"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_geo_fence" />
+
+            <TextView
+                android:id="@+id/tv_pwd_modification"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_pwd_modification"
+                android:drawableLeft="@drawable/ic_pwd_modification"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/pwd_modify"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_6" />
+
+            <View
+                android:id="@+id/v_divider_5"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_pwd_modification" />
+
+            <TextView
+                android:id="@+id/tv_about_us"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="32dp"
+                android:background="?selectableItemBackground"
+                android:drawableStart="@drawable/ic_about_us"
+                android:drawableLeft="@drawable/ic_about_us"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/about_us"
+                android:textAppearance="@style/TextAppearance.AppTheme"
+                android:textColor="#ff333333"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider_5" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tv_sign_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="?selectableItemBackground"
+        android:drawableStart="@drawable/ic_sign_out"
+        android:drawableLeft="@drawable/ic_sign_out"
+        android:drawablePadding="8dp"
+        android:padding="16dp"
+        android:text="@string/sign_out"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#fff14f3b" />
+</LinearLayout>

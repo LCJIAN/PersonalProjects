@@ -2,6 +2,8 @@ package com.lcjian.drinkwater;
 
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.lcjian.drinkwater.di.component.AppComponent;
 import com.lcjian.drinkwater.di.component.DaggerAppComponent;
 import com.lcjian.drinkwater.di.module.AppModule;
@@ -9,14 +11,16 @@ import com.lcjian.drinkwater.di.module.DbModule;
 import com.lcjian.drinkwater.di.module.RestAPIModule;
 import com.lcjian.drinkwater.di.module.RxBusModule;
 import com.lcjian.drinkwater.di.module.SharedPreferenceModule;
-import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 
+
+/**
+ * @author LCJIAN https://github.com/LCJIAN
+ */
 public class App extends Application {
 
     private static App INSTANCE;
@@ -51,7 +55,6 @@ public class App extends Application {
         } else {
             Timber.plant(new ErrorTree());
         }
-        LeakCanary.install(this);
 
         RxJavaPlugins.setErrorHandler(Timber::e);
     }

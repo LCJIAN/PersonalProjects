@@ -8,14 +8,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.lcjian.drinkwater.R;
 import com.lcjian.drinkwater.data.db.entity.Record;
@@ -31,8 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Flowable;
@@ -102,23 +102,21 @@ public class DrinkReportActivity extends BaseActivity {
         bar_chart.getAxisRight().setEnabled(false);
 
         YAxis leftAxis = bar_chart.getAxisLeft();
-        leftAxis.setLabelCount(7, false);
+        leftAxis.setLabelCount(6, false);
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(20);
-        leftAxis.setAxisMinimum(1f);
         leftAxis.setGridDashedLine(new DashPathEffect(new float[]{DimenUtils.dipToPixels(3, this), DimenUtils.dipToPixels(3, this)}, 0));
         leftAxis.setGridColor(ContextCompat.getColor(this, R.color.colorTextLight));
-        leftAxis.setValueFormatter(new DefaultAxisValueFormatter(0) {
-            @Override
-            public String getAxisLabel(float value, AxisBase axis) {
-                return super.getAxisLabel(value, axis) + "%";
-            }
-        });
+        leftAxis.setValueFormatter(new PercentFormatter());
+        leftAxis.setSpaceTop(20);
+        leftAxis.setSpaceMin(20);
+        leftAxis.setAxisMaximum(120);
+        leftAxis.setAxisMinimum(0);
 
         XAxis xAxis = bar_chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGridColor(ContextCompat.getColor(this, R.color.colorTextLight));
         xAxis.setLabelCount(5, true);
+        xAxis.setAxisMinimum(1);
 
         mDisposables = new CompositeDisposable();
         setupWeeklyDay();
@@ -193,12 +191,12 @@ public class DrinkReportActivity extends BaseActivity {
                 mRxBus.asFlowable().filter(o -> o instanceof Boolean),
                 mRxBus.asFlowable().filter(o -> o instanceof Date),
                 (o1, o2) -> {
-                    Boolean aBoolean = (Boolean) o1;
+                    Boolean monthly = (Boolean) o1;
                     Date date = (Date) o2;
                     List<Pair<Date, Date>> dates = new ArrayList<>();
-                    if (aBoolean) {  // monthly
+                    if (monthly) {  // monthly
                         Date startDate = DateUtils.firstDayMonthly(date);
-                        Date endDate = DateUtils.addDays(DateUtils.lastDayMonthly(date), 3);
+                        Date endDate = DateUtils.lastDayMonthly(date);
 
                         while (DateUtils.isBefore(startDate, endDate)) {
                             dates.add(Pair.create(startDate, DateUtils.addDays(startDate, 1)));
@@ -356,8 +354,7 @@ public class DrinkReportActivity extends BaseActivity {
                             for (Record record : records) {
                                 total += record.intake;
                             }
-                            return total / (Integer.parseInt(DateUtils.convertDateToStr(DateUtils.addDays(endDate, -1), "d"))
-                                    - Integer.parseInt(DateUtils.convertDateToStr(startDate, "d")));
+                            return total / DateUtils.dayDiff(endDate, startDate);
                         }),
                 (unit, aDouble) -> StringUtils.formatDecimalToString(aDouble) + " " + unit.name.split(",")[1])
                 .subscribeOn(Schedulers.io())
@@ -387,8 +384,7 @@ public class DrinkReportActivity extends BaseActivity {
                             for (Record record : records) {
                                 total += record.intake;
                             }
-                            return total / (Integer.parseInt(DateUtils.convertDateToStr(DateUtils.addDays(endDate, -1), "d"))
-                                    - Integer.parseInt(DateUtils.convertDateToStr(startDate, "d")));
+                            return total / DateUtils.dayDiff(endDate, startDate);
                         }),
                 (unit, aDouble) -> StringUtils.formatDecimalToString(aDouble) + " " + unit.name.split(",")[1])
                 .subscribeOn(Schedulers.io())

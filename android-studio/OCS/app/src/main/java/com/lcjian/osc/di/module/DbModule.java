@@ -1,8 +1,8 @@
 package com.lcjian.osc.di.module;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
-import android.support.annotation.NonNull;
+import androidx.room.Room;
+import androidx.annotation.NonNull;
 
 import com.lcjian.osc.data.db.AppDatabase;
 import com.lcjian.osc.di.scope.ApplicationScope;

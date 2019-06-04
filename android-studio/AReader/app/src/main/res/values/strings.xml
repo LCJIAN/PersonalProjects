@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">AReader</string>
+    <string name="bookshelf">书架</string>
+    <string name="book_store">书城</string>
+    <string name="book_category">分类</string>
+    <string name="book_rank">排行榜</string>
+    <string name="empty_results">暂无结果</string>
+    <string name="error_msg">出错了</string>
+    <string name="gender_male">男生</string>
+    <string name="gender_female">女生</string>
+    <string name="all">全部</string>
+    <string name="un_complete">连载</string>
+    <string name="complete">完结</string>
+    <string name="cancel">取消</string>
+    <string name="search_hint">搜索书名或作者</string>
+    <string name="add_to_bookshelf">加入书架</string>
+    <string name="remove_from_bookshelf">移出书架</string>
+    <string name="read_now">立即阅读</string>
+    <string name="all_like">大家都在看</string>
+    <string name="similar_book">相似书籍</string>
+    <string name="chapter_count">本书共有%1$d章</string>
+    <string name="asc_order">正序</string>
+    <string name="desc_order">倒序</string>
+    <string name="update_to">更至</string>
+    <string name="read_progress">已读%1$s</string>
+    <string name="unread">未读</string>
+    <string name="select_all">全选</string>
+    <string name="delete">删除</string>
+</resources>

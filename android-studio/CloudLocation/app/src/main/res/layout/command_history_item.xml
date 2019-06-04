@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:foreground="?selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_command_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_command_status"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_command_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintStart_toStartOf="@+id/tv_command_info"
+        app:layout_constraintTop_toBottomOf="@+id/tv_command_name"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_command_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintStart_toStartOf="@+id/tv_command_send_time_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_command_status"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_command_send_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/send_time"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintStart_toStartOf="@+id/tv_command_response_time_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_command_info" />
+
+    <TextView
+        android:id="@+id/tv_command_response_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/response_time"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_command_send_time_label" />
+
+    <TextView
+        android:id="@+id/tv_command_send_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_command_send_time_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_command_send_time_label"
+        tools:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_command_response_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_command_response_time_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_command_response_time_label"
+        tools:text="TextView" />
+</android.support.constraint.ConstraintLayout>

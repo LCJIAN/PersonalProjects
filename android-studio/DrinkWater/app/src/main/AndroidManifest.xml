@@ -6,7 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:name=".App"
@@ -52,11 +53,27 @@
             android:name=".ui.DrinkReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.History" />
+        <activity
+            android:name=".ui.Floating"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Floating" />
 
-        <service
-            android:name=".android.service.NotifyService"
-            android:exported="false"
-            android:process=":remote" />
+        <service android:name=".android.NotifyService" />
+
+        <receiver
+            android:name=".android.NotifyReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="drink.water.ACTION_NOTIFY" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".android.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

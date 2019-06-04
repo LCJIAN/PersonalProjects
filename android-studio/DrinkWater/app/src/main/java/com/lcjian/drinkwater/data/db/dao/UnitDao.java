@@ -1,15 +1,16 @@
 package com.lcjian.drinkwater.data.db.dao;
 
-import com.lcjian.drinkwater.data.db.entity.Unit;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.lcjian.drinkwater.data.db.entity.Unit;
+
+import java.util.List;
+
 import io.reactivex.Flowable;
 
 @Dao
@@ -30,12 +31,14 @@ public interface UnitDao {
     @Query("SELECT * FROM unit WHERE name LIKE :name")
     List<Unit> getAllSyncByName(String name);
 
-    @Query("SELECT * FROM unit INNER JOIN setting ON setting.unit_id = unit.id")
+    // 获取当前单位，结果只有一条
+    @Query("SELECT u.* FROM unit u INNER JOIN setting s ON s.unit_id = u.id")
     List<Unit> getCurrentUnitSync();
 
     @Query("SELECT * FROM unit")
     Flowable<List<Unit>> getAllAsync();
 
-    @Query("SELECT * FROM unit INNER JOIN setting ON setting.unit_id = unit.id")
+    // 获取当前单位，结果只有一条
+    @Query("SELECT u.* FROM unit u INNER JOIN setting s ON s.unit_id = u.id")
     Flowable<List<Unit>> getCurrentUnitAsync();
 }

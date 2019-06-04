@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="8dp">
+
+    <FrameLayout
+        android:layout_width="72dp"
+        android:layout_height="wrap_content">
+
+        <com.lcjian.lib.areader.widget.RatioLayout
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:fixedSide="width"
+            app:ratio="1.4">
+
+            <ImageView
+                android:id="@+id/iv_cover_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+        </com.lcjian.lib.areader.widget.RatioLayout>
+
+        <com.lcjian.lib.areader.widget.RatioLayout
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            app:fixedSide="width"
+            app:ratio="1.4">
+
+            <ImageView
+                android:id="@+id/iv_cover_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+        </com.lcjian.lib.areader.widget.RatioLayout>
+
+        <com.lcjian.lib.areader.widget.RatioLayout
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            app:fixedSide="width"
+            app:ratio="1.4">
+
+            <ImageView
+                android:id="@+id/iv_cover_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+        </com.lcjian.lib.areader.widget.RatioLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_category_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="1"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="@color/colorTextBlack" />
+</LinearLayout>

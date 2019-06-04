@@ -1,7 +1,7 @@
 package com.lcjian.osc.di.module;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.lcjian.osc.data.network.RestAPI;
 import com.lcjian.osc.di.scope.ApplicationScope;

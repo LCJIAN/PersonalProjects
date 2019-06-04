@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 
@@ -76,17 +77,11 @@ public abstract class WifiP2pNode<L extends WifiP2pNode.Listener> {
 
     public final class WifiP2pBroadcastReceiver extends BroadcastReceiver {
 
-        private final WifiP2pManager mWifiP2pManager;
-
-        private final WifiP2pManager.Channel mChannel;
-
         private final CopyOnWriteArrayList<? extends Listener> mListeners;
 
         public WifiP2pBroadcastReceiver(@NonNull WifiP2pManager wifiP2pManager,
                                         @NonNull WifiP2pManager.Channel channel,
                                         @NonNull CopyOnWriteArrayList<? extends Listener> listeners) {
-            mWifiP2pManager = wifiP2pManager;
-            mChannel = channel;
             mListeners = listeners;
         }
 
@@ -109,22 +104,19 @@ public abstract class WifiP2pNode<L extends WifiP2pNode.Listener> {
                     }
                     // 对等节点列表发生了变化
                     case WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION: {
-                        mWifiP2pManager.requestPeers(mChannel, peers -> {
-                            for (Listener listener : mListeners) {
-                                listener.onPeersAvailable(peers.getDeviceList());
-                            }
-                        });
+                        WifiP2pDeviceList peers = intent.getParcelableExtra(WifiP2pManager.EXTRA_P2P_DEVICE_LIST);
+                        for (Listener listener : mListeners) {
+                            listener.onPeersAvailable(peers.getDeviceList());
+                        }
                         break;
                     }
                     // Wifi P2P 的连接状态发生了改变
                     case WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION: {
                         NetworkInfo networkInfo = intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
                         if (networkInfo.isConnected() && networkInfo.getTypeName().equals("WIFI_P2P")) {
-                            mWifiP2pManager.requestConnectionInfo(mChannel, info -> {
-                                for (Listener listener : mListeners) {
-                                    listener.onConnectionInfoAvailable(info);
-                                }
-                            });
+                            for (Listener listener : mListeners) {
+                                listener.onConnectionInfoAvailable(intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_INFO));
+                            }
                         } else {
                             for (Listener listener : mListeners) {
                                 listener.onConnectionInfoUnavailable();

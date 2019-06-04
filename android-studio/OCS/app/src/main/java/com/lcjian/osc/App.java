@@ -1,7 +1,8 @@
 package com.lcjian.osc;
 
 import android.app.Application;
-import android.support.v7.app.AppCompatDelegate;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.lcjian.osc.di.component.AppComponent;
 import com.lcjian.osc.di.component.DaggerAppComponent;
@@ -10,7 +11,6 @@ import com.lcjian.osc.di.module.DbModule;
 import com.lcjian.osc.di.module.RestAPIModule;
 import com.lcjian.osc.di.module.RxBusModule;
 import com.lcjian.osc.di.module.SharedPreferenceModule;
-import com.squareup.leakcanary.LeakCanary;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
@@ -44,7 +44,6 @@ public class App extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        LeakCanary.install(this);
 
         RxJavaPlugins.setErrorHandler(Timber::e);
     }

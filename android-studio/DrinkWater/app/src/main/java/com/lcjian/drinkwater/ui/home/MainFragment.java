@@ -1,15 +1,8 @@
 package com.lcjian.drinkwater.ui.home;
 
 import android.animation.ObjectAnimator;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.RemoteException;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
@@ -21,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.lzyzsd.circleprogress.ArcProgress;
 import com.lcjian.drinkwater.R;
-import com.lcjian.drinkwater.android.service.INotifier;
-import com.lcjian.drinkwater.android.service.INotifierCallback;
-import com.lcjian.drinkwater.android.service.NotifyService;
 import com.lcjian.drinkwater.data.db.entity.Cup;
 import com.lcjian.drinkwater.data.db.entity.Record;
 import com.lcjian.drinkwater.data.db.entity.Setting;
@@ -40,17 +37,10 @@ import com.lcjian.drinkwater.util.StringUtils;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
-import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -206,13 +196,19 @@ public class MainFragment extends BaseFragment {
         advanceAdapter.addHeader(header);
         rv_today_records.setAdapter(advanceAdapter);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Date today = DateUtils.today();
-        mDisposable = Flowable.combineLatest(mAppDatabase.settingDao().getAllAsync().map(settings -> settings.get(0)),
-                mAppDatabase.unitDao().getCurrentUnitAsync().map(units -> units.get(0)),
-                mAppDatabase.cupDao().getCurrentCupAsync().map(cups -> cups.get(0)),
-                mAppDatabase.recordDao().getAllAsyncByTime(today, DateUtils.addDays(today, 1)),
-                mAppDatabase.recordDao().getFirstAsync().map(records -> records.isEmpty() ? new Record() : records.get(0)),
-                DataHolder::new)
+        mDisposable = Flowable.combineLatest(
+                mAppDatabase.settingDao().getAllAsync().map(settings -> settings.get(0)), // 获取当前设置，设置改变时自动重新获取
+                mAppDatabase.unitDao().getCurrentUnitAsync().map(units -> units.get(0)), // 获取当前单位，当前单位改变时自动重新获取
+                mAppDatabase.cupDao().getCurrentCupAsync().map(cups -> cups.get(0)), // 获取当前杯子，当前杯子改变时自动重新获取
+                mAppDatabase.recordDao().getAllAsyncByTime(today, DateUtils.addDays(today, 1)), // 获取今日喝水记录，喝水记录改变时自动重新获取
+                mAppDatabase.recordDao().getFirstAsync().map(records -> records.isEmpty() ? new Record() : records.get(0)), // 获取第一条喝水记录，喝水记录改变时自动重新获取
+                DataHolder::new) // 合并上面的数据
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataHolder -> {
@@ -282,39 +278,20 @@ public class MainFragment extends BaseFragment {
                             tv_next_remind_intake.setText(nextIntake);
 
                             mAdapter.updateData(dataHolder.records);
-
-                            context.sendBroadcast(new Intent().setAction(NotifyService.SettingRecordChangeReceiver.ACTION_SETTING_RECORD_CHANGE));
                         },
                         throwable -> {
                         });
+    }
 
-        mHandler = new NotifierHandler(this);
-
-        Context context = getContext();
-        if (context != null) {
-            Intent intent = new Intent(context, NotifyService.class);
-            context.startService(intent);
-            context.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        }
+    @Override
+    public void onPause() {
+        mDisposable.dispose();
+        super.onPause();
     }
 
     @Override
     public void onDestroyView() {
-        try {
-            if (mNotifier != null) {
-                mNotifier.unregisterCallback(mNotifierCallback);
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        mNotifier = null;
-        Context context = getContext();
-        if (context != null) {
-            context.unbindService(mServiceConnection);
-        }
-
         unbinder.unbind();
-        mDisposable.dispose();
         if (mDisposable2 != null) {
             mDisposable2.dispose();
         }
@@ -322,72 +299,6 @@ public class MainFragment extends BaseFragment {
             mDisposable3.dispose();
         }
         super.onDestroyView();
-    }
-
-    private INotifier mNotifier;
-
-    private Handler mHandler;
-
-    private INotifierCallback mNotifierCallback = new INotifierCallback.Stub() {
-
-        @Override
-        public void onNextNotifyTimeChanged(String nextNotifyTime) {
-            Message message = Message.obtain();
-            message.what = 0;
-            message.obj = nextNotifyTime;
-            mHandler.sendMessage(message);
-        }
-    };
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mNotifier = INotifier.Stub.asInterface(service);
-            String nextNotifyTime = null;
-            try {
-                nextNotifyTime = mNotifier.getNextNotifyTime();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            Message message = Message.obtain();
-            message.what = 0;
-            message.obj = nextNotifyTime;
-            mHandler.sendMessage(message);
-            try {
-                mNotifier.registerCallback(mNotifierCallback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            try {
-                mNotifier.unregisterCallback(mNotifierCallback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            mNotifier = null;
-        }
-    };
-
-    private static class NotifierHandler extends Handler {
-        private WeakReference<MainFragment> mMainFragment;
-
-        NotifierHandler(MainFragment mainFragment) {
-            mMainFragment = new WeakReference<>(mainFragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            MainFragment mainFragment = mMainFragment.get();
-            if (mainFragment != null && mainFragment.tv_next_remind_time != null) {
-                if (msg.what == 0) {
-                    mainFragment.tv_next_remind_time.setText(msg.obj == null ? "" : msg.obj.toString());
-                }
-            }
-        }
     }
 
     private void showReachedIntakeGoal() {
@@ -410,11 +321,11 @@ public class MainFragment extends BaseFragment {
     }
 
     private static class DataHolder {
-        private Setting setting;
-        private Unit unit;
-        private Cup cup;
-        private List<Record> records;
-        private Record firstRecord;
+        private Setting setting; // 设置
+        private Unit unit; // 当前单位
+        private Cup cup; // 当前杯子
+        private List<Record> records; // 今日喝水记录
+        private Record firstRecord; // 第一条喝水记录
 
         private DataHolder(Setting setting, Unit unit, Cup cup, List<Record> records, Record firstRecord) {
             this.unit = unit;
@@ -430,5 +341,9 @@ public class MainFragment extends BaseFragment {
                 .delay(600, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> ll_drink.performClick());
+    }
+
+    void setNextNotifyTime(String text) {
+        tv_next_remind_time.setText(text);
     }
 }

@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">IReader</string>
+
+    <!--string_array-->
+
+    <!--榜单分类-->
+
+    <!--CollBook的长按点击-->
+
+    <!--常用-->
+    <string name="nb.common.sure">確定</string>
+    <string name="nb.common.cancel">取消</string>
+
+    <!--网络相关-->
+
+    <!--fragment_title:主页的名字-->
+
+    <!--fragment-->
+
+    <!--fragment 主题书单-->
+
+    <!--评论相关-->
+
+    <!--书评区相关-->
+
+
+    <!--find-->
+
+    <!--dialog-->
+    <string name="nb.dialog.text.introduce">我們會根據您的喜好\n推薦相對應的小說</string>
+    <string name="nb.dialog.text.choose_tip">--請選擇你的喜好--</string>
+    <string name="nb.dialog.text.boy_story">男生小說</string>
+    <string name="nb.dialog.text.girl_story">女生小說</string>
+
+    <!--menu-->
+
+    <!--SplashActivity-->
+
+    <!--user:用户的信息-->
+    <!--book:书籍的信息-->
+    <!--sort:每类的书-->
+
+    <!--tag: 标签-->
+
+
+    <!--book_detail : -->
+
+    <!--DownloadTask:书籍下载-->
+    <string name="nb.download.progress">%1$d/%2$d</string>
+    <string name="nb.download.chapter_scope">(%1$d-%2$d章)</string>
+
+    <string name="nb.download.start">繼續</string>
+    <string name="nb.download.pause">暫停</string>
+    <string name="nb.download.wait">等待</string>
+    <string name="nb.download.error">錯誤</string>
+    <string name="nb.download.finish">完成</string>
+
+    <string name="nb.download.loading">下載中</string>
+    <string name="nb.download.waiting">等待中</string>
+    <string name="nb.download.pausing">暫停中</string>
+    <string name="nb.download.complete">已完成</string>
+    <string name="nb.download.source_error">資源或網路錯誤</string>
+
+    <!--mode-->
+    <string name="nb.mode.night">夜間</string>
+    <string name="nb.mode.morning">日間</string>
+
+    <!--read-->
+    <string name="nb.read.community">社區</string>
+    <string name="nb.read.brief">簡介</string>
+    <string name="nb.read.setting">設置</string>
+    '
+    <string name="nb.read.category">目錄</string>
+
+    <!--file system-->
+    <string name="nb.file.sub_count">%1$d 項</string>
+    <string name="nb.file.path">存儲卡:%1$s</string>
+    <string name="nb.file.add_shelf">加入書架</string>
+    <string name="nb.file.add_shelves">加入書架(%1$d)</string>
+    <string name="nb.file.add_succeed">成功添加%1$d本書</string>
+
+    <!--search-->
+
+    <!--BookShelf-->
+
+    <!--OpenCC-->
+    <string-array name="conversion_type_array">
+        <item>不轉換</item>
+        <item>臺灣正體到簡體(大陸常用詞彙)</item>
+        <item>簡體到香港繁體</item>
+        <item>簡體到繁體</item>
+        <item>簡體到臺灣正體</item>
+        <item>簡體到繁體(臺灣常用詞彙)</item>
+        <item>繁體到香港繁體</item>
+        <item>繁體到簡體</item>
+        <item>繁體臺灣正體</item>
+        <item>臺灣正體到簡體</item>
+        <item>香港繁體到簡體</item>
+    </string-array>
+</resources>

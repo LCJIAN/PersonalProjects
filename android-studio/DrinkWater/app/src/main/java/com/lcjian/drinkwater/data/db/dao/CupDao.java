@@ -1,15 +1,16 @@
 package com.lcjian.drinkwater.data.db.dao;
 
-import com.lcjian.drinkwater.data.db.entity.Cup;
-
-import java.util.List;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.lcjian.drinkwater.data.db.entity.Cup;
+
+import java.util.List;
+
 import io.reactivex.Flowable;
 
 @Dao
@@ -33,6 +34,7 @@ public interface CupDao {
     @Query("SELECT * FROM cup WHERE cup_capacity = :cupCapacity")
     List<Cup> getAllSyncByCapacity(double cupCapacity);
 
-    @Query("SELECT * FROM cup INNER JOIN setting ON setting.cup_id = cup.id")
+    // 获取当前杯子
+    @Query("SELECT c.* FROM cup c INNER JOIN setting s ON s.cup_id = c.id")
     Flowable<List<Cup>> getCurrentCupAsync();
 }

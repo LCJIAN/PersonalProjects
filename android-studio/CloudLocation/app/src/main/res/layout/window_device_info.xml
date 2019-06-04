@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="253dp"
+    android:layout_height="289dp"
+    android:background="@drawable/sy_xxbj">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_device_info"
+        android:layout_width="240dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="12dp"
+            android:textAppearance="@style/TextAppearance.AppTheme"
+            android:textColor="#ff232323"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_device_info_detail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#ff232323"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/v_divider_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_name"
+            tools:text="状态:离线（368天4小时10分钟）\nWIFI电量：100%\n时间：2017/11/13 19:25:56\n方向：正北\n地址：广东省深圳市宝安区银田路53" />
+
+        <View
+            android:id="@+id/v_divider_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/tv_go_to_history_path"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_go_to_history_path"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="32dp"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/sy_lsgj"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/history_path"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="#ff232323"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_go_to_monitor"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_go_to_monitor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/sy_ssjk"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/real_time_monitor"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="#ff232323"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_go_to_history_path"
+            app:layout_constraintEnd_toStartOf="@+id/tv_go_to_device_info"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_go_to_history_path"
+            app:layout_constraintTop_toTopOf="@+id/tv_go_to_history_path" />
+
+        <TextView
+            android:id="@+id/tv_go_to_device_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/sy_gd"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/more"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="#ff232323"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_go_to_monitor"
+            app:layout_constraintEnd_toStartOf="@+id/tv_go_to_command"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_go_to_monitor"
+            app:layout_constraintTop_toTopOf="@+id/tv_go_to_monitor" />
+
+        <TextView
+            android:id="@+id/tv_go_to_command"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/sy_mlxf"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/send_command"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="#ff232323"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_go_to_device_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_go_to_device_info"
+            app:layout_constraintTop_toTopOf="@+id/tv_go_to_device_info" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

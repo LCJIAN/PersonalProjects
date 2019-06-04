@@ -3,12 +3,12 @@ package com.lcjian.osc.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,9 +87,9 @@ public class DetectionFragment extends RecyclerFragment<DetectionInfo.Item> {
 
         {
             ArrayAdapter adapter = new ArrayAdapter<>(sp_check.getContext(),
-                    android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                    androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                     mCheckNames);
-            adapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
             sp_check.setAdapter(adapter);
             sp_check.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

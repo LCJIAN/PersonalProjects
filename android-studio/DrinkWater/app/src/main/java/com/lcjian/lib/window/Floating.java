@@ -63,6 +63,9 @@ public class Floating implements View.OnTouchListener, ViewContainer.KeyEventHan
         layoutParams.gravity = Gravity.TOP;
         layoutParams.flags = layoutParams.flags | WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.3f;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }
 
         mWindowManager.addView(mWholeView, layoutParams);
     }
