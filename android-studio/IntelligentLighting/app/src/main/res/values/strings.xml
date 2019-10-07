@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Intelligent Lighting</string>
+    <string name="action_home">主页</string>
+    <string name="action_setting">设置</string>
+    <string name="action_management">操作</string>
+    <string name="hint_input_user_name">请输入用户名</string>
+    <string name="hint_input_pwd">请输入密码</string>
+    <string name="sign_in">登录</string>
+    <string name="hint_input_server_address">请输入服务器地址</string>
+    <string name="next_step">下一步</string>
+</resources>
