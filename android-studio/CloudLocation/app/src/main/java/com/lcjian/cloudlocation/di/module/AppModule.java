@@ -1,10 +1,10 @@
 package com.lcjian.cloudlocation.di.module;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
 import com.lcjian.cloudlocation.di.scope.ApplicationScope;
 
+import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
 

@@ -4,14 +4,15 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
 import com.lcjian.cloudlocation.ui.device.MessagesActivity;
 
 import java.util.List;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 public class AppPushMessageReceiver extends PushMessageReceiver {
 

@@ -1,12 +1,12 @@
 package com.lcjian.cloudlocation.di.module;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
-import android.support.annotation.NonNull;
 
 import com.lcjian.cloudlocation.data.db.AppDatabase;
 import com.lcjian.cloudlocation.di.scope.ApplicationScope;
 
+import androidx.annotation.NonNull;
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 

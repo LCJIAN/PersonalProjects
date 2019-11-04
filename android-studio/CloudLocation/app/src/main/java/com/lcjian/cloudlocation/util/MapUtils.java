@@ -16,6 +16,7 @@ public class MapUtils {
     private static final String BAIDU_PACKAGE_NAME = "com.baidu.BaiduMap";
     private static final String GAODE_PACKAGE_NAME = "com.autonavi.minimap";
     private static final String TENCENT_PACKAGE_NAME = "com.tencent.map";
+    private static final String GOOGLE_PACKAGE_NAME = "com.tencent.map";
 
     /**
      * 是否安装百度地图
@@ -30,6 +31,10 @@ public class MapUtils {
 
     public static boolean haveTencentMap(Context context) {
         return exist(context, TENCENT_PACKAGE_NAME);
+    }
+
+    public static boolean haveGoogleMap(Context context) {
+        return exist(context, GOOGLE_PACKAGE_NAME);
     }
 
     /**
@@ -138,6 +143,13 @@ public class MapUtils {
                 "to=" + destination.longitude + "," + destination.latitude + "," + destinationAddress +
                 "&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0"));
         context.startActivity(intent);
+    }
+
+    public static void openGoogleMap(Context context, com.google.android.gms.maps.model.LatLng ll) {
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + ll.latitude + "," + ll.longitude);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        context.startActivity(mapIntent);
     }
 
     public static double[] bdToGaoDe(double bd_lat, double bd_lon) {

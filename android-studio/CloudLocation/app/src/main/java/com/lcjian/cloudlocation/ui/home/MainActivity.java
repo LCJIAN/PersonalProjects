@@ -2,9 +2,7 @@ package com.lcjian.cloudlocation.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +19,9 @@ import com.lcjian.cloudlocation.ui.user.UserSignInActivity;
 
 import java.util.Collections;
 
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -85,12 +86,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tv_about_us.setOnClickListener(this);
         tv_sign_out.setOnClickListener(this);
 
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeContentFragment");
-        if (fragment == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_fragment_container, new HomeContentFragment(), "HomeContentFragment")
-                    .commit();
+        if (TextUtils.equals("Google", mUserInfoSp.getString("map", ""))) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
+            if (fragment == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_fragment_container, new HomeContentFragmentGoogle(), "HomeContentFragmentGoogle")
+                        .commit();
+            }
+        } else {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeContentFragment");
+            if (fragment == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_fragment_container, new HomeContentFragment(), "HomeContentFragment")
+                        .commit();
+            }
         }
+
     }
 
     @Override
@@ -122,9 +133,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mRxBus.send(new MessageSettingEvent());
                 break;
             case R.id.tv_search_car:
-                HomeContentFragment fragment = (HomeContentFragment) getSupportFragmentManager().findFragmentByTag("HomeContentFragment");
-                if (fragment != null) {
-                    fragment.startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
+                if (TextUtils.equals("Google", mUserInfoSp.getString("map", "Google"))) {
+                    HomeContentFragmentGoogle fragment = (HomeContentFragmentGoogle) getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
+                    if (fragment != null) {
+                        fragment.startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
+                    }
+                } else {
+                    HomeContentFragment fragment = (HomeContentFragment) getSupportFragmentManager().findFragmentByTag("HomeContentFragment");
+                    if (fragment != null) {
+                        fragment.startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
+                    }
                 }
                 break;
             case R.id.tv_geo_fence:

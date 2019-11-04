@@ -2,7 +2,6 @@ package com.lcjian.cloudlocation.ui.web;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -11,16 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolylineOptions;
-import com.baidu.mapapi.model.LatLng;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.network.entity.MonitorInfo;
 import com.lcjian.cloudlocation.data.network.entity.Route;
@@ -41,7 +41,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class HistoryPathActivity extends BaseActivity implements View.OnClickListener {
+public class HistoryPathActivityGoogle extends BaseActivity implements View.OnClickListener, OnMapReadyCallback {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -51,8 +51,6 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
     ImageButton btn_nav_right;
     @BindView(R.id.cl_history_path)
     ConstraintLayout cl_history_path;
-    @BindView(R.id.v_map)
-    MapView v_map;
     @BindView(R.id.cv_change_map_layer_history_path)
     ImageView cv_change_map_layer_history_path;
     @BindView(R.id.iv_zoom_in)
@@ -76,14 +74,14 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.ll_play_control)
     LinearLayout ll_play_control;
 
-    private BaiduMap mBMap;
-    private Overlay mStartOverlay;
-    private Overlay mEndOverlay;
-    private Overlay mSportOverlay;
-    private Overlay mRouteOverlay;
-    private List<Overlay> mPositionOverlays;
+    private GoogleMap mGMap;
+    private Marker mStartOverlay;
+    private Marker mEndOverlay;
+    private Marker mSportOverlay;
+    private Polyline mRouteOverlay;
+    private List<Marker> mPositionOverlays;
 
-    private int mMapType = BaiduMap.MAP_TYPE_NORMAL;
+    private int mMapType = GoogleMap.MAP_TYPE_NORMAL;
 
     private MonitorInfo.MonitorDevice mMonitorDevice;
 
@@ -144,7 +142,7 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history_path);
+        setContentView(R.layout.activity_history_path_google);
         ButterKnife.bind(this);
         mMonitorDevice = (MonitorInfo.MonitorDevice) getIntent().getSerializableExtra("monitor_device");
         mDate = new Date();
@@ -169,10 +167,9 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
         setupPlayControl();
 
         // 地图设置
-        v_map.showZoomControls(false);
-        mBMap = v_map.getMap();
-        mBMap.getUiSettings().setCompassEnabled(false);
-        mBMap.setMapType(mMapType);
+        MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         mDisposableS = mRxBus.asFlowable()
                 .filter(o -> o instanceof HistoryPathSettingFragment.HistoryPathSettingEvent)
@@ -205,14 +202,20 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGMap = googleMap;
+        mGMap.getUiSettings().setZoomControlsEnabled(false);
+        mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.setMapType(mMapType);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        v_map.onResume();
     }
 
     @Override
     protected void onPause() {
-        v_map.onPause();
         pause();
         super.onPause();
     }
@@ -228,13 +231,12 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
         if (mDisposable != null) {
             mDisposable.dispose();
         }
-        v_map.onDestroy();
         super.onDestroy();
     }
 
     private void getData() {
         pause();
-        mBMap.clear();
+        mGMap.clear();
         mStartOverlay = null;
         mEndOverlay = null;
         mSportOverlay = null;
@@ -264,10 +266,8 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
                                 mPositions = route.list;
 
                                 if (!mPositions.isEmpty()) {
-                                    mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                                            .target(new LatLng(Double.parseDouble(mPositions.get(0).lat), Double.parseDouble(mPositions.get(0).lng)))
-                                            .zoom(16)
-                                            .build()));
+                                    mGMap.animateCamera(CameraUpdateFactory
+                                            .newLatLngZoom(new LatLng(Double.parseDouble(mPositions.get(0).lat), Double.parseDouble(mPositions.get(0).lng)), 16));
                                     drawStartEnd();
                                     drawPositions();
                                 }
@@ -311,18 +311,18 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
                 getData();
                 break;
             case R.id.iv_zoom_in:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomIn());
+                mGMap.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             case R.id.iv_zoom_out:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomOut());
+                mGMap.animateCamera(CameraUpdateFactory.zoomOut());
                 break;
             case R.id.cv_change_map_layer_history_path:
-                if (mMapType == BaiduMap.MAP_TYPE_NORMAL) {
-                    mMapType = BaiduMap.MAP_TYPE_SATELLITE;
+                if (mMapType == GoogleMap.MAP_TYPE_NORMAL) {
+                    mMapType = GoogleMap.MAP_TYPE_SATELLITE;
                 } else {
-                    mMapType = BaiduMap.MAP_TYPE_NORMAL;
+                    mMapType = GoogleMap.MAP_TYPE_NORMAL;
                 }
-                mBMap.setMapType(mMapType);
+                mGMap.setMapType(mMapType);
                 break;
             default:
                 break;
@@ -348,18 +348,18 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
         if (mStartOverlay != null) {
             mStartOverlay.remove();
         }
-        OverlayOptions makerOptionStart = new MarkerOptions()
+        MarkerOptions makerOptionStart = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(start.lat), Double.parseDouble(start.lng)))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.hdw));
-        mStartOverlay = mBMap.addOverlay(makerOptionStart);
+        mStartOverlay = mGMap.addMarker(makerOptionStart);
 
         if (mEndOverlay != null) {
             mEndOverlay.remove();
         }
-        OverlayOptions makerOptionEnd = new MarkerOptions()
+        MarkerOptions makerOptionEnd = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(end.lat), Double.parseDouble(end.lng)))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.hdw1));
-        mEndOverlay = mBMap.addOverlay(makerOptionEnd);
+        mEndOverlay = mGMap.addMarker(makerOptionEnd);
     }
 
     private void drawSport() {
@@ -407,16 +407,14 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
         tv_device_info_detail.setText(detail);
 
         LatLng latLng = new LatLng(Double.parseDouble(sport.lat), Double.parseDouble(sport.lng));
-        OverlayOptions makerOption = new MarkerOptions()
+        MarkerOptions makerOption = new MarkerOptions()
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.fromView(makerView))
+                .icon(BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(makerView).getBitmap()))
                 .anchor(0.5f, 0.92857f);
-        mSportOverlay = mBMap.addOverlay(makerOption);
+        mSportOverlay = mGMap.addMarker(makerOption);
 
         if (mFollow) {
-            mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                    .target(latLng)
-                    .build()));
+            mGMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
     }
 
@@ -432,29 +430,28 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
             if (latLngs.size() < 2) {
                 return;
             }
-            OverlayOptions mRouteOptions = new PolylineOptions().width(13)
+            PolylineOptions mRouteOptions = new PolylineOptions().width(13)
                     .color(0xff087ff7)
-                    .points(latLngs);
-            mRouteOverlay = mBMap.addOverlay(mRouteOptions);
+                    .addAll(latLngs);
+            mRouteOverlay = mGMap.addPolyline(mRouteOptions);
         }
     }
 
     private void drawPositions() {
         if (mPositionOverlays != null) {
-            for (Overlay o : mPositionOverlays) {
+            for (Marker o : mPositionOverlays) {
                 o.remove();
             }
         }
         if (mDot) {
-            List<OverlayOptions> options = new ArrayList<>();
+            mPositionOverlays = new ArrayList<>();
             for (Route.Position p : mPositions) {
-                OverlayOptions makerOption = new MarkerOptions()
+                MarkerOptions makerOption = new MarkerOptions()
                         .position(new LatLng(Double.parseDouble(p.lat), Double.parseDouble(p.lng)))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.yuanquan))
                         .anchor(0.5f, 0.5f);
-                options.add(makerOption);
+                mPositionOverlays.add(mGMap.addMarker(makerOption));
             }
-            mPositionOverlays = mBMap.addOverlays(options);
         }
     }
 

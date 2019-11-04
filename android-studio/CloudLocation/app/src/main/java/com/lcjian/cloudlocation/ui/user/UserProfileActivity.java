@@ -2,7 +2,6 @@ package com.lcjian.cloudlocation.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,6 +12,7 @@ import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;

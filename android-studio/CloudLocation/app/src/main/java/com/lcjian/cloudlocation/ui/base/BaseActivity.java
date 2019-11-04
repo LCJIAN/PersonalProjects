@@ -2,7 +2,6 @@ package com.lcjian.cloudlocation.ui.base;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -15,6 +14,8 @@ import com.lcjian.cloudlocation.di.component.AppComponent;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class BaseActivity extends AppCompatActivity {
 

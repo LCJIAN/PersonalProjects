@@ -22,6 +22,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <!-- 适配Android N系统必需的ContentProvider写权限声明，写权限包含应用包名-->
     <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.lcjian.cloudlocation" />
     <permission
@@ -88,11 +92,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.device.GEOFenceEditActivityGoogle"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.device.RealTimeMonitorActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.device.HistoryPathActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.device.HistoryPathActivityGoogle"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -197,6 +209,10 @@
             </intent-filter>
         </receiver>
         <!-- push结束 -->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD792KCWPrpkXmJjzzjhLhFN8zAOZm_anA" />
     </application>
 
 </manifest>

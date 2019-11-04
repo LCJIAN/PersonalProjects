@@ -1,7 +1,6 @@
 package com.lcjian.cloudlocation;
 
 import android.app.Application;
-import android.support.v7.app.AppCompatDelegate;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
@@ -14,6 +13,7 @@ import com.lcjian.cloudlocation.di.module.RxBusModule;
 import com.lcjian.cloudlocation.di.module.SharedPreferenceModule;
 import com.squareup.leakcanary.LeakCanary;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 

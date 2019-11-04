@@ -8,7 +8,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
@@ -19,26 +21,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Polyline;
-import com.baidu.mapapi.map.PolylineOptions;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.model.LatLngBounds;
-import com.baidu.mapapi.utils.DistanceUtil;
+import com.appolica.interactiveinfowindow.InfoWindow;
+import com.appolica.interactiveinfowindow.InfoWindowManager;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.R;
@@ -47,7 +50,7 @@ import com.lcjian.cloudlocation.ui.base.BaseFragment;
 import com.lcjian.cloudlocation.ui.device.DeviceInfoActivity;
 import com.lcjian.cloudlocation.ui.device.DevicesActivity;
 import com.lcjian.cloudlocation.ui.device.GEOFenceListActivity;
-import com.lcjian.cloudlocation.ui.device.HistoryPathActivity;
+import com.lcjian.cloudlocation.ui.device.HistoryPathActivityGoogle;
 import com.lcjian.cloudlocation.ui.device.PanoramaActivity;
 import com.lcjian.cloudlocation.ui.device.RealTimeMonitorActivity;
 import com.lcjian.cloudlocation.ui.web.MessageSettingActivity;
@@ -77,11 +80,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
-public class HomeContentFragment extends BaseFragment implements SensorEventListener, View.OnClickListener {
+public class HomeContentFragmentGoogle extends BaseFragment implements SensorEventListener, View.OnClickListener, OnMapReadyCallback {
 
     ViewGroup mView;
-    @BindView(R.id.v_map)
-    MapView v_map;
     @BindView(R.id.tv_click_to_refresh)
     TextView tv_click_to_refresh;
     @BindView(R.id.tv_countdown)
@@ -111,21 +112,25 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
 
     Unbinder unbinder;
 
-    private BaiduMap mBMap;
-    private LocationClient mLocClient;
+    private GoogleMap mGMap;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
     private SensorManager mSensorManager;
 
+    private Location mCurrentLocation;
     private Double lastX = 0.0;
     private int mCurrentDirection = 0;
     private double mCurrentLat = 0.0;
     private double mCurrentLon = 0.0;
     private float mCurrentAccuracy;
-    private MyLocationData mLocData;
 
-    private List<Overlay> mDeviceMakers;
+    private List<Marker> mDeviceMakers;
     private Polyline mPolyline;
 
-    private int mMapType = BaiduMap.MAP_TYPE_NORMAL;
+    private int mMapType = GoogleMap.MAP_TYPE_NORMAL;
     private boolean mShowDistance = true;
     private boolean mChoose;
     private boolean mShowWindow = true;
@@ -144,8 +149,13 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
     private MonitorInfo.MonitorDevice origin;
     private List<MonitorInfo.MonitorDevice> monitorDevices;
 
-    public static HomeContentFragment newInstance(MonitorInfo.MonitorDevice origin) {
-        HomeContentFragment fragment = new HomeContentFragment();
+    private Activity mActivity;
+
+    private InfoWindowManager mInfoWindowManager;
+    private InfoWindow mInfoWindow;
+
+    public static HomeContentFragmentGoogle newInstance(MonitorInfo.MonitorDevice origin) {
+        HomeContentFragmentGoogle fragment = new HomeContentFragmentGoogle();
         Bundle args = new Bundle();
         args.putSerializable("origin", origin);
         fragment.setArguments(args);
@@ -161,10 +171,16 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         mDeviceMakers = new ArrayList<>();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mActivity = getActivity();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = (ViewGroup) inflater.inflate(R.layout.fragment_home_content, container, false);
+        mView = (ViewGroup) inflater.inflate(R.layout.fragment_homet_contentt_google, container, false);
         unbinder = ButterKnife.bind(this, mView);
         return mView;
     }
@@ -195,16 +211,45 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
             btn_search_device.setVisibility(View.GONE);
         }
 
+        MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+        mInfoWindowManager = mapFragment.infoWindowManager();
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity);
+        mSettingsClient = LocationServices.getSettingsClient(mActivity);
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                mCurrentLocation = locationResult.getLastLocation();
+                mCurrentLat = mCurrentLocation.getLatitude();
+                mCurrentLon = mCurrentLocation.getLongitude();
+                mCurrentAccuracy = mCurrentLocation.getAccuracy();
+
+                subjectLocation.onNext(new LocationReceivedEvent());
+            }
+        };
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mLocationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest).build();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGMap = googleMap;
+
         // 地图设置
-        v_map.showZoomControls(false);
-        mBMap = v_map.getMap();
-        mBMap.getUiSettings().setCompassEnabled(false);
-        mBMap.setMapType(mMapType);
-        mBMap.setMyLocationEnabled(true);
-        mBMap.setMyLocationConfiguration(new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true, null));
-        mBMap.setOnMarkerClickListener(marker -> {
-            MonitorInfo.MonitorDevice device = (MonitorInfo.MonitorDevice) marker.getExtraInfo().getSerializable("monitor_device");
+        mGMap.getUiSettings().setZoomControlsEnabled(false);
+        mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.setMapType(mMapType);
+        mGMap.setMyLocationEnabled(true);
+
+        mGMap.setOnMarkerClickListener(marker -> {
+            MonitorInfo.MonitorDevice device = (MonitorInfo.MonitorDevice) marker.getTag();
             assert device != null;
             if (mCurrentDevice != null && TextUtils.equals(device.id, mCurrentDevice.id)) {
                 mShowWindow = !mShowWindow;
@@ -212,52 +257,33 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 mShowWindow = true;
             }
 
-            marker.setToTop();
+            for (Marker m : mDeviceMakers) {
+                m.setZIndex(0);
+            }
+            marker.setZIndex(1.0f);
+
             mCurrentDevice = device;
             mUserInfoSp.edit().putString("current_device", new Gson().toJson(mCurrentDevice)).apply();
-            mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                    .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
-                    .build()));
+            mGMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng))));
             subjectDeviceChange.onNext(new CurrentDeviceChangeEvent());
             setupInfoWindowVisibility();
             return true;
         });
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        v_map.onResume();
         mSensorManager.registerListener(this,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
-        mLocClient = new LocationClient(getContext());
-        mLocClient.registerLocationListener(new BDAbstractLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                if (location == null || v_map == null) {
-                    return;
-                }
-                mCurrentLat = location.getLatitude();
-                mCurrentLon = location.getLongitude();
-                mCurrentAccuracy = location.getRadius();
 
-                mLocData = new MyLocationData.Builder()
-                        .latitude(mCurrentLat)
-                        .longitude(mCurrentLon)
-                        .accuracy(mCurrentAccuracy)
-                        .direction(mCurrentDirection)
-                        .build();
-                mBMap.setMyLocationData(mLocData);
-
-                subjectLocation.onNext(new LocationReceivedEvent());
-            }
-        });
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);
-        option.setCoorType("bd09ll");
-        option.setScanSpan(10 * 1000);
-        mLocClient.setLocOption(option);
-        mLocClient.start();
+        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(mActivity, locationSettingsResponse ->
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper()))
+                .addOnFailureListener(mActivity, e -> {
+                });
 
         mDisposableGeoFence = mRxBus.asFlowable()
                 .filter(o -> o instanceof MainActivity.GEOFenceEvent || o instanceof MainActivity.MessageSettingEvent)
@@ -290,9 +316,9 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                     monitorDevice.model = mCurrentDevice.model;
 
                     mCurrentDevice = monitorDevice;
-                    Overlay currentDeviceMaker = null;
-                    for (Overlay marker : mDeviceMakers) {
-                        MonitorInfo.MonitorDevice device = (MonitorInfo.MonitorDevice) marker.getExtraInfo().getSerializable("monitor_device");
+                    Marker currentDeviceMaker = null;
+                    for (Marker marker : mDeviceMakers) {
+                        MonitorInfo.MonitorDevice device = (MonitorInfo.MonitorDevice) marker.getTag();
                         if (TextUtils.equals(device.id, mCurrentDevice.id)) {
                             currentDeviceMaker = marker;
                             break;
@@ -304,7 +330,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                         mDeviceMakers.add(mapAddDeviceMarker(mCurrentDevice));
                     }
                     if (mChoose) {
-                        mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
+                        mGMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                                 .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
                                 .zoom(18)
                                 .build()));
@@ -355,8 +381,8 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(monitorInfo -> {
-                        for (Overlay overlay : mDeviceMakers) {
-                            overlay.remove();
+                        for (Marker marker : mDeviceMakers) {
+                            marker.remove();
                         }
                         monitorDevices = monitorInfo.devices;
 
@@ -369,7 +395,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                             if (mCurrentDevice == null) {
                                 mCurrentDevice = monitorInfo.devices.get(0);
                             }
-                            mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
+                            mGMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                                     .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
                                     .zoom(18)
                                     .build()));
@@ -380,7 +406,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                     }, throwable -> {
                     });
         } else {
-            v_map.post(() -> {
+            mView.post(() -> {
                 if (mCurrentDevice == null && !monitorDevices.isEmpty()) {
                     mCurrentDevice = getLastDevice(monitorDevices);
                     if (mCurrentDevice == null) {
@@ -412,16 +438,14 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         if (mDisposableRefresh != null) {
             mDisposableRefresh.dispose();
         }
-        mLocClient.stop();
-        v_map.onPause();
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         mSensorManager.unregisterListener(this);
         super.onPause();
     }
 
     @Override
     public void onDestroyView() {
-        mBMap.setMyLocationEnabled(false);
-        v_map.onDestroy();
+        mGMap.setMyLocationEnabled(false);
         unbinder.unbind();
         mView = null;
         super.onDestroyView();
@@ -432,13 +456,6 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         double x = event.values[SensorManager.DATA_X];
         if (Math.abs(x - lastX) > 1.0) {
             mCurrentDirection = (int) x;
-            mLocData = new MyLocationData.Builder()
-                    .latitude(mCurrentLat)
-                    .longitude(mCurrentLon)
-                    .accuracy(mCurrentAccuracy)
-                    .direction(mCurrentDirection)
-                    .build();
-            mBMap.setMyLocationData(mLocData);
         }
         lastX = x;
     }
@@ -486,21 +503,17 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 startRefresh();
                 break;
             case R.id.iv_zoom_in:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomIn());
+                mGMap.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             case R.id.iv_zoom_out:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomOut());
+                mGMap.animateCamera(CameraUpdateFactory.zoomOut());
                 break;
             case R.id.iv_go_to_my_location:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                        .target(new LatLng(mCurrentLat, mCurrentLon))
-                        .build()));
+                mGMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mCurrentLat, mCurrentLon)));
                 break;
             case R.id.iv_go_to_device_location:
                 if (mCurrentDevice != null) {
-                    mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                            .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
-                            .build()));
+                    mGMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng))));
                 }
                 break;
             case R.id.iv_show_distance:
@@ -509,19 +522,19 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 if (mShowDistance) {
                     LatLng start = new LatLng(mCurrentLat, mCurrentLon);
                     LatLng end = new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng));
-                    mBMap.animateMapStatus(MapStatusUpdateFactory.newLatLngBounds(new LatLngBounds.Builder()
+                    mGMap.animateCamera(CameraUpdateFactory.newLatLngBounds(new LatLngBounds.Builder()
                             .include(start)
                             .include(end)
-                            .build()));
+                            .build(), 50));
                 }
                 break;
             case R.id.cv_change_map_layer:
-                if (mMapType == BaiduMap.MAP_TYPE_NORMAL) {
-                    mMapType = BaiduMap.MAP_TYPE_SATELLITE;
+                if (mMapType == GoogleMap.MAP_TYPE_NORMAL) {
+                    mMapType = GoogleMap.MAP_TYPE_SATELLITE;
                 } else {
-                    mMapType = BaiduMap.MAP_TYPE_NORMAL;
+                    mMapType = GoogleMap.MAP_TYPE_NORMAL;
                 }
-                mBMap.setMapType(mMapType);
+                mGMap.setMapType(mMapType);
                 break;
             case R.id.cv_change_to_panorama:
                 if (mCurrentDevice != null) {
@@ -532,18 +545,9 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 break;
             case R.id.cv_go_to_map_navigation:
                 if (mCurrentDevice != null) {
-                    if (MapUtils.haveBaiduMap(v.getContext())) {
-                        MapUtils.openBaiduMap(v.getContext(),
-                                new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)),
-                                mCurrentDevice.name);
-                    } else if (MapUtils.haveGaodeMap(v.getContext())) {
-                        MapUtils.openGaodeMap(v.getContext(),
-                                new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)),
-                                mCurrentDevice.name);
-                    } else if (MapUtils.haveTencentMap(v.getContext())) {
-                        MapUtils.openTentcentMap(v.getContext(),
-                                new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)),
-                                mCurrentDevice.name);
+                    if (MapUtils.haveGoogleMap(v.getContext())) {
+                        MapUtils.openGoogleMap(v.getContext(),
+                                new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)));
                     } else {
                         Toast.makeText(App.getInstance(), R.string.no_map_app, Toast.LENGTH_SHORT).show();
                     }
@@ -574,7 +578,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Overlay mapAddDeviceMarker(MonitorInfo.MonitorDevice device) {
+    private Marker mapAddDeviceMarker(MonitorInfo.MonitorDevice device) {
         View makerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
         ImageView iv_device_status = makerView.findViewById(R.id.iv_device_status);
         FrameLayout fl_device_name = makerView.findViewById(R.id.fl_device_name);
@@ -594,109 +598,28 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
 
         Bundle extraInfo = new Bundle();
         extraInfo.putSerializable("monitor_device", device);
-        OverlayOptions makerOption = new MarkerOptions()
+        MarkerOptions makerOption = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(device.lat), Double.parseDouble(device.lng)))
-                .icon(BitmapDescriptorFactory.fromView(makerView))
-                .extraInfo(extraInfo)
+                .icon(BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(makerView).getBitmap()))
                 .anchor(0.1f, 0.19f);
-        return mBMap.addOverlay(makerOption);
+        Marker marker = mGMap.addMarker(makerOption);
+        marker.setTag(extraInfo);
+        return marker;
     }
 
     private void setupInfoWindowVisibility() {
         if (!mShowWindow) {
-            mBMap.hideInfoWindow();
+            if (mInfoWindow != null) {
+                mInfoWindowManager.hide(mInfoWindow);
+            }
             return;
         }
-        View markView = LayoutInflater.from(mView.getContext()).inflate(R.layout.window_device_info, mView, false);
-        ConstraintLayout cl_device_info = markView.findViewById(R.id.cl_device_info);
-        TextView tv_device_name = markView.findViewById(R.id.tv_device_name);
-        TextView tv_device_info_detail = markView.findViewById(R.id.tv_device_info_detail);
-        View v_divider_2 = markView.findViewById(R.id.v_divider_2);
-        TextView tv_go_to_history_path = markView.findViewById(R.id.tv_go_to_history_path);
-        TextView tv_go_to_monitor = markView.findViewById(R.id.tv_go_to_monitor);
-        TextView tv_go_to_command = markView.findViewById(R.id.tv_go_to_command);
-        TextView tv_go_to_device_info = markView.findViewById(R.id.tv_go_to_device_info);
-        if (origin != null) {
-            markView.setBackgroundResource(R.drawable.fdx);
-            ViewGroup.LayoutParams paramsV = markView.getLayoutParams();
-            paramsV.height = DimenUtils.spToPixels(216, mView.getContext());
-            markView.setLayoutParams(paramsV);
 
-            ViewGroup.LayoutParams paramsC = cl_device_info.getLayoutParams();
-            paramsC.height = DimenUtils.spToPixels(210, mView.getContext());
-            cl_device_info.setLayoutParams(paramsC);
-
-            v_divider_2.setVisibility(View.GONE);
-            tv_go_to_history_path.setVisibility(View.GONE);
-            tv_go_to_monitor.setVisibility(View.GONE);
-            tv_go_to_command.setVisibility(View.GONE);
-            tv_go_to_device_info.setVisibility(View.GONE);
-        }
-
-        String strStatus;
-        switch (mCurrentDevice.status.split("-")[0]) {
-            case "0":
-                strStatus = "未启用";
-                break;
-            case "1":
-                strStatus = "运动";
-                break;
-            case "2":
-                strStatus = "静止";
-                break;
-            case "3":
-                strStatus = "离线";
-                break;
-            case "4":
-                strStatus = "欠费";
-                break;
-            default:
-                strStatus = "未启用";
-                break;
-        }
-        double course = Double.parseDouble(mCurrentDevice.course);
-        String courseStatus = "";
-        if (((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360) || course >= 360)) {
-            courseStatus = "北";
-        } else if (course >= 22.5 && course < 67.5) {
-            courseStatus = "东北";
-        } else if (course >= 67.5 && course < 112.5) {
-            courseStatus = "东";
-        } else if (course >= 112.5 && course < 157.5) {
-            courseStatus = "东南";
-        } else if (course >= 157.5 && course < 202.5) {
-            courseStatus = "南";
-        } else if (course >= 202.5 && course < 247.5) {
-            courseStatus = "西南";
-        } else if (course >= 247.5 && course < 292.5) {
-            courseStatus = "西";
-        } else if (course >= 292.5 && 337.5 > course) {
-            courseStatus = "西北";
-        }
-
-        String detail = "状态：" + strStatus + "(" + DateUtils.getPeriod(DateUtils.convertStrToDate(mCurrentDevice.positionTime, DateUtils.YYYY_MM_DD_HH_MM_SS), DateUtils.now()) + ")" + "\n"
-                + (TextUtils.equals("1", mCurrentDevice.isGPS) ? "gps" : "wifi") + "\n"
-                + "时间:" + mCurrentDevice.positionTime + "\n"
-                + "方向:" + courseStatus + "\n"
-                + "地址:" + (TextUtils.isEmpty(mCurrentDevice.address) ? "" : mCurrentDevice.address) + "\n";
-        tv_device_name.setText(mCurrentDevice.name);
-        tv_device_info_detail.setText(detail);
-
-        tv_go_to_history_path.setOnClickListener(v -> v.getContext().startActivity(
-                new Intent(v.getContext(), HistoryPathActivity.class)
-                        .putExtra("monitor_device", mCurrentDevice)));
-        tv_go_to_monitor.setOnClickListener(v -> v.getContext().startActivity(
-                new Intent(v.getContext(), RealTimeMonitorActivity.class)
-                        .putExtra("monitor_device", mCurrentDevice)));
-        tv_go_to_command.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), SendCommandActivity.class)
-                .putExtra("device_id", mCurrentDevice.id)));
-        tv_go_to_device_info.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), DeviceInfoActivity.class)
-                .putExtra("device_id", mCurrentDevice.id)));
-
-        InfoWindow mInfoWindow = new InfoWindow(markView,
+        mInfoWindow = new InfoWindow(
                 new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)),
-                -10);
-        mBMap.showInfoWindow(mInfoWindow);
+                new InfoWindow.MarkerSpecification(0, -10),
+                InfoWindowFragment.newInstance(origin, mCurrentDevice));
+        mInfoWindowManager.show(mInfoWindow);
     }
 
     private void setupDistanceVisibility() {
@@ -710,13 +633,15 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
             }
             LatLng start = new LatLng(mCurrentLat, mCurrentLon);
             LatLng end = new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng));
-            mPolyline = (Polyline) mBMap.addOverlay(new PolylineOptions()
+            mPolyline = mGMap.addPolyline(new PolylineOptions()
                     .width(10)
                     .color(Color.GREEN)
-                    .points(Arrays.asList(start, end)));
+                    .addAll(Arrays.asList(start, end)));
 
-            double distance = DistanceUtil.getDistance(start, end);
-            String s = "相距" + (distance > 1000 ? new DecimalFormat("0.00").format(distance / 1000) + "Km" : distance + "m");
+            float[] results = new float[1];
+            Location.distanceBetween(mCurrentLat, mCurrentLon, Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng), results);
+
+            String s = "相距" + (results[0] > 1000 ? new DecimalFormat("0.00").format(results[0] / 1000) + "Km" : results[0] + "m");
             tv_distance.setText(s);
             tv_distance.setVisibility(View.VISIBLE);
         } else {
@@ -737,11 +662,150 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         subjectCountDown.onNext(0L);
     }
 
+
     private class CurrentDeviceChangeEvent {
 
     }
 
     private class LocationReceivedEvent {
 
+    }
+
+
+    public static class InfoWindowFragment extends BaseFragment {
+
+        private View mView;
+
+        @BindView(R.id.cl_device_info)
+        ConstraintLayout cl_device_info;
+        @BindView(R.id.tv_device_name)
+        TextView tv_device_name;
+        @BindView(R.id.tv_device_info_detail)
+        TextView tv_device_info_detail;
+        @BindView(R.id.v_divider_2)
+        View v_divider_2;
+        @BindView(R.id.tv_go_to_history_path)
+        TextView tv_go_to_history_path;
+        @BindView(R.id.tv_go_to_monitor)
+        TextView tv_go_to_monitor;
+        @BindView(R.id.tv_go_to_command)
+        TextView tv_go_to_command;
+        @BindView(R.id.tv_go_to_device_info)
+        TextView tv_go_to_device_info;
+
+        Unbinder unbinder;
+
+        private MonitorInfo.MonitorDevice mCurrentDevice;
+        private MonitorInfo.MonitorDevice origin;
+
+        static InfoWindowFragment newInstance(MonitorInfo.MonitorDevice origin,
+                                              MonitorInfo.MonitorDevice currentDevice) {
+            InfoWindowFragment fragment = new InfoWindowFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("origin", origin);
+            args.putSerializable("current_device", currentDevice);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            if (getArguments() != null) {
+                origin = (MonitorInfo.MonitorDevice) getArguments().getSerializable("origin");
+                mCurrentDevice = (MonitorInfo.MonitorDevice) getArguments().getSerializable("current_device");
+            }
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            mView = inflater.inflate(R.layout.window_device_info, container, false);
+            unbinder = ButterKnife.bind(this, mView);
+            return mView;
+        }
+
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            if (origin != null) {
+                mView.setBackgroundResource(R.drawable.fdx);
+                ViewGroup.LayoutParams paramsV = mView.getLayoutParams();
+                paramsV.height = DimenUtils.spToPixels(216, mView.getContext());
+                mView.setLayoutParams(paramsV);
+
+                ViewGroup.LayoutParams paramsC = cl_device_info.getLayoutParams();
+                paramsC.height = DimenUtils.spToPixels(210, mView.getContext());
+                cl_device_info.setLayoutParams(paramsC);
+
+                v_divider_2.setVisibility(View.GONE);
+                tv_go_to_history_path.setVisibility(View.GONE);
+                tv_go_to_monitor.setVisibility(View.GONE);
+                tv_go_to_command.setVisibility(View.GONE);
+                tv_go_to_device_info.setVisibility(View.GONE);
+            }
+
+            String strStatus;
+            switch (mCurrentDevice.status.split("-")[0]) {
+                case "1":
+                    strStatus = "运动";
+                    break;
+                case "2":
+                    strStatus = "静止";
+                    break;
+                case "3":
+                    strStatus = "离线";
+                    break;
+                case "4":
+                    strStatus = "欠费";
+                    break;
+                default:
+                    strStatus = "未启用";
+                    break;
+            }
+            double course = Double.parseDouble(mCurrentDevice.course);
+            String courseStatus = "";
+            if (((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360) || course >= 360)) {
+                courseStatus = "北";
+            } else if (course >= 22.5 && course < 67.5) {
+                courseStatus = "东北";
+            } else if (course >= 67.5 && course < 112.5) {
+                courseStatus = "东";
+            } else if (course >= 112.5 && course < 157.5) {
+                courseStatus = "东南";
+            } else if (course >= 157.5 && course < 202.5) {
+                courseStatus = "南";
+            } else if (course >= 202.5 && course < 247.5) {
+                courseStatus = "西南";
+            } else if (course >= 247.5 && course < 292.5) {
+                courseStatus = "西";
+            } else if (course >= 292.5 && 337.5 > course) {
+                courseStatus = "西北";
+            }
+
+            String detail = "状态：" + strStatus + "(" + DateUtils.getPeriod(DateUtils.convertStrToDate(mCurrentDevice.positionTime, DateUtils.YYYY_MM_DD_HH_MM_SS), DateUtils.now()) + ")" + "\n"
+                    + (TextUtils.equals("1", mCurrentDevice.isGPS) ? "gps" : "wifi") + "\n"
+                    + "时间:" + mCurrentDevice.positionTime + "\n"
+                    + "方向:" + courseStatus + "\n"
+                    + "地址:" + (TextUtils.isEmpty(mCurrentDevice.address) ? "" : mCurrentDevice.address) + "\n";
+            tv_device_name.setText(mCurrentDevice.name);
+            tv_device_info_detail.setText(detail);
+
+            tv_go_to_history_path.setOnClickListener(v -> v.getContext().startActivity(
+                    new Intent(v.getContext(), HistoryPathActivityGoogle.class)
+                            .putExtra("monitor_device", mCurrentDevice)));
+            tv_go_to_monitor.setOnClickListener(v -> v.getContext().startActivity(
+                    new Intent(v.getContext(), RealTimeMonitorActivity.class)
+                            .putExtra("monitor_device", mCurrentDevice)));
+            tv_go_to_command.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), SendCommandActivity.class)
+                    .putExtra("device_id", mCurrentDevice.id)));
+            tv_go_to_device_info.setOnClickListener(v -> v.getContext().startActivity(new Intent(v.getContext(), DeviceInfoActivity.class)
+                    .putExtra("device_id", mCurrentDevice.id)));
+        }
+
+        @Override
+        public void onDestroyView() {
+            unbinder.unbind();
+            super.onDestroyView();
+        }
     }
 }

@@ -14,8 +14,9 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/v_map"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

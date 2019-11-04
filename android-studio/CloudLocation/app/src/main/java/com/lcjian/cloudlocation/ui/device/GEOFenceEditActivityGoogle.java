@@ -6,7 +6,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.view.View;
@@ -20,30 +22,29 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.Circle;
-import com.baidu.mapapi.map.CircleOptions;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Stroke;
-import com.baidu.mapapi.model.LatLng;
+import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.network.entity.GEOFences;
 import com.lcjian.cloudlocation.data.network.entity.MonitorInfo;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
+import com.lcjian.cloudlocation.util.DimenUtils;
 import com.lcjian.cloudlocation.util.Spans;
 
 import java.util.concurrent.TimeUnit;
@@ -56,7 +57,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class GEOFenceEditActivity extends BaseActivity implements SensorEventListener, View.OnClickListener {
+public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEventListener, View.OnClickListener, OnMapReadyCallback {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -66,8 +67,6 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
     ImageButton btn_nav_right;
     @BindView(R.id.cl_geo_fence_edit)
     ConstraintLayout cl_geo_fence_edit;
-    @BindView(R.id.v_map)
-    MapView v_map;
     @BindView(R.id.sb_fence_radius)
     SeekBar sb_fence_radius;
     @BindView(R.id.tv_fence_radius_geo_edit)
@@ -102,23 +101,27 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
     private MonitorInfo.MonitorDevice mMonitorDevice;
     private GEOFences.GEOFence mGEOFence;
 
-    private BaiduMap mBMap;
-    private LocationClient mLocClient;
+    private GoogleMap mGMap;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
     private SensorManager mSensorManager;
 
+    private Location mCurrentLocation;
     private Double lastX = 0.0;
     private int mCurrentDirection = 0;
     private double mCurrentLat = 0.0;
     private double mCurrentLon = 0.0;
     private float mCurrentAccuracy;
-    private MyLocationData mLocData;
 
     private double mFenceLat = 0.0;
     private double mFenceLon = 0.0;
-    private Overlay mMarker;
+    private Marker mMarker;
     private Circle mCircle;
 
-    private int mMapType = BaiduMap.MAP_TYPE_NORMAL;
+    private int mMapType = GoogleMap.MAP_TYPE_NORMAL;
     private int mFenceCenterLocationType = 0;
 
     private Disposable mDisposable;
@@ -200,33 +203,29 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
         }
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        // 地图设置
-        v_map.showZoomControls(false);
-        mBMap = v_map.getMap();
-        mBMap.getUiSettings().setCompassEnabled(false);
-        mBMap.setMapType(mMapType);
-        mBMap.setMyLocationEnabled(true);
-        mBMap.setMyLocationConfiguration(new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true, null));
-        mBMap.setOnMarkerDragListener(new BaiduMap.OnMarkerDragListener() {
+
+        MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mSettingsClient = LocationServices.getSettingsClient(this);
+        mLocationCallback = new LocationCallback() {
             @Override
-            public void onMarkerDrag(Marker marker) {
-                LatLng ll = marker.getPosition();
-                mFenceLat = ll.latitude;
-                mFenceLon = ll.longitude;
-                drawCircle(sb_fence_radius.getProgress());
+            public void onLocationResult(LocationResult locationResult) {
+                mCurrentLocation = locationResult.getLastLocation();
+                mCurrentLat = mCurrentLocation.getLatitude();
+                mCurrentLon = mCurrentLocation.getLongitude();
+                mCurrentAccuracy = mCurrentLocation.getAccuracy();
             }
+        };
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-
-            }
-
-            @Override
-            public void onMarkerDragStart(Marker marker) {
-
-            }
-        });
+        mLocationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest).build();
 
         mDisposable = mRxBus.asFlowable()
                 .filter(o -> o instanceof LatLng)
@@ -254,44 +253,51 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // 地图设置
+        mGMap = googleMap;
+        mGMap.getUiSettings().setZoomControlsEnabled(false);
+        mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.setMapType(mMapType);
+        mGMap.setMyLocationEnabled(true);
+
+        mGMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+                LatLng ll = marker.getPosition();
+                mFenceLat = ll.latitude;
+                mFenceLon = ll.longitude;
+                drawCircle(sb_fence_radius.getProgress());
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+
+            }
+        });
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        v_map.onResume();
         mSensorManager.registerListener(this,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_UI);
 
-        mLocClient = new LocationClient(this);
-        mLocClient.registerLocationListener(new BDAbstractLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                if (location == null || v_map == null) {
-                    return;
-                }
-                mCurrentLat = location.getLatitude();
-                mCurrentLon = location.getLongitude();
-                mCurrentAccuracy = location.getRadius();
-
-                mLocData = new MyLocationData.Builder()
-                        .latitude(mCurrentLat)
-                        .longitude(mCurrentLon)
-                        .accuracy(mCurrentAccuracy)
-                        .direction(mCurrentDirection)
-                        .build();
-                mBMap.setMyLocationData(mLocData);
-            }
-        });
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);
-        option.setCoorType("bd09ll");
-        option.setScanSpan(10 * 1000);
-        mLocClient.setLocOption(option);
-        mLocClient.start();
+        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(this, locationSettingsResponse ->
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper()))
+                .addOnFailureListener(this, e -> {
+                });
     }
 
     @Override
     protected void onPause() {
-        mLocClient.stop();
-        v_map.onPause();
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         mSensorManager.unregisterListener(this);
         super.onPause();
     }
@@ -303,8 +309,7 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
         if (mDisposable3 != null) {
             mDisposable3.dispose();
         }
-        mBMap.setMyLocationEnabled(false);
-        v_map.onDestroy();
+        mGMap.setMyLocationEnabled(false);
         super.onDestroy();
     }
 
@@ -313,13 +318,6 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
         double x = event.values[SensorManager.DATA_X];
         if (Math.abs(x - lastX) > 1.0) {
             mCurrentDirection = (int) x;
-            mLocData = new MyLocationData.Builder()
-                    .latitude(mCurrentLat)
-                    .longitude(mCurrentLon)
-                    .accuracy(mCurrentAccuracy)
-                    .direction(mCurrentDirection)
-                    .build();
-            mBMap.setMyLocationData(mLocData);
         }
         lastX = x;
     }
@@ -362,10 +360,10 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
                                 throwable -> hideProgress());
                 break;
             case R.id.iv_zoom_in:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomIn());
+                mGMap.animateCamera(CameraUpdateFactory.zoomIn());
                 break;
             case R.id.iv_zoom_out:
-                mBMap.animateMapStatus(MapStatusUpdateFactory.zoomOut());
+                mGMap.animateCamera(CameraUpdateFactory.zoomOut());
                 break;
             case R.id.iv_switch_fence_center_location:
                 if (mFenceCenterLocationType == 0) {
@@ -382,12 +380,12 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
                 }
                 break;
             case R.id.cv_change_map_layer_geo:
-                if (mMapType == BaiduMap.MAP_TYPE_NORMAL) {
-                    mMapType = BaiduMap.MAP_TYPE_SATELLITE;
+                if (mMapType == GoogleMap.MAP_TYPE_NORMAL) {
+                    mMapType = GoogleMap.MAP_TYPE_SATELLITE;
                 } else {
-                    mMapType = BaiduMap.MAP_TYPE_NORMAL;
+                    mMapType = GoogleMap.MAP_TYPE_NORMAL;
                 }
-                mBMap.setMapType(mMapType);
+                mGMap.setMapType(mMapType);
                 break;
             case R.id.cv_change_to_panorama_geo:
                 if (mFenceLat != 0.0d) {
@@ -402,30 +400,28 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
     }
 
     private void drawCircle(int radius) {
-        if (mBMap == null) {
+        if (mGMap == null) {
             return;
         }
         if (mCircle != null) {
             mCircle.remove();
             mCircle = null;
         }
-        mCircle = (Circle) mBMap.addOverlay(new CircleOptions()
+        mCircle = mGMap.addCircle(new CircleOptions()
                 .fillColor(0x384d73b3)
-                .stroke(new Stroke(3, 0x784d73b3))
+                .strokeColor(0x784d73b3)
+                .strokeWidth(3)
                 .center(new LatLng(mFenceLat, mFenceLon))
                 .zIndex(0)
                 .radius(radius));
     }
 
     private void animateToTarget(int radius) {
-        mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
-                .target(new LatLng(mFenceLat, mFenceLon))
-                .zoom((float) calZoomLevel(radius))
-                .build()));
+        mGMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFenceLat, mFenceLon), (float) calZoomLevel(radius)));
     }
 
     private void drawMarker() {
-        if (mBMap == null) {
+        if (mGMap == null) {
             return;
         }
         if (mMarker != null) {
@@ -433,13 +429,13 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
             mMarker = null;
         }
         LatLng latLng = new LatLng(mFenceLat, mFenceLon);
-        OverlayOptions makerOptionStart = new MarkerOptions()
+        MarkerOptions makerOptionStart = new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bjwl_szx))
                 .draggable(true)
                 .zIndex(1)
                 .anchor(0.5f, 0.5f);
-        mMarker = mBMap.addOverlay(makerOptionStart);
+        mMarker = mGMap.addMarker(makerOptionStart);
     }
 
     private double calZoomLevel(float radius) {
@@ -449,7 +445,7 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
 
         double distance = radius * 2;
 
-        int screenSize = v_map.getWidth();
+        int screenSize = DimenUtils.getScreenWidth(this);
 
         // The meters per pixel required to show the whole area the user might be located in
         double requiredMpp = distance / screenSize;

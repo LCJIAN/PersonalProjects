@@ -2,8 +2,9 @@ package com.lcjian.cloudlocation.ui.base;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class LoadMoreAdapter extends AdvanceAdapter {
 
