@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.franmontiel.localechanger.LocaleChanger;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebSettingsImpl;
 import com.lcjian.cloudlocation.Constants;
@@ -18,6 +19,8 @@ import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 import com.lcjian.cloudlocation.ui.device.CommandHistoryActivity;
+
+import java.util.Locale;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
@@ -72,10 +75,11 @@ public class SendCommandActivity extends BaseActivity implements View.OnClickLis
                 })
                 .createAgentWeb()
                 .ready()
-                .go(Global.GET_API_URL_URL + "GpsApp/cmd.aspx?" +
+                .go("http://" + Global.SERVER_URL + "/H5APP/cmd.aspx?" +
                         "userid=" + (getSignInInfo().userInfo == null ? "" : getSignInInfo().userInfo.userID) +
                         "&deviceID=" + mDeviceId +
-                        "&key=" + Constants.KEY);
+                        "&key=" + Constants.KEY +
+                        "&Language=" + (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN" : "EN"));
 
         srl_web.setColorSchemeResources(R.color.colorPrimary);
         srl_web.setOnRefreshListener(this);

@@ -97,11 +97,11 @@ public class MessagesActivity extends BaseActivity {
                 id = Long.parseLong(signInInfo.deviceInfo.deviceID);
                 typeId = 1;
             } else {
-                typeId = 0;
                 id = Long.parseLong(signInInfo.userInfo.userID);
+                typeId = 0;
             }
             return mRestAPI.cloudService().getMessages(id,
-                    typeId, "", currentPage, 20)
+                    typeId, currentPage, 20)
                     .map(messages -> {
                         PageResult<Messages.Message> pageResult = new PageResult<>();
                         if (messages.arr == null) {

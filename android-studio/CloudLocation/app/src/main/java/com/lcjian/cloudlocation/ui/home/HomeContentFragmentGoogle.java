@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
+import com.franmontiel.localechanger.utils.ActivityRecreationHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.lcjian.cloudlocation.App;
+import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.network.entity.MonitorInfo;
 import com.lcjian.cloudlocation.ui.base.BaseFragment;
@@ -110,6 +112,8 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
     @BindView(R.id.btn_search_device)
     TextView btn_search_device;
 
+    private View mMarkerView;
+
     Unbinder unbinder;
 
     private GoogleMap mGMap;
@@ -154,6 +158,8 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
     private InfoWindowManager mInfoWindowManager;
     private InfoWindow mInfoWindow;
 
+    private String mCurrentUserId;
+
     public static HomeContentFragmentGoogle newInstance(MonitorInfo.MonitorDevice origin) {
         HomeContentFragmentGoogle fragment = new HomeContentFragmentGoogle();
         Bundle args = new Bundle();
@@ -182,6 +188,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = (ViewGroup) inflater.inflate(R.layout.fragment_homet_contentt_google, container, false);
         unbinder = ButterKnife.bind(this, mView);
+        mMarkerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
         return mView;
     }
 
@@ -205,7 +212,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         btn_search_device.setText(new Spans()
                 .append("*", new ImageSpan(view.getContext(), R.drawable.sy_ssan))
                 .append(" ")
-                .append(getString(R.string.search_device)));
+                .append(getString(R.string.device_list)));
 
         if (origin != null || getSignInInfo().userInfo == null) {
             btn_search_device.setVisibility(View.GONE);
@@ -215,6 +222,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mInfoWindowManager = mapFragment.infoWindowManager();
+        mInfoWindowManager.setContainerSpec(new InfoWindowManager.ContainerSpecification(null));
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity);
         mSettingsClient = LocationServices.getSettingsClient(mActivity);
@@ -245,6 +253,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         // 地图设置
         mGMap.getUiSettings().setZoomControlsEnabled(false);
         mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.getUiSettings().setMyLocationButtonEnabled(false);
         mGMap.setMapType(mMapType);
         mGMap.setMyLocationEnabled(true);
 
@@ -302,8 +311,8 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                 (aLong, currentDeviceChangeEvent) -> new Object())
                 .observeOn(Schedulers.io())
                 .flatMap(aLong -> Single.zip(
-                        mRestAPI.cloudService().getTrack(Long.parseLong(mCurrentDevice.id), mCurrentDevice.model, "", mUserInfoSp.getString("map", "Google")),
-                        mRestAPI.cloudService().getAddressByLatLng(mCurrentDevice.lat, mCurrentDevice.lng, mUserInfoSp.getString("map", mUserInfoSp.getString("map", "Google"))),
+                        mRestAPI.cloudService().getTrack(Long.parseLong(mCurrentDevice.id), mCurrentDevice.model, mUserInfoSp.getString("sign_in_map", "Google")),
+                        mRestAPI.cloudService().getAddressByLatLng(mCurrentDevice.lat, mCurrentDevice.lng, mUserInfoSp.getString("sign_in_map", mUserInfoSp.getString("sign_in_map", "Google"))),
                         (device, address) -> {
                             device.address = address.address;
                             return device;
@@ -355,8 +364,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                             return mRestAPI.cloudService()
                                     .getTrack(Long.parseLong(origin == null ? getSignInInfo().deviceInfo.deviceID : origin.id),
                                             origin == null ? getSignInInfo().deviceInfo.model : origin.model,
-                                            "",
-                                            mUserInfoSp.getString("map", "Google"))
+                                            mUserInfoSp.getString("sign_in_map", "Google"))
                                     .map(monitorDevice -> {
                                         MonitorInfo monitorInfo = new MonitorInfo();
                                         if (origin == null) {
@@ -374,8 +382,11 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                                     })
                                     .toObservable();
                         } else {
-                            return mRestAPI.cloudService().monitorDevices(
-                                    Long.parseLong(getSignInInfo().userInfo.userID), "", mUserInfoSp.getString("map", "Google")).toObservable();
+                            mCurrentUserId = TextUtils.isEmpty(Global.CURRENT_USER_ID) ? getSignInInfo().userInfo.userID : Global.CURRENT_USER_ID;
+                            return mRestAPI.cloudService().monitorDevices(Long.parseLong(mCurrentUserId),
+                                    mUserInfoSp.getString("sign_in_map", "Google"),
+                                    mUserInfoSp.getString("sign_in_name", ""),
+                                    mUserInfoSp.getString("sign_in_name_pwd", "")).toObservable();
                         }
                     })
                     .subscribeOn(Schedulers.io())
@@ -573,21 +584,28 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                         break;
                     }
                 }
+                if (!TextUtils.equals(mCurrentUserId, Global.CURRENT_USER_ID)) {
+                    ActivityRecreationHelper.recreate(getActivity(), true);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private Marker mapAddDeviceMarker(MonitorInfo.MonitorDevice device) {
-        View makerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
-        ImageView iv_device_status = makerView.findViewById(R.id.iv_device_status);
-        FrameLayout fl_device_name = makerView.findViewById(R.id.fl_device_name);
-        TextView tv_device_name = makerView.findViewById(R.id.tv_device_name);
+        ImageView iv_device_status = mMarkerView.findViewById(R.id.iv_device_status);
+        FrameLayout fl_device_name = mMarkerView.findViewById(R.id.fl_device_name);
+        TextView tv_device_name = mMarkerView.findViewById(R.id.tv_device_name);
+
 
         if (TextUtils.equals("3", device.status.split("-")[0])) {
             iv_device_status.setImageResource(R.drawable.hui_s);
             fl_device_name.setBackgroundResource(R.drawable.pop_offline);
             tv_device_name.setTextColor(0xffbbbbbb);
+        } else if (TextUtils.equals("1", device.status.split("-")[0])) {
+            iv_device_status.setImageResource(R.drawable.lan_s);
+            fl_device_name.setBackgroundResource(R.drawable.pop_sport);
+            tv_device_name.setTextColor(0xff842B5C);
         } else {
             iv_device_status.setImageResource(R.drawable.lv_s);
             fl_device_name.setBackgroundResource(R.drawable.pop_static);
@@ -596,14 +614,12 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         iv_device_status.setRotation(Float.parseFloat(device.course));
         tv_device_name.setText(device.name);
 
-        Bundle extraInfo = new Bundle();
-        extraInfo.putSerializable("monitor_device", device);
         MarkerOptions makerOption = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(device.lat), Double.parseDouble(device.lng)))
-                .icon(BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(makerView).getBitmap()))
+                .icon(BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(mMarkerView).getBitmap()))
                 .anchor(0.1f, 0.19f);
         Marker marker = mGMap.addMarker(makerOption);
-        marker.setTag(extraInfo);
+        marker.setTag(device);
         return marker;
     }
 
@@ -619,7 +635,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                 new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)),
                 new InfoWindow.MarkerSpecification(0, -10),
                 InfoWindowFragment.newInstance(origin, mCurrentDevice));
-        mInfoWindowManager.show(mInfoWindow);
+        mInfoWindowManager.show(mInfoWindow, false);
     }
 
     private void setupDistanceVisibility() {
@@ -641,7 +657,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
             float[] results = new float[1];
             Location.distanceBetween(mCurrentLat, mCurrentLon, Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng), results);
 
-            String s = "相距" + (results[0] > 1000 ? new DecimalFormat("0.00").format(results[0] / 1000) + "Km" : results[0] + "m");
+            String s = getString(R.string.apart) + (results[0] > 1000 ? new DecimalFormat("0.00").format(results[0] / 1000) + "Km" : results[0] + "m");
             tv_distance.setText(s);
             tv_distance.setVisibility(View.VISIBLE);
         } else {
@@ -746,47 +762,54 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
 
             String strStatus;
             switch (mCurrentDevice.status.split("-")[0]) {
+                case "0":
+                    strStatus = getString(R.string.un_used);
+                    break;
                 case "1":
-                    strStatus = "运动";
+                    strStatus = getString(R.string.moving);
                     break;
                 case "2":
-                    strStatus = "静止";
+                    strStatus = getString(R.string.status_static);
                     break;
                 case "3":
-                    strStatus = "离线";
+                    strStatus = getString(R.string.offline);
                     break;
                 case "4":
-                    strStatus = "欠费";
+                    strStatus = getString(R.string.arrears);
                     break;
                 default:
-                    strStatus = "未启用";
+                    strStatus = getString(R.string.un_used);
                     break;
             }
             double course = Double.parseDouble(mCurrentDevice.course);
             String courseStatus = "";
             if (((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360) || course >= 360)) {
-                courseStatus = "北";
+                courseStatus = getString(R.string.direction_north);
             } else if (course >= 22.5 && course < 67.5) {
-                courseStatus = "东北";
+                courseStatus = getString(R.string.direction_northeast);
             } else if (course >= 67.5 && course < 112.5) {
-                courseStatus = "东";
+                courseStatus = getString(R.string.direction_east);
             } else if (course >= 112.5 && course < 157.5) {
-                courseStatus = "东南";
+                courseStatus = getString(R.string.direction_southeast);
             } else if (course >= 157.5 && course < 202.5) {
-                courseStatus = "南";
+                courseStatus = getString(R.string.direction_south);
             } else if (course >= 202.5 && course < 247.5) {
-                courseStatus = "西南";
+                courseStatus = getString(R.string.direction_southwest);
             } else if (course >= 247.5 && course < 292.5) {
-                courseStatus = "西";
+                courseStatus = getString(R.string.direction_west);
             } else if (course >= 292.5 && 337.5 > course) {
-                courseStatus = "西北";
+                courseStatus = getString(R.string.direction_northwest);
             }
 
-            String detail = "状态：" + strStatus + "(" + DateUtils.getPeriod(DateUtils.convertStrToDate(mCurrentDevice.positionTime, DateUtils.YYYY_MM_DD_HH_MM_SS), DateUtils.now()) + ")" + "\n"
-                    + (TextUtils.equals("1", mCurrentDevice.isGPS) ? "gps" : "wifi") + "\n"
-                    + "时间:" + mCurrentDevice.positionTime + "\n"
-                    + "方向:" + courseStatus + "\n"
-                    + "地址:" + (TextUtils.isEmpty(mCurrentDevice.address) ? "" : mCurrentDevice.address) + "\n";
+            long[] period = DateUtils.getPeriod(DateUtils.convertStrToDate(mCurrentDevice.positionTime, DateUtils.YYYY_MM_DD_HH_MM_SS), DateUtils.now());
+            String detail = getString(R.string.device_status) + strStatus
+                    + (TextUtils.equals(getString(R.string.moving), strStatus) ? "" : "(" + getString(R.string.period, period[0], period[1], period[2], period[3]) + ")") + "\n"
+                    + (TextUtils.equals("1", mCurrentDevice.isGPS) ? "GPS "
+                    : TextUtils.equals("2", mCurrentDevice.isGPS) ? "LBS "
+                    : TextUtils.equals("3", mCurrentDevice.isGPS) ? "WIFI " : "") + mCurrentDevice.status.split("-")[1] + "\n"
+                    + getString(R.string.device_time) + mCurrentDevice.positionTime + "\n"
+                    + getString(R.string.device_direction) + courseStatus + "\n"
+                    + getString(R.string.device_address) + (TextUtils.isEmpty(mCurrentDevice.address) ? "" : mCurrentDevice.address) + "\n";
             tv_device_name.setText(mCurrentDevice.name);
             tv_device_info_detail.setText(detail);
 

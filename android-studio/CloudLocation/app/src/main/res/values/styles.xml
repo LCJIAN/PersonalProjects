@@ -15,6 +15,11 @@
 
     <style name="AppTheme.NoActionBar.C" />
 
+    <style name="AppTheme.NoActionBar.Splash">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="AppTheme.NoActionBar.SignIn">
         <item name="android:windowBackground">@drawable/dl_bet</item>
         <item name="android:windowFullscreen">true</item>

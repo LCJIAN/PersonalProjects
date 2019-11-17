@@ -3,7 +3,6 @@ package com.lcjian.cloudlocation.ui.web;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -21,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WebViewActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -107,14 +106,6 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
     public void onBackPressed() {
         if (!mAgentWeb.back()) {
             super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
         }
     }
 

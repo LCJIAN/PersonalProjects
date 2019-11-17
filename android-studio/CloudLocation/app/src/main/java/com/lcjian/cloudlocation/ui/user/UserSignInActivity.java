@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -18,25 +20,25 @@ import android.widget.Toast;
 
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
+import com.franmontiel.localechanger.LocaleChanger;
 import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.Constants;
 import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
-import com.lcjian.cloudlocation.data.network.entity.SignInInfo;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 import com.lcjian.cloudlocation.ui.home.MainActivity;
 import com.lcjian.cloudlocation.util.Spans;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.Collections;
+import java.util.Locale;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserSignInActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
@@ -55,13 +57,16 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
     EditText et_sign_in_name;
     @BindView(R.id.et_sign_in_name_pwd)
     EditText et_sign_in_name_pwd;
+    @BindView(R.id.sp_sign_in_map)
+    AppCompatSpinner sp_sign_in_map;
 
     @BindView(R.id.chb_remember_sign_in)
     CheckBox chb_remember_sign_in;
     @BindView(R.id.btn_sign_in)
     Button btn_sign_in;
 
-    private int mSignInType = 1;
+    private int mSignInType;
+    private String mSignInMap;
 
     private Disposable mDisposableP;
     private Disposable mDisposableSignIn;
@@ -76,11 +81,14 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         boolean rememberMe = mSettingSp.getBoolean("remember_me", false);
         String getApiUrlHost = mSettingSp.getString("get_api_url_host", "");
 
-        int signInType = mUserInfoSp.getInt("sign_in_type", 0);
+        int signInType = mUserInfoSp.getInt("sign_in_type", 1);
         String signInId = mUserInfoSp.getString("sign_in_id", "");
         String signInIdPwd = mUserInfoSp.getString("sign_in_id_pwd", "");
         String signInName = mUserInfoSp.getString("sign_in_name", "");
         String signInNamePwd = mUserInfoSp.getString("sign_in_name_pwd", "");
+        String signInMap = mUserInfoSp.getString("sign_in_map", "");
+
+        mSignInType = signInType;
 
         tv_sign_in_by_id.setOnClickListener(this);
         tv_sign_in_by_name.setOnClickListener(this);
@@ -94,10 +102,43 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         et_sign_in_pwd.setText(signInIdPwd);
         et_sign_in_name.setText(signInName);
         et_sign_in_name_pwd.setText(signInNamePwd);
-        mSignInType = signInType;
 
         chb_remember_sign_in.setChecked(rememberMe);
         et_get_api_url_url.setText(getApiUrlHost);
+
+        {
+            String[] maps = new String[]{getString(R.string.bd_map), getString(R.string.gl_map)};
+            ArrayAdapter adapter = new ArrayAdapter<>(sp_sign_in_map.getContext(),
+                    R.layout.map_spinner_dropdown_item,
+                    maps);
+            adapter.setDropDownViewResource(R.layout.map_spinner_dropdown_item);
+            sp_sign_in_map.setAdapter(adapter);
+            sp_sign_in_map.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mSignInMap = position == 0 ? "Baidu" : "Google";
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            if (TextUtils.isEmpty(signInMap)) {
+                if (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale())) {
+                    sp_sign_in_map.setSelection(0);
+                } else {
+                    sp_sign_in_map.setSelection(1);
+                }
+            } else {
+                if (TextUtils.equals("Google", signInMap)) {
+                    sp_sign_in_map.setSelection(1);
+                } else {
+                    sp_sign_in_map.setSelection(0);
+                }
+            }
+        }
 
         switchSignInType();
         validate();
@@ -216,14 +257,16 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
 
     private void signIn(String getApiUrlHost, String sign, String pwd, int type) {
         showProgress();
-        Global.GET_API_URL_URL = "http://" + getApiUrlHost + "/";
+        mRestAPI.reset();
+        Global.SERVER_URL = getApiUrlHost;
         mDisposableSignIn = mRestAPI.urlService()
-                .getApiUrl()
+                .getApiUrl(getApiUrlHost)
                 .map(apiUrl -> {
                     Global.API_URL = apiUrl.url + "/";
+                    mRestAPI.reset();
                     return Global.API_URL;
                 })
-                .flatMap((Function<String, SingleSource<SignInInfo>>) s -> mRestAPI.cloudService().signIn(sign, pwd, type))
+                .flatMap(s -> mRestAPI.cloudService().signIn(sign, pwd, type))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(objectResponseData -> {
@@ -254,25 +297,29 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         String signInPwd = et_sign_in_pwd.getEditableText().toString();
         String signInName = et_sign_in_name.getEditableText().toString();
         String signInNamePwd = et_sign_in_name_pwd.getEditableText().toString();
+        String map = mSignInMap;
         int signInType = mSignInType;
         boolean rememberMe = chb_remember_sign_in.isChecked();
 
         mSettingSp.edit()
-                .putString("get_api_url_host", getApiUrlHost)
                 .putBoolean("remember_me", rememberMe)
                 .putBoolean("auto_sign_in", true)
                 .apply();
         if (rememberMe) {
+            mSettingSp.edit().putString("get_api_url_host", getApiUrlHost).apply();
+
             if (signInType == 0) {
                 mUserInfoSp.edit()
                         .putString("sign_in_name", signInName)
                         .putString("sign_in_name_pwd", signInNamePwd)
+                        .putString("sign_in_map", map)
                         .putInt("sign_in_type", signInType)
                         .apply();
             } else {
                 mUserInfoSp.edit()
                         .putString("sign_in_id", signInId)
                         .putString("sign_in_id_pwd", signInPwd)
+                        .putString("sign_in_map", map)
                         .putInt("sign_in_type", signInType)
                         .apply();
             }

@@ -46,7 +46,7 @@ public class CommandHistoryActivity extends BaseActivity {
         btn_nav_back.setOnClickListener(v -> onBackPressed());
 
         showProgress();
-        mDisposable = mRestAPI.cloudService().getDeviceDetail(Long.parseLong(getIntent().getStringExtra("device_id")), "")
+        mDisposable = mRestAPI.cloudService().getDeviceDetail(Long.parseLong(getIntent().getStringExtra("device_id")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(deviceDetail -> {
@@ -119,8 +119,7 @@ public class CommandHistoryActivity extends BaseActivity {
 
         @Override
         public Observable<PageResult<Commands.Command>> onCreatePageObservable(int currentPage) {
-            return mRestAPI.cloudService().getCommandHistory(mDeviceSn, Long.parseLong(mDeviceId),
-                    "", currentPage, 20)
+            return mRestAPI.cloudService().getCommandHistory(mDeviceSn, Long.parseLong(mDeviceId), currentPage, 20)
                     .map(commands -> {
                         PageResult<Commands.Command> pageResult = new PageResult<>();
                         pageResult.elements = commands.commandArr;

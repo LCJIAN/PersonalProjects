@@ -69,7 +69,7 @@ public class UserProfileActivity extends BaseActivity {
         cl_address.setOnClickListener(v -> startActivityForResult(new Intent(v.getContext(), EditActivity.class).putExtra("text", tv_address.getText().toString()), 1004));
 
         showProgress();
-        mDisposable = mRestAPI.cloudService().getUserProfile(Long.parseLong(getSignInInfo().userInfo.userID), "")
+        mDisposable = mRestAPI.cloudService().getUserProfile(Long.parseLong(getSignInInfo().userInfo.userID))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(userProfile -> {

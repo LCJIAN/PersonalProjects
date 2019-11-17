@@ -167,12 +167,12 @@
 
     <TextView
         android:id="@+id/btn_search_device"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/shape_search_device_btn_bg"
         android:gravity="center"
-        android:text="@string/search_device"
+        android:text="@string/device_list"
         android:textAppearance="@style/TextAppearance.AppTheme"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

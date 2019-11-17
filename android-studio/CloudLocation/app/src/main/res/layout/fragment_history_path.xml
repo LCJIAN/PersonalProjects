@@ -4,8 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content">
 
@@ -48,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
+            android:visibility="gone"
             android:layout_marginTop="16dp"
             android:text="@string/follow"
             android:textAppearance="@style/TextAppearance.AppTheme"
@@ -59,6 +59,7 @@
             android:id="@+id/switch_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_follow"
@@ -71,6 +72,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_follow" />
@@ -86,6 +88,7 @@
             android:textAppearance="@style/TextAppearance.AppTheme"
             android:textColor="#ff666666"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/v_divider_2" />
 
         <Switch
@@ -93,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:visibility="gone"
             android:layout_marginRight="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_line"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -112,6 +117,7 @@
             android:id="@+id/tv_dot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
@@ -127,6 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_dot"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_dot" />
@@ -135,6 +142,7 @@
             android:id="@+id/v_divider_4"
             android:layout_width="0dp"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"

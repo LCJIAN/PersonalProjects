@@ -65,7 +65,7 @@ public class DeviceInfoActivity extends BaseActivity {
         tv_device_contact_phone.setOnClickListener(v -> startActivityForResult(new Intent(v.getContext(), EditActivity.class).putExtra("text", tv_device_contact_phone.getText().toString()), 1004));
 
         showProgress();
-        mDisposable = mRestAPI.cloudService().getDeviceDetail(Long.parseLong(getIntent().getStringExtra("device_id")), "")
+        mDisposable = mRestAPI.cloudService().getDeviceDetail(Long.parseLong(getIntent().getStringExtra("device_id")))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(deviceDetail -> {

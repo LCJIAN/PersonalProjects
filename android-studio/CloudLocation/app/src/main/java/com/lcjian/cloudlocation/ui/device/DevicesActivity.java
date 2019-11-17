@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.lcjian.cloudlocation.App;
+import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.entity.PageResult;
 import com.lcjian.cloudlocation.data.network.entity.Devices;
@@ -63,7 +66,8 @@ public class DevicesActivity extends BaseActivity {
     EditText et_search_keyword;
 
     private SubAccounts.SubAccount mSubAccount;
-    private Long mUserId;
+    private String mUserId;
+    private String mUserName;
     private Disposable mDisposable;
 
     @Override
@@ -74,7 +78,9 @@ public class DevicesActivity extends BaseActivity {
 
         tv_title.setText(getString(R.string.device_list));
         btn_nav_back.setOnClickListener(v -> onBackPressed());
-        cl_choose_account.setOnClickListener(v -> startActivityForResult(new Intent(v.getContext(), UserSubAccountsActivity.class), 1000));
+        cl_choose_account.setOnClickListener(v -> startActivityForResult(
+                new Intent(v.getContext(), UserSubAccountsActivity.class).putExtra("user_id", mUserId),
+                1000));
         et_search_keyword.setHint(new Spans()
                 .append("*", new ImageSpan(this, R.drawable.ic_search))
                 .append(getString(R.string.search_device_hint)));
@@ -120,22 +126,34 @@ public class DevicesActivity extends BaseActivity {
 
     private void setupContent() {
         SignInInfo signInInfo = getSignInInfo();
-        Long id;
-        Integer typeId;
+        String id;
+        String loginName = null;
+        String password = null;
+        int typeId;
         if (signInInfo.userInfo == null) {
             cl_choose_account.setVisibility(View.GONE);
-            id = Long.parseLong(signInInfo.deviceInfo.deviceID);
+            id = signInInfo.deviceInfo.deviceID;
             typeId = 1;
         } else {
             cl_choose_account.setVisibility(View.VISIBLE);
             if (mSubAccount == null) {
-                tv_user_name.setText(signInInfo.userInfo.userName);
+                if (TextUtils.isEmpty(Global.CURRENT_USER_NAME)) {
+                    mUserName = signInInfo.userInfo.userName;
+                } else {
+                    mUserName = (Global.CURRENT_USER_NAME);
+                }
             } else {
-                tv_user_name.setText(mSubAccount.userName);
+                mUserName = (mSubAccount.userName);
             }
+            tv_user_name.setText(mUserName);
+
             typeId = 0;
-            Long userId = Long.parseLong(mSubAccount == null ? signInInfo.userInfo.userID : mSubAccount.userID);
-            if (userId.equals(mUserId)) {
+            loginName = mUserInfoSp.getString("sign_in_name", "");
+            password = mUserInfoSp.getString("sign_in_name_pwd", "");
+
+            String userId = mSubAccount != null ? mSubAccount.userID
+                    : (TextUtils.isEmpty(Global.CURRENT_USER_ID) ? signInInfo.userInfo.userID : Global.CURRENT_USER_ID);
+            if (TextUtils.equals(userId, mUserId)) {
                 return;
             }
             mUserId = userId;
@@ -145,8 +163,8 @@ public class DevicesActivity extends BaseActivity {
             mDisposable.dispose();
         }
         showProgress();
-        mDisposable = mRestAPI.cloudService().getDevices(id,
-                typeId, true, 1, 1000)
+        mDisposable = mRestAPI.cloudService().getDevices(Long.parseLong(id), loginName, password,
+                typeId, true, 1, 5000)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(devices -> {
@@ -167,7 +185,8 @@ public class DevicesActivity extends BaseActivity {
                             }
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.fl_fragment_container,
-                                            DevicesContentFragment.newInstance(devices.arr, online, offline), "DevicesContentFragment")
+                                            DevicesContentFragment.newInstance(devices.arr, online, offline, mUserId, mUserName),
+                                            "DevicesContentFragment")
                                     .commit();
                             et_search_keyword.postDelayed(() -> mRxBus.send(et_search_keyword.getEditableText()), 100);
                         },
@@ -185,17 +204,29 @@ public class DevicesActivity extends BaseActivity {
         private List<Devices.Device> all;
         private List<Devices.Device> online;
         private List<Devices.Device> offline;
+        private String mCurrentUserId;
+        private String mCurrentUserName;
 
         public static DevicesContentFragment newInstance(List<Devices.Device> all,
                                                          List<Devices.Device> online,
-                                                         List<Devices.Device> offline) {
+                                                         List<Devices.Device> offline,
+                                                         String currentUserId,
+                                                         String currentUserName) {
             DevicesContentFragment fragment = new DevicesContentFragment();
             Bundle args = new Bundle();
-            args.putSerializable("all", new ArrayList<>(all));
-            args.putSerializable("online", new ArrayList<>(online));
-            args.putSerializable("offline", new ArrayList<>(offline));
+            args.putString("current_user_id", currentUserId);
+            args.putString("current_user_name", currentUserName);
             fragment.setArguments(args);
+            fragment.setData(all, online, offline);
             return fragment;
+        }
+
+        private void setData(List<Devices.Device> all,
+                             List<Devices.Device> online,
+                             List<Devices.Device> offline) {
+            this.all = all;
+            this.online = online;
+            this.offline = offline;
         }
 
         @Override
@@ -203,9 +234,8 @@ public class DevicesActivity extends BaseActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (getArguments() != null) {
-                all = (ArrayList<Devices.Device>) getArguments().getSerializable("all");
-                online = (ArrayList<Devices.Device>) getArguments().getSerializable("online");
-                offline = (ArrayList<Devices.Device>) getArguments().getSerializable("offline");
+                mCurrentUserId = getArguments().getString("current_user_id");
+                mCurrentUserName = getArguments().getString("current_user_name");
             }
         }
 
@@ -224,9 +254,9 @@ public class DevicesActivity extends BaseActivity {
             tab_device.setupWithViewPager(vp_device);
 
             vp_device.setAdapter(new SimpleFragmentPagerAdapter(getChildFragmentManager())
-                    .addFragment(DevicesFragment.newInstance(all), "全部" + "(" + all.size() + ")")
-                    .addFragment(DevicesFragment.newInstance(online), "在线" + "(" + online.size() + ")")
-                    .addFragment(DevicesFragment.newInstance(offline), "离线" + "(" + offline.size() + ")"));
+                    .addFragment(DevicesFragment.newInstance(all, mCurrentUserId, mCurrentUserName), getString(R.string.all_device) + "(" + all.size() + ")")
+                    .addFragment(DevicesFragment.newInstance(online, mCurrentUserId, mCurrentUserName), getString(R.string.online_device) + "(" + online.size() + ")")
+                    .addFragment(DevicesFragment.newInstance(offline, mCurrentUserId, mCurrentUserName), getString(R.string.offline_device) + "(" + offline.size() + ")"));
         }
 
         @Override
@@ -241,13 +271,21 @@ public class DevicesActivity extends BaseActivity {
 
         private List<Devices.Device> mList;
         private SlimAdapter mAdapter;
+        private String mCurrentUserId;
+        private String mCurrentUserName;
 
-        public static DevicesFragment newInstance(List<Devices.Device> list) {
+        public static DevicesFragment newInstance(List<Devices.Device> list, String currentUserId, String currentUserName) {
             DevicesFragment fragment = new DevicesFragment();
             Bundle args = new Bundle();
-            args.putSerializable("data", new ArrayList<>(list));
+            args.putString("current_user_id", currentUserId);
+            args.putString("current_user_name", currentUserName);
+            fragment.setData(list);
             fragment.setArguments(args);
             return fragment;
+        }
+
+        private void setData(List<Devices.Device> list) {
+            this.mList = list;
         }
 
         @Override
@@ -255,7 +293,8 @@ public class DevicesActivity extends BaseActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (getArguments() != null) {
-                mList = (ArrayList<Devices.Device>) getArguments().getSerializable("data");
+                mCurrentUserId = getArguments().getString("current_user_id");
+                mCurrentUserName = getArguments().getString("current_user_name");
             }
         }
 
@@ -276,10 +315,18 @@ public class DevicesActivity extends BaseActivity {
                                 Activity activity = (Activity) v.getContext();
                                 assert activity != null;
 
-                                Intent intent = new Intent();
-                                intent.putExtra("device_id", viewHolder.itemData.id);
-                                activity.setResult(RESULT_OK, intent);
-                                activity.finish();
+                                if (TextUtils.equals("0", viewHolder.itemData.status.split("-")[0])) {
+                                    Toast.makeText(App.getInstance(), R.string.un_used, Toast.LENGTH_SHORT).show();
+                                } else if (TextUtils.equals("4", viewHolder.itemData.status.split("-")[0])) {
+                                    Toast.makeText(App.getInstance(), R.string.arrears, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Global.CURRENT_USER_ID = mCurrentUserId;
+                                    Global.CURRENT_USER_NAME = mCurrentUserName;
+                                    Intent intent = new Intent();
+                                    intent.putExtra("device_id", viewHolder.itemData.id);
+                                    activity.setResult(RESULT_OK, intent);
+                                    activity.finish();
+                                }
                             });
                         }
 
@@ -290,27 +337,27 @@ public class DevicesActivity extends BaseActivity {
                             String strStatus;
                             switch (data.status.split("-")[0]) {
                                 case "0":
-                                    strStatus = "未启用";
+                                    strStatus = getString(R.string.un_used);
                                     break;
                                 case "1":
-                                    strStatus = "运动";
+                                    strStatus = getString(R.string.moving);
                                     break;
                                 case "2":
-                                    strStatus = "静止";
+                                    strStatus = getString(R.string.status_static);
                                     break;
                                 case "3":
-                                    strStatus = "离线";
+                                    strStatus = getString(R.string.offline);
                                     break;
                                 case "4":
-                                    strStatus = "欠费";
+                                    strStatus = getString(R.string.arrears);
                                     break;
                                 default:
-                                    strStatus = "未启用";
-                                    break;
+                                    strStatus = getString(R.string.un_used);
                             }
-                            viewHolder.image(R.id.iv_device, TextUtils.equals("1", ar[0]) || TextUtils.equals("2", ar[0])
-                                    ? R.drawable.ic_device_active : R.drawable.ic_device_inactive)
-                                    .text(R.id.tv_device_name_label, data.name + "【" + strStatus + "】")
+                            viewHolder.image(R.id.iv_device, TextUtils.equals("1", ar[0]) ? R.drawable.ic_device_active
+                                    : (TextUtils.equals("2", ar[0]) ? R.drawable.ic_device_static
+                                    : R.drawable.ic_device_inactive))
+                                    .text(R.id.tv_device_name_label, data.name + "(" + strStatus + ")")
                                     .text(R.id.tv_device_status, viewHolder.itemView.getContext().getString(R.string.device_no_c) + data.sn);
                         }
                     })

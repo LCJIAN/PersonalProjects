@@ -31,7 +31,7 @@ public class RealTimeMonitorActivity extends BaseActivity {
         tv_title.setText(R.string.real_time_monitor);
         btn_nav_back.setOnClickListener(v -> onBackPressed());
 
-        if (TextUtils.equals("Google", mUserInfoSp.getString("map", ""))) {
+        if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
             if (fragment == null) {
                 getSupportFragmentManager().beginTransaction().add(R.id.fl_fragment_container,

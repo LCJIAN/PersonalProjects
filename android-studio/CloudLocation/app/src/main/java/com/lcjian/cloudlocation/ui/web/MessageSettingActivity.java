@@ -3,13 +3,13 @@ package com.lcjian.cloudlocation.ui.web;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.franmontiel.localechanger.LocaleChanger;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebSettingsImpl;
 import com.lcjian.cloudlocation.Constants;
@@ -17,11 +17,13 @@ import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 
+import java.util.Locale;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessageSettingActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class MessageSettingActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -59,10 +61,11 @@ public class MessageSettingActivity extends BaseActivity implements View.OnClick
                 })
                 .createAgentWeb()
                 .ready()
-                .go(Global.GET_API_URL_URL + "GpsApp/alarmsetting.aspx?" +
+                .go("http://" + Global.SERVER_URL + "/H5APP/alarmsetting.aspx?" +
                         "userid=" + (getSignInInfo().userInfo == null ? "" : getSignInInfo().userInfo.userID) +
                         "&deviceID=" + getIntent().getStringExtra("device_id") +
-                        "&key=" + Constants.KEY);
+                        "&key=" + Constants.KEY +
+                        "&Language=" + (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN" : "EN"));
 
         srl_web.setColorSchemeResources(R.color.colorPrimary);
         srl_web.setOnRefreshListener(this);
@@ -96,14 +99,6 @@ public class MessageSettingActivity extends BaseActivity implements View.OnClick
     public void onBackPressed() {
         if (!mAgentWeb.back()) {
             super.onBackPressed();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
         }
     }
 

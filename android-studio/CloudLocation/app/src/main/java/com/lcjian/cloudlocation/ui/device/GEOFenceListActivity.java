@@ -57,7 +57,7 @@ public class GEOFenceListActivity extends BaseActivity {
         btn_nav_right.setImageResource(R.drawable.dzwl_tj);
         btn_nav_back.setOnClickListener(v -> onBackPressed());
         btn_nav_right.setOnClickListener(v -> {
-            if (TextUtils.equals("Google", mUserInfoSp.getString("map", ""))) {
+            if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
                 v.getContext().startActivity(new Intent(v.getContext(), GEOFenceEditActivityGoogle.class)
                         .putExtra("monitor_device", mMonitorDevice));
             } else {
@@ -113,7 +113,7 @@ public class GEOFenceListActivity extends BaseActivity {
                         @Override
                         public void onInit(SlimAdapter.SlimViewHolder<GEOFences.GEOFence> viewHolder) {
                             viewHolder.clicked(v -> {
-                                if (TextUtils.equals("Google", mUserInfoSp.getString("map", ""))) {
+                                if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
                                     v.getContext().startActivity(new Intent(v.getContext(), GEOFenceEditActivityGoogle.class)
                                             .putExtra("monitor_device", mMonitorDevice)
                                             .putExtra("geo_fence", viewHolder.itemData));
@@ -149,7 +149,7 @@ public class GEOFenceListActivity extends BaseActivity {
 
         @Override
         public Observable<PageResult<GEOFences.GEOFence>> onCreatePageObservable(int currentPage) {
-            return mRestAPI.cloudService().getGEOFence(Long.parseLong(mMonitorDevice.id), "", mUserInfoSp.getString("map", "Google"))
+            return mRestAPI.cloudService().getGEOFence(Long.parseLong(mMonitorDevice.id), mUserInfoSp.getString("sign_in_map", "Google"))
                     .map(geoFences -> {
                         PageResult<GEOFences.GEOFence> pageResult = new PageResult<>();
                         if (geoFences.geofences == null) {

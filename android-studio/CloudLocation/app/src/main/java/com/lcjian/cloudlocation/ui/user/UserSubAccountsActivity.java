@@ -46,6 +46,8 @@ public class UserSubAccountsActivity extends BaseActivity {
     @BindView(R.id.et_search_keyword)
     EditText et_search_keyword;
 
+    private String mUserId;
+
     private Disposable mDisposable;
 
     @Override
@@ -53,6 +55,8 @@ public class UserSubAccountsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_sub_accounts);
         ButterKnife.bind(this);
+
+        mUserId = getIntent().getStringExtra("user_id");
 
         tv_title.setText(getString(R.string.account_list));
         btn_nav_back.setOnClickListener(v -> onBackPressed());
@@ -77,7 +81,11 @@ public class UserSubAccountsActivity extends BaseActivity {
         });
 
         showProgress();
-        mDisposable = mRestAPI.cloudService().getUserSubAccounts(Long.parseLong(getSignInInfo().userInfo.userID))
+        String loginName = mUserInfoSp.getString("sign_in_name", "");
+        String password = mUserInfoSp.getString("sign_in_name_pwd", "");
+        mDisposable = mRestAPI.cloudService()
+                .getUserSubAccounts(Long.parseLong(mUserId),
+                        loginName, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subAccounts -> {

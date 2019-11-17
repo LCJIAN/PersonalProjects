@@ -1,13 +1,20 @@
 package com.lcjian.cloudlocation.data.network;
 
+import android.content.Context;
+
+import com.franmontiel.localechanger.LocaleChanger;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.BuildConfig;
 import com.lcjian.cloudlocation.Constants;
 import com.lcjian.cloudlocation.Global;
+import com.lcjian.cloudlocation.data.network.entity.SignInInfo;
+import com.lcjian.cloudlocation.util.ObscuredSharedPreferences;
 import com.lcjian.cloudlocation.util.StorageUtils;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -67,12 +74,26 @@ public class RestAPI {
                     .readTimeout(20, TimeUnit.SECONDS)
                     .cache(getCache());
 
-            clientBuilder.interceptors().add(chain -> chain.proceed(chain.request().newBuilder()
+            clientBuilder.interceptors().add(chain -> {
+                ObscuredSharedPreferences sp = new ObscuredSharedPreferences(App.getInstance(),
+                        App.getInstance().getSharedPreferences("user_info", Context.MODE_PRIVATE));
+                SignInInfo signInInfo = new Gson().fromJson(sp.getString("sign_in_info", ""), SignInInfo.class);
+                String timeZone = null;
+                if (signInInfo != null) {
+                    if (signInInfo.userInfo == null) {
+                        timeZone = signInInfo.deviceInfo.timeZone;
+                    } else {
+                        timeZone = signInInfo.userInfo.timeZone;
+                    }
+                }
+                return chain.proceed(chain.request().newBuilder()
                     .url(chain.request().url().newBuilder()
                             .addQueryParameter("Key", Constants.KEY)
-                            .addQueryParameter("Language", Constants.LANGUAGE)
+                            .addQueryParameter("Language", Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN" : "EN")
+                            .addQueryParameter("TimeZones", timeZone)
                             .build())
-                    .build()));
+                        .build());
+            });
             if (BuildConfig.DEBUG) {
                 clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
@@ -110,5 +131,12 @@ public class RestAPI {
             cloudService = getRetrofit().create(CloudService.class);
         }
         return cloudService;
+    }
+
+    public void reset() {
+        urlRetrofit = null;
+        urlService = null;
+        retrofit = null;
+        cloudService = null;
     }
 }

@@ -4,18 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.baidu.android.pushservice.PushManager;
+import com.franmontiel.localechanger.utils.ActivityRecreationHelper;
+import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.network.entity.SignInInfo;
 import com.lcjian.cloudlocation.ui.base.BaseActivity;
 import com.lcjian.cloudlocation.ui.device.DevicesActivity;
 import com.lcjian.cloudlocation.ui.device.MessagesActivity;
+import com.lcjian.cloudlocation.ui.user.LanguageSettingActivity;
 import com.lcjian.cloudlocation.ui.user.PwdModifyActivity;
 import com.lcjian.cloudlocation.ui.user.UserProfileActivity;
 import com.lcjian.cloudlocation.ui.user.UserSignInActivity;
+import com.lcjian.cloudlocation.ui.web.AboutUsActivity;
 
 import java.util.Collections;
 
@@ -49,12 +54,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     TextView tv_geo_fence;
     @BindView(R.id.tv_pwd_modification)
     TextView tv_pwd_modification;
+    @BindView(R.id.tv_language_setting)
+    TextView tv_language_setting;
     @BindView(R.id.tv_about_us)
     TextView tv_about_us;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer_layout;
     @BindView(R.id.tv_sign_out)
-    TextView tv_sign_out;
+    FrameLayout tv_sign_out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +91,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         tv_geo_fence.setOnClickListener(this);
         tv_pwd_modification.setOnClickListener(this);
         tv_about_us.setOnClickListener(this);
+        tv_language_setting.setOnClickListener(this);
         tv_sign_out.setOnClickListener(this);
 
-        if (TextUtils.equals("Google", mUserInfoSp.getString("map", ""))) {
+        if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
             if (fragment == null) {
                 getSupportFragmentManager().beginTransaction()
@@ -114,6 +122,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ActivityRecreationHelper.onResume(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        ActivityRecreationHelper.onDestroy(this);
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_nav_back:
@@ -133,7 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mRxBus.send(new MessageSettingEvent());
                 break;
             case R.id.tv_search_car:
-                if (TextUtils.equals("Google", mUserInfoSp.getString("map", "Google"))) {
+                if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
                     HomeContentFragmentGoogle fragment = (HomeContentFragmentGoogle) getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
                     if (fragment != null) {
                         fragment.startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
@@ -151,7 +171,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.tv_pwd_modification:
                 startActivity(new Intent(this, PwdModifyActivity.class));
                 break;
+            case R.id.tv_language_setting:
+                startActivity(new Intent(this, LanguageSettingActivity.class));
+                break;
+            case R.id.tv_about_us:
+                startActivity(new Intent(this, AboutUsActivity.class));
+                break;
             case R.id.tv_sign_out:
+                Global.API_URL = "";
+                Global.SERVER_URL = "";
+                Global.CURRENT_USER_ID = "";
+                Global.CURRENT_USER_NAME = "";
                 mSettingSp.edit().putBoolean("auto_sign_in", false).apply();
                 PushManager.delTags(this, Collections.singletonList(getSignInInfo().deviceInfo != null
                         ? "D" + getSignInInfo().deviceInfo.deviceID

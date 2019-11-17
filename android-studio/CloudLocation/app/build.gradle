@@ -38,15 +38,16 @@ android {
 
     buildTypes {
         release {
-            buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.wlc178.com/"'
+            buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.16aspx.com/"'
             minifyEnabled false
             zipAlignEnabled true
             shrinkResources false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         debug {
-            buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.wlc178.com/"'
+            buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.16aspx.com/"'
         }
     }
 
@@ -93,10 +94,15 @@ dependencies {
     implementation "com.kaopiz:kprogresshud:1.1.0"
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation 'com.just.agentweb:agentweb:4.0.2'
+    implementation 'com.github.franmontiel:LocaleChanger:0.9.2'
     // map & lication
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.appolica:interactive-info-window:v1.0.6'
+    // umeng
+    implementation 'com.umeng.umsdk:analytics:latest.integration'
+    implementation 'com.umeng.umsdk:common:latest.integration'
+    implementation 'com.umeng.umsdk:utdid:latest.integration'
 
     // leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.2'

@@ -206,17 +206,14 @@ public class DateUtils {
         }
     }
 
-    public static String getPeriod(Date begin, Date end) {
+    public static long[] getPeriod(Date begin, Date end) {
         long between = (end.getTime() - begin.getTime()) / 1000;
         long day = between / (24 * 3600);
         long hour = between % (24 * 3600) / 3600;
         long minute = between % 3600 / 60;
-        long second = between % 60 / 60;
+        long second = between % 60;
 
-        return (day == 0 ? "" : day + "天")
-                + (hour == 0 ? "" : hour + "小时")
-                + (minute == 0 ? "" : minute + "分")
-                + (second == 0 ? "" : second + "秒");
+        return new long[]{day, hour, minute, second};
     }
 
     /**

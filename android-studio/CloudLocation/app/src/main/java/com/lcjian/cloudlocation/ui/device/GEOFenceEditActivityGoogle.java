@@ -138,7 +138,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
             mGEOFence = (GEOFences.GEOFence) getIntent().getSerializableExtra("geo_fence");
         }
 
-        tv_title.setText("编辑围栏");
+        tv_title.setText(R.string.edit_geo_fence);
         btn_nav_right.setVisibility(View.VISIBLE);
         btn_nav_right.setImageResource(R.drawable.bjwl_bc);
         rb_fence_type_home.setText(new Spans()
@@ -258,6 +258,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
         mGMap = googleMap;
         mGMap.getUiSettings().setZoomControlsEnabled(false);
         mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.getUiSettings().setMyLocationButtonEnabled(false);
         mGMap.setMapType(mMapType);
         mGMap.setMyLocationEnabled(true);
 
@@ -346,7 +347,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
                         chb_in_fence_remind.isChecked() ? 1 : 0,
                         chb_out_fence_remind.isChecked() ? 1 : 0,
                         "none",
-                        mUserInfoSp.getString("map", "Google"))
+                        mUserInfoSp.getString("sign_in_map", "Google"))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(state -> {

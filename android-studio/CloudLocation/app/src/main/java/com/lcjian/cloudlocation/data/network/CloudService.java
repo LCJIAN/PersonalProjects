@@ -39,6 +39,8 @@ public interface CloudService {
      */
     @GET("GetDeviceList")
     Single<Devices> getDevices(@Query("ID") Long id,
+                               @Query("LoginName") String loginName,
+                               @Query("Password") String password,
                                @Query("TypeID") Integer typeId,
                                @Query("IsAll") Boolean isAll,
                                @Query("PageNo") Integer pageNumber,
@@ -49,8 +51,9 @@ public interface CloudService {
      */
     @GET("GetMonitorByUserID")
     Single<MonitorInfo> monitorDevices(@Query("UserID") Long userId,
-                                       @Query("TimeZones") String timeZone,
-                                       @Query("MapType") String mapType);
+                                       @Query("MapType") String mapType,
+                                       @Query("LoginName") String loginName,
+                                       @Query("Password") String password);
 
     /**
      * 实时跟踪
@@ -58,7 +61,6 @@ public interface CloudService {
     @GET("GetTracking")
     Single<MonitorInfo.MonitorDevice> getTrack(@Query("DeviceID") Long deviceId,
                                                @Query("Model") String model,
-                                               @Query("TimeZones") String timeZone,
                                                @Query("MapType") String mapType);
 
     /**
@@ -80,21 +82,21 @@ public interface CloudService {
                                  @Query("EndTime") String endTime,
                                  @Query("ShowLBS") int showLBS,
                                  @Query("SelectCount") int count,
-                                 @Query("TimeZones") String timeZone,
                                  @Query("MapType") String mapType);
 
     /**
      * 获取当前用户和子用户信息列表
      */
     @GET("GetUserDevices")
-    Single<SubAccounts> getUserSubAccounts(@Query("UserID") Long userId);
+    Single<SubAccounts> getUserSubAccounts(@Query("UserID") Long userId,
+                                           @Query("LoginName") String loginName,
+                                           @Query("Password") String password);
 
     /**
      * 获取用户信息
      */
     @GET("GetUserInfo")
-    Single<UserProfile> getUserProfile(@Query("UserID") Long userId,
-                                       @Query("TimeZones") String timeZone);
+    Single<UserProfile> getUserProfile(@Query("UserID") Long userId);
 
     /**
      * ID登录密码修改
@@ -138,8 +140,7 @@ public interface CloudService {
      * 获取单个设备详细信息
      */
     @GET("GetDeviceDetail")
-    Single<DeviceDetail> getDeviceDetail(@Query("DeviceID") Long deviceId,
-                                         @Query("TimeZones") String timeZone);
+    Single<DeviceDetail> getDeviceDetail(@Query("DeviceID") Long deviceId);
 
     /**
      * 下发记录列表
@@ -149,7 +150,6 @@ public interface CloudService {
     @GET("GetCommandList")
     Single<Commands> getCommandHistory(@Query("SN") String sn,
                                        @Query("DeviceID") Long deviceId,
-                                       @Query("TimeZones") String timeZone,
                                        @Query("PageNo") Integer pageNumber,
                                        @Query("PageCount") Integer pageSize);
 
@@ -158,7 +158,6 @@ public interface CloudService {
      */
     @GET("GetGeofence")
     Single<GEOFences> getGEOFence(@Query("DeviceID") Long deviceId,
-                                  @Query("TimeZones") String timeZone,
                                   @Query("MapType") String mapType);
 
     /**
@@ -193,7 +192,6 @@ public interface CloudService {
     @GET("GetWarnList")
     Single<Messages> getMessages(@Query("ID") Long id,
                                  @Query("TypeID") Integer typeId,
-                                 @Query("TimeZones") String timeZone,
                                  @Query("PageNo") Integer pageNumber,
                                  @Query("PageCount") Integer pageSize);
 

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.transition.TransitionManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -71,8 +69,6 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
     SeekBar sb_progress;
     @BindView(R.id.sb_speed)
     SeekBar sb_speed;
-    @BindView(R.id.ll_play_control)
-    LinearLayout ll_play_control;
 
     private GoogleMap mGMap;
     private Marker mStartOverlay;
@@ -198,7 +194,6 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
                         getData();
                     }
                 });
-        getData();
     }
 
     @Override
@@ -206,7 +201,10 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
         mGMap = googleMap;
         mGMap.getUiSettings().setZoomControlsEnabled(false);
         mGMap.getUiSettings().setCompassEnabled(false);
+        mGMap.getUiSettings().setMyLocationButtonEnabled(false);
         mGMap.setMapType(mMapType);
+
+        getData();
     }
 
     @Override
@@ -256,8 +254,7 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
                 DateUtils.convertDateToStr(mDate) + " 23:59",
                 mLbs ? 1 : 0,
                 1000,
-                "",
-                mUserInfoSp.getString("map", "Google"))
+                mUserInfoSp.getString("sign_in_map", "Google"))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(route -> {
@@ -378,32 +375,57 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
         ImageView iv_device_status = makerView.findViewById(R.id.iv_device_status);
 
         iv_device_status.setRotation(Float.parseFloat(sport.c));
+
+        String strStatus;
+        switch (sport.stop) {
+            case "0":
+                strStatus = getString(R.string.un_used);
+                break;
+            case "1":
+                strStatus = getString(R.string.moving);
+                break;
+            case "2":
+                strStatus = getString(R.string.status_static);
+                break;
+            case "3":
+                strStatus = getString(R.string.offline);
+                break;
+            case "4":
+                strStatus = getString(R.string.arrears);
+                break;
+            default:
+                strStatus = getString(R.string.un_used);
+                break;
+        }
+
         double course = Double.parseDouble(sport.c);
         String courseStatus = "";
         if (((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360) || course >= 360)) {
-            courseStatus = "北";
+            courseStatus = getString(R.string.direction_north);
         } else if (course >= 22.5 && course < 67.5) {
-            courseStatus = "东北";
+            courseStatus = getString(R.string.direction_northeast);
         } else if (course >= 67.5 && course < 112.5) {
-            courseStatus = "东";
+            courseStatus = getString(R.string.direction_east);
         } else if (course >= 112.5 && course < 157.5) {
-            courseStatus = "东南";
+            courseStatus = getString(R.string.direction_southeast);
         } else if (course >= 157.5 && course < 202.5) {
-            courseStatus = "南";
+            courseStatus = getString(R.string.direction_south);
         } else if (course >= 202.5 && course < 247.5) {
-            courseStatus = "西南";
+            courseStatus = getString(R.string.direction_southwest);
         } else if (course >= 247.5 && course < 292.5) {
-            courseStatus = "西";
+            courseStatus = getString(R.string.direction_west);
         } else if (course >= 292.5 && 337.5 > course) {
-            courseStatus = "西北";
+            courseStatus = getString(R.string.direction_northwest);
         }
 
         String detail = mMonitorDevice.name + "\n"
-                + ((TextUtils.equals("0", sport.g) ? "GPS" : "WIFI")) + "\n"
-                + ((TextUtils.equals("0", sport.stop) ? ("运动(" + sport.stm + ")") : "停止")) + "\n"
-                + "时间:" + sport.pt + "\n"
-                + "速度:" + sport.s + "\n"
-                + "方向:" + courseStatus + "\n";
+                + (TextUtils.equals("1", sport.g) ? "GPS"
+                : TextUtils.equals("2", sport.g) ? "LBS"
+                : TextUtils.equals("3", sport.g) ? "WIFI" : "") + "\n"
+                + strStatus + "\n"
+                + getString(R.string.device_time) + sport.pt + "\n"
+                + getString(R.string.device_speed) + sport.s + "\n"
+                + getString(R.string.device_direction) + courseStatus + "\n";
         tv_device_info_detail.setText(detail);
 
         LatLng latLng = new LatLng(Double.parseDouble(sport.lat), Double.parseDouble(sport.lng));
@@ -494,11 +516,14 @@ public class HistoryPathActivityGoogle extends BaseActivity implements View.OnCl
         if (mDragging) {
             return;
         }
-        TransitionManager.beginDelayedTransition(cl_history_path);
         if (mPositions == null || mPositions.isEmpty()) {
-            ll_play_control.setVisibility(View.GONE);
+            btn_play.setEnabled(false);
+            sb_progress.setEnabled(false);
+            sb_speed.setEnabled(false);
         } else {
-            ll_play_control.setVisibility(View.VISIBLE);
+            btn_play.setEnabled(true);
+            sb_progress.setEnabled(true);
+            sb_speed.setEnabled(true);
         }
         btn_play.setImageResource(isPlaying() ? R.drawable.ic_pause : R.drawable.ic_play);
         sb_progress.setProgress(mProgressPositions == null ? 0 : (mProgressPositions.size() * 1000 / mPositions.size()));

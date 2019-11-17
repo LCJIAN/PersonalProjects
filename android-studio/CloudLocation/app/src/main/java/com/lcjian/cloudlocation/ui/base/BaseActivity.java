@@ -1,8 +1,10 @@
 package com.lcjian.cloudlocation.ui.base;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.franmontiel.localechanger.LocaleChanger;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.lcjian.cloudlocation.App;
@@ -38,6 +40,12 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreateComponent(App.getInstance().appComponent());
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        newBase = LocaleChanger.configureBaseContext(newBase);
+        super.attachBaseContext(newBase);
     }
 
     protected void onCreateComponent(AppComponent appComponent) {
