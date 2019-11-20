@@ -29,6 +29,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.Circle;
 import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
@@ -215,6 +216,7 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
                 mFenceLat = ll.latitude;
                 mFenceLon = ll.longitude;
                 drawCircle(sb_fence_radius.getProgress());
+                mBMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(ll));
             }
 
             @Override
@@ -375,10 +377,10 @@ public class GEOFenceEditActivity extends BaseActivity implements SensorEventLis
                 }
                 if (mFenceCenterLocationType == 0) {
                     mRxBus.send(new LatLng(mCurrentLat, mCurrentLon));
-                    Toast.makeText(App.getInstance(), "我的位置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getInstance(),  R.string.my_location, Toast.LENGTH_SHORT).show();
                 } else {
                     mRxBus.send(new LatLng(Double.parseDouble(mMonitorDevice.lat), Double.parseDouble(mMonitorDevice.lng)));
-                    Toast.makeText(App.getInstance(), "设备位置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getInstance(),  R.string.device_location, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.cv_change_map_layer_geo:

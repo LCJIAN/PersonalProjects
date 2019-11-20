@@ -691,12 +691,13 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
             courseStatus = getString(R.string.direction_northwest);
         }
 
+        String[] a = mCurrentDevice.status.split("-");
         long[] period = DateUtils.getPeriod(DateUtils.convertStrToDate(mCurrentDevice.positionTime, DateUtils.YYYY_MM_DD_HH_MM_SS), DateUtils.now());
         String detail = getString(R.string.device_status) + strStatus
                 + (TextUtils.equals(getString(R.string.moving), strStatus) ? "" : "(" + getString(R.string.period, period[0], period[1], period[2], period[3]) + ")") + "\n"
                 + (TextUtils.equals("1", mCurrentDevice.isGPS) ? "GPS "
                 : TextUtils.equals("2", mCurrentDevice.isGPS) ? "LBS "
-                : TextUtils.equals("3", mCurrentDevice.isGPS) ? "WIFI " : "") + mCurrentDevice.status.split("-")[1] + "\n"
+                : TextUtils.equals("3", mCurrentDevice.isGPS) ? "WIFI " : "") + (a.length > 1 ? a[1] : "") + "\n"
                 + getString(R.string.device_time) + mCurrentDevice.positionTime + "\n"
                 + getString(R.string.device_direction) + courseStatus + "\n"
                 + getString(R.string.device_address) + (TextUtils.isEmpty(mCurrentDevice.address) ? "" : mCurrentDevice.address) + "\n";

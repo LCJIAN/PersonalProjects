@@ -109,4 +109,6 @@
     <string name="direction_northwest">西北</string>
     <string name="period">%1$d天%2$d小时%3$d分%4$d秒</string>
     <string name="edit_geo_fence">编辑围栏</string>
+    <string name="my_location">我的位置</string>
+    <string name="device_location">设备位置</string>
 </resources>

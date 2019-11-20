@@ -22,6 +22,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.transition.TransitionManager;
+
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -49,8 +52,6 @@ import com.lcjian.cloudlocation.util.Spans;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.transition.TransitionManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -131,7 +132,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_geo_fence_edit);
+        setContentView(R.layout.activity_geo_fence_edit_google);
         ButterKnife.bind(this);
         mMonitorDevice = (MonitorInfo.MonitorDevice) getIntent().getSerializableExtra("monitor_device");
         if (getIntent().getSerializableExtra("geo_fence") != null) {
@@ -204,8 +205,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -274,6 +274,7 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
                 mFenceLat = ll.latitude;
                 mFenceLon = ll.longitude;
                 drawCircle(sb_fence_radius.getProgress());
+                mGMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
             }
 
             @Override
@@ -374,10 +375,10 @@ public class GEOFenceEditActivityGoogle extends BaseActivity implements SensorEv
                 }
                 if (mFenceCenterLocationType == 0) {
                     mRxBus.send(new LatLng(mCurrentLat, mCurrentLon));
-                    Toast.makeText(App.getInstance(), "我的位置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getInstance(), R.string.my_location, Toast.LENGTH_SHORT).show();
                 } else {
                     mRxBus.send(new LatLng(Double.parseDouble(mMonitorDevice.lat), Double.parseDouble(mMonitorDevice.lng)));
-                    Toast.makeText(App.getInstance(), "设备位置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getInstance(), R.string.device_location, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.cv_change_map_layer_geo:

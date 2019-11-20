@@ -18,7 +18,7 @@
     <string name="gl_map">Google Map</string>
     <string name="remember_sign_in_info">Remember me</string>
     <string name="sign_in">Login</string>
-    <string name="error_id_or_pwd">登录名或密码错误</string>
+    <string name="error_id_or_pwd">Account or password error</string>
     <string name="choose_account">Select Account</string>
     <string name="search_device_hint">Enter Name/Plate/IMEI</string>
     <string name="device_list">Device List</string>
@@ -109,4 +109,6 @@
     <string name="direction_northwest">Northwest</string>
     <string name="period">%1$dd%2$dh%3$dm%4$ds</string>
     <string name="edit_geo_fence">Edit Geo-Fence</string>
+    <string name="my_location">My location</string>
+    <string name="device_location">Device location</string>
 </resources>
