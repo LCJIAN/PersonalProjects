@@ -18,9 +18,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.ContextCompat;
+
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.franmontiel.localechanger.LocaleChanger;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.lcjian.cloudlocation.App;
 import com.lcjian.cloudlocation.Constants;
 import com.lcjian.cloudlocation.Global;
@@ -33,8 +38,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.Collections;
 import java.util.Locale;
 
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -116,7 +119,12 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
             sp_sign_in_map.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    mSignInMap = position == 0 ? "Baidu" : "Google";
+                    if (position == 1
+                            && GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(parent.getContext()) != ConnectionResult.SUCCESS) {
+                        sp_sign_in_map.setSelection(0);
+                    } else {
+                        mSignInMap = position == 0 ? "Baidu" : "Google";
+                    }
                 }
 
                 @Override

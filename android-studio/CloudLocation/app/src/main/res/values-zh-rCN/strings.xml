@@ -49,6 +49,8 @@
     <string name="command_history">命令下发记录</string>
     <string name="send_time">发送时间：</string>
     <string name="response_time">回复时间：</string>
+    <string name="send_command_successfully">命令发送成功：</string>
+    <string name="send_command_failed">命令发送失败：</string>
     <string name="message_setting">提醒设置</string>
     <string name="about_us">关于我们</string>
     <string name="home_page">首页</string>

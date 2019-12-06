@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
@@ -31,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -375,25 +376,10 @@ public class HistoryPathActivity extends BaseActivity implements View.OnClickLis
         iv_device_status.setRotation(Float.parseFloat(sport.c));
 
         String strStatus;
-        switch (sport.stop) {
-            case "0":
-                strStatus = getString(R.string.un_used);
-                break;
-            case "1":
-                strStatus = getString(R.string.moving);
-                break;
-            case "2":
-                strStatus = getString(R.string.status_static);
-                break;
-            case "3":
-                strStatus = getString(R.string.offline);
-                break;
-            case "4":
-                strStatus = getString(R.string.arrears);
-                break;
-            default:
-                strStatus = getString(R.string.un_used);
-                break;
+        if ("1".equals(sport.stop)) {
+            strStatus = getString(R.string.status_static);
+        } else {
+            strStatus = getString(R.string.moving);
         }
 
         double course = Double.parseDouble(sport.c);

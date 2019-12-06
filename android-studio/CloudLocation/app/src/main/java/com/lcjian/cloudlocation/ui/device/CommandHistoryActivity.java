@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lcjian.cloudlocation.R;
 import com.lcjian.cloudlocation.data.entity.PageResult;
 import com.lcjian.cloudlocation.data.network.entity.Commands;
@@ -16,10 +21,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
@@ -82,7 +83,6 @@ public class CommandHistoryActivity extends BaseActivity {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (getArguments() != null) {
@@ -105,7 +105,7 @@ public class CommandHistoryActivity extends BaseActivity {
                         @Override
                         public void onBind(Commands.Command data, SlimAdapter.SlimViewHolder<Commands.Command> viewHolder) {
                             viewHolder.text(R.id.tv_command_name, data.commandName)
-                                    .text(R.id.tv_command_status, TextUtils.equals(data.isSend, "1") ? "命令发送成功" : "命令发送失败")
+                                    .text(R.id.tv_command_status, TextUtils.equals(data.isSend, "1") ? R.string.send_command_successfully : R.string.send_command_failed)
                                     .text(R.id.tv_command_info, data.responseText)
                                     .text(R.id.tv_command_send_time, data.sendDate)
                                     .text(R.id.tv_command_response_time, data.responseDate)

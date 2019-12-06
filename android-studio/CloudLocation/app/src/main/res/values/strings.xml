@@ -46,9 +46,11 @@
     <string name="device_contact">Device Contact</string>
     <string name="device_contact_phone">Contact Number</string>
     <string name="device_info">Info</string>
-    <string name="command_history">命令下发记录</string>
-    <string name="send_time">发送时间：</string>
-    <string name="response_time">回复时间：</string>
+    <string name="command_history">Command Issue Record</string>
+    <string name="send_time">Issue Time：</string>
+    <string name="response_time">Relay Time：</string>
+    <string name="send_command_successfully">Command Sent successfully：</string>
+    <string name="send_command_failed">Command sent failed：</string>
     <string name="message_setting">Alarm Set</string>
     <string name="about_us">About Us</string>
     <string name="home_page">Monitor</string>
