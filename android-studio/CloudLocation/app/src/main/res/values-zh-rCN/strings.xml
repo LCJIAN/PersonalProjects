@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">云图位置</string>
+    <string name="app_name">TKSTAR GO</string>
     <string name="empty_results">暂无结果</string>
     <string name="error_msg">出错了</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -87,6 +87,7 @@
     <string name="no_map_app">请先安装地图软件</string>
     <string name="english">English</string>
     <string name="chinese">简体中文</string>
+    <string name="spanish">Español</string>
     <string name="un_used">未启用</string>
     <string name="moving">运动</string>
     <string name="status_static">静止</string>

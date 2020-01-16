@@ -63,6 +63,7 @@
         android:id="@+id/cv_change_to_panorama"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:layout_marginTop="16dp"
         android:background="@null"
         android:elevation="16dp"

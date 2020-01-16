@@ -24,6 +24,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
@@ -61,13 +62,16 @@ import com.lcjian.cloudlocation.util.MapUtils;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.util.Pair;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -123,8 +127,6 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
     TextView tv_go_to_device_list;
     @BindView(R.id.iv_go_to_command)
     ImageView iv_go_to_command;
-
-    private View mMarkerView;
 
     Unbinder unbinder;
 
@@ -298,18 +300,24 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 (aLong, currentDeviceChangeEvent) -> new Object())
                 .observeOn(Schedulers.io())
                 .flatMap(aLong -> Single.zip(
+                        Single.just(mCurrentDevice),
                         mRestAPI.cloudService().getTrack(Long.parseLong(mCurrentDevice.id), mCurrentDevice.model, mUserInfoSp.getString("sign_in_map", "Google")),
                         mRestAPI.cloudService().getAddressByLatLng(mCurrentDevice.lat, mCurrentDevice.lng, mUserInfoSp.getString("sign_in_map", mUserInfoSp.getString("sign_in_map", "Google"))),
-                        (device, address) -> {
-                            device.address = address.address;
-                            return device;
+                        (cDevice, monitorDevice, address) -> {
+                            monitorDevice.address = address.address;
+                            monitorDevice.id = cDevice.id;
+                            monitorDevice.name = cDevice.name;
+                            monitorDevice.model = cDevice.model;
+                            return monitorDevice;
                         })
                         .toObservable())
+                .publish(selector -> Observable.zip(selector, selector.map(this::gn), Pair::create))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(monitorDevice -> {
-                    monitorDevice.id = mCurrentDevice.id;
-                    monitorDevice.name = mCurrentDevice.name;
-                    monitorDevice.model = mCurrentDevice.model;
+                .subscribe(pair -> {
+                    assert pair.first != null;
+                    assert pair.second != null;
+                    MonitorInfo.MonitorDevice monitorDevice = pair.first;
+                    BitmapDescriptor bitmapDescriptor = pair.second;
 
                     mCurrentDevice = monitorDevice;
                     Overlay currentDeviceMaker = null;
@@ -323,7 +331,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                     if (currentDeviceMaker != null) {
                         mDeviceMakers.remove(currentDeviceMaker);
                         currentDeviceMaker.remove();
-                        mDeviceMakers.add(mapAddDeviceMarker(mCurrentDevice));
+                        mDeviceMakers.add(mapAddDeviceMarker(mCurrentDevice, bitmapDescriptor));
                     }
                     if (mChoose) {
                         mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
@@ -376,23 +384,32 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                                     mUserInfoSp.getString("sign_in_name_pwd", "")).toObservable();
                         }
                     })
+                    .publish(selector -> Observable.zip(selector, selector.map(monitorInfo -> {
+                        Map<MonitorInfo.MonitorDevice, BitmapDescriptor> descriptors = new HashMap<>();
+                        for (MonitorInfo.MonitorDevice device : monitorInfo.devices) {
+                            descriptors.put(device, gn(device));
+                        }
+                        return descriptors;
+                    }), Pair::create))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(monitorInfo -> {
+                    .subscribe(pair -> {
+                        assert pair.first != null;
+                        assert pair.second != null;
                         for (Overlay overlay : mDeviceMakers) {
                             overlay.remove();
                         }
-                        monitorDevices = monitorInfo.devices;
+                        monitorDevices = pair.first.devices;
 
-                        for (MonitorInfo.MonitorDevice device : monitorInfo.devices) {
-                            mDeviceMakers.add(mapAddDeviceMarker(device));
+                        for (MonitorInfo.MonitorDevice device : pair.first.devices) {
+                            mDeviceMakers.add(mapAddDeviceMarker(device, pair.second.get(device)));
                         }
 
                         mView.post(() -> {
-                            if (mCurrentDevice == null && monitorInfo.devices != null && !monitorInfo.devices.isEmpty()) {
-                                mCurrentDevice = getLastDevice(monitorInfo.devices);
+                            if (mCurrentDevice == null && pair.first.devices != null && !pair.first.devices.isEmpty()) {
+                                mCurrentDevice = getLastDevice(pair.first.devices);
                                 if (mCurrentDevice == null) {
-                                    mCurrentDevice = monitorInfo.devices.get(0);
+                                    mCurrentDevice = pair.first.devices.get(0);
                                 }
                                 mBMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
                                         .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
@@ -636,15 +653,24 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Overlay mapAddDeviceMarker(MonitorInfo.MonitorDevice device) {
-        mMarkerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
+    private BitmapDescriptor gn(MonitorInfo.MonitorDevice device) {
+        View mMarkerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
         ImageView iv_device_icon = mMarkerView.findViewById(R.id.iv_device_icon);
         TextView tv_device_name = mMarkerView.findViewById(R.id.tv_device_name);
 
-        Glide.with(iv_device_icon).load("file:///android_asset/icon/" + device.icon)
-                .placeholder(R.drawable.pos_min)
-                .circleCrop()
-                .into(iv_device_icon);
+        try {
+            Bitmap bitmap = Glide.with(iv_device_icon)
+                    .asBitmap().load("file:///android_asset/icon/" + device.icon)
+                    .placeholder(R.drawable.pos_min)
+                    .circleCrop()
+                    .submit()
+                    .get();
+            iv_device_icon.setImageBitmap(bitmap);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if (TextUtils.equals("3", device.status.split("-")[0])) {
             iv_device_icon.setBackgroundResource(R.drawable.shape_offline);
@@ -658,11 +684,15 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
         }
         tv_device_name.setText(device.name);
 
+        return BitmapDescriptorFactory.fromView(mMarkerView);
+    }
+
+    private Overlay mapAddDeviceMarker(MonitorInfo.MonitorDevice device, BitmapDescriptor bitmapDescriptor) {
         Bundle extraInfo = new Bundle();
         extraInfo.putSerializable("monitor_device", device);
         OverlayOptions makerOption = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(device.lat), Double.parseDouble(device.lng)))
-                .icon(BitmapDescriptorFactory.fromView(mMarkerView))
+                .icon(bitmapDescriptor)
                 .extraInfo(extraInfo)
                 .anchor(0.5f, 0.33f);
         return mBMap.addOverlay(makerOption);

@@ -26,5 +26,5 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="2dp"
-        android:src="@drawable/direct_s" />
+        android:src="@drawable/lan_s" />
 </LinearLayout>

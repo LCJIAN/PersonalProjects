@@ -43,4 +43,25 @@
         android:text="@string/chinese"
         android:textAppearance="@style/TextAppearance.AppTheme"
         android:textColor="#ff999999" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:windowBackground" />
+
+    <TextView
+        android:id="@+id/tv_spanish"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:foreground="?selectableItemBackground"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:drawableEnd="@drawable/tick"
+        android:drawableRight="@drawable/tick"
+        android:paddingRight="16dp"
+        android:text="@string/spanish"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#ff999999" />
 </LinearLayout>

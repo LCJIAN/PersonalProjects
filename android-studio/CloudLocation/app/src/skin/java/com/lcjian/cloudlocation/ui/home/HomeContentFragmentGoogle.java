@@ -3,6 +3,7 @@ package com.lcjian.cloudlocation.ui.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -35,6 +36,7 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -66,12 +68,16 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.util.Pair;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -126,7 +132,6 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
     TextView tv_go_to_device_list;
     @BindView(R.id.iv_go_to_command)
     ImageView iv_go_to_command;
-    private View mMarkerView;
 
     Unbinder unbinder;
 
@@ -302,8 +307,6 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
             setupInfoWindowVisibility();
             return true;
         });
-
-
     }
 
     @Override
@@ -335,18 +338,24 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                 (aLong, currentDeviceChangeEvent) -> new Object())
                 .observeOn(Schedulers.io())
                 .flatMap(aLong -> Single.zip(
+                        Single.just(mCurrentDevice),
                         mRestAPI.cloudService().getTrack(Long.parseLong(mCurrentDevice.id), mCurrentDevice.model, mUserInfoSp.getString("sign_in_map", "Google")),
                         mRestAPI.cloudService().getAddressByLatLng(mCurrentDevice.lat, mCurrentDevice.lng, mUserInfoSp.getString("sign_in_map", mUserInfoSp.getString("sign_in_map", "Google"))),
-                        (device, address) -> {
-                            device.address = address.address;
-                            return device;
+                        (cDevice, monitorDevice, address) -> {
+                            monitorDevice.address = address.address;
+                            monitorDevice.id = cDevice.id;
+                            monitorDevice.name = cDevice.name;
+                            monitorDevice.model = cDevice.model;
+                            return monitorDevice;
                         })
                         .toObservable())
+                .publish(selector -> Observable.zip(selector, selector.map(this::gn), Pair::create))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(monitorDevice -> {
-                    monitorDevice.id = mCurrentDevice.id;
-                    monitorDevice.name = mCurrentDevice.name;
-                    monitorDevice.model = mCurrentDevice.model;
+                .subscribe(pair -> {
+                    assert pair.first != null;
+                    assert pair.second != null;
+                    MonitorInfo.MonitorDevice monitorDevice = pair.first;
+                    BitmapDescriptor bitmapDescriptor = pair.second;
 
                     mCurrentDevice = monitorDevice;
                     Marker currentDeviceMaker = null;
@@ -360,7 +369,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                     if (currentDeviceMaker != null) {
                         mDeviceMakers.remove(currentDeviceMaker);
                         currentDeviceMaker.remove();
-                        mDeviceMakers.add(mapAddDeviceMarker(mCurrentDevice));
+                        mDeviceMakers.add(mapAddDeviceMarker(mCurrentDevice, bitmapDescriptor));
                     }
                     if (mChoose) {
                         mGMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
@@ -413,23 +422,32 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                                     mUserInfoSp.getString("sign_in_name_pwd", "")).toObservable();
                         }
                     })
+                    .publish(selector -> Observable.zip(selector, selector.map(monitorInfo -> {
+                        Map<MonitorInfo.MonitorDevice, BitmapDescriptor> descriptors = new HashMap<>();
+                        for (MonitorInfo.MonitorDevice device : monitorInfo.devices) {
+                            descriptors.put(device, gn(device));
+                        }
+                        return descriptors;
+                    }), Pair::create))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(monitorInfo -> {
+                    .subscribe(pair -> {
+                        assert pair.first != null;
+                        assert pair.second != null;
                         for (Marker marker : mDeviceMakers) {
                             marker.remove();
                         }
-                        monitorDevices = monitorInfo.devices;
+                        monitorDevices = pair.first.devices;
 
-                        for (MonitorInfo.MonitorDevice device : monitorInfo.devices) {
-                            mDeviceMakers.add(mapAddDeviceMarker(device));
+                        for (MonitorInfo.MonitorDevice device : pair.first.devices) {
+                            mDeviceMakers.add(mapAddDeviceMarker(device, pair.second.get(device)));
                         }
 
-                        mView.post(() -> {
-                        if (mCurrentDevice == null && monitorInfo.devices != null && !monitorInfo.devices.isEmpty()) {
-                            mCurrentDevice = getLastDevice(monitorInfo.devices);
+                        mView.postDelayed(() -> {
+                            if (mCurrentDevice == null && pair.first.devices != null && !pair.first.devices.isEmpty()) {
+                                mCurrentDevice = getLastDevice(pair.first.devices);
                             if (mCurrentDevice == null) {
-                                mCurrentDevice = monitorInfo.devices.get(0);
+                                mCurrentDevice = pair.first.devices.get(0);
                             }
                             mGMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                                     .target(new LatLng(Double.parseDouble(mCurrentDevice.lat), Double.parseDouble(mCurrentDevice.lng)))
@@ -439,7 +457,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                             setupDistanceVisibility();
                             startRefresh();
                         }
-                        });
+                        }, 100);
                     }, throwable -> {
                     });
         } else {
@@ -650,15 +668,24 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private Marker mapAddDeviceMarker(MonitorInfo.MonitorDevice device) {
-        mMarkerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
+    private BitmapDescriptor gn(MonitorInfo.MonitorDevice device) {
+        View mMarkerView = LayoutInflater.from(mView.getContext()).inflate(R.layout.device_maker_item, mView, false);
         ImageView iv_device_icon = mMarkerView.findViewById(R.id.iv_device_icon);
         TextView tv_device_name = mMarkerView.findViewById(R.id.tv_device_name);
 
-        Glide.with(iv_device_icon).load("file:///android_asset/icon/" + device.icon)
-                .placeholder(R.drawable.pos_min)
-                .circleCrop()
-                .into(iv_device_icon);
+        try {
+            Bitmap bitmap = Glide.with(iv_device_icon)
+                    .asBitmap().load("file:///android_asset/icon/" + device.icon)
+                    .placeholder(R.drawable.pos_min)
+                    .circleCrop()
+                    .submit()
+                    .get();
+            iv_device_icon.setImageBitmap(bitmap);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if (TextUtils.equals("3", device.status.split("-")[0])) {
             iv_device_icon.setBackgroundResource(R.drawable.shape_offline);
@@ -672,9 +699,13 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         }
         tv_device_name.setText(device.name);
 
+        return BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(mMarkerView).getBitmap());
+    }
+
+    private Marker mapAddDeviceMarker(MonitorInfo.MonitorDevice device, BitmapDescriptor bitmapDescriptor) {
         MarkerOptions makerOption = new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(device.lat), Double.parseDouble(device.lng)))
-                .icon(BitmapDescriptorFactory.fromBitmap(com.baidu.mapapi.map.BitmapDescriptorFactory.fromView(mMarkerView).getBitmap()))
+                .icon(bitmapDescriptor)
                 .anchor(0.5f, 0.33f);
         Marker marker = mGMap.addMarker(makerOption);
         marker.setTag(device);

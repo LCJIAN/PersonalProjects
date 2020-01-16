@@ -58,7 +58,7 @@ public class App extends Application {
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 
         LocaleChanger.initialize(getApplicationContext(),
-                Arrays.asList(Locale.SIMPLIFIED_CHINESE, Locale.ENGLISH),
+                Arrays.asList(Locale.SIMPLIFIED_CHINESE, Locale.ENGLISH, new Locale("es")),
                 new LanguageMatchingAlgorithm(),
                 LocalePreference.PreferSystemLocale);
 

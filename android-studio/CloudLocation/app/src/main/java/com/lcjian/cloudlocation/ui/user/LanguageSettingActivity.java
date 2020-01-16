@@ -29,6 +29,8 @@ public class LanguageSettingActivity extends BaseActivity {
     TextView tv_english;
     @BindView(R.id.tv_chinese)
     TextView tv_chinese;
+    @BindView(R.id.tv_spanish)
+    TextView tv_spanish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class LanguageSettingActivity extends BaseActivity {
         btn_nav_back.setOnClickListener(v -> onBackPressed());
         tv_english.setOnClickListener(v -> changeLocale(Locale.ENGLISH));
         tv_chinese.setOnClickListener(v -> changeLocale(Locale.SIMPLIFIED_CHINESE));
+        tv_spanish.setOnClickListener(v -> changeLocale(new Locale("es")));
     }
 
     @Override
@@ -48,9 +51,15 @@ public class LanguageSettingActivity extends BaseActivity {
         if (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale())) {
             tv_chinese.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tick, 0);
             tv_english.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        } else {
+            tv_spanish.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        } else if (Locale.ENGLISH.equals(LocaleChanger.getLocale())) {
             tv_chinese.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             tv_english.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tick, 0);
+            tv_spanish.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        } else {
+            tv_chinese.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            tv_english.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            tv_spanish.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.tick, 0);
         }
         ActivityRecreationHelper.onResume(this);
     }

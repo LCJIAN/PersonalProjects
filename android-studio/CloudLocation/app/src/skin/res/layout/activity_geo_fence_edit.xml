@@ -190,8 +190,7 @@
                 android:checked="true"
                 android:gravity="center_vertical"
                 android:paddingBottom="2dp"
-                android:textColor="#ff333333"
-                android:textSize="15sp" />
+                android:textColor="#ff333333" />
 
             <RadioButton
                 android:id="@+id/rb_fence_type_company"
@@ -200,8 +199,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingBottom="2dp"
-                android:textColor="#ff333333"
-                android:textSize="15sp" />
+                android:textColor="#ff333333" />
 
             <RadioButton
                 android:id="@+id/rb_fence_type_other"
@@ -210,8 +208,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingBottom="2dp"
-                android:textColor="#ff333333"
-                android:textSize="15sp" />
+                android:textColor="#ff333333" />
         </RadioGroup>
 
         <CheckBox
@@ -224,7 +221,6 @@
             android:gravity="center_vertical"
             android:paddingBottom="2dp"
             android:textColor="#ff333333"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -239,7 +235,6 @@
             android:gravity="center_vertical"
             android:paddingBottom="2dp"
             android:textColor="#ff333333"
-            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/chb_in_fence_remind"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/chb_in_fence_remind"
