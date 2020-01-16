@@ -113,4 +113,13 @@
     <string name="edit_geo_fence">Edit Geo-Fence</string>
     <string name="my_location">My location</string>
     <string name="device_location">Device location</string>
+
+    <string name="button_path">轨迹</string>
+    <string name="button_fence_setting">设置围栏</string>
+    <string name="button_icon_setting">设置图标</string>
+    <string name="button_device_info">设备资料</string>
+    <string name="button_device">设备</string>
+    <string name="icon">图标</string>
+    <string name="device_direction_2">Direction</string>
+    <string name="device_address_2">Address</string>
 </resources>

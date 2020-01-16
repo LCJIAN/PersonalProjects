@@ -16,7 +16,7 @@ public class MapUtils {
     private static final String BAIDU_PACKAGE_NAME = "com.baidu.BaiduMap";
     private static final String GAODE_PACKAGE_NAME = "com.autonavi.minimap";
     private static final String TENCENT_PACKAGE_NAME = "com.tencent.map";
-    private static final String GOOGLE_PACKAGE_NAME = "com.tencent.map";
+    private static final String GOOGLE_PACKAGE_NAME = "com.google.android.apps.maps";
 
     /**
      * 是否安装百度地图

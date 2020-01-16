@@ -26,6 +26,7 @@ public class MonitorInfo {
         public String stm;
         public String status;
         public String isGPS;
+        public String icon;
 
         // 实时跟踪
         public String work;

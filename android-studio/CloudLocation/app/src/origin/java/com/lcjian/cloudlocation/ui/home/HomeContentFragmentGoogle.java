@@ -62,6 +62,9 @@ import com.lcjian.cloudlocation.util.DimenUtils;
 import com.lcjian.cloudlocation.util.MapUtils;
 import com.lcjian.cloudlocation.util.Spans;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,6 +84,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import timber.log.Timber;
 
 public class HomeContentFragmentGoogle extends BaseFragment implements SensorEventListener, View.OnClickListener, OnMapReadyCallback {
 
@@ -148,6 +152,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
     private Disposable mDisposableGeoFence;
     private Disposable mDisposableShowDistance;
     private Disposable mDisposableMakers;
+    private Disposable mDisposableTest;
 
     private MonitorInfo.MonitorDevice mCurrentDevice;
     private MonitorInfo.MonitorDevice origin;
@@ -244,6 +249,13 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
 
         mLocationSettingsRequest = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest).build();
+
+        mDisposableTest = Single.defer(() -> Single.just(testUrl("https://www.google.com")))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> {
+                    if (!aBoolean) Timber.e("Google %s", "failed");
+                });
     }
 
     @Override
@@ -401,6 +413,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                             mDeviceMakers.add(mapAddDeviceMarker(device));
                         }
 
+                        mView.post(() -> {
                         if (mCurrentDevice == null && monitorInfo.devices != null && !monitorInfo.devices.isEmpty()) {
                             mCurrentDevice = getLastDevice(monitorInfo.devices);
                             if (mCurrentDevice == null) {
@@ -414,6 +427,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                             setupDistanceVisibility();
                             startRefresh();
                         }
+                    });
                     }, throwable -> {
                     });
         } else {
@@ -456,6 +470,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
 
     @Override
     public void onDestroyView() {
+        mDisposableTest.dispose();
         mGMap.setMyLocationEnabled(false);
         unbinder.unbind();
         mView = null;
@@ -676,6 +691,27 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         }
         tv_click_to_refresh.setText(getString(R.string.refreshing));
         subjectCountDown.onNext(0L);
+    }
+
+    private static boolean testUrl(String urlString) {
+        URL url;
+        InputStream in = null;
+        try {
+            url = new URL(urlString);
+            in = url.openStream();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 

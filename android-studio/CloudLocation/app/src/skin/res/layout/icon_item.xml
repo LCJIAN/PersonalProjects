@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lcjian.cloudlocation.widget.RatioLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="4dp"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:background="@drawable/shape_icon_bg"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_icon_check"
+            android:layout_width="wrap_content"
+            android:src="@drawable/xz_ygx"
+            android:layout_margin="8dp"
+            android:layout_gravity="bottom|end"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</com.lcjian.cloudlocation.widget.RatioLayout>

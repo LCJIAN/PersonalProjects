@@ -202,4 +202,11 @@ public interface CloudService {
     Single<State> deleteMessage(@Query("ID") Long id,
                                 @Query("TypeID") Integer typeId,
                                 @Query("ExceptionID") String messageId);
+
+    /**
+     * 删除消息
+     */
+    @GET("UpdateDeviceIcon")
+    Single<State> updateDeviceIcon(@Query("DeviceID") Long deviceID,
+                                   @Query("Icon") String icon);
 }

@@ -26,5 +26,6 @@ public class Devices {
         public String status;
         public String speed;
         public String voice;
+        public String icon;
     }
 }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="229dp"
+    android:layout_height="122dp"
+    android:background="@drawable/h_bk">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_device_info"
+        android:layout_width="229dp"
+        android:layout_height="122dp"
+        android:layout_gravity="center_horizontal|top">
+
+
+        <TextView
+            android:id="@+id/tv_device_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2020-01-01 02:02:02" />
+
+        <TextView
+            android:id="@+id/tv_device_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/shape_status_static"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="静止" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_time" />
+
+        <TextView
+            android:id="@+id/tv_device_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:text="GPS ACC OFF,Power Connected" />
+
+        <TextView
+            android:id="@+id/tv_device_direct_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/device_direction_2"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tv_device_info"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_info" />
+
+        <TextView
+            android:id="@+id/tv_device_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/device_address_2"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/tv_device_direct_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_direct_label" />
+
+        <ImageView
+            android:id="@+id/iv_device_direct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_device_direct_label"
+            app:layout_constraintStart_toEndOf="@+id/tv_device_direct_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_device_direct_label"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/direct_s" />
+
+        <TextView
+            android:id="@+id/tv_device_direct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:textSize="12sp"
+            android:textColor="#ff333333"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_device_direct"
+            app:layout_constraintStart_toEndOf="@+id/iv_device_direct"
+            app:layout_constraintTop_toTopOf="@+id/iv_device_direct"
+            tools:text="@string/direction_south" />
+
+        <TextView
+            android:id="@+id/tv_device_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            tools:text="TextView"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_device_address_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_device_address_label" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

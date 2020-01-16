@@ -18,15 +18,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.content.ContextCompat;
-
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.franmontiel.localechanger.LocaleChanger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.lcjian.cloudlocation.App;
+import com.lcjian.cloudlocation.BuildConfig;
 import com.lcjian.cloudlocation.Constants;
 import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
@@ -38,6 +36,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.Collections;
 import java.util.Locale;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -82,7 +81,7 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
 
         boolean autoSignIn = mSettingSp.getBoolean("auto_sign_in", true);
         boolean rememberMe = mSettingSp.getBoolean("remember_me", false);
-        String getApiUrlHost = mSettingSp.getString("get_api_url_host", "");
+        String getApiUrlHost = mSettingSp.getString("get_api_url_host", BuildConfig.GET_API_URL);
 
         int signInType = mUserInfoSp.getInt("sign_in_type", 1);
         String signInId = mUserInfoSp.getString("sign_in_id", "");
@@ -233,23 +232,23 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         if (mSignInType == 1) {
             tv_sign_in_by_id.setText(new Spans()
                     .append(getString(R.string.sign_in_by_id),
-                            new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)),
+                            new ForegroundColorSpan(0xffef7f0f),
                             new StyleSpan(Typeface.BOLD)));
-            tv_sign_in_by_id.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_indicator);
+            tv_sign_in_by_id.setCompoundDrawablesWithIntrinsicBounds(R.drawable.load_grxz, 0, 0, 0);
             tv_sign_in_by_name.setText(R.string.sign_in_by_name);
-            tv_sign_in_by_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            tv_sign_in_by_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.load_dsbwx, 0, 0, 0);
             et_sign_in_id.setVisibility(View.VISIBLE);
             et_sign_in_pwd.setVisibility(View.VISIBLE);
             et_sign_in_name.setVisibility(View.GONE);
             et_sign_in_name_pwd.setVisibility(View.GONE);
         } else {
             tv_sign_in_by_id.setText(R.string.sign_in_by_id);
-            tv_sign_in_by_id.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            tv_sign_in_by_id.setCompoundDrawablesWithIntrinsicBounds(R.drawable.load_grwx, 0, 0, 0);
             tv_sign_in_by_name.setText(new Spans()
                     .append(getString(R.string.sign_in_by_name),
-                            new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)),
+                            new ForegroundColorSpan(0xffef7f0f),
                             new StyleSpan(Typeface.BOLD)));
-            tv_sign_in_by_name.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_indicator);
+            tv_sign_in_by_name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.load_dsbyx, 0, 0, 0);
             et_sign_in_id.setVisibility(View.GONE);
             et_sign_in_pwd.setVisibility(View.GONE);
             et_sign_in_name.setVisibility(View.VISIBLE);
@@ -290,12 +289,12 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
                                                 : "U" + objectResponseData.userInfo.userID));
                                 finish();
                             } else {
-                                Toast.makeText(App.getInstance(), R.string.error_id_or_pwd, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(App.getInstance(), R.string.error_id_or_pwd, Toast.LENGTH_LONG).show();
                             }
                         },
                         throwable -> {
                             hideProgress();
-                            Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(App.getInstance(), throwable.getMessage(), Toast.LENGTH_LONG).show();
                         });
     }
 

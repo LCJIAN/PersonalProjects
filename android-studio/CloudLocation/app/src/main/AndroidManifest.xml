@@ -27,9 +27,9 @@
         android:required="true" />
 
     <!-- 适配Android N系统必需的ContentProvider写权限声明，写权限包含应用包名-->
-    <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.lcjian.cloudlocation" />
+    <uses-permission android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.${applicationId}" />
     <permission
-        android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.lcjian.cloudlocation"
+        android:name="baidu.push.permission.WRITE_PUSHINFOPROVIDER.${applicationId}"
         android:protectionLevel="signature" />
 
     <application
@@ -146,6 +146,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.device.IconSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.device.PanoramaActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
@@ -153,7 +157,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="NHkphI31cykstLkwAofYnlOQCIjo6lia" />
+            android:value="${API_KEY_BAIDU_MAP}" />
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -206,10 +210,10 @@
         <!-- 适配Android N系统必需的ContentProvider声明，写权限包含应用包名-->
         <provider
             android:name="com.baidu.android.pushservice.PushInfoProvider"
-            android:authorities="com.lcjian.cloudlocation.bdpush"
+            android:authorities="${applicationId}.bdpush"
             android:exported="true"
             android:protectionLevel="signature"
-            android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.com.lcjian.cloudlocation" />
+            android:writePermission="baidu.push.permission.WRITE_PUSHINFOPROVIDER.${applicationId}" />
 
         <!-- 此处Receiver名字修改为当前包名路径 -->
         <receiver android:name=".AppPushMessageReceiver">
@@ -226,7 +230,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD792KCWPrpkXmJjzzjhLhFN8zAOZm_anA" />
+            android:value="${API_KEY_GOOGLE_MAP}" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

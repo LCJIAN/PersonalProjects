@@ -58,6 +58,7 @@
             android:id="@+id/cv_change_to_panorama_geo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_marginTop="14dp"
             android:background="@drawable/shape_circle_white"
             android:elevation="16dp"
