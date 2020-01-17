@@ -123,4 +123,5 @@
     <string name="icon">图标</string>
     <string name="device_direction_2">方向</string>
     <string name="device_address_2">地址</string>
+    <string name="platform_url">平台网址</string>
 </resources>

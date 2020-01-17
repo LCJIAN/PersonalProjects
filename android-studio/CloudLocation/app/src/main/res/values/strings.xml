@@ -123,4 +123,5 @@
     <string name="icon">Icon</string>
     <string name="device_direction_2">Direction</string>
     <string name="device_address_2">Address</string>
+    <string name="platform_url">Platform URL</string>
 </resources>

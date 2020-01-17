@@ -74,7 +74,7 @@ public class DeviceInfoActivity extends BaseActivity {
                             tv_device_no.setText(deviceDetail.sn);
                             tv_device_dead_time.setText(deviceDetail.hireExpireTime);
                             tv_device_car_no.setText(deviceDetail.carNum);
-                            tv_device_model.setText(deviceDetail.model);
+                            tv_device_model.setText(deviceDetail.type);
                             tv_device_sim.setText(deviceDetail.phone);
                             tv_device_contact.setText(deviceDetail.userName);
                             tv_device_contact_phone.setText(deviceDetail.cellPhone);

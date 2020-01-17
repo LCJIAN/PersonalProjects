@@ -267,7 +267,7 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         mRestAPI.reset();
         Global.SERVER_URL = getApiUrlHost;
         mDisposableSignIn = mRestAPI.urlService()
-                .getApiUrl(getApiUrlHost)
+                .getApiUrl(getApiUrlHost, "getapp2")
                 .map(apiUrl -> {
                     Global.API_URL = apiUrl.url + "/";
                     mRestAPI.reset();

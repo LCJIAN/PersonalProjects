@@ -117,4 +117,5 @@
     <string name="icon">Icono</string>
     <string name="device_direction_2">Dirección</string>
     <string name="device_address_2">Dirección</string>
+    <string name="platform_url">URL de plataforma</string>
 </resources>

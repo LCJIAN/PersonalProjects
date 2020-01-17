@@ -52,14 +52,14 @@
                     android:gravity="center_vertical"
                     android:inputType="textUri"
                     android:padding="8dp"
+                    android:hint="@string/platform_url"
                     android:singleLine="true"
                     android:textColor="#ff333333"
                     android:textColorHint="#ffcccccc"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="TextView" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/et_sign_in_id"

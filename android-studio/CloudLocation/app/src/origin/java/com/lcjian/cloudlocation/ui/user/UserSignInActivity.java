@@ -24,6 +24,7 @@ import com.franmontiel.localechanger.LocaleChanger;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.lcjian.cloudlocation.App;
+import com.lcjian.cloudlocation.BuildConfig;
 import com.lcjian.cloudlocation.Constants;
 import com.lcjian.cloudlocation.Global;
 import com.lcjian.cloudlocation.R;
@@ -81,7 +82,7 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
 
         boolean autoSignIn = mSettingSp.getBoolean("auto_sign_in", true);
         boolean rememberMe = mSettingSp.getBoolean("remember_me", false);
-        String getApiUrlHost = mSettingSp.getString("get_api_url_host", "");
+        String getApiUrlHost = mSettingSp.getString("get_api_url_host", BuildConfig.GET_API_URL);
 
         int signInType = mUserInfoSp.getInt("sign_in_type", 1);
         String signInId = mUserInfoSp.getString("sign_in_id", "");
@@ -267,7 +268,7 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
         mRestAPI.reset();
         Global.SERVER_URL = getApiUrlHost;
         mDisposableSignIn = mRestAPI.urlService()
-                .getApiUrl(getApiUrlHost)
+                .getApiUrl(getApiUrlHost, "getapp")
                 .map(apiUrl -> {
                     Global.API_URL = apiUrl.url + "/";
                     mRestAPI.reset();

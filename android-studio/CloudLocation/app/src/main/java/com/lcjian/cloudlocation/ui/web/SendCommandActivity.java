@@ -79,7 +79,8 @@ public class SendCommandActivity extends BaseActivity implements View.OnClickLis
                         "userid=" + (getSignInInfo().userInfo == null ? "" : getSignInInfo().userInfo.userID) +
                         "&deviceID=" + mDeviceId +
                         "&key=" + Constants.KEY +
-                        "&Language=" + (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN" : "EN"));
+                        "&Language=" + (Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN"
+                        : (Locale.ENGLISH.equals(LocaleChanger.getLocale()) ? "EN" : "ES")));
 
         srl_web.setColorSchemeResources(R.color.colorPrimary);
         srl_web.setOnRefreshListener(this);

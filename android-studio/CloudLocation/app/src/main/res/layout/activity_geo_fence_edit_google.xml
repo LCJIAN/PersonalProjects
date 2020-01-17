@@ -193,9 +193,8 @@
 
             <RadioButton
                 android:id="@+id/rb_fence_type_home"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:checked="true"
                 android:gravity="center_vertical"
                 android:paddingBottom="2dp"
@@ -203,19 +202,21 @@
 
             <RadioButton
                 android:id="@+id/rb_fence_type_company"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:paddingBottom="2dp"
                 android:textColor="#ff333333" />
 
             <RadioButton
                 android:id="@+id/rb_fence_type_other"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:paddingBottom="2dp"
                 android:textColor="#ff333333" />
         </RadioGroup>
