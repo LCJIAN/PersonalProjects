@@ -7,6 +7,7 @@ import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.franmontiel.localechanger.LocaleChanger;
 import com.franmontiel.localechanger.LocalePreference;
+import com.franmontiel.localechanger.matcher.ClosestMatchingAlgorithm;
 import com.franmontiel.localechanger.matcher.LanguageMatchingAlgorithm;
 import com.lcjian.cloudlocation.di.component.AppComponent;
 import com.lcjian.cloudlocation.di.component.DaggerAppComponent;
@@ -59,7 +60,7 @@ public class App extends Application {
 
         LocaleChanger.initialize(getApplicationContext(),
                 Arrays.asList(Locale.SIMPLIFIED_CHINESE, Locale.ENGLISH, new Locale("es")),
-                new LanguageMatchingAlgorithm(),
+                new ClosestMatchingAlgorithm(),
                 LocalePreference.PreferSystemLocale);
 
         if (BuildConfig.DEBUG) {

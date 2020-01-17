@@ -56,6 +56,7 @@ import com.lcjian.cloudlocation.ui.device.DevicesActivity;
 import com.lcjian.cloudlocation.ui.device.GEOFenceListActivity;
 import com.lcjian.cloudlocation.ui.device.HistoryPathActivity;
 import com.lcjian.cloudlocation.ui.device.IconSettingActivity;
+import com.lcjian.cloudlocation.ui.device.MessagesActivity;
 import com.lcjian.cloudlocation.ui.device.PanoramaActivity;
 import com.lcjian.cloudlocation.ui.web.MessageSettingActivity;
 import com.lcjian.cloudlocation.ui.web.SendCommandActivity;
@@ -236,8 +237,11 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
         tv_go_to_device_list.setOnClickListener(this);
         iv_go_to_command.setOnClickListener(this);
 
-        if (origin != null || getSignInInfo().userInfo == null) {
+        if (origin != null) {
             btn_search_device.setVisibility(View.GONE);
+        }
+        if (getSignInInfo().userInfo == null) {
+            tv_go_to_device_list.setText(R.string.message_center);
         }
 
         MapInfoWindowFragment mapFragment = (MapInfoWindowFragment) getChildFragmentManager()
@@ -636,7 +640,11 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
                 }
                 break;
             case R.id.tv_go_to_device_list:
-                startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
+                if (getSignInInfo().userInfo == null) {
+                    startActivity(new Intent(v.getContext(), MessagesActivity.class));
+                } else {
+                    startActivityForResult(new Intent(v.getContext(), DevicesActivity.class), 1000);
+                }
                 break;
             case R.id.iv_go_to_command:
                 if (mCurrentDevice != null) {

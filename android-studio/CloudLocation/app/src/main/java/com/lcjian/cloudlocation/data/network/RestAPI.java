@@ -89,7 +89,8 @@ public class RestAPI {
                 return chain.proceed(chain.request().newBuilder()
                     .url(chain.request().url().newBuilder()
                             .addQueryParameter("Key", Constants.KEY)
-                            .addQueryParameter("Language", Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN" : "EN")
+                            .addQueryParameter("Language", Locale.SIMPLIFIED_CHINESE.equals(LocaleChanger.getLocale()) ? "CN"
+                                    : (Locale.ENGLISH.equals(LocaleChanger.getLocale()) ? "EN" : "ES"))
                             .addQueryParameter("TimeZones", timeZone)
                             .build())
                         .build());

@@ -109,12 +109,12 @@
     <string name="my_location">Mi ubicacion</string>
     <string name="device_location">Device location</string>
 
-    <string name="button_path">轨迹</string>
-    <string name="button_fence_setting">设置围栏</string>
-    <string name="button_icon_setting">设置图标</string>
-    <string name="button_device_info">设备资料</string>
-    <string name="button_device">设备</string>
-    <string name="icon">图标</string>
-    <string name="device_direction_2">方向</string>
-    <string name="device_address_2">地址</string>
+    <string name="button_path">Reproducción</string>
+    <string name="button_fence_setting">Cerca electrónica</string>
+    <string name="button_icon_setting">Icono</string>
+    <string name="button_device_info">Informacion</string>
+    <string name="button_device">Lista</string>
+    <string name="icon">Icono</string>
+    <string name="device_direction_2">Dirección</string>
+    <string name="device_address_2">Dirección</string>
 </resources>

@@ -41,7 +41,6 @@ android {
     buildTypes {
         release {
             buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.16aspx.com/"'
-            buildConfigField 'String', 'GET_API_URL', '"gps.tk-star.com"'
             minifyEnabled false
             zipAlignEnabled true
             shrinkResources false
@@ -51,7 +50,6 @@ android {
         }
         debug {
             buildConfigField 'String', 'GET_API_URL_URL', '"http://gps.16aspx.com/"'
-            buildConfigField 'String', 'GET_API_URL', '""'
         }
     }
 
@@ -70,6 +68,7 @@ android {
                                     API_KEY_GOOGLE_MAP: "AIzaSyD792KCWPrpkXmJjzzjhLhFN8zAOZm_anA"]
             buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"YkHgjEPoAqIF6c6tzDgjAcVr"'
             buildConfigField 'String', 'API_KEY_U', '"5dd0d27c570df30a6d0009a2"'
+            buildConfigField 'String', 'GET_API_URL', '"gps.tk-star.com"'
         }
         skin {
             dimension "Type"
@@ -78,6 +77,7 @@ android {
                                     API_KEY_GOOGLE_MAP: "AIzaSyDzbEmdE-cVq2LZCXGoyon7JvypXtF7KHY"]
             buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"INXXvTESe9hzF2pQ8ANXzviQ"'
             buildConfigField 'String', 'API_KEY_U', '"5e18472acb23d2243f0001e4"'
+            buildConfigField 'String', 'GET_API_URL', '""'
         }
     }
 }
