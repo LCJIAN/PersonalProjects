@@ -659,7 +659,7 @@ public class HomeContentFragmentGoogle extends BaseFragment implements SensorEve
 
     void ss() {
         if (mCurrentDevice != null) {
-            startActivity(new Intent(mView.getContext(), AboutUsActivity.class).putExtra("device_id", Double.parseDouble(mCurrentDevice.id)));
+            startActivity(new Intent(mView.getContext(), AboutUsActivity.class).putExtra("device_id", mCurrentDevice.id));
         }
     }
 

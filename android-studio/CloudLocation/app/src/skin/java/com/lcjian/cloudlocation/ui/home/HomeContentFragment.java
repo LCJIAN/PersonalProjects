@@ -644,7 +644,7 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
 
     void ss() {
         if (mCurrentDevice != null) {
-            startActivity(new Intent(mView.getContext(), AboutUsActivity.class).putExtra("device_id", Double.parseDouble(mCurrentDevice.id)));
+            startActivity(new Intent(mView.getContext(), AboutUsActivity.class).putExtra("device_id", mCurrentDevice.id));
         }
     }
 
