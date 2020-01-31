@@ -55,6 +55,7 @@ import com.lcjian.cloudlocation.ui.device.HistoryPathActivity;
 import com.lcjian.cloudlocation.ui.device.IconSettingActivity;
 import com.lcjian.cloudlocation.ui.device.MessagesActivity;
 import com.lcjian.cloudlocation.ui.device.PanoramaActivity;
+import com.lcjian.cloudlocation.ui.web.AboutUsActivity;
 import com.lcjian.cloudlocation.ui.web.MessageSettingActivity;
 import com.lcjian.cloudlocation.ui.web.SendCommandActivity;
 import com.lcjian.cloudlocation.util.DimenUtils;
@@ -638,6 +639,12 @@ public class HomeContentFragment extends BaseFragment implements SensorEventList
                 break;
             default:
                 break;
+        }
+    }
+
+    void ss() {
+        if (mCurrentDevice != null) {
+            startActivity(new Intent(mView.getContext(), AboutUsActivity.class).putExtra("device_id", Double.parseDouble(mCurrentDevice.id)));
         }
     }
 

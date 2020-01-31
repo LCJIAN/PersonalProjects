@@ -187,7 +187,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(new Intent(this, LanguageSettingActivity.class));
                 break;
             case R.id.tv_about_us:
-                startActivity(new Intent(this, AboutUsActivity.class));
+                if (TextUtils.equals("Google", mUserInfoSp.getString("sign_in_map", "Google"))) {
+                    HomeContentFragmentGoogle fragment = (HomeContentFragmentGoogle) getSupportFragmentManager().findFragmentByTag("HomeContentFragmentGoogle");
+                    if (fragment != null) {
+                        fragment.ss();
+                    }
+                } else {
+                    HomeContentFragment fragment = (HomeContentFragment) getSupportFragmentManager().findFragmentByTag("HomeContentFragment");
+                    if (fragment != null) {
+                        fragment.ss();
+                    }
+                }
                 break;
             case R.id.tv_sign_out:
                 Global.API_URL = "";
