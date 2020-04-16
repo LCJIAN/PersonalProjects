@@ -75,7 +75,7 @@ public class SendCommandActivity extends BaseActivity implements View.OnClickLis
                 })
                 .createAgentWeb()
                 .ready()
-                .go("http://" + Global.SERVER_URL + "/H5APP/cmd.aspx?" +
+                .go("http://" + Global.getServerUrl() + "/H5APP/cmd.aspx?" +
                         "userid=" + (getSignInInfo().userInfo == null ? "" : getSignInInfo().userInfo.userID) +
                         "&deviceID=" + mDeviceId +
                         "&key=" + Constants.KEY +

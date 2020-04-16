@@ -61,7 +61,7 @@ public class AboutUsActivity extends BaseActivity implements SwipeRefreshLayout.
                 })
                 .createAgentWeb()
                 .ready()
-                .go("http://" + Global.SERVER_URL + "/H5APP/about.aspx?" +
+                .go("http://" + Global.getServerUrl() + "/H5APP/about.aspx?" +
                         "userid=" + (getSignInInfo().userInfo == null ? "" : getSignInInfo().userInfo.userID) +
                         "&deviceID=" + getIntent().getStringExtra("device_id") +
                         "&key=" + Constants.KEY +

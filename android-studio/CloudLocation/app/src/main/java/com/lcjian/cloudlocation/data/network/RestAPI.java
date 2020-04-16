@@ -99,7 +99,7 @@ public class RestAPI {
                 clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
             retrofit = new Retrofit.Builder()
-                    .baseUrl(Global.API_URL)
+                    .baseUrl(Global.getApiUrl())
                     .addConverterFactory(CGsonConverterFactory.create(new GsonBuilder().setDateFormat("MMM d, yyyy").create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())

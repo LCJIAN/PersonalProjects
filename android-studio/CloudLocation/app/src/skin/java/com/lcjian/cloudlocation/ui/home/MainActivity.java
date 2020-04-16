@@ -200,8 +200,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.tv_sign_out:
-                Global.API_URL = "";
-                Global.SERVER_URL = "";
+                Global.setApiUrl("");
+                Global.setServerUrl("");
                 Global.CURRENT_USER_ID = "";
                 Global.CURRENT_USER_NAME = "";
                 mSettingSp.edit().putBoolean("auto_sign_in", false).apply();

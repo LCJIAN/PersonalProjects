@@ -265,13 +265,13 @@ public class UserSignInActivity extends BaseActivity implements View.OnClickList
     private void signIn(String getApiUrlHost, String sign, String pwd, int type) {
         showProgress();
         mRestAPI.reset();
-        Global.SERVER_URL = getApiUrlHost;
+        Global.setServerUrl(getApiUrlHost);
         mDisposableSignIn = mRestAPI.urlService()
                 .getApiUrl(getApiUrlHost, "getapp2")
                 .map(apiUrl -> {
-                    Global.API_URL = apiUrl.url + "/";
+                    Global.setApiUrl(apiUrl.url + "/");
                     mRestAPI.reset();
-                    return Global.API_URL;
+                    return Global.getApiUrl();
                 })
                 .flatMap(s -> mRestAPI.cloudService().signIn(sign, pwd, type))
                 .subscribeOn(Schedulers.io())
