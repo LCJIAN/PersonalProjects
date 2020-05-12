@@ -1,0 +1,183 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.lcjian.vastplayer"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 28
+        versionName "1.4.0"
+        flavorDimensions "Type", "Channel"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a'
+            // 还可以添加
+            // 'arm64-v8a', 64 bit ARM architecture,it can use v7 version
+            //              unless you are too much concerned about performance
+            // mips,mips64, There are no devices with MIPS
+            //  x86_64, No android devices and anyway it can use X86 version
+            //  armeabi, very old architecture. Unsupported after Android 4.4
+            // 'x86', Intel based devices
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../lcjian.keystore")
+            storePassword "9a11b00c"
+            keyAlias "liaocj"
+            keyPassword "9a11b00c"
+        }
+//        myConfig {
+//            storeFile file("C:\\Users\\成见\\Desktop\\lcjian.keystore")
+//            storePassword System.console().readLine("\nKeystore password: ")
+//            keyAlias "liaocj"
+//            keyPassword System.console().readLine("\nKey password: ")
+//        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+//    sourceSets {
+//        main.java.srcDirs += 'src/main/tmdb'
+//    }
+
+    buildTypes {
+        release {
+            // 不显示Log
+            buildConfigField 'String', 'API_URL', '"http://45.77.9.56:8080/api/"'
+            minifyEnabled false
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+//            debuggable true
+        }
+
+        debug {
+//            buildConfigField 'String', 'API_URL', '"http://ec2-54-68-63-76.us-west-2.compute.amazonaws.com/SpunSugar/api/"'
+//            buildConfigField 'String', 'API_URL', '"http:172.16.7.98:8080/api/"'
+            buildConfigField 'String', 'API_URL', '"http://45.77.9.56:8080/api/"'
+        }
+    }
+
+    productFlavors {
+        vast {
+            dimension "Type"
+            applicationId "com.lcjian.vastplayer"
+        }
+        skin {
+            dimension "Type"
+            applicationId "com.lcjian.skinplayer"
+        }
+        baidu {
+            dimension "Channel"
+            manifestPlaceholders = [CHANNEL: "baidu"]
+            buildConfigField 'String', 'U_CHANNEL', '"baidu"'
+        }
+        tencent {
+            dimension "Channel"
+            manifestPlaceholders = [CHANNEL: "tencent"]
+            buildConfigField 'String', 'U_CHANNEL', '"tencent"'
+        }
+        huawei {
+            dimension "Channel"
+            manifestPlaceholders = [CHANNEL: "huawei"]
+            buildConfigField 'String', 'U_CHANNEL', '"huawei"'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':library-mine')
+    implementation project(':library-share')
+    // support
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android:flexbox:1.0.0'
+    implementation 'com.google.dagger:dagger:2.9'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+    implementation 'com.jakewharton:butterknife:latest.integration'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:latest.integration'
+    // RxJava & Permissions
+    implementation 'io.reactivex.rxjava2:rxjava:latest.integration'
+    implementation 'io.reactivex.rxjava2:rxandroid:latest.integration'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:latest.integration'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:latest.integration'
+    // database
+    implementation 'androidx.room:room-runtime:2.2.5'
+    implementation 'androidx.room:room-rxjava2:2.2.5'
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
+    testImplementation 'androidx.room:room-testing:2.2.5'
+    // http
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
+    implementation 'com.squareup.retrofit2:retrofit:latest.integration'
+    implementation 'com.squareup.retrofit2:converter-gson:latest.integration'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:latest.integration'
+    // image
+    implementation 'com.github.bumptech.glide:glide:latest.integration'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:latest.integration'
+    implementation 'com.github.florent37:glidepalette:latest.integration'
+    annotationProcessor 'com.github.bumptech.glide:compiler:latest.integration'
+    // log
+    implementation 'com.jakewharton.timber:timber:latest.integration'
+    // other
+    implementation 'tv.danmaku.ijk.media:ijkplayer-java:latest.integration'
+    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:latest.integration'
+    implementation 'org.rauschig:jarchivelib:latest.integration'
+    implementation 'net.i2p.android.ext:floatingactionbutton:latest.integration'
+    implementation 'com.github.johnkil.android-robototextview:robototextview:latest.integration'
+    implementation 'com.sackcentury:shinebutton:latest.integration'
+    implementation 'com.borjabravo:readmoretextview:latest.integration'
+    implementation 'com.ogaclejapan.smarttablayout:library:latest.integration'
+    implementation 'com.uwetrottmann.tmdb2:tmdb-java:latest.integration'
+    implementation 'org.apmem.tools:layouts:latest.integration'
+    implementation 'com.crystal:crystalrangeseekbar:latest.integration'
+    implementation 'com.yqritc:recyclerview-flexibledivider:latest.integration'
+    implementation 'com.github.glomadrian:Grav:latest.integration'
+    implementation 'com.tapadoo.android:alerter:latest.integration'
+    implementation 'com.github.angads25:filepicker:latest.integration'
+    implementation 'com.github.rubensousa:gravitysnaphelper:latest.integration'
+    implementation 'com.just.agentweb:agentweb:latest.integration'
+    implementation 'com.just.agentweb:download:latest.integration'
+    implementation 'com.just.agentweb:filechooser:latest.integration'
+    implementation 'com.jaredrummler:colorpicker:latest.integration'
+
+    implementation 'com.umeng.umsdk:analytics:latest.integration'
+    implementation 'com.umeng.umsdk:common:latest.integration'
+    implementation 'com.umeng.umsdk:utdid:latest.integration'
+//    implementation 'com.umeng.sdk:share-core:latest.integration'
+//    implementation 'com.umeng.sdk:share-qq:latest.integration'
+//    implementation 'com.umeng.sdk:share-wechat:latest.integration'
+//    implementation 'com.umeng.sdk:share-sina:latest.integration'
+//    implementation 'com.umeng.sdk:shareboard-widget:latest.integration'
+
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+    // leak
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:latest.integration'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:latest.integration'
+}

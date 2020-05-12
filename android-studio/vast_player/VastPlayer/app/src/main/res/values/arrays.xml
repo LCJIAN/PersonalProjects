@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_subtitle_font_size" translatable="false">
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>22</item>
+    </string-array>
+    <string-array name="array_subtitle_font_size_des">
+        <item>Micro text</item>
+        <item>Small text</item>
+        <item>Normal text</item>
+        <item>Middle text</item>
+        <item>Large text</item>
+    </string-array>
+</resources>

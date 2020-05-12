@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://us-west-2-mysql-instance.cvzesrl1slym.us-west-2.rds.amazonaws.com:3306/spun_sugar?characterEncoding=utf-8</property>
+        <property name="connection.username">LCJIAN</property>
+        <property name="connection.password">9a11b00c</property>
+        <!-- <property name="connection.url">jdbc:mysql://localhost:3306/spun_sugar</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">9a11b00c</property> -->
+        
+        <property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <property name="hibernate.c3p0.min_size">2</property>
+        <property name="hibernate.c3p0.max_size">5</property>
+        <property name="hibernate.c3p0.timeout">300</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.idle_test_period">3000</property>
+
+        <!-- JDBC connection pool (use the built-in) -->
+        <!-- <property name="connection.pool_size">3</property> -->
+
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
+
+        <!-- Drop and re-create the database schema on startup -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+
+        <mapping resource="com/lcjian/spunsugar/entity/Config.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/TvLiveSource.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/TvStation.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/HentaiAnimeEpisode.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/HentaiAnimeSeries.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/HentaiAnimeGenre.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/HentaiAnimeMaker.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/Movie.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/MovieGenre.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/MovieProductionCountry.hbm.xml"/>
+        <mapping resource="com/lcjian/spunsugar/entity/MovieVideo.hbm.xml"/>
+    </session-factory>
+
+</hibernate-configuration>

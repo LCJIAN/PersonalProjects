@@ -1,6 +1,10 @@
 package com.winside.lighting.data.network;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import com.winside.lighting.App;
 import com.winside.lighting.BuildConfig;
 import com.winside.lighting.data.network.entity.ResponseData;
@@ -8,6 +12,7 @@ import com.winside.lighting.data.network.entity.SignInInfo;
 import com.winside.lighting.util.StorageUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -35,6 +40,42 @@ public class RestAPI {
 
     private String token;
 
+    private static final TypeAdapter<Boolean> BOOLEAN_TYPE_ADAPTER = new TypeAdapter<Boolean>() {
+
+        @Override
+        public void write(JsonWriter out, Boolean value) throws IOException {
+            if (value == null) {
+                out.nullValue();
+            } else {
+                out.value(value);
+            }
+        }
+
+        @Override
+        public Boolean read(JsonReader in) throws IOException {
+            JsonToken peek = in.peek();
+            switch (peek) {
+                case BOOLEAN:
+                    return in.nextBoolean();
+                case NULL:
+                    in.nextNull();
+                    return null;
+                case NUMBER:
+                    return in.nextInt() != 0;
+                case STRING: {
+                    String s = in.nextString();
+                    if ("true".equalsIgnoreCase(s) || "false".equalsIgnoreCase(s)) {
+                        return Boolean.parseBoolean(s);
+                    } else {
+                        return Integer.parseInt(s) != 0;
+                    }
+                }
+                default:
+                    throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
+            }
+        }
+    };
+
     public static RestAPI getInstance() {
         if (instance == null) {
             synchronized (RestAPI.class) {
@@ -55,7 +96,7 @@ public class RestAPI {
             if (BuildConfig.DEBUG) {
                 clientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            retrofit = new Retrofit.Builder()
+            retrofitSignIn = new Retrofit.Builder()
                     .baseUrl(API_URL)
                     .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("MMM d, yyyy").create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -93,7 +134,12 @@ public class RestAPI {
             }
             retrofit = new Retrofit.Builder()
                     .baseUrl(API_URL)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("MMM d, yyyy").create()))
+                    .addConverterFactory(GsonConverterFactory
+                            .create(new GsonBuilder()
+                                    .registerTypeAdapter(Boolean.class, BOOLEAN_TYPE_ADAPTER)
+                                    .registerTypeAdapter(boolean.class, BOOLEAN_TYPE_ADAPTER)
+                                    .setDateFormat("MMM d, yyyy")
+                                    .create()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build();

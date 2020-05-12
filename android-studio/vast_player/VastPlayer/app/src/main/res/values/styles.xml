@@ -1,0 +1,98 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+        <item name="android:textColorTertiary">@color/tertiary_text</item>
+        <item name="android:divider">@color/divider</item>
+        <item name="dialogTheme">@style/Theme.VastPlayer.Dialog</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/ActionMode</item>
+    </style>
+
+    <style name="ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="background">@color/primary</item>
+        <item name="height">?actionBarSize</item>
+    </style>
+
+    <style name="Theme.VastPlayer" parent="Theme.Base" />
+
+    <style name="Theme.VastPlayer.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="Theme.VastPlayer.NoActionBar.Transparent" />
+
+    <style name="Theme.VastPlayer.NoActionBar.Transparent.Splash">
+        <item name="android:windowBackground">@drawable/layers_splash</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.VastPlayer.Settings">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+    </style>
+
+    <style name="Theme.VastPlayer.NoActionBar.Transparent.MovieDetail">
+        <item name="android:windowBackground">@color/movie_detail_background</item>
+    </style>
+
+    <style name="Theme.VastPlayer.VideoPlayer">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="Theme.VastPlayer.Dialog" parent="Theme.AppCompat.Light.Dialog.MinWidth">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="Theme.VastPlayer.Player.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.VastPlayer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.VastPlayer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.Butter.RatingBar" parent="android:Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_bar</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
+    </style>
+
+    <style name="Widget.VastPlayer.ProgressBar.Horizontal" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/layer_history_progress</item>
+        <item name="android:maxHeight">2dp</item>
+        <item name="android:minHeight">2dp</item>
+    </style>
+
+    <style name="Widget.VastPlayer.ProgressBar.Horizontal.Download" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/layer_download_header_progress</item>
+        <item name="android:maxHeight">4dp</item>
+        <item name="android:minHeight">4dp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.Large" parent="TextAppearance.AppCompat.Large" />
+
+    <style name="TextAppearance.AppTheme.Medium" parent="TextAppearance.AppCompat.Medium" />
+
+    <style name="TextAppearance.AppTheme" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.Small" parent="TextAppearance.AppCompat.Small" />
+
+    <style name="TextAppearance.AppTheme.Micro" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>

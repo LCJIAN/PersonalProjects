@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_tv_station_logo"
+        android:layout_width="72dp"
+        android:layout_height="64dp" />
+
+    <TextView
+        android:id="@+id/tv_tv_station_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/iv_tv_station_logo"
+        android:layout_toRightOf="@id/iv_tv_station_logo"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <TextView
+        android:id="@+id/tv_tv_station_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/iv_tv_station_logo"
+        android:layout_toRightOf="@id/iv_tv_station_logo"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+</RelativeLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:alignContent="stretch"
+    app:alignItems="stretch"
+    app:dividerDrawableHorizontal="@drawable/shape_divider"
+    app:flexWrap="wrap"
+    app:showDividerHorizontal="beginning|middle|end"
+    app:showDividerVertical="none">
+
+    <TextView
+        android:id="@+id/tv_tx_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/tecent"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/tx_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_yk_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/youku"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/yk_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_aqy_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/aiqiyi"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/aqy_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_mg_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/mgtv"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/mg_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_sh_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/sohu"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/sh_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_pp_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/pptv"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/pp_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+    <TextView
+        android:id="@+id/tv_ls_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackgroundBorderless"
+        android:drawablePadding="8dp"
+        android:drawableTop="@drawable/letv"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/ls_video"
+        app:layout_alignSelf="flex_end"
+        app:layout_flexBasisPercent="33%" />
+
+</com.google.android.flexbox.FlexboxLayout>

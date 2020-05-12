@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/answer"
+        android:textColor="#ffff0000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+    <TextView
+        android:id="@+id/tv_answer_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_answer"
+        app:layout_constraintTop_toTopOf="@+id/tv_answer"
+        tools:text="本次任务只填报重点单位，不特意指定所有高层 建筑。" />
+
+    <ImageView
+        android:id="@+id/iv_answer_user_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_detail"
+        app:srcCompat="@drawable/default_avatar" />
+
+    <TextView
+        android:id="@+id/tv_answer_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="#ff333333"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@+id/iv_answer_user_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_answer_user_avatar"
+        tools:text="总队-战训处-杨**" />
+
+    <TextView
+        android:id="@+id/tv_answer_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ff999999"
+        app:layout_constraintEnd_toStartOf="@+id/iv_answer_user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_user_name"
+        tools:text="2020-01-12 14:23:45" />
+</androidx.constraintlayout.widget.ConstraintLayout>

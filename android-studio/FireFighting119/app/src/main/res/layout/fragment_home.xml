@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:scaleType="fitXY"
+                            app:layout_constraintDimensionRatio="h,37:23"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/default_banner" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="200dp"
+                        android:layout_marginRight="16dp"
+                        app:cardCornerRadius="5dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <FrameLayout
+                                android:id="@+id/fl_task"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackgroundBorderless"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_organization"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_organization"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tv_organization">
+
+                                <TextView
+                                    android:id="@+id/tv_task"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawableTop="@drawable/ic_task_2"
+                                    android:gravity="center"
+                                    android:text="@string/task"
+                                    android:textColor="#ff666666"
+                                    android:textSize="15sp" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/tv_organization"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:drawableTop="@drawable/ic_organisation"
+                                android:gravity="center"
+                                android:text="@string/organization"
+                                android:textColor="#ff666666"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_announcement"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_announcement"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/fl_task"
+                                app:layout_constraintTop_toTopOf="@+id/tv_announcement" />
+
+                            <TextView
+                                android:id="@+id/tv_announcement"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:drawableTop="@drawable/ic_announcement"
+                                android:gravity="center"
+                                android:text="@string/announcement"
+                                android:textColor="#ff666666"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_helping"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_helping"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/tv_organization"
+                                app:layout_constraintTop_toTopOf="@+id/tv_helping" />
+
+                            <TextView
+                                android:id="@+id/tv_helping"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="12dp"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:drawableTop="@drawable/ic_help"
+                                android:gravity="center"
+                                android:text="@string/helping"
+                                android:textColor="#ff666666"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/tv_announcement"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:drawableStart="@drawable/ic_announcement_msg"
+                    android:drawableLeft="@drawable/ic_announcement_msg"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/no_announcement"
+                    android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                    android:textColor="#ff333333" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:cardCornerRadius="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_now_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+                        android:textColor="@android:color/black"
+                        android:textStyle="bold"
+                        tools:text="渝中区歇台子支队 2020-1-28 上午 10:22:02" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#ffe2e2e2">
+
+                            <TextView
+                                android:id="@+id/tv_task_input"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/task_input"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_task_check"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_task_check"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tv_task_check" />
+
+                            <TextView
+                                android:id="@+id/tv_task_check"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/task_check"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_task_data"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_task_data"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/tv_task_input"
+                                app:layout_constraintTop_toTopOf="@+id/tv_task_data" />
+
+                            <TextView
+                                android:id="@+id/tv_task_data"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/task_data"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/tv_task_check"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_input_search_bg"
+            android:drawableStart="@drawable/ic_search_2"
+            android:drawableLeft="@drawable/ic_search_2"
+            android:drawablePadding="12dp"
+            android:hint="@string/hint_search"
+            android:inputType="text"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:textAppearance="@style/TextAppearance.AppTheme.Small" />
+
+        <ImageButton
+            android:id="@+id/btn_go_to_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_scan" />
+    </LinearLayout>
+</FrameLayout>

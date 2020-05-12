@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.mine.VideoLibFragment">
+    <item
+        android:id="@+id/action_group_type"
+        android:icon="@drawable/ic_folder_white_24dp"
+        android:title="@string/action_group_directory"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_view_type"
+        android:icon="@drawable/ic_list_white_24dp"
+        android:title="@string/action_list_view"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_downloads"
+        android:icon="@drawable/ic_file_download_white_24dp"
+        android:title="@string/action_downloads"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
+</menu>

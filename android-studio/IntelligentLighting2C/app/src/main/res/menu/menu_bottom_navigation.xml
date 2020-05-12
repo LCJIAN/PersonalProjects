@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.MainActivity">
+    <item
+        android:id="@+id/action_home"
+        android:checked="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/action_home" />
+    <item
+        android:id="@+id/action_intelligence"
+        android:icon="@drawable/ic_intelligence"
+        android:title="@string/action_intelligence" />
+    <item
+        android:id="@+id/action_mine"
+        android:icon="@drawable/ic_mine"
+        android:title="@string/action_mine" />
+</menu>

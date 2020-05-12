@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/chb_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_video_thumbnail"
+            android:layout_width="120dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_video_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_video_thumbnail"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toEndOf="@id/iv_video_thumbnail"
+            android:layout_toRightOf="@id/iv_video_thumbnail"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:textColorPrimary"
+            app:fontFamily="roboto"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/tv_video_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/iv_video_thumbnail"
+            android:layout_toRightOf="@id/iv_video_thumbnail"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:textColorTertiary"
+            app:fontFamily="roboto_slab"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/tv_video_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_video_thumbnail"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/iv_video_thumbnail"
+            android:layout_toRightOf="@id/iv_video_thumbnail"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:textColorTertiary"
+            app:fontFamily="roboto_slab"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/tv_video_resolution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_video_thumbnail"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:textColorTertiary"
+            app:fontFamily="roboto_slab"
+            tools:ignore="MissingPrefix" />
+
+    </RelativeLayout>
+</LinearLayout>

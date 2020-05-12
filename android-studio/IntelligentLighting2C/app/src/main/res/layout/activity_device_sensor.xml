@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_top_bar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/iv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_temperature"
+            app:layout_constraintEnd_toEndOf="@+id/tv_temperature"
+            app:layout_constraintStart_toStartOf="@+id/tv_temperature"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_temperature" />
+
+        <ImageView
+            android:id="@+id/iv_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_humidity"
+            app:layout_constraintEnd_toEndOf="@+id/tv_humidity"
+            app:layout_constraintStart_toStartOf="@+id/tv_humidity"
+            app:srcCompat="@drawable/ic_humidity" />
+
+        <ImageView
+            android:id="@+id/iv_illuminance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_illuminance"
+            app:layout_constraintEnd_toEndOf="@+id/tv_illuminance"
+            app:layout_constraintStart_toStartOf="@+id/tv_illuminance"
+            app:srcCompat="@drawable/ic_illuminance" />
+
+        <TextView
+            android:id="@+id/tv_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_humidity"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_temperature"
+            app:layout_constraintEnd_toStartOf="@+id/tv_illuminance"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_temperature"
+            app:layout_constraintTop_toTopOf="@+id/tv_temperature"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_illuminance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_humidity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_humidity"
+            app:layout_constraintTop_toTopOf="@+id/tv_humidity"
+            tools:text="TextView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_device_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="设备名称："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_device_name_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_device_name_label"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_device_mac_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Mac地址："
+            app:layout_constraintStart_toStartOf="@+id/tv_device_name_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_name_label" />
+
+        <TextView
+            android:id="@+id/tv_device_mac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_device_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_name"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="网络地址："
+            app:layout_constraintStart_toStartOf="@+id/tv_device_mac_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_mac_label" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_device_mac"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_mac"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_device_sn_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="SN码："
+            app:layout_constraintStart_toStartOf="@+id/textView17"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/tv_device_sn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView18"
+            app:layout_constraintTop_toBottomOf="@+id/textView18"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/tv_device_rssi_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="RSSI："
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_device_sn_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_sn_label" />
+
+        <TextView
+            android:id="@+id/tv_device_rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_device_sn"
+            app:layout_constraintTop_toBottomOf="@+id/tv_device_sn"
+            tools:text="TextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_config_device"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_normal_btn_bg"
+            android:text="配置设备"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_remove_device"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_grey_btn_bg"
+            android:text="移除设备"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

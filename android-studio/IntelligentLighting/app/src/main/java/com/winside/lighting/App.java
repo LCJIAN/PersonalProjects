@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
+
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 

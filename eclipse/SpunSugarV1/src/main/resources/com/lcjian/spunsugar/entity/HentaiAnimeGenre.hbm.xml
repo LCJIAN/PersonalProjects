@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-25 11:06:49 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.HentaiAnimeGenre" table="hentai_anime_genre" catalog="spun_sugar">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="45" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="45">
+                <comment>
+                situation(&#165;&#183;&#165;&#193;&#165;&#229;&#165;&#168;&#169;`&#165;&#183;&#165;&#231;&#165;&#243;,&#179;&#161;&#190;&#176;),type(&#165;&#191;&#165;&#164;&#165;&#215;,&#192;&#224;&#208;&#205;),costume(&#165;&#179;&#165;&#185;&#165;&#193;&#165;&#229;&#169;`&#165;&#224;,&#183;&#254;&#215;&#176;),genre(&#165;&#184;&#165;&#227;&#165;&#243;&#165;&#235;,&#193;&#247;&#197;&#201;),play(&#165;&#215;&#165;&#236;&#165;&#164;,&#208;&#208;&#206;&#170;),other(&#164;&#189;&#164;&#206;&#203;&#251;,&#198;&#228;&#203;&#251;)</comment>
+            </column>
+        </property>
+        <set name="hentaiAnimeEpisodes" table="hentai_anime_episode_genre" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="hentai_anime_genre_id" not-null="true" />
+            </key>
+            <many-to-many class="com.lcjian.spunsugar.entity.HentaiAnimeEpisode" column="hentai_anime_episode_id" />
+        </set>
+    </class>
+</hibernate-mapping>

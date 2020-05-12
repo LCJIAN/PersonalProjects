@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">Vast播放器</string>
+
+    <string name="empty_video">你的手机里没有任何视频</string>
+    <string name="empty_favourites">你还没有相关的收藏</string>
+    <string name="empty_histories">你还没有相关观看历史</string>
+    <string name="empty_results">暂无相关结果</string>
+
+    <string name="action_home">主页</string>
+    <string name="action_explore">发现</string>
+    <string name="action_favorite">收藏</string>
+    <string name="action_watch_history">观看历史</string>
+    <string name="action_video_library">媒体库</string>
+    <string name="action_downloads">下载</string>
+    <string name="action_recommend">推荐</string>
+    <string name="action_account">我的</string>
+    <string name="action_movie">电影</string>
+    <string name="action_tv_show">电视剧</string>
+    <string name="action_variety">综艺</string>
+    <string name="action_animation">动画</string>
+    <string name="action_live_tv">直播</string>
+    <string name="action_micro_video">视频</string>
+    <string name="action_others">其他</string>
+    <string name="action_settings">设置</string>
+    <string name="action_share">分享</string>
+    <string name="action_feedback">反馈</string>
+    <string name="action_grid_view">网格展示</string>
+    <string name="action_list_view">列表展示</string>
+    <string name="action_group_directory">文件夹</string>
+    <string name="action_group_day">日</string>
+    <string name="action_group_month">月</string>
+    <string name="action_search">搜索</string>
+    <string name="action_delete">删除</string>
+    <string name="action_add">Add</string>
+    <string name="action_disk_info">Disk info</string>
+    <string name="open_drawer">打开抽屉</string>
+    <string name="close_drawer">关闭抽屉</string>
+
+    <string name="title_activity_video_player">视频播放</string>
+    <string name="movie_detail">电影详情</string>
+    <string name="title_settings">设置</string>
+
+    <string name="subtitles">字幕</string>
+    <string name="scale">缩放</string>
+
+    <string name="subtitle">字幕</string>
+    <string name="subtitle_color">字幕颜色</string>
+    <string name="subtitle_font_size">字幕字体大小</string>
+    <string name="player">播放器</string>
+    <string name="hardware_acceleration">硬件加速</string>
+    <string name="hardware_acceleration_summary">更好的性能</string>
+
+    <string name="subtitle_dialog_title">字幕</string>
+    <string name="no_subtitle">无字幕</string>
+    <string name="subtitle_url_loading_msg">获取字幕链接中</string>
+    <string name="subtitle_downloading_msg">下载字幕中</string>
+    <string name="subtitle_extracting_mag">字幕解压中</string>
+    <string name="subtitle_success_msg">字幕加载成功</string>
+    <string name="subtitle_error_msg">字幕加载失败</string>
+
+    <string name="volume">音量:%1$1.0f%%</string>
+    <string name="brightness">亮度:%1$1.0f%%</string>
+    <string name="progress">%1$+d秒</string>
+
+    <string name="tv_type_custom">自定义</string>
+    <string name="tv_type_cctv">中央台</string>
+    <string name="tv_type_satellite">卫视台</string>
+    <string name="tv_custom">自定义频道</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="tv_name">电视台名</string>
+    <string name="tv_source">播放源</string>
+    <string name="error_tv_name_empty">电视台名不能为空</string>
+    <string name="error_tv_source_empty">播放源不能为空</string>
+
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+
+    <string name="share_with">分享至</string>
+    <string name="select_file">选择文件</string>
+
+    <string name="vote_count">%1$d人评价</string>
+    <string name="minutes">%1$d 分钟</string>
+
+    <string name="year">年份</string>
+    <string name="rating">评分</string>
+    <string name="desc">降序</string>
+    <string name="asc">升序</string>
+    <string name="confirm">确定</string>
+    <string name="genre">类型</string>
+    <string name="country">地区</string>
+    <string name="year_rating">年份/评分</string>
+    <string name="sort">排序</string>
+    <string name="all">全部</string>
+    <string name="release_date">上映时间</string>
+    <string name="popularity">热门</string>
+    <string name="vote_average">评分</string>
+    <string name="create_time">更新</string>
+    <string name="sort_type">排序方式</string>
+    <string name="sort_direction">排序方向</string>
+
+    <string name="movie_poster">Movie poster</string>
+    <string name="error_msg">Error</string>
+    <string name="error_msg_cannot_play">暂时不能播放，正在修复中......</string>
+    <string name="title_activity_movie">MovieActivity</string>
+    <string name="delete_item">刪除这些视频</string>
+    <string name="items_count_selected">已选择%d项</string>
+    <string name="undo">取消</string>
+    <string name="recent">最近更新</string>
+    <string name="classic">经典</string>
+    <string name="popular">热门</string>
+    <string name="movies">电影</string>
+    <string name="tv_shows">电视剧</string>
+    <string name="variety">综艺</string>
+    <string name="animation">动画</string>
+
+    <string name="total_task_count">总任务 : %1$d</string>
+    <string name="downloading_task_count">下载中 : %1$d • %2$s</string>
+    <string name="download_status_idle">暂停</string>
+    <string name="download_status_pending">排队中</string>
+    <string name="download_status_initializing">初始化中</string>
+    <string name="download_status_chunk_pending">排队中</string>
+    <string name="download_status_downloading">下载中</string>
+    <string name="download_status_error">下载出错</string>
+    <string name="download_status_error_file_exist">文件已存在</string>
+    <string name="download_status_merging">合并中</string>
+    <string name="download_status_merge_error">合并出错</string>
+    <string name="download_status_complete">下载完成</string>
+    <string name="file_is_deleted">文件已被删除</string>
+    <string name="unknown">∞</string>
+    <string name="shutdown">退出</string>
+    <string name="download_url">下载链接</string>
+    <string name="add_task">添加任务</string>
+    <string name="download">下载</string>
+    <string name="download_title">下载目录</string>
+    <string name="download_title_text">选择下载目录</string>
+    <string name="bytes_downloaded">下载占用 %1$s</string>
+    <string name="bytes_other">其他占用 %1$s</string>
+    <string name="bytes_available">可用空间 %1$s</string>
+
+    <string name="msg_mobile_network">注意！你现在使用的是移动网络，可能产生额外费用。</string>
+
+    <string name="memory_card">存储卡</string>
+
+    <string name="we_chat">微信</string>
+    <string name="moments">朋友圈</string>
+    <string name="wei_bo">微博</string>
+    <string name="qq">QQ</string>
+    <string name="qq_zone">QQ空间</string>
+    <string name="share_failed">分享失败</string>
+
+    <string name="need_to_share_title">分享</string>
+    <string name="need_to_share_message">分享本APP到朋友圈或QQ空间之后即可观看全部内容</string>
+    <string name="share_next_time">下次分享</string>
+    <string name="share_now">现在分享</string>
+
+    <string name="other">其他</string>
+    <string name="filter_no_media">过滤(.nomedia)文件夹</string>
+    <string name="filter_no_media_summary">扫描手机内视频时将跳过含有(.nomedia)的文件夹</string>
+    <string name="action_browser">站点</string>
+    <string name="action_close">关闭</string>
+    <string name="tx_video">腾讯</string>
+    <string name="yk_video">优酷</string>
+    <string name="aqy_video">爱奇艺</string>
+    <string name="mg_video">芒果TV</string>
+    <string name="sh_video">搜狐</string>
+    <string name="pp_video">PPTV</string>
+    <string name="ls_video">乐视</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_top_bar" />
+
+    <com.winside.lighting.widget.RatioLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ratio="0.52">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.winside.lighting.widget.AutoViewPager
+                android:id="@+id/vp_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.winside.lighting.widget.AutoViewPager>
+
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/vpi_banner"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="8dp"
+                app:stl_clickable="false"
+                app:stl_customTabTextLayoutId="@layout/custom_tab_circle"
+                app:stl_dividerColor="@android:color/transparent"
+                app:stl_dividerThickness="0dp"
+                app:stl_indicatorColor="@color/colorAccent"
+                app:stl_indicatorCornerRadius="5dp"
+                app:stl_indicatorGravity="center"
+                app:stl_indicatorInterpolation="linear"
+                app:stl_indicatorThickness="10dp"
+                app:stl_underlineColor="@android:color/transparent"
+                app:stl_underlineThickness="0dp">
+
+            </com.ogaclejapan.smarttablayout.SmartTabLayout>
+        </FrameLayout>
+    </com.winside.lighting.widget.RatioLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:tabIndicator="@color/colorPrimary"
+        app:tabIndicatorHeight="3dp"
+        app:tabGravity="center"
+        app:tabSelectedTextColor="@color/colorPrimary">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_device"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:layout_weight="1">
+
+    </androidx.viewpager.widget.ViewPager>
+
+</LinearLayout>

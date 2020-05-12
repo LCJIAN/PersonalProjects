@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.SplashActivity">
+
+    <com.github.glomadrian.grav.GravView
+        android:id="@+id/gr_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        app:alpha_from="100"
+        app:alpha_max_duration="3000"
+        app:alpha_min_duration="1600"
+        app:alpha_to="200"
+        app:animationGenerators="@array/WallaIcon"
+        app:ball_from_size="2dp"
+        app:ball_to_size="5dp"
+        app:colorGenerator="com.github.glomadrian.grav.generator.paint.OneColorGenerator"
+        app:gravGenerator="com.github.glomadrian.grav.generator.grav.BallGenerator"
+        app:percent_points_array="@array/walla_points_percent_points"
+        app:pointGenerator="com.github.glomadrian.grav.generator.point.PercentPointGenerator"
+        app:shake_direction="vertical"
+        app:shake_max_duration="3500"
+        app:shake_min_duration="1100"
+        app:shake_variance="3dp"
+        app:single_color="#FFF" />
+
+    <FrameLayout
+        android:id="@+id/fl_splash_ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_switch_server_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/please_input_server_address"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_server_address"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="#ff333333"
+        android:background="@drawable/shape_input_bg_2"
+        android:inputType="text"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_switch_server_label" />
+
+    <View
+        android:id="@+id/v_divider_switch_server_1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_server_address" />
+
+    <View
+        android:id="@+id/v_divider_switch_server_2"
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:background="?android:listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/tv_confirm"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_cancel"
+        app:layout_constraintTop_toTopOf="@+id/tv_cancel" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/v_divider_switch_server_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_divider_switch_server_1" />
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="#2887cf"
+        app:layout_constraintBottom_toBottomOf="@+id/v_divider_switch_server_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/v_divider_switch_server_2"
+        app:layout_constraintTop_toTopOf="@+id/v_divider_switch_server_2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

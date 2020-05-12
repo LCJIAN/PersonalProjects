@@ -1,0 +1,3 @@
+include ':app', ':library-mine', ':library-share'
+project(':library-mine').projectDir = new File('../library-mine')
+project(':library-share').projectDir = new File('../library-share')

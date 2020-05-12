@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lcjian.lib.widget.RatioLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:ratio="0.4213">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/mine_top_bg"
+            android:scaleType="fitXY" />
+    </com.lcjian.lib.widget.RatioLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="@string/mine"
+            android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+            android:textColor="@android:color/white" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="148dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="148dp">
+
+                        <ImageView
+                            android:id="@+id/iv_avatar"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginTop="36dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/default_avatar" />
+
+                        <TextView
+                            android:id="@+id/tv_real_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                            app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+                            tools:text="王甜甜" />
+
+                        <TextView
+                            android:id="@+id/tv_user_department"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="4dp"
+                            android:drawableEnd="@drawable/ic_group"
+                            android:drawableRight="@drawable/ic_group"
+                            android:drawablePadding="8dp"
+                            android:textColor="#ff666666"
+                            android:textSize="15sp"
+                            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_real_name"
+                            tools:text="重庆市渝中区歇台子支队" />
+
+                        <TextView
+                            android:id="@+id/tv_user_role"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="2dp"
+                            android:drawableStart="@drawable/ic_department"
+                            android:drawableLeft="@drawable/ic_department"
+                            android:drawablePadding="4dp"
+                            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                            android:textColor="#ff666666"
+                            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_user_department"
+                            tools:text="班长" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_my_task"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:drawableStart="@drawable/ic_my_task"
+                                android:drawableLeft="@drawable/ic_my_task"
+                                android:drawablePadding="10dp"
+                                android:text="@string/my_task"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right" />
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/rl_version"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:id="@+id/tv_version"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:drawableStart="@drawable/ic_version"
+                                android:drawableLeft="@drawable/ic_version"
+                                android:drawablePadding="10dp"
+                                android:text="@string/current_version"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_version_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@+id/tv_version"
+                                android:layout_alignLeft="@+id/tv_version"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="2dp"
+                                android:text="@string/demo_version"
+                                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                                android:textColor="#ff666666"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_version"
+                                app:layout_constraintStart_toEndOf="@+id/tv_version"
+                                app:layout_constraintTop_toTopOf="@+id/tv_version"
+                                app:layout_constraintVertical_bias="0.0" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:text="@string/check_update"
+                                android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                                android:textColor="#ff666666"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_feed_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:drawableStart="@drawable/ic_feedback"
+                                android:drawableLeft="@drawable/ic_feedback"
+                                android:drawablePadding="10dp"
+                                android:text="@string/feedback"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_sign_out"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:drawableStart="@drawable/ic_exit"
+                                android:drawableLeft="@drawable/ic_exit"
+                                android:drawablePadding="10dp"
+                                android:text="@string/sign_out"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_helping_center"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:drawableStart="@drawable/ic_my_task"
+                                android:drawableLeft="@drawable/ic_my_task"
+                                android:drawablePadding="10dp"
+                                android:text="@string/helping_center"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="16dp"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>

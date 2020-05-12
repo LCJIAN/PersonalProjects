@@ -1,0 +1,28 @@
+package com.lcjian.vastplayer.di.module;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+
+import com.lcjian.vastplayer.di.scope.ApplicationScope;
+
+import dagger.Module;
+import dagger.Provides;
+
+@Module
+public class AppModule {
+
+    @NonNull
+    private final Application application;
+
+    public AppModule(@NonNull Application application) {
+        this.application = application;
+    }
+
+    @Provides
+    @NonNull
+    @ApplicationScope
+    public Application provideApplication() {
+        return application;
+    }
+}

@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_top_bar" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_total_device_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="网络设备总数："
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_total_device_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="30台" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_lighting_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="照明设备："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lighting_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_total_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="总数"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_added_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_added_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_added_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_added_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已添加"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_reg_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_reg_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_total_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_reg_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_reg_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已注册"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_online_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_online_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_added_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_online_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_online_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="在线"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_offline_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_offline_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_reg_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_offline_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_offline_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="离线"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_online_label"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lighting_offline_label" />
+
+        <TextView
+            android:id="@+id/tv_lighting_total_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_added_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_added_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_added_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_lighting_added_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_reg_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_reg_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_total_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_reg_count"
+            tools:text="14" />
+
+        <TextView
+            android:id="@+id/tv_lighting_reg_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_online_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_online_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_added_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_online_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_lighting_online_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_lighting_offline_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lighting_offline_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_reg_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_lighting_offline_count"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_lighting_offline_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_lighting_online_count"
+            app:layout_constraintTop_toBottomOf="@+id/divider2"
+            tools:text="4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_sensor_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="传感器设备："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_divider_sensor"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sensor_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_total_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="总数"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_added_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_added_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_added_count_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_added_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已添加"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_reg_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_reg_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_total_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_reg_count_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_reg_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已注册"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_online_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_online_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_added_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_online_count_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_online_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="在线"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_offline_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_offline_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_reg_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_offline_count_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_offline_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="离线"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_online_count_label"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_sensor" />
+
+        <View
+            android:id="@+id/v_divider_sensor_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_sensor_offline_count_label" />
+
+        <TextView
+            android:id="@+id/tv_sensor_total_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_added_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_added_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_added_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_sensor_added_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_reg_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_reg_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_total_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_reg_count"
+            tools:text="14" />
+
+        <TextView
+            android:id="@+id/tv_sensor_reg_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_online_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_online_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_added_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_online_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_sensor_online_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_sensor_offline_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_sensor_offline_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_reg_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_sensor_offline_count"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_sensor_offline_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_sensor_online_count"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_sensor_2"
+            tools:text="4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_switch_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="开关面板设备："
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_divider_switch"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_switch_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_total_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="总数"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_added_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_added_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_added_count_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_added_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已添加"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_reg_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_reg_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_total_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_reg_count_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_reg_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="已注册"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_online_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_online_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_added_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_online_count_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_online_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="在线"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_offline_count_label"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_offline_count_label"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_reg_count_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_offline_count_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_offline_count_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="离线"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_online_count_label"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_switch" />
+
+        <View
+            android:id="@+id/v_divider_switch_2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_switch_offline_count_label" />
+
+        <TextView
+            android:id="@+id/tv_switch_total_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_added_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_added_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_added_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_switch_added_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_reg_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_reg_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_total_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_reg_count"
+            tools:text="14" />
+
+        <TextView
+            android:id="@+id/tv_switch_reg_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_online_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_online_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_added_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_online_count"
+            tools:text="16" />
+
+        <TextView
+            android:id="@+id/tv_switch_online_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_switch_offline_count"
+            app:layout_constraintEnd_toStartOf="@+id/tv_switch_offline_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_reg_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_switch_offline_count"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/tv_switch_offline_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_switch_online_count"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider_switch_2"
+            tools:text="4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_config_device"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_normal_btn_bg"
+            android:text="配置设备"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_remove_device"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_grey_btn_bg"
+            android:text="移除设备"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,63 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'cn.wanghaomiao:SeimiCrawler:latest.integration'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'ch.qos.logback:logback-core:latest.integration'
+    compile 'ch.qos.logback:logback-classic:latest.integration'
+    
+    compile 'org.springframework:spring-context:latest.integration'
+    compile 'org.springframework:spring-jdbc:latest.integration'
+    compile 'org.springframework:spring-orm:latest.integration'
+    compile 'org.springframework:spring-tx:latest.integration'
+    compile 'org.springframework.data:spring-data-jpa:latest.integration'
+    compile 'org.springframework:spring-aop:latest.integration'
+    
+    compile 'org.hibernate:hibernate-core:latest.integration'
+    
+    compile 'mysql:mysql-connector-java:latest.integration'
+    compile 'com.zaxxer:HikariCP:latest.integration'
+    
+    compile 'com.uwetrottmann.tmdb2:tmdb-java:latest.integration'
+    testCompile 'junit:junit:latest.integration'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}

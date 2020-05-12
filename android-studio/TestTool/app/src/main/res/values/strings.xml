@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">测试工具</string>
+    <string name="home">首页</string>
+    <string name="action_intelligence">智能</string>
+    <string name="action_mine">我的</string>
+    <string name="hint_input_user_name">请输入用户名</string>
+    <string name="hint_input_pwd">请输入密码</string>
+    <string name="sign_in">登录</string>
+    <string name="curtain">窗帘</string>
+    <string name="join_in_the_network">入网</string>
+    <string name="leave_from_network">退网</string>
+    <string name="switch_on">打开</string>
+    <string name="switch_off">关闭</string>
+    <string name="pause">暂停</string>
+</resources>

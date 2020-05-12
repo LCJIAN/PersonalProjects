@@ -1,0 +1,54 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <group
+        android:id="@+id/menu_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_home"
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="@string/action_home"
+            android:visible="false" />
+        <item
+            android:id="@+id/action_favorite"
+            android:icon="@drawable/ic_favorite_white_24dp"
+            android:title="@string/action_favorite"
+            android:visible="false" />
+        <item
+            android:id="@+id/action_watch_history"
+            android:icon="@drawable/ic_history_white_24dp"
+            android:title="@string/action_watch_history"
+            android:visible="false" />
+        <item
+            android:id="@+id/action_video_library"
+            android:checked="true"
+            android:icon="@drawable/ic_video_library_white_24dp"
+            android:title="@string/action_video_library" />
+        <item
+            android:id="@+id/action_downloads"
+            android:checked="true"
+            android:icon="@drawable/ic_file_download_white_24dp"
+            android:title="@string/action_downloads" />
+    </group>
+    <item
+        android:id="@+id/action_others"
+        android:title="@string/action_others">
+        <menu>
+            <item
+                android:id="@+id/action_share"
+                android:title="@string/action_share"
+                android:visible="false"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_settings"
+                android:title="@string/action_settings"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_feedback"
+                android:title="@string/action_feedback"
+                android:visible="false"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-11 18:29:14 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.TvLiveSource" table="tv_live_source" catalog="spun_sugar">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tvStation" class="com.lcjian.spunsugar.entity.TvStation" fetch="select">
+            <column name="tv_station_id" not-null="true" />
+        </many-to-one>
+        <property name="uri" type="string">
+            <column name="uri" length="200">
+                <comment>
+                &#178;&#165;&#183;&#197;&#212;&#180;&#194;&#183;&#190;&#182;&#163;&#172;&#178;&#162;&#183;&#199;&#213;&#230;&#213;&#253;&#181;&#196;&#178;&#165;&#183;&#197;&#181;&#216;&#214;&#183;</comment>
+            </column>
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="45">
+                <comment>&#178;&#165;&#183;&#197;&#212;&#180;&#192;&#224;&#208;&#205;(&#187;&#170;&#202;&#253;&#163;&#172;&#192;&#214;&#202;&#211;)</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

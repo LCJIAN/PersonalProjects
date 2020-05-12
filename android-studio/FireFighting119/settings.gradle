@@ -1,0 +1,3 @@
+rootProject.name='FireFighting119'
+include ':app', ':library-mine'
+project(':library-mine').projectDir = new File('../vast_player/library-mine')

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/navigation_top_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.winside.lighting.widget.RatioLayout
+                android:id="@+id/rl_on_duty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/banner_2"
+                app:ratio="0.55">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/thirty_percent_transparency_black"
+                    android:padding="12dp"
+                    android:text="@string/on_duty"
+                    android:textAppearance="@style/TextAppearance.AppTheme.Large"
+                    android:textColor="@android:color/white" />
+
+            </com.winside.lighting.widget.RatioLayout>
+
+            <com.winside.lighting.widget.RatioLayout
+                android:id="@+id/rl_off_duty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/banner_4"
+                app:ratio="0.55">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/thirty_percent_transparency_black"
+                    android:padding="12dp"
+                    android:text="@string/off_duty"
+                    android:textAppearance="@style/TextAppearance.AppTheme.Large"
+                    android:textColor="@android:color/white" />
+            </com.winside.lighting.widget.RatioLayout>
+
+            <com.winside.lighting.widget.RatioLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/banner_3"
+                app:ratio="0.55">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/thirty_percent_transparency_black"
+                    android:padding="12dp"
+                    android:text="@string/noon_break"
+                    android:textAppearance="@style/TextAppearance.AppTheme.Large"
+                    android:textColor="@android:color/white" />
+            </com.winside.lighting.widget.RatioLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

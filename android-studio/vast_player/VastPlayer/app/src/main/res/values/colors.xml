@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">@color/light_blue_500</color>
+    <color name="primary_dark">@color/light_blue_700</color>
+    <color name="accent">@color/cyan_A700</color>
+
+    <color name="primary_text">@color/primary_text_dark_2</color>
+    <color name="secondary_text">@color/secondary_text_dark_2</color>
+    <color name="tertiary_text">@color/tertiary_text_dark_2</color>
+
+    <color name="background">#3A3A3A</color>
+    <color name="media_controller_bg">#55000000</color>
+
+    <color name="selectable_focused">#22FFFFFF</color>
+    <color name="selectable_pressed">#55FFFFFF</color>
+
+    <color name="movie_detail_background">#1F2224</color>
+    <color name="text_color">#FFFFFF</color>
+    <color name="secondary_text_color">#AAFFFFFF</color>
+
+    <color name="five_percent_transparency_white">#0Dffffff</color>
+    <color name="ten_percent_transparency_white">#1Affffff</color>
+    <color name="twenty_percent_transparency_white">#33ffffff</color>
+    <color name="thirty_percent_transparency_white">#4Dffffff</color>
+    <color name="forty_percent_transparency_white">#66FFFFFF</color>
+    <color name="fifty_percent_transparency_white">#80ffffff</color>
+    <color name="sixty_percent_transparency_white">#99ffffff</color>
+    <color name="seventy_percent_transparency_white">#B3ffffff</color>
+    <color name="eighty_percent_transparency_white">#CCffffff</color>
+    <color name="ninety_percent_transparency_white">#E6ffffff</color>
+    <color name="ninety_five_percent_transparency_white">#F2ffffff</color>
+
+    <color name="five_percent_transparency_black">#0D000000</color>
+    <color name="ten_percent_transparency_black">#1A000000</color>
+    <color name="twenty_percent_transparency_black">#33000000</color>
+    <color name="thirty_percent_transparency_black">#4D000000</color>
+    <color name="forty_percent_transparency_black">#66000000</color>
+    <color name="fifty_percent_transparency_black">#80000000</color>
+    <color name="sixty_percent_transparency_black">#99000000</color>
+    <color name="seventy_percent_transparency_black">#B3000000</color>
+    <color name="eighty_percent_transparency_black">#CC000000</color>
+    <color name="ninety_percent_transparency_black">#E6000000</color>
+    <color name="ninety_five_percent_transparency_black">#F2000000</color>
+
+</resources>

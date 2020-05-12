@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/fl_download_mime"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@color/primary_dark"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_download_mime"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter" />
+
+        <CheckBox
+            android:id="@+id/chb_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:button="@drawable/selector_check_box_white" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_download_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearance"
+            android:textColor="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_download_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="?android:textColorTertiary" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_download_progress"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:foreground="?selectableItemBackground">
+
+        <com.lcjian.lib.widget.CircleProgressBar
+            android:id="@+id/pb_download_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:bgColor="#e1e1e1"
+            app:fgColor="@color/accent"
+            app:startAngle="0"
+            app:strokeWidth="4dp" />
+
+        <ImageView
+            android:id="@+id/iv_pause"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="4dp"
+            android:background="@drawable/shape_circle"
+            android:scaleType="fitXY"
+            android:tint="@color/accent" />
+
+        <TextView
+            android:id="@+id/tv_download_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold" />
+    </FrameLayout>
+</LinearLayout>

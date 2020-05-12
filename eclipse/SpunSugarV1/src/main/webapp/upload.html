@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>上传Parser</title>
+<meta name="author" content="CSDN">
+<meta name="Copyright" content="CSDN">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<script src="http://keleyi.com/keleyi/pmedia/jquery/jquery-2.1.1.min.js"></script>
+<script src="http://malsup.github.io/jquery.form.js"></script>
+<style>
+body {
+	margin: 0;
+}
+
+* {
+	box-sizing: border-box;
+	font: 12px/20px 'microsoft yahei';
+}
+
+.up_parser_loading {
+	display: none;
+}
+
+.up_parser_loading.active {
+	display: block;
+	position: fixed;
+	z-index: 3;
+	background: rgba(255, 255, 255, .9);
+	background: #fff \9;
+	width: 100%;
+	height: 100%;
+	line-height: 90px;
+	top: 0;
+	right: 0;
+	text-align: center;
+}
+
+.parser_file_name {
+	width: 100%;
+	height: 30px;
+	border: 1px solid #ddd;
+	margin: 25px 0;
+	padding: 5px 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #999;
+}
+
+.parser_file_msg {
+	color: #666;
+	position: absolute;
+	margin-top: -25px;
+}
+
+.btn {
+	text-align: right;
+}
+
+.btn span {
+	background: #999;
+	color: #fff;
+	padding: 3px 10px;
+	cursor: pointer;
+}
+
+label {
+	position: absolute;
+	right: 1px;
+	top: 26px;
+	background: #eee;
+	color: #666;
+	padding: 4px 8px;
+	border-left: 1px solid #ddd;
+}
+
+form {
+	width: 1px;
+	height: 1px;
+	position: absolute;
+	overflow: hidden;
+}
+</style>
+</head>
+<body>
+	<div class="parser_file_name"></div>
+	<div class="parser_file_msg"></div>
+	<label for="parser_file">浏览..</label>
+	<div class="up_parser_loading">上传中...</div>
+	<div class="btn" onclick="submit()">
+		<span>上传Parser</span>
+	</div>
+
+	<form action="api/parser/upload" id="parser_dialog_form" method="post">
+		<input type="file" name="parser_file" id="parser_file">
+	</form>
+	<script>
+		$('.up_parser_loading').removeClass('active');
+		$('#parser_file').change(function() {
+			var file_name = $(this).val();
+			$('.parser_file_name').text(file_name);
+			$(".parser_file_msg").html("");
+		});
+		function submit() {
+			$('.up_parser_loading').addClass('active');
+
+			var form = $("#parser_dialog_form");
+			$(form).ajaxSubmit({
+				success : function(result) {
+					result = $.parseJSON(result);
+					if (result.status == 500) {
+						$(".parser_file_msg").html(result.msg);
+						$('.up_parser_loading').removeClass('active');
+					} else {
+						$('.parser_file_name').text(result.url);
+						$('.up_parser_loading').removeClass('active');
+						window.parent.editor_change_ask_o(result.url);
+					}
+				},
+				error : function(err) {
+					$(".parser_file_msg").html("系统繁忙，请稍后再试");
+					$('.up_parser_loading').removeClass('active');
+				}
+			});
+		}
+	</script>
+</body>
+</html>

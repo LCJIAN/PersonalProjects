@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    android:stateListAnimator="@animator/raise">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.lcjian.lib.widget.RatioLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ratio="1.5">
+
+            <ImageView
+                android:id="@+id/iv_tv_show_poster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_gradient_bg"
+                android:contentDescription="@string/movie_poster"
+                android:scaleType="centerCrop" />
+
+        </com.lcjian.lib.widget.RatioLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tv_show_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_800"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/tv_tv_show_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text_light"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_tv_show_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_tv_show_title"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="@color/secondary_text_light" />
+
+            <TextView
+                android:id="@+id/tv_tv_show_vote_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/tv_tv_show_release_date"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/secondary_text_light"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

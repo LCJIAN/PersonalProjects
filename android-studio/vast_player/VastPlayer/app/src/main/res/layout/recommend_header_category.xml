@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_go_movies"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/ic_movie_category"
+            android:gravity="center"
+            android:text="@string/movies" />
+
+        <TextView
+            android:id="@+id/tv_go_tv_shows"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/ic_tv_show_category"
+            android:gravity="center"
+            android:text="@string/tv_shows" />
+
+        <TextView
+            android:id="@+id/tv_go_variety"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/ic_variety_category"
+            android:gravity="center"
+            android:text="@string/variety" />
+
+        <TextView
+            android:id="@+id/tv_go_animation"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/ic_animation_category"
+            android:gravity="center"
+            android:text="@string/animation" />
+
+        <TextView
+            android:id="@+id/tv_go_live"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableTop="@drawable/ic_live_category"
+            android:gravity="center"
+            android:text="@string/action_live_tv" />
+    </LinearLayout>
+</HorizontalScrollView>

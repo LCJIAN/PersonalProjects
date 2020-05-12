@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:text="@string/please_flow_this"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#ff040c18" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_weight="1"
+        android:lineSpacingExtra="24dp"
+        android:text="@string/search_tip"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ff999999" />
+
+    <com.winside.lighting.widget.RatioLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:ratio="0.55148">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bluetooth" />
+    </com.winside.lighting.widget.RatioLayout>
+
+    <Button
+        android:id="@+id/btn_start_searching"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:background="@drawable/shape_primary_btn_bg"
+        android:text="@string/operations_confirmed"
+        android:textColor="@android:color/white" />
+</LinearLayout>

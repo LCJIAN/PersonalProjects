@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-11 18:29:14 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.Config" table="config" catalog="spun_sugar">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="hasLive" type="java.lang.Boolean">
+            <column name="has_live" length="1" />
+        </property>
+         <property name="hasMovie" type="java.lang.Boolean">
+            <column name="has_movie" length="1" />
+        </property>
+        <property name="hasShare" type="java.lang.Boolean">
+            <column name="has_share" length="1" />
+        </property>
+        <property name="shareContent" type="string">
+            <column name="share_content" length="45" />
+        </property>
+        <property name="shareUrl" type="string">
+            <column name="share_url" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

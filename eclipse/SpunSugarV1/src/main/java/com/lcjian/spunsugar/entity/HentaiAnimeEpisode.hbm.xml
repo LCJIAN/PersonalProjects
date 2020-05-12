@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-25 11:06:49 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.HentaiAnimeEpisode" table="hentai_anime_episode" catalog="spun_sugar">
+        <id name="id" type="string">
+            <column name="id" length="45" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="hentaiAnimeSeries" class="com.lcjian.spunsugar.entity.HentaiAnimeSeries" fetch="select">
+            <column name="hentai_anime_series_id" />
+        </many-to-one>
+        <many-to-one name="hentaiAnimeMaker" class="com.lcjian.spunsugar.entity.HentaiAnimeMaker" fetch="select">
+            <column name="hentai_anime_maker_id" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" length="100" />
+        </property>
+        <property name="overview" type="string">
+            <column name="overview" length="16777215" />
+        </property>
+        <property name="posterSmall" type="string">
+            <column name="poster_small" length="200" />
+        </property>
+        <property name="posterMedium" type="string">
+            <column name="poster_medium" length="200" />
+        </property>
+        <property name="posterLarge" type="string">
+            <column name="poster_large" length="200" />
+        </property>
+        <property name="sampleImage" type="string">
+            <column name="sample_image" length="16777215" />
+        </property>
+        <property name="duration" type="java.lang.Integer">
+            <column name="duration" />
+        </property>
+        <property name="rating" type="java.lang.Float">
+            <column name="rating" />
+        </property>
+        <property name="releaseDate" type="date">
+            <column name="release_date" length="10" />
+        </property>
+        <property name="deliveryStartDate" type="date">
+            <column name="delivery_start_date" length="10" />
+        </property>
+        <set name="hentaiAnimeGenres" table="hentai_anime_episode_genre" lazy="true" fetch="select">
+            <key>
+                <column name="hentai_anime_episode_id" length="45" not-null="true" />
+            </key>
+            <many-to-many class="com.lcjian.spunsugar.entity.HentaiAnimeGenre" column="hentai_anime_genre_id" />
+        </set>
+    </class>
+</hibernate-mapping>

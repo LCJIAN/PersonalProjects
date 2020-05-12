@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_subtitle_font_size_des">
+        <item>微小字体</item>
+        <item>小字体</item>
+        <item>一般字体</item>
+        <item>中字体</item>
+        <item>大字体</item>
+    </string-array>
+</resources>

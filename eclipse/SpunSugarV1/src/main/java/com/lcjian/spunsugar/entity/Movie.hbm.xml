@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-1-15 21:54:05 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.Movie" table="movie" catalog="spun_sugar">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="title" type="string">
+            <column name="title" length="45" not-null="true" />
+        </property>
+        <property name="overview" type="string">
+            <column name="overview" length="16777215" />
+        </property>
+        <property name="poster" type="string">
+            <column name="poster" length="100" />
+        </property>
+        <property name="voteAverage" type="java.lang.Float">
+            <column name="vote_average" precision="12" scale="0" />
+        </property>
+          <property name="popularity" type="java.lang.Float">
+            <column name="popularity" precision="12" scale="0" />
+        </property>
+        <property name="releaseDate" type="date">
+            <column name="release_date" length="10" />
+        </property>
+        <property name="imdbId" type="string">
+            <column name="imdb_id" length="45" />
+        </property>
+        <property name="doubanId" type="string">
+            <column name="douban_id" length="45" />
+        </property>
+        <property name="tmdbId" type="string">
+            <column name="tmdb_id" length="45" />
+        </property>
+        <property name="createTime" type="java.sql.Timestamp">
+            <column name="create_time" length="19" />
+        </property>
+           <property name="crawlerId" type="string">
+            <column name="crawler_id" length="45" />
+        </property>
+        <set name="movieGenres" table="movie_genre_reference" lazy="true" fetch="select">
+            <key>
+                <column name="movie_id" />
+            </key>
+            <many-to-many class="com.lcjian.spunsugar.entity.MovieGenre" column="movie_genre_id" />
+        </set>
+        <set name="movieProductionCountries" table="movie_production_country_reference" lazy="true" fetch="select">
+            <key>
+                <column name="movie_id" not-null="true" />
+            </key>
+            <many-to-many class="com.lcjian.spunsugar.entity.MovieProductionCountry" column="production_country_iso_3166_1" />
+        </set>
+        <set name="movieVideos" table="movie_video" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="movie_id" />
+            </key>
+            <one-to-many class="com.lcjian.spunsugar.entity.MovieVideo" />
+        </set>
+    </class>
+</hibernate-mapping>

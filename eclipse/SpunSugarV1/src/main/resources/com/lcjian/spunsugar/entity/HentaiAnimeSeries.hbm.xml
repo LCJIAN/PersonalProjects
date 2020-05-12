@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-25 11:06:49 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.HentaiAnimeSeries" table="hentai_anime_series" catalog="spun_sugar">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="100" />
+        </property>
+        <property name="overview" type="string">
+            <column name="overview" length="16777215" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status" />
+        </property>
+        <property name="poster" type="string">
+            <column name="poster" length="200" />
+        </property>
+        <set name="hentaiAnimeEpisodes" table="hentai_anime_episode" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="hentai_anime_series_id" />
+            </key>
+            <one-to-many class="com.lcjian.spunsugar.entity.HentaiAnimeEpisode" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,127 @@
+//单开/关(0x001c: 28)测试 【opcode:8202; params: onoff(1) tid(1)】
+{
+  "option": "DeviceContorl",
+  "NetID": 1234,
+  "unicast": 28,
+  "data": {
+    "opcode": "8202",
+    "params": "0110"
+  }
+}
+{
+  "option": "DeviceContorl",
+  "NetID": 1234,
+  "unicast": 28,
+  "data": {
+    "opcode": "8202",
+    "params": "0011"
+  }
+}
+
+//全开(0xc001: 49153)测试 【opcode:8202; params: onoff(1) tid(1)】
+{
+  "option": "DeviceContorl",
+  "NetID": 1234,
+  "multicast": 49153,
+  "data": {
+    "opcode": "8202",
+    "params": "0113"
+  }
+}
+//全关(0xc001: 49153)测试 【opcode:8202; params: onoff(1) tid(1)】
+{
+  "option": "DeviceContorl",
+  "NetID": 1234,
+  "unicast": 49153,
+  "data": {
+    "opcode": "8202",
+    "params": "0014"
+  }
+}
+/*  onoff(1): 00(关) 01(开)
+ tid(1): 01-ff ()
+*/
+
+//亮度调节(0xc001: 49153/0x001c: 28)测试 【opcode:824C; params: lightness(2) tid(1)】
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "unicast": 28,
+  "data": {
+    "opcode": "824C",
+    "params": "008018"
+  }
+}
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "824C",
+    "params": "008015"
+  }
+}
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "824C",
+    "params": "002016"
+  }
+}
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "824C",
+    "params": "ffff17"
+  }
+}
+/*  lightness(2): 0080(0x8000) 0020(0x2000) ffff(0xffff: 最大) 0000(0x0000:关)
+ tid(1): 01-ff ()
+*/
+
+//HSL调节(0xc001: 49153/0x001c: 28)测试 【opcode:8276; params: lightness(2) hue(2) saturation(2) tid(1)】
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "unicast": 28,
+  "data": {
+    "opcode": "8276",
+    "params": "00800080ffff1e"
+  }
+}  //blue
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "8276",
+    "params": "00800080ffff1f"
+  }
+}  //blue
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "8276",
+    "params": "00800020ffff20"
+  }
+}  //yellow
+{
+  "option": "DeviceContorl",
+  "NetID": "fc539e438778",
+  "multicast": 49153,
+  "data": {
+    "opcode": "8276",
+    "params": "0080ffffffff21"
+  }
+}  //red
+/*  lightness(2): 0080(0x8000) 0020(0x2000) ffff(0xffff: 最大) 0000(0x0000:关)
+ hue(2)： 0080(0x8000:bulue) 0020(0x2000:yellow) ffff(0xffff:red)
+ saturation(2): ffff(0xffff)
+ tid(1): 01-ff ()
+*/

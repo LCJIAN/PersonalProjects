@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.preference.PreferenceCategory android:title="@string/player">
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="hardware_acceleration"
+            android:summary="@string/hardware_acceleration_summary"
+            android:title="@string/hardware_acceleration" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="@string/subtitle">
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@android:color/white"
+            android:key="subtitle_color"
+            android:title="@string/subtitle_color"
+            app:cpv_showAlphaSlider="true" />
+        <androidx.preference.ListPreference
+            android:defaultValue="14"
+            android:entries="@array/array_subtitle_font_size_des"
+            android:entryValues="@array/array_subtitle_font_size"
+            android:key="subtitle_font_size"
+            android:title="@string/subtitle_font_size" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="@string/download">
+        <androidx.preference.ListPreference
+            android:key="memory_card"
+            android:title="@string/memory_card" />
+        <com.lcjian.vastplayer.android.preference.FilePickerPreference xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:key="download_directory"
+            android:title="@string/download_title"
+            app:error_dir="/mnt"
+            app:selection_mode="single_mode"
+            app:selection_type="dir_select"
+            app:title_text="@string/download_title_text" />
+    </androidx.preference.PreferenceCategory>
+    <androidx.preference.PreferenceCategory android:title="@string/other">
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="filter_no_media"
+            android:summary="@string/filter_no_media_summary"
+            android:title="@string/filter_no_media" />
+    </androidx.preference.PreferenceCategory>
+</androidx.preference.PreferenceScreen>

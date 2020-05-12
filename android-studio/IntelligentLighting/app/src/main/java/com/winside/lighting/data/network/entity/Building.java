@@ -1,10 +1,17 @@
 package com.winside.lighting.data.network.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Building {
 
-    public Long buildId;
-    public String buildName;
-    public String buildNumber;
-    public Integer buildFloorTotal;
-    public String buildMulticast;
+    @SerializedName("buildId")
+    public Long id;
+    @SerializedName("buildName")
+    public String name;
+    @SerializedName("buildNumber")
+    public String number;
+    @SerializedName("buildFloorTotal")
+    public Integer floorTotal;
+    @SerializedName("buildMulticast")
+    public String multicast;
 }

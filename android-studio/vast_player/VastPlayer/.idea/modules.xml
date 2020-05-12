@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/VastPlayer.iml" filepath="$PROJECT_DIR$/VastPlayer.iml" group="VastPlayer" />
+      <module fileurl="file://$PROJECT_DIR$/app/VastPlayer-app.iml" filepath="$PROJECT_DIR$/app/VastPlayer-app.iml" group="VastPlayer/app" />
+      <module fileurl="file://$PROJECT_DIR$/../library-mine/library-mine.iml" filepath="$PROJECT_DIR$/../library-mine/library-mine.iml" group="VastPlayer/library-mine" />
+      <module fileurl="file://$PROJECT_DIR$/../library-share/library-share.iml" filepath="$PROJECT_DIR$/../library-share/library-share.iml" group="VastPlayer/library-share" />
+    </modules>
+  </component>
+</project>

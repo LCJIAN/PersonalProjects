@@ -1,9 +1,14 @@
 package com.winside.lighting.data.network.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Region {
 
-    public Long regionId;
-    public String regionName;
-    public String regionNumber;
+    @SerializedName("regionId")
+    public Long id;
+    @SerializedName("regionName")
+    public String name;
+    @SerializedName("regionNumber")
+    public String number;
 
 }

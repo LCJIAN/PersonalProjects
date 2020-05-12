@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">邦奇智能</string>
+    <string name="action_home">首页</string>
+    <string name="action_mine">我的</string>
+    <string name="action_intelligence">智能</string>
+    <string name="hint_input_user_name">请输入用户名</string>
+    <string name="hint_input_pwd">请输入密码</string>
+    <string name="sign_in">登录</string>
+    <string name="hint_input_server_address">请输入服务器地址</string>
+    <string name="next_step">下一步</string>
+    <string name="config">配置</string>
+    <string name="can_not_connect_server">服务器地址不可用</string>
+    <string name="switch_server">切换网关地址</string>
+    <string name="modify_pwd">修改密码</string>
+    <string name="sign_out">注销</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="please_input_server_address">请输入服务器地址</string>
+    <string name="old_pwd">旧密码</string>
+    <string name="new_pwd">新密码</string>
+    <string name="confirm_pwd">确认密码</string>
+    <string name="error_confirm_pwd">确认密码不一致</string>
+    <string name="password_modification_succeeded">修改密码成功</string>
+
+    <string name="project_build_count">总计：%1$d栋楼</string>
+    <string name="total_light_count">照明设备总数</string>
+    <string name="total_light_fixed_count">照明设备已安装数量</string>
+    <string name="total_light_online_count">照明设备已上线数量</string>
+    <string name="total_sensor_count">传感器设备总数</string>
+    <string name="total_sensor_fixed_count">传感器设备已安装数量</string>
+    <string name="total_sensor_online_count">传感器设备已上线数量</string>
+    <string name="device_count">%1$d台</string>
+    <string name="config_device">配置设备</string>
+    <string name="re_config_device">重新配置</string>
+    <string name="remove_device">移除设备</string>
+    <string name="please_input_wifi_info">请输入WIFI信息</string>
+    <string name="wifi_ssid">WIFI SSID</string>
+    <string name="wifi_pwd">WIFI 密码</string>
+    <string name="on_duty">上班</string>
+    <string name="off_duty">下班</string>
+    <string name="user_name">邦奇智能</string>
+    <string name="message_notification">消息提醒</string>
+    <string name="about_us">关于我们</string>
+    <string name="check_app_version">检查更新</string>
+    <string name="latest_version_already">已是最新版本</string>
+    <string name="noon_break">午休</string>
+</resources>

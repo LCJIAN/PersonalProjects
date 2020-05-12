@@ -1,0 +1,172 @@
+<resources>
+    <string name="app_name">Vast Player</string>
+
+    <string name="empty_video">No video in you phone yet</string>
+    <string name="empty_favourites">No related favourite yet</string>
+    <string name="empty_histories">No related histories yet</string>
+    <string name="empty_results">No related results</string>
+
+    <string name="action_home">Home</string>
+    <string name="action_explore">Explore</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_watch_history">Watch History</string>
+    <string name="action_video_library">Video Library</string>
+    <string name="action_downloads">Downloads</string>
+    <string name="action_recommend">Recommend</string>
+    <string name="action_account">Me</string>
+    <string name="action_movie">Movie</string>
+    <string name="action_tv_show">TV Show</string>
+    <string name="action_variety">Variety</string>
+    <string name="action_animation">Animation</string>
+    <string name="action_live_tv">Live</string>
+    <string name="action_micro_video">Micro Video</string>
+    <string name="action_others">Others</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="action_feedback">Feedback</string>
+    <string name="action_grid_view">Grid View</string>
+    <string name="action_list_view">List View</string>
+    <string name="action_group_directory">Directory</string>
+    <string name="action_group_day">Day</string>
+    <string name="action_group_month">Month</string>
+    <string name="action_search">Search</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_add">Add</string>
+    <string name="action_disk_info">Disk info</string>
+    <string name="open_drawer">Open Drawer</string>
+    <string name="close_drawer">Close Drawer</string>
+
+    <string name="title_activity_video_player">VideoPlayerActivity</string>
+    <string name="movie_detail">Movie detail</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="subtitles">Subtitles</string>
+    <string name="scale">Scale</string>
+
+    <string name="subtitle">Subtitle</string>
+    <string name="subtitle_color">Subtitle color</string>
+    <string name="subtitle_font_size">Subtitle font size</string>
+    <string name="player">Player</string>
+    <string name="hardware_acceleration">Hardware acceleration</string>
+    <string name="hardware_acceleration_summary">Better performance</string>
+
+    <string name="subtitle_dialog_title">Subtitle</string>
+    <string name="no_subtitle">No subtitle</string>
+    <string name="subtitle_url_loading_msg">Subtitle url mLoading</string>
+    <string name="subtitle_downloading_msg">Subtitle downloading</string>
+    <string name="subtitle_extracting_mag">Subtitle extracting</string>
+    <string name="subtitle_success_msg">Subtitle success</string>
+    <string name="subtitle_error_msg">Subtitle error</string>
+
+    <string name="volume">Volume:%1$1.0f%%</string>
+    <string name="brightness">Brightness:%1$1.0f%%</string>
+    <string name="progress">%1$+dSeconds</string>
+
+    <string name="tv_type_custom">CUSTOM</string>
+    <string name="tv_type_cctv">CCTV</string>
+    <string name="tv_type_satellite">SATELLITE</string>
+    <string name="tv_custom">TV Custom</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="tv_name">TV name</string>
+    <string name="tv_source">TV source</string>
+    <string name="error_tv_name_empty">TV name is empty</string>
+    <string name="error_tv_source_empty">TV source is empty</string>
+
+    <string name="delete">delete</string>
+    <string name="edit">edit</string>
+
+    <string name="share_with">Share with</string>
+    <string name="select_file">Select a File</string>
+
+    <string name="vote_count">%1$d votes</string>
+    <string name="minutes">%1$d min</string>
+
+    <string name="year">Year</string>
+    <string name="rating">Rating</string>
+    <string name="desc">Desc</string>
+    <string name="asc">Asc</string>
+    <string name="confirm">Confirm</string>
+    <string name="genre">GENRE</string>
+    <string name="country">COUNTRY</string>
+    <string name="year_rating">YEAR&amp;RATING</string>
+    <string name="sort">SORT</string>
+    <string name="all">All</string>
+    <string name="release_date">Release date</string>
+    <string name="popularity">Popularity</string>
+    <string name="vote_average">Rating</string>
+    <string name="create_time">Create time</string>
+    <string name="sort_type">Sort type</string>
+    <string name="sort_direction">Sort direction</string>
+
+    <string name="movie_poster">Movie poster</string>
+    <string name="error_msg">Error</string>
+    <string name="error_msg_cannot_play">Temporarily unable to play…</string>
+    <string name="title_activity_movie">MovieActivity</string>
+    <string name="delete_item">delete these items</string>
+    <string name="items_count_selected">%d items selected</string>
+    <string name="undo">undo</string>
+    <string name="recent">New&#160;</string>
+    <string name="classic">Classic&#160;</string>
+    <string name="popular">Popular&#160;</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="variety">Variety</string>
+    <string name="animation">Animation</string>
+
+    <string name="total_task_count">Total task : %1$d</string>
+    <string name="downloading_task_count">Downloading task : %1$d • %2$s</string>
+    <string name="download_status_idle">Paused</string>
+    <string name="download_status_pending">Pending</string>
+    <string name="download_status_initializing">Initializing</string>
+    <string name="download_status_chunk_pending">Chunk pending</string>
+    <string name="download_status_downloading">Downloading</string>
+    <string name="download_status_error">Error</string>
+    <string name="download_status_error_file_exist">File exist</string>
+    <string name="download_status_merging">Merging</string>
+    <string name="download_status_merge_error">Merge error</string>
+    <string name="download_status_complete">Complete</string>
+    <string name="file_is_deleted">File is deleted</string>
+    <string name="unknown">∞</string>
+    <string name="shutdown">Shutdown</string>
+    <string name="download_url">Download url</string>
+    <string name="add_task">Add task</string>
+    <string name="download">Download</string>
+    <string name="download_title">Download Directory</string>
+    <string name="download_title_text">Select a download directory</string>
+    <string name="bytes_downloaded">%1$s downloaded</string>
+    <string name="bytes_other">%1$s other apps</string>
+    <string name="bytes_available">%1$s available</string>
+
+    <string name="msg_mobile_network">Attention!You are using a mobile network now, which may incur additional charges.</string>
+
+    <string name="we_chat">WeChat</string>
+    <string name="moments">Moments</string>
+    <string name="wei_bo">WeiBo</string>
+    <string name="qq">QQ</string>
+    <string name="qq_zone">QQ Zone</string>
+    <string name="share_failed">Share failed</string>
+
+    <string name="memory_card">Memory card</string>
+    <string name="need_to_share_title">Need To Share</string>
+    <string name="need_to_share_message">Share this APP, then you can watch this video</string>
+    <string name="share_next_time">Next Time</string>
+    <string name="share_now">Share Now</string>
+
+    <string name="download_rate" translatable="false">%dkb/s</string>
+    <string name="buffer_percent" translatable="false">%d%%</string>
+    <string name="video_count" translatable="false">(%d)</string>
+
+    <string name="other">other</string>
+    <string name="filter_no_media">过滤(.nomedia)文件夹</string>
+    <string name="filter_no_media_summary">扫描手机内视频时将跳过含有(.nomedia)的文件夹</string>
+    <string name="action_browser">Website</string>
+    <string name="action_close">Close</string>
+    <string name="tx_video">腾讯</string>
+    <string name="yk_video">优酷</string>
+    <string name="aqy_video">爱奇艺</string>
+    <string name="mg_video">芒果TV</string>
+    <string name="sh_video">搜狐</string>
+    <string name="pp_video">PPTV</string>
+    <string name="ls_video">乐视</string>
+</resources>

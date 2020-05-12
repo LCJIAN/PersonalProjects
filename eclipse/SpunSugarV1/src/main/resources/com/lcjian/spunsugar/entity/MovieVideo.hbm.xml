@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-1-15 21:54:05 by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="com.lcjian.spunsugar.entity.MovieVideo" table="movie_video" catalog="spun_sugar">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="movie" class="com.lcjian.spunsugar.entity.Movie" fetch="select">
+            <column name="movie_id" />
+        </many-to-one>
+        <property name="url" type="string">
+            <column name="url" length="300" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="45" />
+        </property>
+          <property name="name" type="string">
+            <column name="name" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

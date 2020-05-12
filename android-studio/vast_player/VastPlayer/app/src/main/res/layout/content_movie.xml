@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:behavior_overlapTop="@dimen/detail_overlap"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.subject.MovieActivity"
+    tools:showIn="@layout/activity_movie">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="100dp"
+        android:paddingBottom="@dimen/detail_vertical_offset"
+        android:paddingEnd="@dimen/detail_horizontal_offset"
+        android:paddingLeft="@dimen/detail_horizontal_offset"
+        android:paddingRight="@dimen/detail_horizontal_offset"
+        android:paddingStart="@dimen/detail_horizontal_offset"
+        android:paddingTop="@dimen/detail_vertical_offset">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_movie_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_movie_poster"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:src="@drawable/placeholder_movie" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/detail_overlap"
+            android:layout_toEndOf="@id/cv_movie_poster"
+            android:layout_toRightOf="@id/cv_movie_poster"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/detail_title_text_size"
+            app:robotoTypeface="roboto_medium"
+            tools:ignore="MissingPrefix" />
+
+        <TextView
+            android:id="@+id/tv_movie_meta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_movie_title"
+            android:layout_alignStart="@id/tv_movie_title"
+            android:layout_below="@id/tv_movie_title"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/detail_meta_text_size"
+            app:robotoTypeface="roboto_medium"
+            tools:ignore="MissingPrefix"
+            tools:text="2013 ● 94 min ● Animation" />
+
+        <LinearLayout
+            android:id="@+id/extras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_movie_title"
+            android:layout_alignStart="@id/tv_movie_title"
+            android:layout_below="@id/tv_movie_meta"
+            android:gravity="center_vertical">
+
+            <RatingBar
+                android:id="@+id/rb_movie_vote_average"
+                style="@style/Theme.Butter.RatingBar"
+                android:layout_width="80dp"
+                android:layout_height="16dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.001" />
+
+            <TextView
+                android:id="@+id/tv_movie_vote_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:lines="1"
+                android:textColor="@color/text_color" />
+
+        </LinearLayout>
+
+        <com.borjabravo.readmoretextview.ReadMoreTextView
+            android:id="@+id/tv_movie_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cv_movie_poster"
+            android:layout_marginTop="@dimen/detail_vertical_offset"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/detail_desc_text_size"
+            app:robotoTypeface="roboto_medium"
+            app:trimLines="8"
+            tools:ignore="MissingPrefix" />
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/fl_video_urls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_movie_overview"
+            android:orientation="horizontal">
+
+        </org.apmem.tools.layouts.FlowLayout>
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

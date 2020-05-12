@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DashLine">
+        <attr name="dashWidth" format="dimension|reference" />
+        <attr name="dashGap" format="dimension|reference" />
+        <attr name="lineColor" format="color|reference" />
+        <attr name="dashOrientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ArcMenu">
+        <attr name="fromDegrees" format="float|reference" />
+        <attr name="toDegrees" format="float|reference" />
+        <attr name="arcRadius" format="dimension|reference" />
+        <attr name="duration" format="integer|reference" />
+        <attr name="closeOnClick" format="boolean" />
+        <attr name="mainImage" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ShelvesView">
+        <attr name="shelfBackground" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="Emotion">
+        <attr name="emotionSize" format="dimension|reference" />
+        <attr name="emotionHeight" format="dimension|reference" />
+        <attr name="emotionWidth" format="dimension|reference" />
+    </declare-styleable>
+    <declare-styleable name="AdaptiveListView">
+        <attr name="adaptiveListViewMaxHeight" format="dimension|reference" />
+    </declare-styleable>
+    <declare-styleable name="RatioLayout">
+        <attr name="ratio" format="float|reference" />
+        <attr name="fixedSide">
+            <enum name="width" value="0" />
+            <enum name="height" value="1" />
+            <enum name="auto" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="bgColor" format="color" />
+        <attr name="fgColor" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="percent" format="float" />
+        <attr name="startAngle" format="float" />
+    </declare-styleable>
+</resources>

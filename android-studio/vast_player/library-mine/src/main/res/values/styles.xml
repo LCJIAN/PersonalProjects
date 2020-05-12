@@ -1,0 +1,19 @@
+<resources>
+
+    <style name="dialogstyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
+    </style>
+
+    <style name="SlidingDialogAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/sliding_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/sliding_dialog_exit</item>
+    </style>
+
+    <style name="Theme.Sliding.Dialog" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/SlidingDialogAnimation</item>
+    </style>
+
+</resources>

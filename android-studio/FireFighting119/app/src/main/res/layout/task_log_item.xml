@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_log_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-10-12" />
+
+    <ImageView
+        android:id="@+id/iv_dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_log_date"
+        app:layout_constraintTop_toTopOf="@+id/tv_log_date"
+        app:srcCompat="@drawable/timeline_dot_blue" />
+
+    <TextView
+        android:id="@+id/tv_log_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+        android:textColor="#ff666666"
+        app:layout_constraintEnd_toEndOf="@+id/tv_log_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_log_date"
+        tools:text="13:23:50" />
+
+    <TextView
+        android:id="@+id/tv_log_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="24dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff333333"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_dot"
+        app:layout_constraintTop_toTopOf="@+id/tv_log_date"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="合川支队提交上级审核" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="#ffcecece"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dot"
+        app:layout_constraintStart_toStartOf="@+id/iv_dot"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dot" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="#ffcecece"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dot"
+        app:layout_constraintEnd_toEndOf="@+id/iv_dot"
+        app:layout_constraintStart_toStartOf="@+id/iv_dot"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

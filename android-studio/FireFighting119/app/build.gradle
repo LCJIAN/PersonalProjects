@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "com.org.firefighting"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 4
+        versionName "1.0.4"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
+            buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
+            buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
+            buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
+            buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
+            buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
+            buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
+            buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
+            buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            res.srcDirs += 'src/main/res-chat'
+            java.srcDirs += 'src/main/chat'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':library-mine')
+
+    // support
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.jakewharton:butterknife:latest.integration'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:latest.integration'
+    // RxJava & Permissions
+    implementation 'io.reactivex.rxjava2:rxjava:latest.integration'
+    implementation 'io.reactivex.rxjava2:rxandroid:latest.integration'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:latest.integration'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:latest.integration'
+    // database
+    implementation 'androidx.room:room-runtime:2.2.5'
+    implementation 'androidx.room:room-rxjava2:2.2.5'
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
+    testImplementation 'androidx.room:room-testing:2.2.5'
+    // http
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
+    implementation 'com.squareup.retrofit2:retrofit:latest.integration'
+    implementation 'com.squareup.retrofit2:converter-gson:latest.integration'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:latest.integration'
+    // image
+    implementation 'com.github.bumptech.glide:glide:latest.integration'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:latest.integration'
+    implementation 'com.github.florent37:glidepalette:latest.integration'
+    annotationProcessor 'com.github.bumptech.glide:compiler:latest.integration'
+    // log
+    implementation 'com.jakewharton.timber:timber:latest.integration'
+    // umeng
+    implementation 'com.umeng.umsdk:analytics:latest.integration'
+    implementation 'com.umeng.umsdk:common:latest.integration'
+    implementation 'com.umeng.umsdk:utdid:latest.integration'
+    // other
+    implementation "com.kaopiz:kprogresshud:latest.integration"
+//    implementation 'com.github.hackware1993:MagicIndicator:latest.integration'
+    implementation 'com.wdullaer:materialdatetimepicker:latest.integration'
+    implementation('com.journeyapps:zxing-android-embedded:latest.integration') {
+        transitive = false
+    }
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'q.rorbin:badgeview:1.1.3'
+    implementation('com.github.AlexLiuSheng:CheckVersionLib:2.2.4') {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    // leak
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
+//    implementation 'com.squareup.leakcanary:leakcanary-object-watcher-android:2.2'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}
