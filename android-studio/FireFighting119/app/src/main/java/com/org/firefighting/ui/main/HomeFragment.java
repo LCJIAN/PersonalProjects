@@ -24,15 +24,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.lcjian.lib.recyclerview.SlimAdapter;
-import com.lcjian.lib.util.common.DateUtils;
 import com.org.firefighting.App;
 import com.org.firefighting.R;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Task;
-import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.ui.base.BaseFragment;
+import com.org.firefighting.ui.common.SearchActivity;
+import com.org.firefighting.ui.resource.ResourcesActivity;
 import com.org.firefighting.ui.task.TaskDetailActivity;
 
 import java.util.ArrayList;
@@ -49,6 +49,8 @@ import q.rorbin.badgeview.QBadgeView;
 
 public class HomeFragment extends BaseFragment {
 
+    @BindView(R.id.tv_go_to_search)
+    TextView tv_go_to_search;
     @BindView(R.id.btn_go_to_scan)
     ImageButton btn_go_to_scan;
     @BindView(R.id.srl_home)
@@ -63,8 +65,6 @@ public class HomeFragment extends BaseFragment {
     TextView tv_announcement;
     @BindView(R.id.tv_helping)
     TextView tv_helping;
-    @BindView(R.id.tv_now_info)
-    TextView tv_now_info;
 
     @BindView(R.id.tv_task_input)
     TextView tv_task_input;
@@ -97,23 +97,18 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tv_go_to_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
         btn_go_to_scan.setOnClickListener(v -> IntentIntegrator.forSupportFragment(this).initiateScan());
         fl_task.setOnClickListener(v -> ((MainActivity) getActivity()).checkTask());
-        tv_organization.setOnClickListener(v -> Toast.makeText(App.getInstance(), "即将开放", Toast.LENGTH_SHORT).show());
+        tv_organization.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ResourcesActivity.class)));
         tv_announcement.setOnClickListener(v -> Toast.makeText(App.getInstance(), "即将开放", Toast.LENGTH_SHORT).show());
         tv_helping.setOnClickListener(v -> Toast.makeText(App.getInstance(), "即将开放", Toast.LENGTH_SHORT).show());
         tv_task_input.setOnClickListener(v -> setupSummaryTab(v.getId()));
         tv_task_check.setOnClickListener(v -> setupSummaryTab(v.getId()));
         tv_task_data.setOnClickListener(v -> setupSummaryTab(v.getId()));
 
-
         srl_home.setColorSchemeResources(R.color.colorPrimary);
         srl_home.setOnRefreshListener(this::setupContent);
-
-        User user = SharedPreferencesDataSource.getSignInResponse().user;
-        String nowInfo = user.dept + "-" + user.realName
-                + " " + DateUtils.convertDateToStr(DateUtils.now(), "yyyy-MM-dd a HH:mm:ss");
-        tv_now_info.setText(nowInfo);
 
         mSummaryAdapter = SlimAdapter.create().register(new SlimAdapter.SlimInjector<SummaryItem>() {
             @Override
@@ -179,6 +174,9 @@ public class HomeFragment extends BaseFragment {
                     setRefreshing(false);
                     int i = 0;
                     for (Task task : pageResponse.result) {
+                        if (task.endDate == null) {
+                            continue;
+                        }
                         if (TextUtils.equals(task.myWorkStatus.workStatus, "待查看")) {
                             i++;
                         }

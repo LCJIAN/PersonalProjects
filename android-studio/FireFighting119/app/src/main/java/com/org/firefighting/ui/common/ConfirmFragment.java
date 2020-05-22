@@ -1,4 +1,4 @@
-package com.org.firefighting.ui.base;
+package com.org.firefighting.ui.common;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.org.firefighting.R;
+import com.org.firefighting.ui.base.BaseDialogFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +89,7 @@ public class ConfirmFragment extends BaseDialogFragment implements View.OnClickL
     }
 
     public interface TitleProvider {
-        String title();
+        CharSequence title();
     }
 
     public static class SimpleListener implements Listener {

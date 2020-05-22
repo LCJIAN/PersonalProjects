@@ -9,21 +9,40 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.org.firefighting.R;
+import com.org.firefighting.ThrowableConsumerAdapter;
+import com.org.firefighting.data.local.SharedPreferencesDataSource;
+import com.org.firefighting.data.network.RestAPI;
+import com.org.firefighting.data.network.entity.Conversation;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.DepartmentsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ConversationsFragment extends BaseFragment {
 
     @BindView(R.id.btn_go_contact)
     ImageButton btn_go_contact;
+    @BindView(R.id.srl_conversation)
+    SwipeRefreshLayout srl_conversation;
+    @BindView(R.id.rv_conversation)
+    RecyclerView rv_conversation;
 
     private Unbinder mUnBinder;
+
+    private SlimAdapter mAdapter;
+
+    private Disposable mDisposable;
 
     @Nullable
     @Override
@@ -38,11 +57,62 @@ public class ConversationsFragment extends BaseFragment {
         btn_go_contact.setOnClickListener(v -> {
             startActivity(new Intent(v.getContext(), DepartmentsActivity.class));
         });
+        srl_conversation.setColorSchemeResources(R.color.colorPrimary);
+        srl_conversation.setOnRefreshListener(this::setupContent);
+
+        mAdapter = SlimAdapter.create().register(new SlimAdapter.SlimInjector<Conversation>() {
+            @Override
+            public int onGetLayoutResource() {
+                return R.layout.conversation_item;
+            }
+
+            @Override
+            public void onBind(Conversation data, SlimAdapter.SlimViewHolder<Conversation> viewHolder) {
+                viewHolder
+                        .background(R.id.cl_conversation_item,
+                                viewHolder.getAbsoluteAdapterPosition() == 0 ? R.drawable.shape_card_top :
+                                        (viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? R.drawable.shape_card_bottom :
+                                                R.drawable.shape_card_middle))
+                        .visibility(R.id.v_divider, viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? View.INVISIBLE : View.VISIBLE)
+                        .text(R.id.tv_content, data.content)
+                        .text(R.id.tv_time, data.createTime)
+                        .text(R.id.tv_user_name, data.senderRealName);
+            }
+        });
+
+        rv_conversation.setHasFixedSize(true);
+        rv_conversation.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rv_conversation.setAdapter(mAdapter);
+
+        setupContent();
     }
 
     @Override
     public void onDestroyView() {
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
         mUnBinder.unbind();
         super.onDestroyView();
+    }
+
+    private void setupContent() {
+        srl_conversation.post(() -> srl_conversation.setRefreshing(true));
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
+        mDisposable = RestAPI.getInstance().apiServiceSignIn()
+                .getConversations(SharedPreferencesDataSource.getSignInResponse().user.realName,
+                        null, 0, 1, 5)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(conversationPageResponse -> {
+                            srl_conversation.post(() -> srl_conversation.setRefreshing(false));
+                            mAdapter.updateData(conversationPageResponse.result);
+                        },
+                        throwable -> {
+                            srl_conversation.post(() -> srl_conversation.setRefreshing(false));
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 }

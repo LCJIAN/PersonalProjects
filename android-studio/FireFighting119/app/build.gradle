@@ -26,6 +26,7 @@ android {
             buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
             buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
             buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
+            buildConfigField 'String', 'API_URL_SB_2', '"http://58.144.151.134:28093/"'
             buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
             buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
 
@@ -37,18 +38,19 @@ android {
             buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
             buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
             buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
+            buildConfigField 'String', 'API_URL_SB_2', '"http://58.144.151.134:28093/"'
             buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
             buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
         }
     }
 
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-            res.srcDirs += 'src/main/res-chat'
-            java.srcDirs += 'src/main/chat'
-        }
-    }
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs = ['libs']
+//            res.srcDirs += 'src/main/res-chat'
+//            java.srcDirs += 'src/main/chat'
+//        }
+//    }
 }
 
 dependencies {
@@ -59,10 +61,12 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta5'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android:flexbox:2.0.1'
+
     implementation 'com.jakewharton:butterknife:latest.integration'
     annotationProcessor 'com.jakewharton:butterknife-compiler:latest.integration'
     // RxJava & Permissions

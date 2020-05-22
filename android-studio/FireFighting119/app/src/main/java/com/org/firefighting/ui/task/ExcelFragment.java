@@ -32,7 +32,7 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.data.network.entity.TaskTable;
 import com.org.firefighting.ui.base.BaseFragment;
-import com.org.firefighting.ui.base.ConfirmFragment;
+import com.org.firefighting.ui.common.ConfirmFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="16dp"
+    app:cardBackgroundColor="#ffeeeef5"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_identity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="标识符：50X02001" />
+
+        <TextView
+            android:id="@+id/tv_address_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="通用地址信息" />
+
+        <TextView
+            android:id="@+id/tv_police_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="8dp"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_factor"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_identity"
+            tools:text="所属业务警种：消防" />
+
+        <TextView
+            android:id="@+id/tv_factor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="end"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="8dp"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_police_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_police_category"
+            app:layout_constraintTop_toTopOf="@+id/tv_police_category"
+            tools:text="所属要素：消防" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:ellipsize="end"
+            android:lines="2"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="#ff000000"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_police_category"
+            tools:text="收集全市高层建筑消防检查信息收集全市高层建 筑消防检查收集全市高层建筑消防检查信息..." />
+
+        <TextView
+            android:id="@+id/tv_supplier"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="end"
+            android:paddingLeft="12dp"
+            android:paddingTop="8dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="8dp"
+            android:textColor="#ff666666"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content"
+            tools:text="提供单位：大数据专班" />
+
+        <TextView
+            android:id="@+id/tv_count_1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_count_2"
+            app:layout_constraintEnd_toStartOf="@+id/tv_count_2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_count_2"
+            tools:text="浏览：216" />
+
+        <TextView
+            android:id="@+id/tv_count_2"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_count_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_count_3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_count_1"
+            app:layout_constraintTop_toTopOf="@+id/tv_count_3"
+            tools:text="调用：216" />
+
+        <TextView
+            android:id="@+id/tv_count_3"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_count_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_count_4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_count_2"
+            app:layout_constraintTop_toTopOf="@+id/tv_count_4"
+            tools:text="下载：216" />
+
+        <TextView
+            android:id="@+id/tv_count_4"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/tv_count_3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_supplier"
+            tools:text="调阅：216" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

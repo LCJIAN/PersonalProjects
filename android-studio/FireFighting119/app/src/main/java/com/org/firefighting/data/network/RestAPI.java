@@ -33,6 +33,7 @@ public class RestAPI {
     private static final String API_URL_SIGN_IN = BuildConfig.API_URL_SIGN_IN;
     private static final String API_URL = BuildConfig.API_URL;
     private static final String API_URL_SB = BuildConfig.API_URL_SB;
+    private static final String API_URL_SB_2 = BuildConfig.API_URL_SB_2;
     private static final String API_URL_CONTACTS = BuildConfig.API_URL_CONTACTS;
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -40,10 +41,12 @@ public class RestAPI {
     private Retrofit retrofit;
     private Retrofit retrofitSignIn;
     private Retrofit retrofitSB;
+    private Retrofit retrofitSB2;
     private Retrofit retrofitC;
     private ApiService apiService;
     private ApiService apiServiceSignIn;
     private ApiService apiServiceSB;
+    private ApiService apiServiceSB2;
     private ApiService apiServiceC;
 
     public static RestAPI getInstance() {
@@ -63,6 +66,17 @@ public class RestAPI {
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .writeTimeout(60, TimeUnit.SECONDS)
                     .readTimeout(60, TimeUnit.SECONDS);
+            clientBuilder.addInterceptor(chain -> {
+                SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+                if (signInResponse == null) {
+                    return chain.proceed(chain.request());
+                } else {
+                    return chain.proceed(chain.request()
+                            .newBuilder()
+                            .header("Authorization", "Bearer " + signInResponse.token)
+                            .build());
+                }
+            });
             if (BuildConfig.DEBUG) {
                 clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
@@ -123,6 +137,25 @@ public class RestAPI {
                     .build();
         }
         return retrofitSB;
+    }
+
+    private Retrofit getRetrofitSB2() {
+        if (retrofitSB2 == null) {
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS);
+            if (BuildConfig.DEBUG) {
+                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            }
+            retrofitSB2 = new Retrofit.Builder()
+                    .baseUrl(API_URL_SB_2)
+                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(clientBuilder.build())
+                    .build();
+        }
+        return retrofitSB2;
     }
 
     private Retrofit getRetrofit() {
@@ -239,6 +272,13 @@ public class RestAPI {
             apiServiceSB = getRetrofitSB().create(ApiService.class);
         }
         return apiServiceSB;
+    }
+
+    public ApiService apiServiceSB2() {
+        if (apiServiceSB2 == null) {
+            apiServiceSB2 = getRetrofitSB2().create(ApiService.class);
+        }
+        return apiServiceSB2;
     }
 
     public ApiService apiService() {

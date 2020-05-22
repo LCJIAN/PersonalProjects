@@ -54,4 +54,23 @@
     <string name="task_data">数据任务</string>
     <string name="organisation_arc">组织架构</string>
     <string name="total_user_count">共%1$d人</string>
+    <string name="hint_keyword">请输入关键字</string>
+    <string name="resource_list">资源目录</string>
+    <string name="basic_info">基本信息</string>
+    <string name="used_info">使用情况</string>
+    <string name="content_des">内容描述</string>
+    <string name="download_count">下载次数</string>
+    <string name="des">描述</string>
+    <string name="要素">所属要素</string>
+    <string name="share_type">共享类型</string>
+    <string name="share_range">共享范围</string>
+    <string name="supplier">提供单位</string>
+    <string name="police_category">所属业务警种</string>
+    <string name="share_method">共享方式</string>
+    <string name="resource_name">资源信息名称</string>
+    <string name="resource_identity">信息资源标识符</string>
+    <string name="data_field_index">序号</string>
+    <string name="english_name">英文名称</string>
+    <string name="chinese_name">中文名称</string>
+    <string name="data_format">数据格式</string>
 </resources>

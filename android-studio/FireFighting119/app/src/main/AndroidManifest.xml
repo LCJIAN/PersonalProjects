@@ -81,6 +81,15 @@
         <activity
             android:name=".ui.chat.DepartmentUsersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.common.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.resource.ResourcesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.resource.ResourceDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

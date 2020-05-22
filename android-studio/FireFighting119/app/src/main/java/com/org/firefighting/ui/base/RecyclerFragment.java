@@ -119,6 +119,9 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     }
 
     private void getData() {
+        if (mObservable == null) {
+            return;
+        }
         if (mDisposable != null) {
             mDisposable.dispose();
         }

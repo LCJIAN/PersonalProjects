@@ -31,7 +31,7 @@ import com.org.firefighting.data.network.entity.AskRequest;
 import com.org.firefighting.data.network.entity.ResponseData;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.ui.base.BaseActivity;
-import com.org.firefighting.ui.base.ConfirmFragment;
+import com.org.firefighting.ui.common.ConfirmFragment;
 
 import java.util.Objects;
 

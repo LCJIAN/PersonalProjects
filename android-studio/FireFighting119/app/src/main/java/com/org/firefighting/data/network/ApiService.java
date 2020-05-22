@@ -1,9 +1,13 @@
 package com.org.firefighting.data.network;
 
 import com.org.firefighting.data.network.entity.AskRequest;
+import com.org.firefighting.data.network.entity.Conversation;
 import com.org.firefighting.data.network.entity.Department;
 import com.org.firefighting.data.network.entity.PageResponse;
+import com.org.firefighting.data.network.entity.ResourceEntity;
 import com.org.firefighting.data.network.entity.ResponseData;
+import com.org.firefighting.data.network.entity.SearchRequest;
+import com.org.firefighting.data.network.entity.SearchResult;
 import com.org.firefighting.data.network.entity.SignInRequest;
 import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.data.network.entity.Task;
@@ -153,4 +157,37 @@ public interface ApiService {
     @GET("api/users?page=0&size=200&sort=id,desc")
     Single<PageResponse<User2>> getUsersByDepartment(@Query("code") String code);
 
+    /**
+     * 搜素接口
+     */
+    @POST("api/es/search")
+    Single<PageResponse<SearchResult>> search(@Body SearchRequest searchRequest);
+
+    /**
+     * 用户个人消息列表
+     */
+    @GET("api/msg")
+    Single<PageResponse<Conversation>> getConversations(@Query("ReceiverRealName") String receiverRealName,
+                                                        @Query("content") String content,
+                                                        @Query("msgStatus") Integer msgStatus,
+                                                        @Query("pageNum") Integer pageNum,
+                                                        @Query("pageSize") Integer pageSize);
+
+    /**
+     * 资源目录接口
+     */
+    @GET("interior/data/resource/tables?category=resource")
+    Single<ResponseData<PageResponse<ResourceEntity>>> getResources(@Query("dirId") Long dirId,
+                                                                    @Query("userId") Long userId,
+                                                                    @Query("name") String name,
+                                                                    @Query("orderBy") String orderBy,
+                                                                    @Query("pageNum") Integer pageNum,
+                                                                    @Query("pageSize") Integer pageSize);
+
+    /**
+     * 资源目录详情接口
+     */
+    @GET("interior/data/resource/table/detail/{id}?userType=external&category=resource")
+    Single<ResponseData<ResourceEntity>> getResourceDetail(@Path("id") String id,
+                                                           @Query("userId") Long userId);
 }
