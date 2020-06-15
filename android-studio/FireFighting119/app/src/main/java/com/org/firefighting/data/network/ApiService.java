@@ -3,11 +3,14 @@ package com.org.firefighting.data.network;
 import com.org.firefighting.data.network.entity.AskRequest;
 import com.org.firefighting.data.network.entity.Conversation;
 import com.org.firefighting.data.network.entity.Department;
+import com.org.firefighting.data.network.entity.News;
 import com.org.firefighting.data.network.entity.PageResponse;
+import com.org.firefighting.data.network.entity.ResourceDataRequest;
 import com.org.firefighting.data.network.entity.ResourceEntity;
 import com.org.firefighting.data.network.entity.ResponseData;
 import com.org.firefighting.data.network.entity.SearchRequest;
 import com.org.firefighting.data.network.entity.SearchResult;
+import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.data.network.entity.SignInRequest;
 import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.data.network.entity.Task;
@@ -35,13 +38,13 @@ public interface ApiService {
     /**
      * 用户鉴权接口
      */
-    @POST("auth/login")
+    @POST("admin-ht/auth/login")
     Single<SignInResponse> signIn(@Body SignInRequest signInRequest);
 
     /**
      * 用户鉴权接口
      */
-    @POST("auth/login")
+    @POST("admin-ht/auth/login")
     Call<SignInResponse> signInSync(@Body SignInRequest signInRequest);
 
     /**
@@ -142,7 +145,7 @@ public interface ApiService {
     /**
      * 服务申请和数据处理
      */
-    @GET("api/stat/view")
+    @GET("admin-ht/api/stat/view")
     Single<TaskSummary2> getTaskSummary2();
 
     /**
@@ -160,13 +163,13 @@ public interface ApiService {
     /**
      * 搜素接口
      */
-    @POST("api/es/search")
+    @POST("admin-ht/api/es/search")
     Single<PageResponse<SearchResult>> search(@Body SearchRequest searchRequest);
 
     /**
      * 用户个人消息列表
      */
-    @GET("api/msg")
+    @GET("admin-ht/api/msg")
     Single<PageResponse<Conversation>> getConversations(@Query("ReceiverRealName") String receiverRealName,
                                                         @Query("content") String content,
                                                         @Query("msgStatus") Integer msgStatus,
@@ -190,4 +193,31 @@ public interface ApiService {
     @GET("interior/data/resource/table/detail/{id}?userType=external&category=resource")
     Single<ResponseData<ResourceEntity>> getResourceDetail(@Path("id") String id,
                                                            @Query("userId") Long userId);
+
+    /**
+     * 资源目录数据查询接口
+     */
+    @POST("admin-ht/api/resource/dapi/{username}/0/{tableCode}")
+    Single<ResponseData<Object>> queryResourceData(@Path("username") String username,
+                                                   @Path("tableCode") String tableCode,
+                                                   @Body ResourceDataRequest request);
+
+    /**
+     * 服务列表接口
+     */
+    @GET("gtone-ht/interior/data/dservice/dir/tableList?category=service")
+    Single<ResponseData<PageResponse<ServiceEntity>>> getServices(@Query("dirId") String dirId,
+                                                                  @Query("name") String name,
+                                                                  @Query("userId") Long userId,
+                                                                  @Query("userType") String userType,
+                                                                  @Query("pageNum") Integer pageNum,
+                                                                  @Query("pageSize") Integer pageSize);
+
+    /**
+     * 资迅列表接口
+     */
+    @GET("crawlerPage/detail?crawlerStatus=2&depth=2")
+    Single<PageResponse<News>> getNews(@Query("seedUrlMd5") String seedUrlMd5,
+                                       @Query("pageNum") Integer pageNum,
+                                       @Query("pageSize") Integer pageSize);
 }

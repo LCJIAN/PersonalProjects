@@ -13,44 +13,57 @@ android {
         applicationId "com.org.firefighting"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.6"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME            : applicationId,
+                JPUSH_APPKEY             : "9f96b28ddb91e2c9af7c7242",
+                JPUSH_CHANNEL            : "developer-default",
+                FILE_PROVIDER_AUTHORITIES: "com.org.firefighting.flie_provider"
+        ]
+
+        buildConfigField 'String', 'FILE_PROVIDER_AUTHORITIES', '"com.org.firefighting.flie_provider"'
     }
 
     buildTypes {
         release {
-            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
-            buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
-            buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
-            buildConfigField 'String', 'API_URL_SB_2', '"http://58.144.151.134:28093/"'
+            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://124.162.30.39:9000/"'
+            buildConfigField 'String', 'API_URL', '"http://124.162.30.39:9000/"'
+            buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
+            buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
+            buildConfigField 'String', 'API_URL_SB_3', '"http://58.144.151.4:9528/"'
+            buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
             buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
-            buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
+            buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://58.144.150.104:8000/"'
-            buildConfigField 'String', 'API_URL', '"http://58.144.150.104:9000/"'
-            buildConfigField 'String', 'API_URL_SB', '"http://58.144.151.134:8000/"'
-            buildConfigField 'String', 'API_URL_SB_2', '"http://58.144.151.134:28093/"'
+            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://124.162.30.39:9000/"'
+            buildConfigField 'String', 'API_URL', '"http://124.162.30.39:9000/"'
+            buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
+            buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
+            buildConfigField 'String', 'API_URL_SB_3', '"http://124.162.30.39:9528/"'
+            buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
             buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
-            buildConfigField 'String', 'API_KEY_U', '"5eb4dfb5570df32452000024"'
+            buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
         }
     }
 
-//    sourceSets {
-//        main {
-//            jniLibs.srcDirs = ['libs']
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
 //            res.srcDirs += 'src/main/res-chat'
-//            java.srcDirs += 'src/main/chat'
-//        }
-//    }
+//            java.srcDirs += 'src/main/chat-smack'
+        }
+    }
 }
 
 dependencies {
@@ -92,12 +105,12 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:latest.integration'
     // log
     implementation 'com.jakewharton.timber:timber:latest.integration'
-    // umeng
-    implementation 'com.umeng.umsdk:analytics:latest.integration'
-    implementation 'com.umeng.umsdk:common:latest.integration'
-    implementation 'com.umeng.umsdk:utdid:latest.integration'
+    // bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
     // other
     implementation "com.kaopiz:kprogresshud:latest.integration"
+    implementation 'com.github.donkingliang:ConsecutiveScroller:2.6.2'
+    implementation 'com.zhihu.android:matisse:latest.integration'
 //    implementation 'com.github.hackware1993:MagicIndicator:latest.integration'
     implementation 'com.wdullaer:materialdatetimepicker:latest.integration'
     implementation('com.journeyapps:zxing-android-embedded:latest.integration') {
@@ -108,9 +121,18 @@ dependencies {
     implementation('com.github.AlexLiuSheng:CheckVersionLib:2.2.4') {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
+    implementation 'com.just.agentweb:agentweb:4.1.3'
+    implementation "com.cleveroad:adaptivetablelayout:latest.integration"
+    implementation 'cn.jiguang.sdk:jpush:latest.integration'
+    implementation 'cn.jiguang.sdk:jcore:latest.integration'
     // leak
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
 //    implementation 'com.squareup.leakcanary:leakcanary-object-watcher-android:2.2'
+
+    // smack
+//    implementation 'org.igniterealtime.smack:smack-android:latest.integration'
+//    implementation 'org.igniterealtime.smack:smack-tcp:latest.integration'
+//    implementation 'org.igniterealtime.smack:smack-extensions:latest.integration'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

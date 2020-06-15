@@ -1,5 +1,6 @@
 package com.org.firefighting.ui.common;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.lcjian.lib.content.SimpleFragmentPagerAdapter;
+import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
@@ -28,6 +31,7 @@ import com.org.firefighting.data.network.entity.SearchRequest;
 import com.org.firefighting.data.network.entity.SearchResult;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.base.RecyclerFragment;
+import com.org.firefighting.ui.resource.ResourceDetailActivity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +50,7 @@ public class SearchActivity extends BaseActivity {
     @BindView(R.id.et_keyword)
     EditText et_keyword;
     @BindView(R.id.btn_search)
-    ImageButton btn_search;
+    TextView btn_search;
     @BindView(R.id.tab_search)
     TabLayout tab_search;
     @BindView(R.id.vp_search)
@@ -79,6 +83,7 @@ public class SearchActivity extends BaseActivity {
         private String mCategoryId;
         private String mKeyword;
 
+        private View mEmptyView;
         private SlimAdapter mAdapter;
 
         private Disposable mDisposable;
@@ -100,6 +105,17 @@ public class SearchActivity extends BaseActivity {
         }
 
         @Override
+        protected void onEmptyAdapterCreated(EmptyAdapter emptyAdapter) {
+            mEmptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, recycler_view, false);
+            emptyAdapter.setEmptyView(mEmptyView);
+        }
+
+        @Override
+        protected void onEmptyViewShow(boolean error) {
+            ((ImageView) mEmptyView).setImageResource(error ? R.drawable.net_error : R.drawable.no_search_result);
+        }
+
+        @Override
         public RecyclerView.Adapter onCreateAdapter(List<SearchResult> data) {
             mAdapter = SlimAdapter
                     .create()
@@ -112,6 +128,13 @@ public class SearchActivity extends BaseActivity {
 
                         @Override
                         public void onInit(SlimAdapter.SlimViewHolder<SearchResult> viewHolder) {
+                            viewHolder.clicked(v -> {
+                                if (TextUtils.equals("100000", mCategoryId)) {
+                                    startActivity(new Intent(v.getContext(), ResourceDetailActivity.class)
+                                            .putExtra("resource_id", viewHolder.itemData.id)
+                                            .putExtra("resource_table_comment", viewHolder.itemData.title));
+                                }
+                            });
                         }
 
                         @Override

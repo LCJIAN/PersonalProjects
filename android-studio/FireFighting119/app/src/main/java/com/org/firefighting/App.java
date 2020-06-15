@@ -2,13 +2,18 @@ package com.org.firefighting;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
 
-import com.umeng.analytics.MobclickAgent;
-import com.umeng.commonsdk.UMConfigure;
+import com.tencent.bugly.crashreport.CrashReport;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.plugins.RxJavaPlugins;
 import timber.log.Timber;
 
@@ -29,11 +34,12 @@ public class App extends Application {
         super.onCreate();
         INSTANCE = this;
 
-        UMConfigure.init(this, Constants.U_KEY, Constants.U_CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, null);
-        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
+        initBugLy();
 
+        JPushInterface.init(this);
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            JPushInterface.setDebugMode(true);
         } else {
             Timber.plant(new ErrorTree());
         }
@@ -45,5 +51,47 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    private void initBugLy() {
+        Context context = getApplicationContext();
+        // 获取当前包名
+        String packageName = context.getPackageName();
+        // 获取当前进程名
+        String processName = getProcessName(android.os.Process.myPid());
+        // 设置是否为上报进程
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
+        strategy.setUploadProcess(processName == null || processName.equals(packageName));
+        // 初始化Bugly
+        CrashReport.initCrashReport(context, Constants.U_KEY, false, strategy);
+    }
+
+    /**
+     * 获取进程号对应的进程名
+     *
+     * @param pid 进程号
+     * @return 进程名
+     */
+    private static String getProcessName(int pid) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("/proc/" + pid + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
+            return processName;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+        }
+        return null;
     }
 }

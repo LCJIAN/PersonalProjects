@@ -21,6 +21,8 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.User2;
 import com.org.firefighting.ui.base.BaseActivity;
 
+import java.util.Collections;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -103,6 +105,10 @@ public class DepartmentUsersActivity extends BaseActivity {
             mDisposable.dispose();
         }
         mDisposable = RestAPI.getInstance().apiServiceC().getUsersByDepartment(mDeptCode)
+                .map(pageResponse -> {
+                    Collections.reverse(pageResponse.result);
+                    return pageResponse;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pageResponse -> {

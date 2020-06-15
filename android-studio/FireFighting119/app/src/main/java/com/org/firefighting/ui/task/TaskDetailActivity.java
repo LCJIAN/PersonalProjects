@@ -2,9 +2,9 @@ package com.org.firefighting.ui.task;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,7 +61,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.tv_task_from)
     TextView tv_task_from;
     @BindView(R.id.tv_task_detail)
-    TextView tv_task_detail;
+    WebView tv_task_detail;
 
     @BindView(R.id.tab_task_detail)
     TabLayout tab_task_detail;
@@ -239,7 +239,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                             tv_start_date.setText(task.startDate);
                             tv_task_title.setText(task.name);
                             tv_task_from.setText(new Spans(task.departmentName).append("【").append(task.code).append("】 号 "));
-                            tv_task_detail.setText(Html.fromHtml(task.description));
+                            tv_task_detail.loadData(task.description, "text/html", "UTF-8");
 
                             if ((TextUtils.equals(task.myWorkStatus.workStatus, "待查看")
                                     || TextUtils.equals(task.myWorkStatus.workStatus, "填报中"))

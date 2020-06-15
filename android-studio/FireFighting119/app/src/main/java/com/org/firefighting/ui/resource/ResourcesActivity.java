@@ -4,14 +4,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
 import com.org.firefighting.R;
@@ -49,7 +52,19 @@ public class ResourcesActivity extends BaseActivity {
 
     public static class ResourcesFragment extends RecyclerFragment<ResourceEntity> {
 
+        private View mEmptyView;
         private SlimAdapter mAdapter;
+
+        @Override
+        protected void onEmptyAdapterCreated(EmptyAdapter emptyAdapter) {
+            mEmptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, recycler_view, false);
+            emptyAdapter.setEmptyView(mEmptyView);
+        }
+
+        @Override
+        protected void onEmptyViewShow(boolean error) {
+            ((ImageView) mEmptyView).setImageResource(error ? R.drawable.net_error : R.drawable.no_search_result);
+        }
 
         @Override
         public RecyclerView.Adapter onCreateAdapter(List<ResourceEntity> data) {

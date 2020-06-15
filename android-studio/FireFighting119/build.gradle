@@ -6,7 +6,6 @@ buildscript {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.3'
@@ -22,7 +21,7 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven {url  "https://dl.bintray.com/rongcloud/maven"}
     }
 }
 

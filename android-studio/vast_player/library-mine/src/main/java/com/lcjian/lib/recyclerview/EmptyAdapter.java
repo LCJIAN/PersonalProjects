@@ -139,8 +139,8 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
-            return new Holder(mEmptyView);
+        if (viewType == mEmptyViewType) {
+            return new EmptyHolder(mEmptyView);
         }
         return mInnerAdapter.onCreateViewHolder(parent, viewType);
     }
@@ -148,7 +148,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             return;
         }
         mInnerAdapter.onBindViewHolder(holder, position);
@@ -157,7 +157,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             return;
         }
         mInnerAdapter.onBindViewHolder(holder, position, payloads);
@@ -191,7 +191,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
             if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) layoutParams;
@@ -205,7 +205,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             return super.onFailedToRecycleView(holder);
         } else {
             return mInnerAdapter.onFailedToRecycleView(holder);
@@ -220,7 +220,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             super.onViewDetachedFromWindow(holder);
         } else {
             mInnerAdapter.onViewDetachedFromWindow(holder);
@@ -230,16 +230,16 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     @SuppressWarnings("unchecked")
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        if (mInnerAdapter.getItemCount() == 0 && mEmptyView != null) {
+        if (holder instanceof EmptyHolder) {
             super.onViewRecycled(holder);
         } else {
             mInnerAdapter.onViewRecycled(holder);
         }
     }
 
-    private static class Holder extends RecyclerView.ViewHolder {
+    private static class EmptyHolder extends RecyclerView.ViewHolder {
 
-        private Holder(View itemView) {
+        private EmptyHolder(View itemView) {
             super(itemView);
         }
     }

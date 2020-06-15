@@ -453,6 +453,26 @@ public class FileUtils {
         return (file.exists() && file.isFile() ? file.length() : -1);
     }
 
+    public static long getFolderSize(File file) {
+        long size = 0;
+        try {
+            File[] fileList = file.listFiles();
+            if (fileList == null) {
+                return 0;
+            }
+            for (File value : fileList) {
+                if (value.isDirectory()) {
+                    size = size + getFolderSize(value);
+                } else {
+                    size = size + value.length();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
     public static String fileToBase64(File file) {
         if (file.isDirectory()) {
             return null;

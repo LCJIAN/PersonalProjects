@@ -29,6 +29,9 @@ import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.data.network.entity.VersionInfo;
 import com.org.firefighting.ui.base.BaseFragment;
+import com.org.firefighting.ui.chat.DepartmentsActivity;
+import com.org.firefighting.ui.resource.ResourcesActivity;
+import com.org.firefighting.ui.service.ServiceListActivity;
 import com.org.firefighting.ui.user.SignInActivity;
 
 import java.util.Map;
@@ -37,6 +40,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.jpush.android.api.JPushInterface;
 
 public class MineFragment extends BaseFragment implements View.OnClickListener {
 
@@ -50,14 +54,18 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_user_role;
     @BindView(R.id.rl_my_task)
     RelativeLayout rl_my_task;
+    @BindView(R.id.rl_arc)
+    RelativeLayout rl_arc;
+    @BindView(R.id.rl_organisation)
+    RelativeLayout rl_organisation;
+    @BindView(R.id.rl_announcement)
+    RelativeLayout rl_announcement;
     @BindView(R.id.rl_version)
     ConstraintLayout rl_version;
     @BindView(R.id.rl_feed_back)
     RelativeLayout rl_feed_back;
     @BindView(R.id.rl_sign_out)
     RelativeLayout rl_sign_out;
-    @BindView(R.id.rl_helping_center)
-    RelativeLayout rl_helping_center;
 
     @BindView(R.id.tv_version_name)
     TextView tv_version_name;
@@ -88,7 +96,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         rl_version.setOnClickListener(this);
         rl_feed_back.setOnClickListener(this);
         rl_sign_out.setOnClickListener(this);
-        rl_helping_center.setOnClickListener(this);
+        rl_arc.setOnClickListener(this);
+        rl_organisation.setOnClickListener(this);
+        rl_announcement.setOnClickListener(this);
     }
 
     @Override
@@ -103,6 +113,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.rl_my_task:
                 ((MainActivity) Objects.requireNonNull(getActivity())).checkTask();
                 break;
+            case R.id.rl_arc:
+                startActivity(new Intent(v.getContext(), DepartmentsActivity.class));
+                break;
+            case R.id.rl_organisation:
+                startActivity(new Intent(v.getContext(), ResourcesActivity.class));
+                break;
+            case R.id.rl_announcement:
+                startActivity(new Intent(v.getContext(), ServiceListActivity.class));
+                break;
             case R.id.rl_version:
                 checkVersion();
                 break;
@@ -111,6 +130,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                         .setTitle(R.string.sign_out_title)
                         .setMessage(R.string.sign_out_msg)
                         .setNegativeButton(R.string.confirm, (dialog, which) -> {
+                            JPushInterface.deleteAlias(v.getContext(), SharedPreferencesDataSource.getSignInResponse().user.id.intValue());
+                            JPushInterface.stopPush(v.getContext());
                             SharedPreferencesDataSource.clearUserInfo();
                             startActivity(Intent.makeRestartActivityTask(new Intent(v.getContext(), SignInActivity.class).getComponent()));
                         })

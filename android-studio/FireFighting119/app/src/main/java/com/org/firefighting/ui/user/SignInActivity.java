@@ -22,13 +22,14 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class SignInActivity extends BaseActivity implements TextWatcher {
 
-    @BindView(R.id.et_phone)
+    @BindView(R.id.et_account)
     EditText et_phone;
     @BindView(R.id.et_pwd)
     EditText et_pwd;
@@ -108,6 +109,10 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
                 .subscribe(signInResponse -> {
                     hideProgress();
                     SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                    JPushInterface.resumePush(this);
+                    JPushInterface.setAlias(this, signInResponse.user.id.intValue(),
+                            String.valueOf(signInResponse.user.id));
+
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 }, throwable -> {

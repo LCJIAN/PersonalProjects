@@ -68,7 +68,7 @@
                 app:srcCompat="@drawable/h_divider" />
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_account"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="12dp"
@@ -76,9 +76,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@null"
-                android:ems="10"
                 android:hint="@string/hint_user_name"
-                android:inputType="phone"
+                android:inputType="text"
                 android:textColorHint="#ff999999"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_divider_1"
@@ -98,7 +97,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_phone" />
+                app:layout_constraintTop_toBottomOf="@+id/et_account" />
 
             <ImageView
                 android:id="@+id/iv_pwd"

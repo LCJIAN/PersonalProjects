@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.org.firefighting.R;
 import com.org.firefighting.ThrowableConsumerAdapter;
@@ -21,6 +23,8 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Conversation;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.DepartmentsActivity;
+
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +44,8 @@ public class ConversationsFragment extends BaseFragment {
 
     private Unbinder mUnBinder;
 
+    private View mEmptyView;
+    private EmptyAdapter mEmptyAdapter;
     private SlimAdapter mAdapter;
 
     private Disposable mDisposable;
@@ -82,7 +88,11 @@ public class ConversationsFragment extends BaseFragment {
 
         rv_conversation.setHasFixedSize(true);
         rv_conversation.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        rv_conversation.setAdapter(mAdapter);
+
+        mEmptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, rv_conversation, false);
+        mEmptyAdapter = new EmptyAdapter(mAdapter).setEmptyView(mEmptyView);
+        mEmptyAdapter.hideEmptyView();
+        rv_conversation.setAdapter(mEmptyAdapter);
 
         setupContent();
     }
@@ -101,17 +111,22 @@ public class ConversationsFragment extends BaseFragment {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
-        mDisposable = RestAPI.getInstance().apiServiceSignIn()
-                .getConversations(SharedPreferencesDataSource.getSignInResponse().user.realName,
+        mDisposable = RestAPI.getInstance().apiService()
+                .getConversations(SharedPreferencesDataSource.getSignInResponse().user.username,
                         null, 0, 1, 5)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(conversationPageResponse -> {
                             srl_conversation.post(() -> srl_conversation.setRefreshing(false));
                             mAdapter.updateData(conversationPageResponse.result);
+                            ((ImageView) mEmptyView).setImageResource(R.drawable.no_message);
+                            mEmptyAdapter.showEmptyView();
                         },
                         throwable -> {
                             srl_conversation.post(() -> srl_conversation.setRefreshing(false));
+                            mAdapter.updateData(Collections.emptyList());
+                            ((ImageView) mEmptyView).setImageResource(R.drawable.net_error);
+                            mEmptyAdapter.showEmptyView();
                             ThrowableConsumerAdapter.accept(throwable);
                         });
     }

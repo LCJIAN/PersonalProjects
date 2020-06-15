@@ -66,19 +66,19 @@ android {
         origin {
             dimension "Type"
             applicationId "com.lcjian.cloudlocation"
-            manifestPlaceholders = [API_KEY_BAIDU_MAP: "NHkphI31cykstLkwAofYnlOQCIjo6lia",
-                                    API_KEY_GOOGLE_MAP: "AIzaSyD792KCWPrpkXmJjzzjhLhFN8zAOZm_anA"]
-            buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"YkHgjEPoAqIF6c6tzDgjAcVr"'
-            buildConfigField 'String', 'API_KEY_U', '"5dd0d27c570df30a6d0009a2"'
+            manifestPlaceholders = [API_KEY_BAIDU_MAP: "*",
+                                    API_KEY_GOOGLE_MAP: "*"]
+            buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"*"'
+            buildConfigField 'String', 'API_KEY_U', '"*"'
             buildConfigField 'String', 'GET_API_URL', '"gps.tk-star.com"'
         }
         skin {
             dimension "Type"
             applicationId "com.lcjian.cloudlocation2"
-            manifestPlaceholders = [API_KEY_BAIDU_MAP: "mpTLZtPMwKdeA04nhXY9ZwG7bijKQ6Rv",
-                                    API_KEY_GOOGLE_MAP: "AIzaSyDzbEmdE-cVq2LZCXGoyon7JvypXtF7KHY"]
-            buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"INXXvTESe9hzF2pQ8ANXzviQ"'
-            buildConfigField 'String', 'API_KEY_U', '"5e18472acb23d2243f0001e4"'
+            manifestPlaceholders = [API_KEY_BAIDU_MAP: "*",
+                                    API_KEY_GOOGLE_MAP: "*"]
+            buildConfigField 'String', 'API_KEY_BAIDU_PUSH', '"*"'
+            buildConfigField 'String', 'API_KEY_U', '"*"'
             buildConfigField 'String', 'GET_API_URL', '""'
         }
     }

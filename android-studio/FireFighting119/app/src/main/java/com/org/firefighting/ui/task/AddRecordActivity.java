@@ -263,6 +263,8 @@ public class AddRecordActivity extends BaseActivity {
                     buildItemWatch(t);
                 } else if (TextUtils.equals("手机号", t.type)) {
                     buildItemPhone(t);
+                } else if (TextUtils.equals("身份证号", t.type)) {
+                    buildItemIdentity(t);
                 } else {
                     buildItemDateTime(t);
                 }
@@ -360,7 +362,26 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("手机号");
+        et_value.setHint("示例：13000000000");
+        if (t.value != null) {
+            et_value.setText(t.value);
+        }
+        et_value.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                ((TaskTable.RtnTitle) rootV.getTag()).value = s.toString();
+            }
+        });
+        rootV.setTag(t);
+        ll_container.addView(rootV);
+    }
+
+    private void buildItemIdentity(TaskTable.RtnTitle t) {
+        View rootV = LayoutInflater.from(this).inflate(R.layout.add_record_cell_item_identity, ll_container, false);
+        setupItemInfo(rootV, t);
+
+        EditText et_value = rootV.findViewById(R.id.et_value);
+        et_value.setHint("示例：500223000000000000");
         if (t.value != null) {
             et_value.setText(t.value);
         }

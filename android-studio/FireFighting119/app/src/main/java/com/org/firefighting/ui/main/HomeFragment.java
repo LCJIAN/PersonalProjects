@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +23,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.lcjian.lib.recyclerview.SlimAdapter;
-import com.org.firefighting.App;
 import com.org.firefighting.R;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.ui.base.BaseFragment;
+import com.org.firefighting.ui.common.FCaptureActivity;
+import com.org.firefighting.ui.common.NewsActivity;
 import com.org.firefighting.ui.common.SearchActivity;
 import com.org.firefighting.ui.resource.ResourcesActivity;
+import com.org.firefighting.ui.service.ServiceListActivity;
 import com.org.firefighting.ui.task.TaskDetailActivity;
 
 import java.util.ArrayList;
@@ -98,11 +99,11 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         tv_go_to_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
-        btn_go_to_scan.setOnClickListener(v -> IntentIntegrator.forSupportFragment(this).initiateScan());
+        btn_go_to_scan.setOnClickListener(v -> IntentIntegrator.forSupportFragment(this).setCaptureActivity(FCaptureActivity.class).initiateScan());
         fl_task.setOnClickListener(v -> ((MainActivity) getActivity()).checkTask());
         tv_organization.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ResourcesActivity.class)));
-        tv_announcement.setOnClickListener(v -> Toast.makeText(App.getInstance(), "即将开放", Toast.LENGTH_SHORT).show());
-        tv_helping.setOnClickListener(v -> Toast.makeText(App.getInstance(), "即将开放", Toast.LENGTH_SHORT).show());
+        tv_announcement.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ServiceListActivity.class)));
+        tv_helping.setOnClickListener(v -> startActivity(new Intent(v.getContext(), NewsActivity.class)));
         tv_task_input.setOnClickListener(v -> setupSummaryTab(v.getId()));
         tv_task_check.setOnClickListener(v -> setupSummaryTab(v.getId()));
         tv_task_data.setOnClickListener(v -> setupSummaryTab(v.getId()));
@@ -202,7 +203,7 @@ public class HomeFragment extends BaseFragment {
                     }
                     return list;
                 })
-                .zipWith(RestAPI.getInstance().apiServiceSB().getTaskSummary2()
+                .zipWith(RestAPI.getInstance().apiService().getTaskSummary2()
                         .map(taskSummary2ResponseData -> {
                             List<SummaryItem> list1 = new ArrayList<>();
                             List<SummaryItem> list2 = new ArrayList<>();

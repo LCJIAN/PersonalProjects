@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.umeng.analytics.MobclickAgent;
-
 import timber.log.Timber;
 
 class ErrorTree extends Timber.Tree {
@@ -15,10 +13,10 @@ class ErrorTree extends Timber.Tree {
     protected void log(int priority, String tag, @NonNull String message, Throwable t) {
         if (priority >= Log.ERROR) {
             if (t != null) {
-                MobclickAgent.reportError(App.getInstance(), t);
+//                MobclickAgent.reportError(App.getInstance(), t);
             }
             if (!TextUtils.isEmpty(message)) {
-                MobclickAgent.reportError(App.getInstance(), message);
+//                MobclickAgent.reportError(App.getInstance(), message);
             }
         }
     }

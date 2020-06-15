@@ -1,75 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="8dp">
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/sp_field"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/shape_white_round_corner"
-            android:gravity="center_vertical" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_arrow_spinner" />
-    </FrameLayout>
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal">
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="40dp">
+        <LinearLayout
+            android:id="@+id/ll_query_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/sp_option"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_white_round_corner"
-                android:gravity="center_vertical" />
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_arrow_spinner" />
-        </FrameLayout>
+    </FrameLayout>
 
-        <EditText
-            android:id="@+id/et_keyword"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_white_round_corner"
-            android:inputType="text"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textAppearance="@style/TextAppearance.AppTheme.Small" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

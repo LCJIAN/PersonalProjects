@@ -1,12 +1,12 @@
 package com.lcjian.lib.recyclerview;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,12 +107,12 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         for (Entry header : headers) {
             if (header.viewType == viewType) {
-                return new Holder(header.view);
+                return new AdvanceHolder(header.view, header);
             }
         }
         for (Entry footer : footers) {
             if (footer.viewType == viewType) {
-                return new Holder(footer.view);
+                return new AdvanceHolder(footer.view, footer);
             }
         }
         RecyclerView.ViewHolder holder = mInnerAdapter.onCreateViewHolder(parent, viewType);
@@ -125,18 +125,16 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        int headCount = headers.size();
-        if (headCount <= position && position < headCount + mInnerAdapter.getItemCount()) {
-            mInnerAdapter.onBindViewHolder(holder, position - headCount);
+        if (!(holder instanceof AdvanceHolder)) {
+            mInnerAdapter.onBindViewHolder(holder, position - headers.size());
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
-        int headCount = headers.size();
-        if (headCount <= position && position < headCount + mInnerAdapter.getItemCount()) {
-            mInnerAdapter.onBindViewHolder(holder, position - headCount, payloads);
+        if (!(holder instanceof AdvanceHolder)) {
+            mInnerAdapter.onBindViewHolder(holder, position - headers.size(), payloads);
         }
     }
 
@@ -169,9 +167,8 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        int position = holder.getBindingAdapterPosition();
-        if (isHeader(position) || isFooter(position)) {
-            if (isSingle(position)) {
+        if (holder instanceof AdvanceHolder) {
+            if (((AdvanceHolder) holder).entry.singleLine) {
                 ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
 
                 if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
@@ -187,8 +184,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     @SuppressWarnings("unchecked")
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-        int position = holder.getBindingAdapterPosition();
-        if (isHeader(position) || isFooter(position)) {
+        if (holder instanceof AdvanceHolder) {
             super.onViewRecycled(holder);
         } else {
             mInnerAdapter.onViewRecycled(holder);
@@ -198,8 +194,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     @SuppressWarnings("unchecked")
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        int position = holder.getBindingAdapterPosition();
-        if (isHeader(position) || isFooter(position)) {
+        if (holder instanceof AdvanceHolder) {
             super.onViewDetachedFromWindow(holder);
         } else {
             mInnerAdapter.onViewDetachedFromWindow(holder);
@@ -214,12 +209,24 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     @SuppressWarnings("unchecked")
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
-        int position = holder.getBindingAdapterPosition();
-        if (isHeader(position) || isFooter(position)) {
+        if (holder instanceof AdvanceHolder) {
             return super.onFailedToRecycleView(holder);
         } else {
             return mInnerAdapter.onFailedToRecycleView(holder);
         }
+    }
+
+    private boolean isHeader(int position) {
+        return position < headers.size();
+    }
+
+    private boolean isFooter(int position) {
+        return headers.size() + mInnerAdapter.getItemCount() <= position;
+    }
+
+    private boolean isSingle(int position) {
+        return (isHeader(position) && headers.get(position).singleLine)
+                || (isFooter(position) && footers.get(position - headers.size() - mInnerAdapter.getItemCount()).singleLine);
     }
 
     public void addHeader(View view) {
@@ -294,28 +301,18 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public boolean isHeader(int position) {
-        return position < headers.size();
-    }
-
-    public boolean isFooter(int position) {
-        return headers.size() + mInnerAdapter.getItemCount() <= position;
-    }
-
-    public boolean isSingle(int position) {
-        return (isHeader(position) && headers.get(position).singleLine)
-                || (isFooter(position) && footers.get(position - headers.size() - mInnerAdapter.getItemCount()).singleLine);
-    }
-
     public interface OnItemClickListener {
 
         void onItemClick(View itemView);
     }
 
-    private static class Holder extends RecyclerView.ViewHolder {
+    private static class AdvanceHolder extends RecyclerView.ViewHolder {
 
-        private Holder(View itemView) {
+        private Entry entry;
+
+        private AdvanceHolder(View itemView, Entry entry) {
             super(itemView);
+            this.entry = entry;
         }
     }
 

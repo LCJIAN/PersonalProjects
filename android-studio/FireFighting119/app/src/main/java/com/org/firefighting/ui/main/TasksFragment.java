@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.common.DateUtils;
@@ -137,6 +139,8 @@ public class TasksFragment extends BaseFragment {
         private SwipeRefreshLayout srl_task;
         private RecyclerView rv_task;
 
+        private View mEmptyView;
+        private EmptyAdapter mEmptyAdapter;
         private SlimAdapter mAdapter;
         private String mTabTitle;
 
@@ -199,7 +203,11 @@ public class TasksFragment extends BaseFragment {
 
             rv_task.setHasFixedSize(true);
             rv_task.setLayoutManager(new LinearLayoutManager(view.getContext()));
-            rv_task.setAdapter(mAdapter);
+
+            mEmptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, rv_task, false);
+            mEmptyAdapter = new EmptyAdapter(mAdapter).setEmptyView(mEmptyView);
+            mEmptyAdapter.hideEmptyView();
+            rv_task.setAdapter(mEmptyAdapter);
 
             setupContent();
         }
@@ -246,8 +254,12 @@ public class TasksFragment extends BaseFragment {
                         }
                         RxBus.getInstance().send(new TitleChangeEvent(mTabTitle, result.size()));
                         mAdapter.updateData(result);
+                        ((ImageView) mEmptyView).setImageResource(R.drawable.no_message);
+                        mEmptyAdapter.showEmptyView();
                     }, throwable -> {
                         srl_task.post(() -> srl_task.setRefreshing(false));
+                        ((ImageView) mEmptyView).setImageResource(R.drawable.net_error);
+                        mEmptyAdapter.showEmptyView();
                         ThrowableConsumerAdapter.accept(throwable);
                     });
         }

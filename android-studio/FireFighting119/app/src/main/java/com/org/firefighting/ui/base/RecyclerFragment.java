@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,10 +56,6 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     public abstract void notifyDataChanged(List<T> data);
 
-    public String getEmptyMsgResId() {
-        return getString(R.string.empty_data);
-    }
-
     protected int getLayoutResource() {
         return R.layout.fragment_recycler;
     }
@@ -96,9 +91,8 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
             getData();
         });
         onLoadMoreAdapterCreated(mLoadMoreAdapter);
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.empty_data, recycler_view, false);
-        ((TextView) emptyView).setText(getEmptyMsgResId());
-        mEmptyAdapter = new EmptyAdapter(mLoadMoreAdapter).setEmptyView(emptyView);
+        mEmptyAdapter = new EmptyAdapter(mLoadMoreAdapter);
+        onEmptyAdapterCreated(mEmptyAdapter);
         mEmptyAdapter.hideEmptyView();
         recycler_view.setAdapter(mEmptyAdapter);
         recycler_view.setHasFixedSize(true);
@@ -109,7 +103,15 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         getData();
     }
 
-    public void onLoadMoreAdapterCreated(LoadMoreAdapter loadMoreAdapter) {
+    protected void onEmptyAdapterCreated(EmptyAdapter emptyAdapter) {
+
+    }
+
+    protected void onEmptyViewShow(boolean error) {
+
+    }
+
+    protected void onLoadMoreAdapterCreated(LoadMoreAdapter loadMoreAdapter) {
 
     }
 
@@ -160,10 +162,15 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
                         mPrePageData = tPageResult.elements;
                     }
                     notifyDataChanged(new ArrayList<>(mData));
+                    onEmptyViewShow(false);
                     mEmptyAdapter.showEmptyView();
                 }, throwable -> {
                     if (mCurrentPage == 1) {
                         setRefreshing(false);
+                        mData.clear();
+                        notifyDataChanged(new ArrayList<>(mData));
+                        onEmptyViewShow(true);
+                        mEmptyAdapter.showEmptyView();
                         mObservable = null;
                     } else {
                         mLoadMoreAdapter.setState(LoadMoreAdapter.STATE_ERROR);
@@ -194,6 +201,10 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+        mEmptyAdapter = null;
+        mLoadMoreAdapter = null;
+        mAdapter = null;
+        recycler_view.setAdapter(null);
         mUnBinder.unbind();
     }
 }

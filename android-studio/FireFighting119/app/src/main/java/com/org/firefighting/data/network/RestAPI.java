@@ -34,6 +34,8 @@ public class RestAPI {
     private static final String API_URL = BuildConfig.API_URL;
     private static final String API_URL_SB = BuildConfig.API_URL_SB;
     private static final String API_URL_SB_2 = BuildConfig.API_URL_SB_2;
+    private static final String API_URL_SB_3 = BuildConfig.API_URL_SB_3;
+    private static final String API_URL_SB_4 = BuildConfig.API_URL_SB_4;
     private static final String API_URL_CONTACTS = BuildConfig.API_URL_CONTACTS;
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
@@ -42,11 +44,16 @@ public class RestAPI {
     private Retrofit retrofitSignIn;
     private Retrofit retrofitSB;
     private Retrofit retrofitSB2;
+    private Retrofit retrofitSB3;
+    private Retrofit retrofitSB4;
     private Retrofit retrofitC;
+
     private ApiService apiService;
     private ApiService apiServiceSignIn;
     private ApiService apiServiceSB;
     private ApiService apiServiceSB2;
+    private ApiService apiServiceSB3;
+    private ApiService apiServiceSB4;
     private ApiService apiServiceC;
 
     public static RestAPI getInstance() {
@@ -158,6 +165,55 @@ public class RestAPI {
         return retrofitSB2;
     }
 
+    private Retrofit getRetrofitSB3() {
+        if (retrofitSB3 == null) {
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS);
+            clientBuilder.addInterceptor(chain -> {
+                SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+                if (signInResponse == null) {
+                    return chain.proceed(chain.request());
+                } else {
+                    return chain.proceed(chain.request()
+                            .newBuilder()
+                            .header("Authorization", "Bearer " + signInResponse.token)
+                            .build());
+                }
+            });
+            if (BuildConfig.DEBUG) {
+                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            }
+            retrofitSB3 = new Retrofit.Builder()
+                    .baseUrl(API_URL_SB_3)
+                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(clientBuilder.build())
+                    .build();
+        }
+        return retrofitSB3;
+    }
+
+    private Retrofit getRetrofitSB4() {
+        if (retrofitSB4 == null) {
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS);
+            if (BuildConfig.DEBUG) {
+                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            }
+            retrofitSB4 = new Retrofit.Builder()
+                    .baseUrl(API_URL_SB_4)
+                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(clientBuilder.build())
+                    .build();
+        }
+        return retrofitSB4;
+    }
+
     private Retrofit getRetrofit() {
         if (retrofit == null) {
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
@@ -175,7 +231,7 @@ public class RestAPI {
                             try {
                                 ResponseData<String> r = new Gson().fromJson(string, new TypeToken<ResponseData<String>>() {
                                 }.getType());
-                                if (r.code == -1 && TextUtils.equals("用户未登录或token失效。", r.data)) {
+                                if (r.code != null && r.code == -1 && TextUtils.equals("用户未登录或token失效。", r.data)) {
                                     return response.newBuilder().code(401).build();
                                 } else {
                                     return response.newBuilder().body(ResponseBody.create(body.contentType(), string)).build();
@@ -279,6 +335,20 @@ public class RestAPI {
             apiServiceSB2 = getRetrofitSB2().create(ApiService.class);
         }
         return apiServiceSB2;
+    }
+
+    public ApiService apiServiceSB3() {
+        if (apiServiceSB3 == null) {
+            apiServiceSB3 = getRetrofitSB3().create(ApiService.class);
+        }
+        return apiServiceSB3;
+    }
+
+    public ApiService apiServiceSB4() {
+        if (apiServiceSB4 == null) {
+            apiServiceSB4 = getRetrofitSB4().create(ApiService.class);
+        }
+        return apiServiceSB4;
     }
 
     public ApiService apiService() {

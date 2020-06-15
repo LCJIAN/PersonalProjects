@@ -44,7 +44,7 @@
             app:tabIndicatorColor="?colorPrimary"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             app:tabSelectedTextColor="?colorPrimary"
             app:tabTextColor="#ff666666" />
     </FrameLayout>

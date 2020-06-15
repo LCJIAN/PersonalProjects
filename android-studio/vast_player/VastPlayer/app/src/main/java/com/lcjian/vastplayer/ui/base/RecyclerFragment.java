@@ -191,6 +191,10 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
+        mEmptyAdapter = null;
+        mLoadMoreAdapter = null;
+        mAdapter = null;
+        recycler_view.setAdapter(null);
         mUnBinder.unbind();
     }
 }
