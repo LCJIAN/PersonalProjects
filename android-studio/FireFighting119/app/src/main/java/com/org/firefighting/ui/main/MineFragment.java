@@ -35,6 +35,7 @@ import com.org.firefighting.ui.chat.ChatActivity;
 import com.org.firefighting.ui.chat.DepartmentsActivity;
 import com.org.firefighting.ui.resource.ResourcesActivity;
 import com.org.firefighting.ui.service.ServiceListActivity;
+import com.org.firefighting.ui.user.PwdModifyActivity;
 import com.org.firefighting.ui.user.SignInActivity;
 
 import java.util.Map;
@@ -67,6 +68,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     ConstraintLayout rl_version;
     @BindView(R.id.rl_feed_back)
     RelativeLayout rl_feed_back;
+    @BindView(R.id.rl_pwd_modify)
+    RelativeLayout rl_pwd_modify;
     @BindView(R.id.rl_sign_out)
     RelativeLayout rl_sign_out;
 
@@ -103,6 +106,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         rl_arc.setOnClickListener(this);
         rl_organisation.setOnClickListener(this);
         rl_announcement.setOnClickListener(this);
+        rl_pwd_modify.setOnClickListener(this);
     }
 
     @Override
@@ -114,6 +118,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rl_pwd_modify:
+                startActivity(new Intent(v.getContext(), PwdModifyActivity.class));
+                break;
             case R.id.rl_my_task:
                 ((MainActivity) Objects.requireNonNull(getActivity())).checkTask();
                 break;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,10 @@ import butterknife.Unbinder;
 
 public class ApplyFragment extends BaseDialogFragment {
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+    @BindView(R.id.ll_name)
+    LinearLayout ll_name;
     @BindView(R.id.et_apply_name)
     EditText et_apply_name;
     @BindView(R.id.et_apply_reason)
@@ -35,6 +40,8 @@ public class ApplyFragment extends BaseDialogFragment {
 
     private Listener mListener;
 
+    private boolean mService;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,9 +52,11 @@ public class ApplyFragment extends BaseDialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ll_name.setVisibility(mService ? View.GONE : View.VISIBLE);
+        tv_title.setText(mService ? R.string.service_application : R.string.resource_application);
         tv_cancel.setOnClickListener(v -> dismiss());
         tv_confirm.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(et_apply_name.getEditableText())) {
+            if (!mService && TextUtils.isEmpty(et_apply_name.getEditableText())) {
                 Toast.makeText(App.getInstance(), R.string.apply_resource_name_empty, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -68,6 +77,12 @@ public class ApplyFragment extends BaseDialogFragment {
         mUnBinder.unbind();
         super.onDestroyView();
     }
+
+    public ApplyFragment setService(boolean service) {
+        this.mService = service;
+        return this;
+    }
+
 
     public ApplyFragment setListener(Listener l) {
         this.mListener = l;

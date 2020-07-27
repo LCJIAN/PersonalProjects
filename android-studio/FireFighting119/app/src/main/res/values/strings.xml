@@ -43,7 +43,7 @@
     <string name="continue_input">继续填报</string>
     <string name="not_continue_input">不，我已填报完成</string>
     <string name="statics">专题分析</string>
-    <string name="helping">消防资讯</string>
+    <string name="helping">新闻资讯</string>
     <string name="announcement">实时服务</string>
     <string name="organization">资源目录</string>
     <string name="task">信息填报</string>
@@ -87,6 +87,7 @@
     <string name="apply_resource_name">申请名称</string>
     <string name="apply_resource_reason">申请原因</string>
     <string name="resource_application">资源申请</string>
+    <string name="service_application">服务申请</string>
     <string name="apply_resource_name_empty">申请名称为空</string>
     <string name="apply_resource_reason_empty">申请原因为空</string>
     <string name="submit_application">提交</string>
@@ -97,4 +98,11 @@
     <string name="detail">详情</string>
     <string name="hint_user_search">搜索部门或人员</string>
     <string name="more">更多</string>
+    <string name="old_pwd">旧密码</string>
+    <string name="new_pwd">新密码</string>
+    <string name="confirm_pwd">确认密码</string>
+    <string name="pwd_modify">修改密码</string>
+    <string name="error_confirm_pwd">确认密码不一致</string>
+    <string name="password_modification_succeeded">修改密码成功</string>
+    <string name="failed_to_modify_pwd">修改密码失败</string>
 </resources>

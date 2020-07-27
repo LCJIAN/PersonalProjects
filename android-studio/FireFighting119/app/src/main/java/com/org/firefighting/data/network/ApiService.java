@@ -4,6 +4,7 @@ import com.org.firefighting.data.network.entity.AskRequest;
 import com.org.firefighting.data.network.entity.DataQueryResult;
 import com.org.firefighting.data.network.entity.DataQueryResult2;
 import com.org.firefighting.data.network.entity.Department;
+import com.org.firefighting.data.network.entity.ModifyPwdRequest;
 import com.org.firefighting.data.network.entity.News;
 import com.org.firefighting.data.network.entity.NewsCategory;
 import com.org.firefighting.data.network.entity.PageResponse;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -52,6 +54,12 @@ public interface ApiService {
      */
     @POST("admin-ht/auth/login")
     Call<SignInResponse> signInSync(@Body SignInRequest signInRequest);
+
+    /**
+     * 修改密码
+     */
+    @POST("admin-ht/api/users/updatePass")
+    Single<ResponseBody> modifyPwd(@Body ModifyPwdRequest modifyPwdRequest);
 
     /**
      * 获取个人信息填报任务列表
@@ -254,9 +262,9 @@ public interface ApiService {
     /**
      * 服务
      */
-    @POST("gtone-ht/interior/data/dservice/dir/detail/{id}?userType=external&category=service")
-    Single<ResponseData<Object>> getService(@Query("id") String id,
-                                            @Query("userId") String userId);
+    @GET("gtone-ht/interior/data/dservice/dir/detail/{id}?userType=external&category=service")
+    Single<ResponseData<ServiceEntity>> getService(@Path("id") String id,
+                                                   @Query("userId") Long userId);
 
     /**
      * 申请

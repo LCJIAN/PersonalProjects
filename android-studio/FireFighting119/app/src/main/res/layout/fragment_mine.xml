@@ -58,7 +58,6 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_marginStart="24dp"
-                            android:layout_marginLeft="24dp"
                             android:layout_marginTop="36dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -69,7 +68,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
                             android:layout_marginTop="8dp"
                             android:textAppearance="@style/TextAppearance.AppTheme.Medium"
                             android:textColor="@android:color/black"
@@ -83,10 +81,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
                             android:layout_marginTop="4dp"
                             android:drawableEnd="@drawable/ic_group"
-                            android:drawableRight="@drawable/ic_group"
                             android:drawablePadding="8dp"
                             android:textColor="#ff666666"
                             android:textSize="15sp"
@@ -99,10 +95,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
                             android:layout_marginTop="2dp"
                             android:drawableStart="@drawable/ic_department"
-                            android:drawableLeft="@drawable/ic_department"
                             android:drawablePadding="4dp"
                             android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                             android:textColor="#ff666666"
@@ -136,9 +130,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_arc"
-                                android:drawableLeft="@drawable/ic_arc"
                                 android:drawablePadding="10dp"
                                 android:text="@string/organisation_arc"
                                 android:textColor="#ff333333"
@@ -148,12 +140,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -167,9 +156,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_my_task"
-                                android:drawableLeft="@drawable/ic_my_task"
                                 android:drawablePadding="10dp"
                                 android:text="@string/my_task"
                                 android:textColor="#ff333333"
@@ -179,12 +166,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -198,9 +182,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_resource_list"
-                                android:drawableLeft="@drawable/ic_resource_list"
                                 android:drawablePadding="10dp"
                                 android:text="@string/organization"
                                 android:textColor="#ff333333"
@@ -210,12 +192,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -229,9 +208,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_service_list"
-                                android:drawableLeft="@drawable/ic_service_list"
                                 android:drawablePadding="10dp"
                                 android:text="@string/announcement"
                                 android:textColor="#ff333333"
@@ -241,12 +218,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -261,9 +235,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_version"
-                                android:drawableLeft="@drawable/ic_version"
                                 android:drawablePadding="10dp"
                                 android:text="@string/current_version"
                                 android:textColor="#ff333333"
@@ -277,10 +249,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignStart="@+id/tv_version"
-                                android:layout_alignLeft="@+id/tv_version"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="8dp"
-                                android:layout_marginLeft="8dp"
                                 android:layout_marginTop="2dp"
                                 android:text="@string/demo_version"
                                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
@@ -294,10 +264,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
                                 android:text="@string/check_update"
                                 android:textAppearance="@style/TextAppearance.AppTheme.Micro"
                                 android:textColor="#ff666666"
@@ -317,9 +285,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_feedback"
-                                android:drawableLeft="@drawable/ic_feedback"
                                 android:drawablePadding="10dp"
                                 android:text="@string/feedback"
                                 android:textColor="#ff333333"
@@ -329,12 +295,35 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_pwd_modify"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="?selectableItemBackground">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="16dp"
+                                android:drawableStart="@drawable/ic_fas_fa_key"
+                                android:drawablePadding="10dp"
+                                android:text="@string/pwd_modify"
+                                android:textColor="#ff333333"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="16dp"
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -348,9 +337,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="16dp"
-                                android:layout_marginLeft="16dp"
                                 android:drawableStart="@drawable/ic_exit"
-                                android:drawableLeft="@drawable/ic_exit"
                                 android:drawablePadding="10dp"
                                 android:text="@string/sign_out"
                                 android:textColor="#ff333333"
@@ -360,12 +347,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="16dp"
-                                android:layout_marginRight="16dp"
-                                android:drawableEnd="@drawable/ic_arrow_right"
-                                android:drawableRight="@drawable/ic_arrow_right" />
+                                android:drawableEnd="@drawable/ic_arrow_right" />
                         </RelativeLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

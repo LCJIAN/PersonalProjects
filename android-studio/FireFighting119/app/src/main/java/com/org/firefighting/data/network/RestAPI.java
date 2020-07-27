@@ -34,7 +34,6 @@ public class RestAPI {
     private static final String API_URL_SB = BuildConfig.API_URL_SB;
     private static final String API_URL_SB_2 = BuildConfig.API_URL_SB_2;
     private static final String API_URL_SB_3 = BuildConfig.API_URL_SB_3;
-    private static final String API_URL_SB_4 = BuildConfig.API_URL_SB_4;
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
     private static RestAPI instance;
@@ -43,16 +42,12 @@ public class RestAPI {
     private Retrofit retrofitSB;
     private Retrofit retrofitSB2;
     private Retrofit retrofitSB3;
-    private Retrofit retrofitSB4;
-    private Retrofit retrofitC;
 
     private ApiService apiService;
     private ApiService apiServiceSignIn;
     private ApiService apiServiceSB;
     private ApiService apiServiceSB2;
     private ApiService apiServiceSB3;
-    private ApiService apiServiceSB4;
-    private ApiService apiServiceC;
 
     public static RestAPI getInstance() {
         if (instance == null) {
@@ -97,178 +92,105 @@ public class RestAPI {
 
     private Retrofit getRetrofitSB() {
         if (retrofitSB == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
-            clientBuilder.addInterceptor(chain -> {
-                SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
-                if (signInResponse == null) {
-                    return chain.proceed(chain.request());
-                } else {
-                    return chain.proceed(chain.request()
-                            .newBuilder()
-                            .header("Authorization", "Bearer " + signInResponse.token)
-                            .build());
-                }
-            });
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofitSB = new Retrofit.Builder()
-                    .baseUrl(API_URL_SB)
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
+            retrofitSB = createRetrofit(API_URL_SB);
         }
         return retrofitSB;
     }
 
     private Retrofit getRetrofitSB2() {
         if (retrofitSB2 == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofitSB2 = new Retrofit.Builder()
-                    .baseUrl(API_URL_SB_2)
-                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
+            retrofitSB2 = createRetrofit(API_URL_SB_2);
         }
         return retrofitSB2;
     }
 
     private Retrofit getRetrofitSB3() {
         if (retrofitSB3 == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
-            clientBuilder.addInterceptor(chain -> {
-                SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
-                if (signInResponse == null) {
-                    return chain.proceed(chain.request());
-                } else {
-                    return chain.proceed(chain.request()
-                            .newBuilder()
-                            .header("Authorization", "Bearer " + signInResponse.token)
-                            .build());
-                }
-            });
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofitSB3 = new Retrofit.Builder()
-                    .baseUrl(API_URL_SB_3)
-                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
+            retrofitSB3 = createRetrofit(API_URL_SB_3);
         }
         return retrofitSB3;
     }
 
-    private Retrofit getRetrofitSB4() {
-        if (retrofitSB4 == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofitSB4 = new Retrofit.Builder()
-                    .baseUrl(API_URL_SB_4)
-                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
-        }
-        return retrofitSB4;
-    }
-
     private Retrofit getRetrofit() {
         if (retrofit == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .cache(getCache());
-
-            clientBuilder
-                    .addNetworkInterceptor(chain -> {
-                        Response response = chain.proceed(chain.request());
-                        ResponseBody body = response.body();
-                        if (body != null) {
-                            String string = body.string();
-                            try {
-                                ResponseData<String> r = new Gson().fromJson(string, new TypeToken<ResponseData<String>>() {
-                                }.getType());
-                                if (r.code != null && r.code == -1 && TextUtils.equals("用户未登录或token失效。", r.data)) {
-                                    return response.newBuilder().code(401).build();
-                                } else {
-                                    return response.newBuilder().body(ResponseBody.create(body.contentType(), string)).build();
-                                }
-                            } catch (JsonSyntaxException e) {
-                                return response.newBuilder().body(ResponseBody.create(body.contentType(), string)).build();
-                            }
-                        } else {
-                            return response;
-                        }
-                    })
-                    .addInterceptor(chain -> {
-                        SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
-                        if (signInResponse == null) {
-                            return chain.proceed(chain.request());
-                        } else {
-                            return chain.proceed(chain.request()
-                                    .newBuilder()
-                                    .header("token", signInResponse.token)
-                                    .build());
-                        }
-                    })
-                    .authenticator((route, response) -> {
-                        // If we've failed 3 times, give up.
-                        if (responseCount(response) >= 3) {
-                            return null;
-                        }
-                        SignInRequest signInRequest = SharedPreferencesDataSource.getSignInRequest();
-                        if (signInRequest == null) {
-                            return response.request();
-                        } else {
-                            Call<SignInResponse> call = apiServiceSignIn().signInSync(signInRequest);
-                            SignInResponse signInResponse = call.execute().body();
-                            if (signInResponse == null) {
-                                return response.request();
-                            } else {
-                                SharedPreferencesDataSource.putSignInResponse(signInResponse);
-                                return response.request()
-                                        .newBuilder()
-                                        .header("token", signInResponse.token)
-                                        .build();
-                            }
-                        }
-                    });
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(API_URL)
-                    .addConverterFactory(CGsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
+            retrofit = createRetrofit(API_URL);
         }
         return retrofit;
     }
 
-    private int responseCount(Response response) {
+    private Retrofit createRetrofit(String baseUrl) {
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .cache(getCache());
+        clientBuilder
+                .addNetworkInterceptor(chain -> {
+                    Response response = chain.proceed(chain.request());
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        String string = body.string();
+                        try {
+                            ResponseData<String> r = new Gson().fromJson(string, new TypeToken<ResponseData<String>>() {}.getType());
+                            if (r != null && r.code != null && r.code == -1 && TextUtils.equals("用户未登录或token失效。", r.data)) {
+                                return response.newBuilder().code(401).build();
+                            } else {
+                                return response.newBuilder().body(ResponseBody.create(body.contentType(), string)).build();
+                            }
+                        } catch (JsonSyntaxException e) {
+                            return response.newBuilder().body(ResponseBody.create(body.contentType(), string)).build();
+                        }
+                    } else {
+                        return response;
+                    }
+                })
+                .addInterceptor(chain -> {
+                    SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+                    if (signInResponse == null) {
+                        return chain.proceed(chain.request());
+                    } else {
+                        return chain.proceed(chain.request()
+                                .newBuilder()
+                                .header("token", signInResponse.token)
+                                .header("Authorization", "Bearer " + signInResponse.token)
+                                .build());
+                    }
+                })
+                .authenticator((route, response) -> {
+                    // If we've failed 3 times, give up.
+                    if (responseCount(response) >= 3) {
+                        return null;
+                    }
+                    SignInRequest signInRequest = SharedPreferencesDataSource.getSignInRequest();
+                    if (signInRequest == null) {
+                        return response.request();
+                    } else {
+                        Call<SignInResponse> call = apiServiceSignIn().signInSync(signInRequest);
+                        SignInResponse signInResponse = call.execute().body();
+                        if (signInResponse == null) {
+                            return response.request();
+                        } else {
+                            SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                            return response.request()
+                                    .newBuilder()
+                                    .header("token", signInResponse.token)
+                                    .header("Authorization", "Bearer " + signInResponse.token)
+                                    .build();
+                        }
+                    }
+                });
+        if (BuildConfig.DEBUG) {
+            clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+        }
+        return new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(CGsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(clientBuilder.build())
+                .build();
+    }
+
+    private static int responseCount(Response response) {
         int result = 1;
         while ((response = response.priorResponse()) != null) {
             result++;
@@ -276,7 +198,7 @@ public class RestAPI {
         return result;
     }
 
-    private Cache getCache() {
+    private static Cache getCache() {
         Cache cache = null;
         // Install an HTTP cache in the application cache directory.
         try {
@@ -314,13 +236,6 @@ public class RestAPI {
             apiServiceSB3 = getRetrofitSB3().create(ApiService.class);
         }
         return apiServiceSB3;
-    }
-
-    public ApiService apiServiceSB4() {
-        if (apiServiceSB4 == null) {
-            apiServiceSB4 = getRetrofitSB4().create(ApiService.class);
-        }
-        return apiServiceSB4;
     }
 
     public ApiService apiService() {

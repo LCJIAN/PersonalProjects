@@ -51,6 +51,9 @@
             android:name=".ui.user.SignInActivity"
             android:theme="@style/AppTheme.NoActionBar.SignIn" />
         <activity
+            android:name=".ui.user.PwdModifyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.task.TaskDetailActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">

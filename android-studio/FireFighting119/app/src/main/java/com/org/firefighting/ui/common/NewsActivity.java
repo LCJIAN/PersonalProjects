@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.org.firefighting.BuildConfig;
-import com.org.firefighting.GlideApp;
 import com.org.firefighting.R;
 import com.org.firefighting.data.entity.PageResult;
 import com.org.firefighting.data.network.RestAPI;
@@ -200,14 +199,9 @@ public class NewsActivity extends BaseActivity {
                                             viewHolder.getAbsoluteAdapterPosition() == 0 ? R.drawable.shape_card_top :
                                                     (viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? R.drawable.shape_card_bottom :
                                                             R.drawable.shape_card_middle))
-                                    .with(R.id.iv_news, view -> GlideApp.with(view)
-                                            .load(BuildConfig.API_URL_SB_4 + data.thumbnail)
-                                            .centerCrop().into((ImageView) view))
                                     .text(R.id.tv_news, data.title)
                                     .text(R.id.tv_news_from, data.sourceName)
-                                    .text(R.id.tv_news_time, data.createDate)
-                                    .text(R.id.tv_view_count, String.valueOf(0))
-                                    .text(R.id.tv_comment_count, String.valueOf(0));
+                                    .text(R.id.tv_news_time, data.createDate);
                         }
                     })
                     .enableDiff();

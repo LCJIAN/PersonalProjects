@@ -36,7 +36,6 @@ android {
             buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
             buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
             buildConfigField 'String', 'API_URL_SB_3', '"http://58.144.151.4:9528/"'
-            buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
             buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
             buildConfigField 'String', 'BUG_LY_APP_ID', '"581b5cebe6"'
 
@@ -49,7 +48,6 @@ android {
             buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
             buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
             buildConfigField 'String', 'API_URL_SB_3', '"http://124.162.30.39:9528/"'
-            buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
             buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
             buildConfigField 'String', 'BUG_LY_APP_ID', '"581b5cebe6"'
         }

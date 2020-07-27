@@ -23,6 +23,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import com.google.gson.Gson;
 import com.org.firefighting.App;
 import com.org.firefighting.R;
+import com.org.firefighting.RxBus;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
@@ -262,7 +263,9 @@ public class DataQueryFragment extends BaseFragment {
                             hideProgress();
                             if (TextUtils.equals(responseData.code, "-1")) {
                                 Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
+                                RxBus.getInstance().send(new ServiceDataQueryActivity.PermissionEvent(false));
                             } else {
+                                RxBus.getInstance().send(new ServiceDataQueryActivity.PermissionEvent(false));
                                 mColumns = responseData.field;
                                 addOptionItem();
                                 setupOptions();

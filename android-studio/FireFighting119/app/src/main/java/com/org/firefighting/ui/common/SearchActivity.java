@@ -31,7 +31,6 @@ import com.org.firefighting.data.entity.PageResult;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.SearchRequest;
 import com.org.firefighting.data.network.entity.SearchResult;
-import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.base.RecyclerFragment;
 import com.org.firefighting.ui.resource.ResourceDetailActivity;
@@ -148,13 +147,8 @@ public class SearchActivity extends BaseActivity {
                                             .putExtra("resource_id", viewHolder.itemData.id)
                                             .putExtra("resource_table_comment", viewHolder.itemData.title));
                                 } else if (TextUtils.equals("110000", mCategoryId)) {
-                                    ServiceEntity serviceEntity = new ServiceEntity();
-                                    serviceEntity.id = viewHolder.itemData.id;
-                                    serviceEntity.serviceName = viewHolder.itemData.title;
-                                    serviceEntity.invokeName = viewHolder.itemData.id;
-                                    serviceEntity.applyStatus = 0;
                                     startActivity(new Intent(v.getContext(), ServiceDataQueryActivity.class)
-                                            .putExtra("service", serviceEntity));
+                                            .putExtra("service_id", viewHolder.itemData.id));
                                 }
                             });
                         }
