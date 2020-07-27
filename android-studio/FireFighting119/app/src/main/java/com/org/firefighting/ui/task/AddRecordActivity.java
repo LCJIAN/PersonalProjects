@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -55,9 +54,9 @@ public class AddRecordActivity extends BaseActivity {
     @BindView(R.id.ll_container)
     LinearLayout ll_container;
     @BindView(R.id.btn_cancel)
-    Button btn_cancel;
+    TextView btn_cancel;
     @BindView(R.id.btn_confirm)
-    Button btn_confirm;
+    TextView btn_confirm;
 
     private String mTaskId;
     private TaskTable mTaskTable;
@@ -286,7 +285,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：重庆市消防救援总队");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：重庆市消防救援总队");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -305,7 +304,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：123");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -324,7 +323,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：123.456");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123.456");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -343,7 +342,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：请填写112233 (记录为 11'22''33 11分22秒33)");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：请填写112233 (记录为 11'22''33 11分22秒33)");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -362,7 +361,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：13000000000");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：13000000000");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -381,7 +380,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint("示例：500223000000000000");
+        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：500223000000000000");
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -432,7 +431,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
         TextView tv_value = rootV.findViewById(R.id.tv_value);
 
-        tv_value.setHint("请选择" + t.type);
+        tv_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "请选择" + t.type);
         if (t.value != null) {
             tv_value.setText(t.value);
         }

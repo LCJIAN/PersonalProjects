@@ -51,7 +51,10 @@ public class GuideActivity extends BaseActivity {
                 btn_skip_guide.setVisibility(position == 3 ? View.GONE : View.VISIBLE);
             }
         });
-        btn_skip_guide.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SignInActivity.class)));
+        btn_skip_guide.setOnClickListener(v -> {
+            startActivity(new Intent(v.getContext(), SignInActivity.class));
+            finish();
+        });
     }
 
     static class GuideAdapter extends PagerAdapter {

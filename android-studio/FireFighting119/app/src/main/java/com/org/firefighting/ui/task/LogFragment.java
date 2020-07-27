@@ -73,7 +73,12 @@ public class LogFragment extends BaseFragment {
 
             @Override
             public void onBind(TaskLog data, SlimAdapter.SlimViewHolder<TaskLog> viewHolder) {
-                viewHolder.text(R.id.tv_log_date, DateUtils.convertDateToStr(new Date(data.infoTime), DateUtils.YYYY_MM_DD))
+                viewHolder
+                        .background(R.id.cl_task_log,
+                                viewHolder.getAbsoluteAdapterPosition() == 0 ? R.drawable.shape_card_top :
+                                        (viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? R.drawable.shape_card_bottom :
+                                                R.drawable.shape_card_middle))
+                        .text(R.id.tv_log_date, DateUtils.convertDateToStr(new Date(data.infoTime), DateUtils.YYYY_MM_DD))
                         .text(R.id.tv_log_time, DateUtils.convertDateToStr(new Date(data.infoTime), DateUtils.HH_MM_SS))
                         .text(R.id.tv_log_detail, data.departmentName + " " + Html.fromHtml(data.message))
                         .visibility(R.id.divider4, viewHolder.getBindingAdapterPosition() == mAdapter.getItemCount() - 1 ? View.INVISIBLE : View.VISIBLE)

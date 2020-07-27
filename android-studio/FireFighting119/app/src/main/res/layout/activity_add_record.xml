@@ -49,29 +49,35 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:background="@drawable/shape_blue_btn_bg_2"
             android:paddingLeft="48dp"
             android:paddingRight="48dp"
+            android:gravity="center"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
             android:text="@string/clear_input"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
+            android:textColor="@color/colorAccent" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:background="@drawable/shape_primary_btn_bg_2"
             android:paddingLeft="48dp"
+            android:textAppearance="@style/TextAppearance.AppTheme.Micro"
             android:paddingRight="48dp"
             android:text="@string/confirm"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

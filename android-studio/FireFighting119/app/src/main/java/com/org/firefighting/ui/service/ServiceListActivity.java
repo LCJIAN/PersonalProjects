@@ -1,5 +1,6 @@
 package com.org.firefighting.ui.service;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -44,7 +45,7 @@ public class ServiceListActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_resources);
+        setContentView(R.layout.activity_fragment);
         ButterKnife.bind(this);
 
         tv_title.setText(R.string.announcement);
@@ -83,6 +84,8 @@ public class ServiceListActivity extends BaseActivity {
 
                         @Override
                         public void onInit(SlimAdapter.SlimViewHolder<ServiceEntity> viewHolder) {
+                            viewHolder.clicked(v -> startActivity(new Intent(v.getContext(), ServiceDataQueryActivity.class)
+                                    .putExtra("service", viewHolder.itemData)));
                         }
 
                         @Override
@@ -90,11 +93,11 @@ public class ServiceListActivity extends BaseActivity {
                             viewHolder
                                     .text(R.id.tv_interface_type, "接口类型：" + (TextUtils.isEmpty(data.type) ? "未知" : data.type))
                                     .text(R.id.tv_update_time, "更新时间：" + (TextUtils.isEmpty(data.createDate) ? "未知" : data.createDate))
-                                    .text(R.id.tv_service_name, data.name)
+                                    .text(R.id.tv_service_name, data.serviceName)
                                     .text(R.id.tv_service_des, data.remarks)
                                     .text(R.id.tv_count_1, new Spans("浏览：").append(String.valueOf(data.browses), new ForegroundColorSpan(Color.RED)))
                                     .text(R.id.tv_count_2, new Spans("调用：").append(String.valueOf(data.calls), new ForegroundColorSpan(Color.RED)))
-                                    .text(R.id.tv_count_3, new Spans("连接：").append(String.valueOf(data.applyFrequency), new ForegroundColorSpan(Color.RED)));
+                                    .text(R.id.tv_count_3, new Spans("连接：").append(String.valueOf(data.connAplications), new ForegroundColorSpan(Color.RED)));
                         }
                     })
                     .enableDiff();
@@ -104,7 +107,7 @@ public class ServiceListActivity extends BaseActivity {
         @Override
         public Observable<PageResult<ServiceEntity>> onCreatePageObservable(int currentPage) {
             return RestAPI.getInstance().apiServiceSB3()
-                    .getServices(null, null, SharedPreferencesDataSource.getSignInResponse().user.id,
+                    .getServices("61", null, SharedPreferencesDataSource.getSignInResponse().user.id,
                             null, currentPage, 20)
                     .map(responseData -> {
                         PageResult<ServiceEntity> pageResult = new PageResult<>();

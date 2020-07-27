@@ -11,10 +11,10 @@ android {
 
     defaultConfig {
         applicationId "com.org.firefighting"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.0.6"
+        versionCode 12
+        versionName "1.2.4"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
@@ -22,7 +22,7 @@ android {
 
         manifestPlaceholders = [
                 JPUSH_PKGNAME            : applicationId,
-                JPUSH_APPKEY             : "9f96b28ddb91e2c9af7c7242",
+                JPUSH_APPKEY             : "26be53daa636e82953753329",
                 JPUSH_CHANNEL            : "developer-default",
                 FILE_PROVIDER_AUTHORITIES: "com.org.firefighting.flie_provider"
         ]
@@ -32,36 +32,49 @@ android {
 
     buildTypes {
         release {
-            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://124.162.30.39:9000/"'
             buildConfigField 'String', 'API_URL', '"http://124.162.30.39:9000/"'
             buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
             buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
             buildConfigField 'String', 'API_URL_SB_3', '"http://58.144.151.4:9528/"'
             buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
-            buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
             buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
+            buildConfigField 'String', 'BUG_LY_APP_ID', '"581b5cebe6"'
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            buildConfigField 'String', 'API_URL_SIGN_IN', '"http://124.162.30.39:9000/"'
             buildConfigField 'String', 'API_URL', '"http://124.162.30.39:9000/"'
             buildConfigField 'String', 'API_URL_SB', '"http://124.162.30.39:9528/"'
             buildConfigField 'String', 'API_URL_SB_2', '"http://124.162.30.39:28093/"'
             buildConfigField 'String', 'API_URL_SB_3', '"http://124.162.30.39:9528/"'
             buildConfigField 'String', 'API_URL_SB_4', '"http://124.162.30.39:9090/"'
-            buildConfigField 'String', 'API_URL_CONTACTS', '"http://dsgdata.cn:2140/"'
             buildConfigField 'String', 'API_KEY_U', '"6971ef93-650b-40ca-b852-bf2c0b866017"'
+            buildConfigField 'String', 'BUG_LY_APP_ID', '"581b5cebe6"'
         }
     }
 
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-//            res.srcDirs += 'src/main/res-chat'
-//            java.srcDirs += 'src/main/chat-smack'
+            res.srcDirs += 'src/main/res-chat'
+            java.srcDirs += 'src/main/chat-smack'
+        }
+    }
+}
+
+configurations {
+    all*.exclude group: 'xpp3', module: 'xpp3'
+    all {
+        resolutionStrategy {
+            eachDependency { DependencyResolveDetails details ->
+                if (details.requested.group == 'com.squareup.okhttp3' &&
+                        details.requested.name == 'okhttp') {
+                    // OkHttp drops support before 5.0 since 3.13.0
+                    details.useVersion '3.14.1'
+                }
+            }
         }
     }
 }
@@ -72,12 +85,12 @@ dependencies {
 
     // support
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.3.0-alpha01'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta5'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha04'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta8'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
     implementation 'com.google.android:flexbox:2.0.1'
 
     implementation 'com.jakewharton:butterknife:latest.integration'
@@ -111,6 +124,7 @@ dependencies {
     implementation "com.kaopiz:kprogresshud:latest.integration"
     implementation 'com.github.donkingliang:ConsecutiveScroller:2.6.2'
     implementation 'com.zhihu.android:matisse:latest.integration'
+    implementation 'com.github.piasy:BigImageViewer:1.6.5'
 //    implementation 'com.github.hackware1993:MagicIndicator:latest.integration'
     implementation 'com.wdullaer:materialdatetimepicker:latest.integration'
     implementation('com.journeyapps:zxing-android-embedded:latest.integration') {
@@ -127,12 +141,18 @@ dependencies {
     implementation 'cn.jiguang.sdk:jcore:latest.integration'
     // leak
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:latest.integration'
-//    implementation 'com.squareup.leakcanary:leakcanary-object-watcher-android:2.2'
+//    implementation 'com.squareup.leakcanary:leakcanary-object-watcher-android:latest.integration'
 
     // smack
-//    implementation 'org.igniterealtime.smack:smack-android:latest.integration'
-//    implementation 'org.igniterealtime.smack:smack-tcp:latest.integration'
-//    implementation 'org.igniterealtime.smack:smack-extensions:latest.integration'
+    implementation 'org.igniterealtime.smack:smack-core:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-tcp:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-im:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-extensions:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-android:4.3.4'
+    implementation 'org.igniterealtime.smack:smack-android-extensions:4.3.4'
+
+    // sqlite debug
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

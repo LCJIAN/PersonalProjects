@@ -30,13 +30,11 @@ import timber.log.Timber;
 
 public class RestAPI {
 
-    private static final String API_URL_SIGN_IN = BuildConfig.API_URL_SIGN_IN;
     private static final String API_URL = BuildConfig.API_URL;
     private static final String API_URL_SB = BuildConfig.API_URL_SB;
     private static final String API_URL_SB_2 = BuildConfig.API_URL_SB_2;
     private static final String API_URL_SB_3 = BuildConfig.API_URL_SB_3;
     private static final String API_URL_SB_4 = BuildConfig.API_URL_SB_4;
-    private static final String API_URL_CONTACTS = BuildConfig.API_URL_CONTACTS;
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
     private static RestAPI instance;
@@ -88,32 +86,13 @@ public class RestAPI {
                 clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             }
             retrofitSignIn = new Retrofit.Builder()
-                    .baseUrl(API_URL_SIGN_IN)
+                    .baseUrl(API_URL_SB)
                     .addConverterFactory(GsonConverterFactory.create(new Gson()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(clientBuilder.build())
                     .build();
         }
         return retrofitSignIn;
-    }
-
-    private Retrofit getRetrofitC() {
-        if (retrofitC == null) {
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS);
-            if (BuildConfig.DEBUG) {
-                clientBuilder.interceptors().add(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-            }
-            retrofitC = new Retrofit.Builder()
-                    .baseUrl(API_URL_CONTACTS)
-                    .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(clientBuilder.build())
-                    .build();
-        }
-        return retrofitC;
     }
 
     private Retrofit getRetrofitSB() {
@@ -314,13 +293,6 @@ public class RestAPI {
             apiServiceSignIn = getRetrofitSignIn().create(ApiService.class);
         }
         return apiServiceSignIn;
-    }
-
-    public ApiService apiServiceC() {
-        if (apiServiceC == null) {
-            apiServiceC = getRetrofitC().create(ApiService.class);
-        }
-        return apiServiceC;
     }
 
     public ApiService apiServiceSB() {

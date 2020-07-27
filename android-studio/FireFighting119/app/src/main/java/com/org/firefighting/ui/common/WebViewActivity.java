@@ -1,7 +1,7 @@
 package com.org.firefighting.ui.common;
 
-import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebSettingsImpl;
 import com.just.agentweb.WebChromeClient;
+import com.just.agentweb.WebViewClient;
 import com.org.firefighting.R;
 import com.org.firefighting.ui.base.BaseActivity;
 
@@ -27,10 +28,10 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
     TextView tv_title;
     @BindView(R.id.btn_nav_back)
     ImageButton btn_nav_back;
-    @BindView(R.id.btn_nav_right)
-    ImageButton btn_nav_right;
     @BindView(R.id.srl_web)
     SwipeRefreshLayout srl_web;
+
+    private String mTitle;
 
     private AgentWeb mAgentWeb;
 
@@ -42,7 +43,9 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
 
         @Override
         public void onReceivedTitle(WebView view, String title) {
-            tv_title.setText(title);
+            if (TextUtils.isEmpty(mTitle)) {
+                tv_title.setText(title);
+            }
         }
     };
 
@@ -53,6 +56,10 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
         ButterKnife.bind(this);
 
         btn_nav_back.setOnClickListener(v -> onBackPressed());
+        mTitle = getIntent().getStringExtra("title");
+        if (!TextUtils.isEmpty(mTitle)) {
+            tv_title.setText(mTitle);
+        }
 
         mAgentWeb = AgentWeb.with(this) // 传入Activity
                 .setAgentWebParent(srl_web,
@@ -60,14 +67,29 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
                                 ViewGroup.LayoutParams.MATCH_PARENT)) // 传入AgentWeb的父控件
                 .useDefaultIndicator() // 使用默认进度条
                 .setWebChromeClient(mWebChromeClient)
+                .setWebViewClient(new WebViewClient() {
+
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                        if (url.contains("weixin")) {
+                            return true;
+                        }
+                        return super.shouldOverrideUrlLoading(view, url);
+                    }
+
+                })
                 .setAgentWebWebSettings(new AgentWebSettingsImpl() {
                     @Override
                     public WebSettings getWebSettings() {
                         WebSettings webSettings = super.getWebSettings();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            webSettings.setAllowFileAccessFromFileURLs(true);
-                            webSettings.setAllowUniversalAccessFromFileURLs(true);
+                        webSettings.setAllowFileAccessFromFileURLs(true);
+                        webSettings.setAllowUniversalAccessFromFileURLs(true);
+
+                        String ua = getIntent().getStringExtra("user_agent");
+                        if (!TextUtils.isEmpty(ua)) {
+                            webSettings.setUserAgentString(ua);
                         }
+
                         return webSettings;
                     }
                 })
@@ -78,6 +100,9 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
         srl_web.setColorSchemeResources(R.color.colorPrimary);
         srl_web.setOnRefreshListener(this);
         srl_web.setOnChildScrollUpCallback((parent, child) -> mAgentWeb.getWebCreator().getWebView().getScrollY() > 0);
+        srl_web.setEnabled(!getIntent().getBooleanExtra("swipe_disabled", false));
+
+        srl_web.postDelayed(() -> mAgentWeb.getIndicatorController().setProgress(100), 6000);
     }
 
     @Override

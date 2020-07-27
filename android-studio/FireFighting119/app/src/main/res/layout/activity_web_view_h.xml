@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageButton
+        android:id="@+id/btn_nav_back"
+        android:layout_width="?actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:layout_margin="8dp"
+        android:background="@drawable/circle_btn_bg"
+        app:srcCompat="@drawable/ic_back" />
+
+</FrameLayout>

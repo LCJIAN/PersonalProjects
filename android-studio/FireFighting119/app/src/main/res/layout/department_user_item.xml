@@ -6,6 +6,7 @@
     android:layout_height="56dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:foreground="?selectableItemBackground"
     android:background="@drawable/shape_card_middle"
     android:orientation="vertical">
 
@@ -50,6 +51,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="65dp"
-        android:layout_marginLeft="65dp"
-        android:background="#ffe2e2e2" />
+        android:background="#ffeeeeee" />
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -66,11 +67,11 @@
                                     android:id="@+id/tv_task"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:drawableTop="@drawable/ic_task_2"
                                     android:gravity="center"
                                     android:text="@string/task"
                                     android:textColor="#ff666666"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    app:drawableTopCompat="@drawable/ic_task_2" />
                             </FrameLayout>
 
                             <TextView
@@ -78,11 +79,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="?selectableItemBackgroundBorderless"
-                                android:drawableTop="@drawable/ic_organisation"
                                 android:gravity="center"
                                 android:text="@string/organization"
                                 android:textColor="#ff666666"
                                 android:textSize="15sp"
+                                app:drawableTopCompat="@drawable/ic_organisation"
                                 app:layout_constraintBottom_toBottomOf="@+id/tv_announcement"
                                 app:layout_constraintEnd_toStartOf="@+id/tv_announcement"
                                 app:layout_constraintHorizontal_bias="0.5"
@@ -94,11 +95,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="?selectableItemBackgroundBorderless"
-                                android:drawableTop="@drawable/ic_announcement"
                                 android:gravity="center"
                                 android:text="@string/announcement"
                                 android:textColor="#ff666666"
                                 android:textSize="15sp"
+                                app:drawableTopCompat="@drawable/ic_announcement"
                                 app:layout_constraintBottom_toBottomOf="@+id/tv_helping"
                                 app:layout_constraintEnd_toStartOf="@+id/tv_helping"
                                 app:layout_constraintHorizontal_bias="0.5"
@@ -112,11 +113,11 @@
                                 android:layout_marginTop="12dp"
                                 android:layout_marginBottom="12dp"
                                 android:background="?selectableItemBackgroundBorderless"
-                                android:drawableTop="@drawable/ic_help"
                                 android:gravity="center"
-                                android:text="@string/helping"
+                                android:text="@string/statics"
                                 android:textColor="#ff666666"
                                 android:textSize="15sp"
+                                app:drawableTopCompat="@drawable/ic_help"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.5"
@@ -127,24 +128,185 @@
                     </androidx.cardview.widget.CardView>
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/textView"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_weather"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:drawableStart="@drawable/ic_announcement_msg"
-                    android:drawableLeft="@drawable/ic_announcement_msg"
-                    android:drawablePadding="16dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/no_announcement"
-                    android:textAppearance="@style/TextAppearance.AppTheme.Micro"
-                    android:textColor="#ff333333" />
+                    android:layout_height="50dp"
+                    android:layout_margin="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_weather"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="@style/TextAppearance.AppTheme"
+                        android:textColor="#ff333333"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_weather"
+                        app:layout_constraintStart_toEndOf="@+id/iv_weather"
+                        app:layout_constraintTop_toTopOf="@+id/iv_weather"
+                        tools:text=" 渝北 晴 25-36℃ 南风 1 级" />
+
+                    <TextView
+                        android:id="@+id/tv_weather_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:text="@string/detail"
+                        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+                        android:textColor="#ff666666"
+                        app:drawableEndCompat="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_weather"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_weather" />
+
+                    <TextView
+                        android:id="@+id/tv_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                        android:textColor="#ff333333"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="2020年7月5日 星期一 上午 11:53:18" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:drawablePadding="4dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/helping"
+                                android:textColor="#ff333333"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_md_assignment" />
+
+                            <Space
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/tv_view_more_news"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="4dp"
+                                android:layout_marginBottom="8dp"
+                                android:gravity="center_vertical"
+                                android:text="@string/more"
+                                android:textColor="#90D1F7"
+                                android:textSize="14sp"
+                                app:drawableEndCompat="@drawable/ic_md_chevron_right" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_news"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#ffe2e2e2">
+
+                            <TextView
+                                android:id="@+id/tv_duty_statics"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/duty_statics"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_real_time_statics"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_real_time_statics"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tv_real_time_statics" />
+
+                            <TextView
+                                android:id="@+id/tv_real_time_statics"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/real_time_statics"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_police_statics"
+                                app:layout_constraintEnd_toStartOf="@+id/tv_police_statics"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/tv_duty_statics"
+                                app:layout_constraintTop_toTopOf="@+id/tv_police_statics" />
+
+                            <TextView
+                                android:id="@+id/tv_police_statics"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="@string/police_statics"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintHorizontal_weight="1"
+                                app:layout_constraintStart_toEndOf="@+id/tv_real_time_statics"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vp_statics"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="5dp">
 
                     <LinearLayout
@@ -218,17 +380,15 @@
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
             android:background="@drawable/shape_input_search_bg"
-            android:drawableStart="@drawable/ic_search_2"
-            android:drawableLeft="@drawable/ic_search_2"
             android:drawablePadding="12dp"
+            android:gravity="center_vertical"
             android:hint="@string/hint_search"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:textAppearance="@style/TextAppearance.AppTheme.Small" />
+            android:textAppearance="@style/TextAppearance.AppTheme.Small"
+            app:drawableStartCompat="@drawable/ic_search_2" />
 
         <ImageButton
             android:id="@+id/btn_go_to_scan"

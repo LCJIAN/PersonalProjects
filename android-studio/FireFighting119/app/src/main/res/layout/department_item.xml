@@ -6,7 +6,6 @@
     android:layout_height="55dp"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
-    android:layout_marginBottom="5dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="0dp">
 
@@ -14,13 +13,12 @@
         android:id="@+id/tv_department_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:drawableEnd="@drawable/ic_arrow_right"
-        android:drawableRight="@drawable/ic_arrow_right"
         android:drawablePadding="16dp"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="#ff333333"
         android:textSize="15sp"
+        app:drawableEndCompat="@drawable/ic_arrow_right"
         tools:text="支队管理" />
 </androidx.cardview.widget.CardView>

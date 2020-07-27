@@ -9,28 +9,32 @@
     android:layout_marginRight="12dp"
     android:background="@drawable/shape_card_top">
 
-    <ImageView
-        android:id="@+id/iv_avatar"
+    <FrameLayout
+        android:id="@+id/fl_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/default_avatar" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/default_avatar" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="4dp"
         android:textColor="@android:color/black"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+        app:layout_constraintStart_toEndOf="@+id/fl_avatar"
+        app:layout_constraintTop_toTopOf="@+id/fl_avatar"
         tools:text="王椰菠" />
 
     <TextView
@@ -38,13 +42,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
         android:layout_marginBottom="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="#ff999999"
         android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/fl_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_user_name"
         tools:text="我的任务" />
@@ -54,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
         android:textAppearance="@style/TextAppearance.AppTheme.Micro"
         android:textColor="#ff999999"
         app:layout_constraintBottom_toTopOf="@+id/tv_content"
@@ -67,11 +69,10 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="12dp"
-        android:background="#ffc3c3d8"
+        android:background="#ffeeeeee"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/iv_avatar" />
+        app:layout_constraintStart_toEndOf="@+id/fl_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/fl_avatar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

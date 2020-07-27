@@ -22,6 +22,8 @@ import com.allenliu.versionchecklib.v2.builder.UIData;
 import com.allenliu.versionchecklib.v2.callback.RequestVersionListener;
 import com.google.gson.Gson;
 import com.lcjian.lib.util.common.PackageUtils2;
+import com.org.chat.SmackClient;
+import com.org.chat.SmackClientService;
 import com.org.firefighting.App;
 import com.org.firefighting.GlideApp;
 import com.org.firefighting.R;
@@ -29,6 +31,7 @@ import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.data.network.entity.VersionInfo;
 import com.org.firefighting.ui.base.BaseFragment;
+import com.org.firefighting.ui.chat.ChatActivity;
 import com.org.firefighting.ui.chat.DepartmentsActivity;
 import com.org.firefighting.ui.resource.ResourcesActivity;
 import com.org.firefighting.ui.service.ServiceListActivity;
@@ -84,8 +87,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         User user = SharedPreferencesDataSource.getSignInResponse().user;
         GlideApp.with(this)
-                .load(user.avatar)
+                .load("http://124.162.30.39:9528/admin-ht/" + user.avatar)
                 .placeholder(R.drawable.default_avatar)
+                .circleCrop()
                 .into(iv_avatar);
         tv_real_name.setText(user.realName);
         tv_user_department.setText(user.dept);
@@ -122,6 +126,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.rl_announcement:
                 startActivity(new Intent(v.getContext(), ServiceListActivity.class));
                 break;
+            case R.id.rl_feed_back:
+                startActivity(new Intent(v.getContext(), ChatActivity.class)
+                        .putExtra("owner_jid", SharedPreferencesDataSource.getSignInResponse().user.id + "@" + SmackClient.DOMAIN)
+                        .putExtra("opposite_jid", "1645@" + SmackClient.DOMAIN)
+                        .putExtra("opposite_name", "意见反馈"));
+                break;
             case R.id.rl_version:
                 checkVersion();
                 break;
@@ -133,6 +143,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                             JPushInterface.deleteAlias(v.getContext(), SharedPreferencesDataSource.getSignInResponse().user.id.intValue());
                             JPushInterface.stopPush(v.getContext());
                             SharedPreferencesDataSource.clearUserInfo();
+                            SmackClientService.stop(v.getContext());
                             startActivity(Intent.makeRestartActivityTask(new Intent(v.getContext(), SignInActivity.class).getComponent()));
                         })
                         .setPositiveButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
@@ -145,7 +156,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         AllenVersionChecker
                 .getInstance()
                 .requestVersion()
-                .setRequestUrl("http://58.144.150.104:9528/app/checkversion.html")
+                .setRequestUrl("http://124.162.30.39:9000/app/checkversion.html")
                 .request(new RequestVersionListener() {
                     @Override
                     public UIData onRequestVersionSuccess(DownloadBuilder downloadBuilder, String result) {

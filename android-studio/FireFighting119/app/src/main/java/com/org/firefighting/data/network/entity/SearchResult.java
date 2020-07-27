@@ -4,8 +4,8 @@ public class SearchResult {
 
     public String id;
     public String content;
-    public Long createDate;
-    public Long publishTime;
+    public String createDate;
+    public String publishTime;
     public String title;
     public String category;
     public String label;

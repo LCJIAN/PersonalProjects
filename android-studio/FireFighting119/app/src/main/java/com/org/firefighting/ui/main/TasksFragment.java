@@ -231,24 +231,26 @@ public class TasksFragment extends BaseFragment {
                     .subscribe(pageResponse -> {
                         srl_task.post(() -> srl_task.setRefreshing(false));
                         List<Task> result = new ArrayList<>();
-                        for (Task task : pageResponse.result) {
-                            if (task.endDate == null) {
-                                continue;
-                            }
-                            if (TextUtils.equals("待填报", mTabTitle)) {
-                                if ((TextUtils.equals(task.myWorkStatus.workStatus, "待查看")
-                                        || TextUtils.equals(task.myWorkStatus.workStatus, "填报中"))
-                                        && !TextUtils.equals(task.status, "已完结")) {
-                                    result.add(task);
+                        if (pageResponse != null && pageResponse.result != null) {
+                            for (Task task : pageResponse.result) {
+                                if (task.endDate == null) {
+                                    continue;
                                 }
-                            } else if (TextUtils.equals("已填报", mTabTitle)) {
-                                if (TextUtils.equals(task.myWorkStatus.workStatus, "已提交")
-                                        && !TextUtils.equals(task.status, "已完结")) {
-                                    result.add(task);
-                                }
-                            } else if (TextUtils.equals("已完结", mTabTitle)) {
-                                if (TextUtils.equals(task.status, "已完结")) {
-                                    result.add(task);
+                                if (TextUtils.equals("待填报", mTabTitle)) {
+                                    if ((TextUtils.equals(task.myWorkStatus.workStatus, "待查看")
+                                            || TextUtils.equals(task.myWorkStatus.workStatus, "填报中"))
+                                            && !TextUtils.equals(task.status, "已完结")) {
+                                        result.add(task);
+                                    }
+                                } else if (TextUtils.equals("已填报", mTabTitle)) {
+                                    if (TextUtils.equals(task.myWorkStatus.workStatus, "已提交")
+                                            && !TextUtils.equals(task.status, "已完结")) {
+                                        result.add(task);
+                                    }
+                                } else if (TextUtils.equals("已完结", mTabTitle)) {
+                                    if (TextUtils.equals(task.status, "已完结")) {
+                                        result.add(task);
+                                    }
                                 }
                             }
                         }

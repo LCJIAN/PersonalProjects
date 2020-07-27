@@ -1,10 +1,8 @@
 package com.org.firefighting.ui.base;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
-
 
 public class BaseActivity extends AppCompatActivity {
 

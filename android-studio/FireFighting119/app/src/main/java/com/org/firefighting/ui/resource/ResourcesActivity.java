@@ -3,6 +3,7 @@ package com.org.firefighting.ui.resource;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,32 +12,55 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
 import com.org.firefighting.R;
+import com.org.firefighting.RxBus;
 import com.org.firefighting.data.entity.PageResult;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.ResourceEntity;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.base.RecyclerFragment;
+import com.org.firefighting.ui.common.SearchActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ResourcesActivity extends BaseActivity {
 
     @BindView(R.id.btn_back)
     ImageButton btn_back;
+    @BindView(R.id.btn_go_search)
+    ImageButton btn_go_search;
+    @BindView(R.id.tab_resource)
+    TabLayout tab_resource;
+    @BindView(R.id.vp_resource)
+    ViewPager vp_resource;
+
+    private List<String> mTitlesO = Arrays.asList("所有", "已申请", "已收藏");
+    private List<String> mTitles = new ArrayList<>(mTitlesO);
+
+    private ResourcePagerAdapter mPagerAdapter;
+
+    private Disposable mDisposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,15 +69,84 @@ public class ResourcesActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         btn_back.setOnClickListener(v -> onBackPressed());
+        btn_go_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_fragment_container, new ResourcesFragment(), "ResourcesFragment").commit();
+        mPagerAdapter = new ResourcePagerAdapter(getSupportFragmentManager(), mTitles);
+
+        vp_resource.setOffscreenPageLimit(3);
+        vp_resource.setAdapter(mPagerAdapter);
+        tab_resource.setupWithViewPager(vp_resource);
+
+        mDisposable = RxBus.getInstance().asFlowable()
+                .filter(o -> o instanceof TitleChangeEvent)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    TitleChangeEvent e = (TitleChangeEvent) o;
+                    for (int i = 0; i < mTitlesO.size(); i++) {
+                        if (TextUtils.equals(mTitlesO.get(i), e.title)) {
+                            mTitles.set(i, e.title + e.count);
+                        }
+                    }
+                    mPagerAdapter.notifyDataSetChanged();
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDisposable.dispose();
+        super.onDestroy();
+    }
+
+    private static class ResourcePagerAdapter extends FragmentStatePagerAdapter {
+
+        private List<String> mTitles;
+
+        private ResourcePagerAdapter(FragmentManager fm, List<String> titles) {
+            super(fm);
+            this.mTitles = titles;
+        }
+
+        @Override
+        @NonNull
+        public Fragment getItem(int position) {
+            return ResourcesFragment.newInstance(mTitles.get(position));
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitles.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mTitles == null ? 0 : mTitles.size();
+        }
+    }
+
+    private static class TitleChangeEvent {
+
+        private String title;
+        private int count;
+
+        private TitleChangeEvent(String title, int count) {
+            this.title = title;
+            this.count = count;
+        }
     }
 
     public static class ResourcesFragment extends RecyclerFragment<ResourceEntity> {
 
         private View mEmptyView;
         private SlimAdapter mAdapter;
+
+        private String mTabTitle;
+
+        private static ResourcesFragment newInstance(String tabTitle) {
+            ResourcesFragment fragment = new ResourcesFragment();
+            fragment.mTabTitle = tabTitle;
+            return fragment;
+        }
 
         @Override
         protected void onEmptyAdapterCreated(EmptyAdapter emptyAdapter) {
@@ -106,16 +199,35 @@ public class ResourcesActivity extends BaseActivity {
         public Observable<PageResult<ResourceEntity>> onCreatePageObservable(int currentPage) {
             return RestAPI.getInstance().apiServiceSB2()
                     .getResources(null, SharedPreferencesDataSource.getSignInResponse().user.id,
-                            null, null, currentPage, 20)
+                            null, null, currentPage, 1000)
                     .map(responseData -> {
                         PageResult<ResourceEntity> pageResult = new PageResult<>();
-                        pageResult.elements = responseData.data.result;
+
+                        List<ResourceEntity> result = new ArrayList<>();
+                        if (TextUtils.equals("已申请", mTabTitle)) {
+                            for (ResourceEntity resourceEntity : responseData.data.result) {
+                                if (TextUtils.equals("1", resourceEntity.applyStatus) // 已申请
+                                        || TextUtils.equals("2", resourceEntity.applyStatus)) { // 审核通过
+                                    result.add(resourceEntity);
+                                }
+                            }
+                        } else if (TextUtils.equals("已收藏", mTabTitle)) {
+                            for (ResourceEntity resourceEntity : responseData.data.result) {
+                                if (resourceEntity.collectStatus == 1) {
+                                    result.add(resourceEntity);
+                                }
+                            }
+                        } else { // 全部
+                            result.addAll(responseData.data.result);
+                        }
+
+                        pageResult.elements = result;
                         pageResult.page_number = currentPage;
-                        pageResult.page_size = 20;
-                        pageResult.total_pages = responseData.data.total % 20 == 0
-                                ? responseData.data.total / 20
-                                : responseData.data.total / 20 + 1;
-                        pageResult.total_elements = responseData.data.total;
+                        pageResult.page_size = 1000;
+                        pageResult.total_pages = result.size() % 1000 == 0
+                                ? result.size() / 1000
+                                : result.size() / 1000 + 1;
+                        pageResult.total_elements = result.size();
                         return pageResult;
                     })
                     .toObservable()
@@ -125,6 +237,7 @@ public class ResourcesActivity extends BaseActivity {
 
         @Override
         public void notifyDataChanged(List<ResourceEntity> data) {
+            RxBus.getInstance().send(new TitleChangeEvent(mTabTitle, data.size()));
             mAdapter.updateData(data);
         }
 

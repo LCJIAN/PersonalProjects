@@ -6,7 +6,11 @@ import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.multidex.MultiDex;
+import androidx.room.Room;
 
+import com.github.piasy.biv.BigImageViewer;
+import com.github.piasy.biv.loader.glide.GlideImageLoader;
+import com.org.chat.data.db.AppDatabase;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.BufferedReader;
@@ -29,6 +33,8 @@ public class App extends Application {
         return INSTANCE;
     }
 
+    private AppDatabase mAppDatabase;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,6 +50,10 @@ public class App extends Application {
             Timber.plant(new ErrorTree());
         }
 
+        mAppDatabase = Room.databaseBuilder(this, AppDatabase.class, "smack-client")
+                .allowMainThreadQueries()
+                .build();
+        BigImageViewer.initialize(GlideImageLoader.with(App.getInstance()));
         RxJavaPlugins.setErrorHandler(Timber::e);
     }
 
@@ -51,6 +61,10 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    public AppDatabase getAppDatabase() {
+        return mAppDatabase;
     }
 
     private void initBugLy() {
@@ -63,7 +77,7 @@ public class App extends Application {
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
         strategy.setUploadProcess(processName == null || processName.equals(packageName));
         // 初始化Bugly
-        CrashReport.initCrashReport(context, Constants.U_KEY, false, strategy);
+        CrashReport.initCrashReport(context, Constants.BUG_LY_APP_ID, BuildConfig.DEBUG, strategy);
     }
 
     /**

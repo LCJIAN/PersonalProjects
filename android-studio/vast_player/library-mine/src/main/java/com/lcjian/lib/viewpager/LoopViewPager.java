@@ -17,9 +17,11 @@
 package com.lcjian.lib.viewpager;
 
 import android.content.Context;
+import android.util.AttributeSet;
+
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +141,7 @@ public class LoopViewPager extends ViewPager {
     }
 
     @Override
-    public void addOnPageChangeListener(OnPageChangeListener listener) {
+    public void addOnPageChangeListener(@NonNull OnPageChangeListener listener) {
         if (mOnPageChangeListeners == null) {
             mOnPageChangeListeners = new ArrayList<>();
         }
@@ -147,7 +149,7 @@ public class LoopViewPager extends ViewPager {
     }
 
     @Override
-    public void removeOnPageChangeListener(OnPageChangeListener listener) {
+    public void removeOnPageChangeListener(@NonNull OnPageChangeListener listener) {
         if (mOnPageChangeListeners != null) {
             mOnPageChangeListeners.remove(listener);
         }
@@ -165,8 +167,6 @@ public class LoopViewPager extends ViewPager {
     /**
      * If set to true, the boundary views (i.e. first and last) will never be destroyed
      * This may help to prevent "blinking" of some views
-     *
-     * @param flag
      */
     public void setBoundaryCaching(boolean flag) {
         mBoundaryCaching = flag;

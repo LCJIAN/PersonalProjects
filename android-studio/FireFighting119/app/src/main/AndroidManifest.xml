@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
@@ -50,6 +52,7 @@
             android:theme="@style/AppTheme.NoActionBar.SignIn" />
         <activity
             android:name=".ui.task.TaskDetailActivity"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -93,15 +96,41 @@
             android:name=".ui.resource.ResourceDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.resource.ResourceRelevanceDataActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.service.ServiceListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.service.ServiceDataQueryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.common.StaticsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.common.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".ui.common.SystemMessagesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ui.common.WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.common.WebViewActivityH"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.common.ImageViewerActivity"
+            android:theme="@style/AppTheme.ImageViewer" />
+        <activity
+            android:name=".ui.chat.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <service
+            android:name="com.org.chat.SmackClientService"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -122,7 +151,6 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar"
             tools:replace="screenOrientation" />
-
         <!--push-->
         <service
             android:name=".push.PushService"
@@ -133,6 +161,7 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
+
         <receiver
             android:name=".push.PushMessageReceiver"
             android:enabled="true"

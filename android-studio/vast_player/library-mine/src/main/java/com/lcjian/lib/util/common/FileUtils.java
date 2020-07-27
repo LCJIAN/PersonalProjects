@@ -3,7 +3,6 @@ package com.lcjian.lib.util.common;
 import android.util.Base64;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,8 +20,6 @@ import java.util.List;
  * File Utils
  * <ul>
  * Read or write file
- * <li>{@link #readFile(String)} read file</li>
- * <li>{@link #readFileToList(String)} read file to string list</li>
  * <li>{@link #writeFile(String, String, boolean)} write file</li>
  * <li>{@link #writeFile(String, InputStream)} write file</li>
  * </ul>
@@ -345,7 +342,7 @@ public class FileUtils {
      * <li>if {@link FileUtils#getFolderName(String)} return null,
      * return false</li>
      * <li>if target directory already exists, return true</li>
-     * <li>return {@link File#makeFolder}</li>
+     * <li>return {@link File#mkdir()}</li>
      * </ul>
      */
     public static boolean makeDirs(String filePath) {
@@ -473,40 +470,65 @@ public class FileUtils {
         return size;
     }
 
+    public static void writeBytesToFile(String path, String name, byte[] bytes) {
+        if (null == bytes) {
+            return;
+        }
+        File p = new File(path);
+        if (!p.exists()) {
+            if (!p.mkdirs()) {
+                return;
+            }
+        }
+
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(path + "/" + name);
+            out.write(bytes);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != out) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void base64ToFile(String path, String name, String fileBase64) {
+        byte[] bytes = Base64.decode(fileBase64, Base64.DEFAULT);
+        writeBytesToFile(path, name, bytes);
+    }
+
     public static String fileToBase64(File file) {
         if (file.isDirectory()) {
             return null;
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        InputStream is = null;
-        ByteArrayOutputStream os = null;
+        String base64 = null;
+        InputStream in = null;
         try {
-            is = new FileInputStream(file);
-            os = new ByteArrayOutputStream();
-            byte[] temp = new byte[1024];
-            for (int len = is.read(temp); len != -1; len = is.read(temp)) {
-                os.write(temp, 0, len);
-                stringBuilder.append(new String(Base64.encode(os.toByteArray(), Base64.NO_WRAP)));
-                os.reset();
-            }
+            in = new FileInputStream(file);
+            byte[] bytes = new byte[in.available()];
+            int length = in.read(bytes);
+            base64 = Base64.encodeToString(bytes, 0, length, Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (is != null) {
+            if (in != null) {
                 try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (os != null) {
-                try {
-                    os.close();
+                    in.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return stringBuilder.toString();
+        return base64;
     }
 }

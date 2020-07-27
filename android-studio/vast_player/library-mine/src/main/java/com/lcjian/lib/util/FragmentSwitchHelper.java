@@ -1,10 +1,11 @@
 package com.lcjian.lib.util;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.Log;
 
 public class FragmentSwitchHelper {
 
@@ -26,6 +27,15 @@ public class FragmentSwitchHelper {
         this.mFragments = fragments;
         this.mFragmentManager = fragmentManager;
         this.mUseHide = useHide;
+
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        for (Fragment f : mFragments) {
+            Fragment fragment = findFragment(f.getClass());
+            if (fragment != null) {
+                fragmentTransaction.remove(fragment);
+            }
+        }
+        fragmentTransaction.commit();
     }
 
     public static FragmentSwitchHelper create(int containerId,

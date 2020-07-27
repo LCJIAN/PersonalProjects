@@ -27,8 +27,8 @@
         android:layout_marginRight="24dp"
         android:background="@drawable/shape_skip_btn_bg"
         android:text="@string/skip_guide"
-        android:textAppearance="@style/TextAppearance.AppTheme"
-        android:textColor="@android:color/white"
+        android:textAppearance="@style/TextAppearance.AppTheme.Small"
+        android:textColor="#ff666666"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

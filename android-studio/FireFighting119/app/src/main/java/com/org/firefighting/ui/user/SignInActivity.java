@@ -1,6 +1,5 @@
 package com.org.firefighting.ui.user;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,7 +17,6 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.SignInRequest;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.main.MainActivity;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +35,6 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
     Button btn_sign_in;
 
     private Disposable mDisposable;
-    private Disposable mDisposableP;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +45,7 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
         et_phone.addTextChangedListener(this);
         et_pwd.addTextChangedListener(this);
 
-        et_phone.setText(R.string.demo_user_name);
-        et_pwd.setText(R.string.demo_user_pwd);
-        btn_sign_in.setOnClickListener(v -> checkPermission());
+        btn_sign_in.setOnClickListener(v -> signIn());
     }
 
     @Override
@@ -71,30 +66,10 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void onDestroy() {
-        if (mDisposableP != null) {
-            mDisposableP.dispose();
-        }
         if (mDisposable != null) {
             mDisposable.dispose();
         }
         super.onDestroy();
-    }
-
-    private void checkPermission() {
-        RxPermissions rxPermissions = new RxPermissions(this);
-        mDisposableP = rxPermissions
-                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.ACCESS_WIFI_STATE,
-                        Manifest.permission.READ_PHONE_STATE)
-                .subscribe(granted -> {
-                    if (granted) {
-                        signIn();
-                    } else {
-                        finish();
-                    }
-                });
     }
 
     private void signIn() {

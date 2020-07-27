@@ -120,7 +120,6 @@ public class FCaptureActivity extends BaseActivity {
                 .forResult(1000);
     }
 
-
     public static class ImageNoQrFragment extends DialogFragment {
 
         @Override

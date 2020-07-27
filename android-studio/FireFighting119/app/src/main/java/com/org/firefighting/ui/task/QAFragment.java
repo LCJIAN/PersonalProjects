@@ -60,7 +60,7 @@ public class QAFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_qa, container, false);
+        View view = inflater.inflate(R.layout.fragment_task_qa, container, false);
         rv_qa = view.findViewById(R.id.rv_qa);
         return view;
     }

@@ -7,6 +7,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,15 +24,18 @@ import com.google.android.material.tabs.TabLayout;
 import com.lcjian.lib.content.SimpleFragmentPagerAdapter;
 import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
+import com.lcjian.lib.util.common.SoftKeyboardUtils;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
 import com.org.firefighting.data.entity.PageResult;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.SearchRequest;
 import com.org.firefighting.data.network.entity.SearchResult;
+import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.base.RecyclerFragment;
 import com.org.firefighting.ui.resource.ResourceDetailActivity;
+import com.org.firefighting.ui.service.ServiceDataQueryActivity;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -67,6 +71,16 @@ public class SearchActivity extends BaseActivity {
             if (!TextUtils.isEmpty(et_keyword.getEditableText())) {
                 RxBus.getInstance().send(et_keyword.getEditableText());
             }
+            SoftKeyboardUtils.hideSoftInput(v.getContext());
+        });
+        et_keyword.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (!TextUtils.isEmpty(et_keyword.getEditableText())) {
+                    RxBus.getInstance().send(et_keyword.getEditableText());
+                }
+                SoftKeyboardUtils.hideSoftInput(v.getContext());
+            }
+            return false;
         });
 
         vp_search.setOffscreenPageLimit(4);
@@ -133,6 +147,14 @@ public class SearchActivity extends BaseActivity {
                                     startActivity(new Intent(v.getContext(), ResourceDetailActivity.class)
                                             .putExtra("resource_id", viewHolder.itemData.id)
                                             .putExtra("resource_table_comment", viewHolder.itemData.title));
+                                } else if (TextUtils.equals("110000", mCategoryId)) {
+                                    ServiceEntity serviceEntity = new ServiceEntity();
+                                    serviceEntity.id = viewHolder.itemData.id;
+                                    serviceEntity.serviceName = viewHolder.itemData.title;
+                                    serviceEntity.invokeName = viewHolder.itemData.id;
+                                    serviceEntity.applyStatus = 0;
+                                    startActivity(new Intent(v.getContext(), ServiceDataQueryActivity.class)
+                                            .putExtra("service", serviceEntity));
                                 }
                             });
                         }
@@ -144,7 +166,7 @@ public class SearchActivity extends BaseActivity {
                             ll_label.removeAllViews();
                             ll_label.addView(view);
                             if (!TextUtils.isEmpty(data.label)) {
-                                String[] labels = data.label.split(" ");
+                                String[] labels = data.label.trim().split(" ");
                                 LayoutInflater inflater = LayoutInflater.from(ll_label.getContext());
                                 for (String label : labels) {
                                     TextView tv = (TextView) inflater.inflate(R.layout.search_result_label_item, ll_label, false);
@@ -174,15 +196,18 @@ public class SearchActivity extends BaseActivity {
             sr.category = mCategoryId;
             sr.search = mKeyword;
             return RestAPI.getInstance().apiServiceSB().search(sr)
-                    .map(quoteResponsePageData -> {
+                    .map(responseData -> {
+                        if (responseData.total == null) {
+                            responseData.total = 0;
+                        }
                         PageResult<SearchResult> pageResult = new PageResult<>();
-                        pageResult.elements = quoteResponsePageData.result;
+                        pageResult.elements = responseData.result;
                         pageResult.page_number = currentPage;
                         pageResult.page_size = 20;
-                        pageResult.total_pages = quoteResponsePageData.total % 20 == 0
-                                ? quoteResponsePageData.total / 20
-                                : quoteResponsePageData.total / 20 + 1;
-                        pageResult.total_elements = quoteResponsePageData.total;
+                        pageResult.total_pages = responseData.total % 20 == 0
+                                ? responseData.total / 20
+                                : responseData.total / 20 + 1;
+                        pageResult.total_elements = responseData.total;
                         return pageResult;
                     })
                     .toObservable()

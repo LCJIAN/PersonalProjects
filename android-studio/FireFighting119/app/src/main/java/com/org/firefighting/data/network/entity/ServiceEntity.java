@@ -1,12 +1,14 @@
 package com.org.firefighting.data.network.entity;
 
-public class ServiceEntity {
+import java.io.Serializable;
+
+public class ServiceEntity implements Serializable {
 
     public String id;
     public String createBy;
     public String createDate;
     public String remarks;
-    public String name;
+    public String serviceName;
     public String type;
     public String description;
     public Integer browses;
@@ -30,6 +32,9 @@ public class ServiceEntity {
     public String collectId;
     public Integer collectStatus;
     public String collectStatusDescription;
+    public String applyId;
+    public Integer applyStatus;
+    public String applyStatusDescription;
     public String subscribeId;
     public String subscribeStatus;
     public String subscribeStatusDescription;

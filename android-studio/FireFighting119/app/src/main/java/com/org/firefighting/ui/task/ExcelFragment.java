@@ -3,7 +3,6 @@ package com.org.firefighting.ui.task;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -87,7 +86,7 @@ public class ExcelFragment extends BaseFragment implements View.OnClickListener 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_excel, container, false);
+        View view = inflater.inflate(R.layout.fragment_task_excel, container, false);
         mUnBinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -96,14 +95,13 @@ public class ExcelFragment extends BaseFragment implements View.OnClickListener 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         WebSettings webSettings = webView.getSettings();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            webSettings.setAllowFileAccessFromFileURLs(true);
-            webSettings.setAllowUniversalAccessFromFileURLs(true);
-            webSettings.setLoadWithOverviewMode(true);
-            webSettings.setUseWideViewPort(true);
-            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        }
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setJavaScriptEnabled(true);
+
         webView.addJavascriptInterface(new JsBridge(), "jsBridge");
         webView.setWebViewClient(new WebViewClient() {
             @Override

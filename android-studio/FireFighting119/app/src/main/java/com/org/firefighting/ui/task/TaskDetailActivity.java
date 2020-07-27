@@ -13,11 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.FragmentSwitchHelper;
@@ -32,8 +29,6 @@ import com.org.firefighting.data.network.entity.ResponseData;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.common.ConfirmFragment;
-
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,9 +72,6 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
     EditText et_ask;
     @BindView(R.id.btn_ask)
     Button btn_ask;
-
-    @BindView(R.id.app_bar)
-    AppBarLayout app_bar;
 
     private String mTaskId;
 
@@ -149,16 +141,6 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
         btn_back.setOnClickListener(this);
         btn_ask.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
-
-        app_bar.post(() -> ((AppBarLayout.Behavior)
-                Objects.requireNonNull(((CoordinatorLayout.LayoutParams) app_bar.getLayoutParams())
-                        .getBehavior()))
-                .setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                    @Override
-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                        return true;
-                    }
-                }));
 
         mFragmentSwitchHelper.changeFragment(ExcelFragment.class);
         setupDetail();

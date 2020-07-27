@@ -11,25 +11,29 @@ public class User2 {
     public String avatar;
     public String email;
     public String phone;
-    //    public String dept;
-//    public String job;
     public Boolean enabled;
     public Long createTime;
     @SerializedName("realname")
     public String realName;
     public String jobNumber;
-    public Long deptid;
-    public String deptCode;
-    public Integer roleId;
-    public String roleName;
-    public String dataScope;
+    public Job job;
+    public Dept dept;
     public List<Role> roles;
 
     public static class Role {
-
         public Long id;
         public String name;
         public Integer level;
         public String dataScope;
+    }
+
+    public static class Job {
+        public Long id;
+        public String name;
+    }
+
+    public static class Dept {
+        public Long id;
+        public String name;
     }
 }

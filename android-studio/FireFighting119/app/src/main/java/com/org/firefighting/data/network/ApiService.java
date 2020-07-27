@@ -1,18 +1,24 @@
 package com.org.firefighting.data.network;
 
 import com.org.firefighting.data.network.entity.AskRequest;
-import com.org.firefighting.data.network.entity.Conversation;
+import com.org.firefighting.data.network.entity.DataQueryResult;
+import com.org.firefighting.data.network.entity.DataQueryResult2;
 import com.org.firefighting.data.network.entity.Department;
 import com.org.firefighting.data.network.entity.News;
+import com.org.firefighting.data.network.entity.NewsCategory;
 import com.org.firefighting.data.network.entity.PageResponse;
+import com.org.firefighting.data.network.entity.RelevanceTable;
 import com.org.firefighting.data.network.entity.ResourceDataRequest;
 import com.org.firefighting.data.network.entity.ResourceEntity;
 import com.org.firefighting.data.network.entity.ResponseData;
 import com.org.firefighting.data.network.entity.SearchRequest;
 import com.org.firefighting.data.network.entity.SearchResult;
+import com.org.firefighting.data.network.entity.ServiceDataRequest;
+import com.org.firefighting.data.network.entity.ServiceDataRequestEmpty;
 import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.data.network.entity.SignInRequest;
 import com.org.firefighting.data.network.entity.SignInResponse;
+import com.org.firefighting.data.network.entity.SystemMessage;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.data.network.entity.TaskLog;
 import com.org.firefighting.data.network.entity.TaskQuestion;
@@ -139,8 +145,9 @@ public interface ApiService {
     /**
      * 填报任务数据
      */
-    @GET("ht/api/v2/xxtb/user/task/info/1")
-    Single<ResponseData<Map<String, Integer>>> getTaskSummary1(@Query("token") String token);
+    @GET("ht/api/v2/xxtb/user/task/info/{user_id}")
+    Single<ResponseData<Map<String, Integer>>> getTaskSummary1(@Path("user_id") Long userId,
+                                                               @Query("token") String token);
 
     /**
      * 服务申请和数据处理
@@ -151,14 +158,20 @@ public interface ApiService {
     /**
      * 组织架构列明
      */
-    @GET("api/dept?code=&page=0&size=100&sort=id,desc")
+    @GET("admin-ht/api/dept?code=&page=0&size=100&sort=id,desc")
     Single<PageResponse<Department>> getDepartments();
 
     /**
      * 组织成员
      */
-    @GET("api/users?page=0&size=200&sort=id,desc")
+    @GET("admin-ht/api/users?page=0&size=200&sort=id,desc")
     Single<PageResponse<User2>> getUsersByDepartment(@Query("code") String code);
+
+    /**
+     * 组织成员
+     */
+    @GET("admin-ht/api/users?page=0&size=20000&sort=id,desc")
+    Single<PageResponse<User2>> getAllUsers();
 
     /**
      * 搜素接口
@@ -170,11 +183,11 @@ public interface ApiService {
      * 用户个人消息列表
      */
     @GET("admin-ht/api/msg")
-    Single<PageResponse<Conversation>> getConversations(@Query("ReceiverRealName") String receiverRealName,
-                                                        @Query("content") String content,
-                                                        @Query("msgStatus") Integer msgStatus,
-                                                        @Query("pageNum") Integer pageNum,
-                                                        @Query("pageSize") Integer pageSize);
+    Single<PageResponse<SystemMessage>> getSystemMessages(@Query("receiver") Long receiverUid,
+                                                          @Query("content") String content,
+                                                          @Query("msgStatus") Integer msgStatus,
+                                                          @Query("pageNum") Integer pageNum,
+                                                          @Query("pageSize") Integer pageSize);
 
     /**
      * 资源目录接口
@@ -198,9 +211,34 @@ public interface ApiService {
      * 资源目录数据查询接口
      */
     @POST("admin-ht/api/resource/dapi/{username}/0/{tableCode}")
-    Single<ResponseData<Object>> queryResourceData(@Path("username") String username,
-                                                   @Path("tableCode") String tableCode,
-                                                   @Body ResourceDataRequest request);
+    Single<DataQueryResult> queryResourceData(@Path("username") String username,
+                                              @Path("tableCode") String tableCode,
+                                              @Body ResourceDataRequest request);
+
+    /**
+     * 资源目录数据查询接口
+     */
+    @POST("gtone-ht/label/dsgMetadataRelation/findListBypresentTableId")
+    Single<ResponseData<List<RelevanceTable>>> getResourceRelevanceData(@Body Map<String, String> request);
+
+    /**
+     * 收藏
+     */
+    @POST("gtone-ht/interior/data/collect/create/{resource_id}")
+    Single<ResponseData<Object>> favourite(@Path("resource_id") String resourceId,
+                                           @Body Map<String, Object> request);
+
+    /**
+     * 取消收藏
+     */
+    @GET("gtone-ht/interior/data/collect/cancel/{collect_id}")
+    Single<ResponseData<Object>> unFavourite(@Path("collect_id") String collectId);
+
+    /**
+     * 申请
+     */
+    @POST("gtone-ht/interior/data/resource/v2/apply")
+    Single<ResponseData<Object>> applyResource(@Body Map<String, String> request);
 
     /**
      * 服务列表接口
@@ -214,10 +252,63 @@ public interface ApiService {
                                                                   @Query("pageSize") Integer pageSize);
 
     /**
+     * 服务
+     */
+    @POST("gtone-ht/interior/data/dservice/dir/detail/{id}?userType=external&category=service")
+    Single<ResponseData<Object>> getService(@Query("id") String id,
+                                            @Query("userId") String userId);
+
+    /**
+     * 申请
+     */
+    @POST("gtone-ht/interior/data/service/apply")
+    Single<ResponseData<Object>> applyService(@Body Map<String, String> request);
+
+    /**
+     * 实时服务数据查询接口
+     */
+    @POST("admin-ht/api/esb/call/0/{username}/{invokeName}")
+    Single<DataQueryResult2> queryServiceData(@Path("username") String username,
+                                              @Path("invokeName") String invokeName,
+                                              @Body ServiceDataRequest request);
+
+    /**
+     * 实时服务数据查询接口
+     */
+    @POST("admin-ht/api/esb/call/0/{username}/{invokeName}")
+    Single<DataQueryResult2> queryServiceData(@Path("username") String username,
+                                              @Path("invokeName") String invokeName,
+                                              @Body ServiceDataRequestEmpty request);
+
+    /**
+     * 获取资迅类型
+     */
+    @GET("crawler/crawler/news/menu?pageNum=1&pageSize=100")
+    Single<PageResponse<NewsCategory>> getNewsCategories();
+
+    /**
      * 资迅列表接口
      */
-    @GET("crawlerPage/detail?crawlerStatus=2&depth=2")
+    @GET("crawler/crawlerPage/news?crawlerStatus=2&depth=2")
     Single<PageResponse<News>> getNews(@Query("seedUrlMd5") String seedUrlMd5,
                                        @Query("pageNum") Integer pageNum,
                                        @Query("pageSize") Integer pageSize);
+
+    /**
+     * 年警情数据
+     */
+    @GET("mhht/mhjy/data/api/v3/home/ndxxtj")
+    Single<ResponseData<List<Map<String, Integer>>>> getPoliceStaticsYear(@Query("queryDate") String date);
+
+    /**
+     * 日警情数据
+     */
+    @GET("mhht/mhjy/data/api/v2/home/jrjqxxtj")
+    Single<ResponseData<List<Map<String, Integer>>>> getPoliceStaticsDay(@Query("queryDate") String date);
+
+    /**
+     * 实时警情数据
+     */
+    @GET("mhht/mhjy/data/api/v2/home/ssajxx")
+    Single<ResponseData<List<Map<String, String>>>> getRealTimePoliceStatics(@Query("queryDate") String date);
 }

@@ -30,6 +30,7 @@
                 android:layout_height="36dp"
                 android:background="@drawable/shape_white_round_corner"
                 android:hint="@string/hint_keyword"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" />

@@ -12,6 +12,6 @@ public class PageResponse<T> {
     public Integer pager;
     @SerializedName(value = "total", alternate = "totalElements")
     public Integer total;
-    @SerializedName(value = "result", alternate = {"content", "list"})
+    @SerializedName(value = "result", alternate = {"content", "list", "data"})
     public List<T> result;
 }

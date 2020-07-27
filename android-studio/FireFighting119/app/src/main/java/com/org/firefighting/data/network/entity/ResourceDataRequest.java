@@ -1,17 +1,17 @@
 package com.org.firefighting.data.network.entity;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
 import java.util.Map;
 
 public class ResourceDataRequest {
 
+    public Map<String, String> searchMap;
+
     @SerializedName("rowIdOnly")
     public Integer rowIdOnly = 0;
     @SerializedName("search")
-    public Map<String, String> search;
+    public String search;
     @SerializedName("page")
     public Integer pageNumber;
     @SerializedName("size")

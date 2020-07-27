@@ -3,11 +3,11 @@
     <string name="demo_user_pwd">123456</string>
     <string name="demo_version">V1.0.3</string>
 
-    <string name="app_name">信息填报</string>
+    <string name="app_name">数据资产管理</string>
     <string name="empty_data">暂无结果</string>
     <string name="error_msg">出错了</string>
     <string name="skip_guide">跳过</string>
-    <string name="app_title">重庆市消防救援总队\n据资产管理平台</string>
+    <string name="app_title">重庆市消防救援总队\n数据资产管理平台</string>
     <string name="hint_user_name">请输入账户</string>
     <string name="hint_user_pwd">请输入密码</string>
     <string name="sign_in">登录</string>
@@ -42,8 +42,9 @@
     <string name="remember_action">记住操作</string>
     <string name="continue_input">继续填报</string>
     <string name="not_continue_input">不，我已填报完成</string>
+    <string name="statics">专题分析</string>
     <string name="helping">消防资讯</string>
-    <string name="announcement">服务目录</string>
+    <string name="announcement">实时服务</string>
     <string name="organization">资源目录</string>
     <string name="task">信息填报</string>
     <string name="hint_search">指定搜索内容</string>
@@ -76,4 +77,24 @@
     <string name="search">搜索</string>
     <string name="no_qr_code">未发现二维码</string>
     <string name="touch_to_continue">轻触屏幕继续扫描</string>
+    <string name="send">发送</string>
+    <string name="touch_and_hold">按住说话</string>
+    <string name="pre_page">上一页</string>
+    <string name="next_page">下一页</string>
+    <string name="total_page_count">共%1$d页</string>
+    <string name="relevance_data">相关数据</string>
+    <string name="data_detail">数据详情</string>
+    <string name="apply_resource_name">申请名称</string>
+    <string name="apply_resource_reason">申请原因</string>
+    <string name="resource_application">资源申请</string>
+    <string name="apply_resource_name_empty">申请名称为空</string>
+    <string name="apply_resource_reason_empty">申请原因为空</string>
+    <string name="submit_application">提交</string>
+    <string name="system_message">系统消息</string>
+    <string name="police_statics">警情数据</string>
+    <string name="real_time_statics">实时警情</string>
+    <string name="duty_statics">值班动态</string>
+    <string name="detail">详情</string>
+    <string name="hint_user_search">搜索部门或人员</string>
+    <string name="more">更多</string>
 </resources>

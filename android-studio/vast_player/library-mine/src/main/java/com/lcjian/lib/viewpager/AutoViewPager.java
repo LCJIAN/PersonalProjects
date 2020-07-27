@@ -38,31 +38,27 @@ public class AutoViewPager extends LoopViewPager {
 
     public AutoViewPager(Context context) {
         super(context);
-        init();
     }
 
     public AutoViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public void setInterval(int interval) {
         this.mInterval = interval;
     }
 
-    private void init() {
-        addOnPageChangeListener(mOnPageChangeListener);
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        addOnPageChangeListener(mOnPageChangeListener);
         onPageSelect();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        removeOnPageChangeListener(mOnPageChangeListener);
         removeCallbacks(mSettler);
     }
 

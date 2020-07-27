@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_in_msg_send_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_gray9_corner_bg"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingTop="2dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="2dp"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        tools:text="2020-09-11" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_in_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_in_msg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_chat_content_in"
+                android:gravity="center_vertical|start"
+                android:minHeight="40dp"
+                android:textColor="#ff333333"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_in_msg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="160dp"
+                android:maxHeight="160dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_voice_in_msg_content"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@drawable/selector_chat_content_in"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view_voice_anim"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="@mipmap/adj" />
+
+                <TextView
+                    android:id="@+id/tv_voice_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ff333333"
+                    android:textSize="15sp"
+                    tools:text="3''" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <ProgressBar
+                android:id="@+id/pb_in_msg_delivery_status"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/v_in_msg_clicked"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_dot" />
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

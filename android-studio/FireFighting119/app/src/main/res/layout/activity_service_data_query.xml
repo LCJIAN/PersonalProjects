@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/nav_top_bar" />
+
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fl_apply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="?colorPrimary"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/tv_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_security_check_white_48dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

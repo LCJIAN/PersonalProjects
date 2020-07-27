@@ -1,5 +1,6 @@
 package com.org.firefighting.ui.user;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.org.firefighting.R;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.main.MainActivity;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,22 +25,51 @@ import io.reactivex.disposables.Disposable;
 public class SplashActivity extends BaseActivity {
 
     private Disposable mDisposable;
+    private Disposable mDisposableP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            Window window = getWindow();
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        }
+        Window window = getWindow();
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                     | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
         setContentView(R.layout.activity_splash);
 
+        checkPermission();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mDisposableP.dispose();
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
+        super.onDestroy();
+    }
+
+    private void checkPermission() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        mDisposableP = rxPermissions
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.ACCESS_WIFI_STATE,
+                        Manifest.permission.READ_PHONE_STATE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        navigateTo();
+                    } else {
+                        finish();
+                    }
+                });
+    }
+
+    private void navigateTo() {
         mDisposable = Single.zip(
                 Single.fromCallable(SharedPreferencesDataSource::getGuided),
                 Single.fromCallable(() -> SharedPreferencesDataSource.getSignInResponse() != null),
@@ -62,11 +93,5 @@ public class SplashActivity extends BaseActivity {
                         },
                         throwable -> {
                         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        mDisposable.dispose();
-        super.onDestroy();
     }
 }

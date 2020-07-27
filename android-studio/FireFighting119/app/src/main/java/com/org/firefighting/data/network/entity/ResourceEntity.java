@@ -107,9 +107,9 @@ public class ResourceEntity {
         public String nickDescription;
         public int sort;
         public int status;
-        public String isStatistics;
-        public String isShow;
-        public String isSearch;
-        public String isSort;
+        public Integer isStatistics;
+        public Integer isDisplay;
+        public Integer isSearch;
+        public Integer isSort;
     }
 }

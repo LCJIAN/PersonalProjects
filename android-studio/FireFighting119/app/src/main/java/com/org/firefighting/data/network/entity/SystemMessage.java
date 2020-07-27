@@ -1,6 +1,6 @@
 package com.org.firefighting.data.network.entity;
 
-public class Conversation {
+public class SystemMessage {
 
     public Long id;
     public String createTime;
@@ -20,5 +20,5 @@ public class Conversation {
     public String sender;
     public String senderRealName;
     public String total;
-    
+
 }

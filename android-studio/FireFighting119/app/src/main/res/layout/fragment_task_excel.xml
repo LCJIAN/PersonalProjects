@@ -62,7 +62,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="28dp"
                             android:drawableStart="@drawable/ic_add"
-                            android:drawableLeft="@drawable/ic_add"
                             android:drawablePadding="8dp"
                             android:gravity="center"
                             android:text="@string/add"
@@ -74,7 +73,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="48dp"
-                        android:layout_marginLeft="48dp"
                         android:background="@drawable/shape_blue_btn_bg"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp">
@@ -83,7 +81,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="28dp"
                             android:drawableStart="@drawable/ic_delete"
-                            android:drawableLeft="@drawable/ic_delete"
                             android:drawablePadding="8dp"
                             android:gravity="center"
                             android:text="@string/clear"
