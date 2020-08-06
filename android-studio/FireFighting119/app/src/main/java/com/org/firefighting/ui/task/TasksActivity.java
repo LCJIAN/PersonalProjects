@@ -1,4 +1,4 @@
-package com.org.firefighting.ui.main;
+package com.org.firefighting.ui.task;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,8 @@ import com.org.firefighting.RxBus;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Task;
-import com.org.firefighting.ui.base.BaseFragment;
-import com.org.firefighting.ui.task.TaskDetailActivity;
+import com.org.firefighting.ui.base.BaseActivity;
+import com.org.firefighting.ui.common.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,13 +39,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class TasksFragment extends BaseFragment {
+public class TasksActivity extends BaseActivity {
 
+    @BindView(R.id.btn_back)
+    ImageButton btn_back;
+    @BindView(R.id.btn_go_search)
+    ImageButton btn_go_search;
     @BindView(R.id.tab_task)
     TabLayout tab_task;
     @BindView(R.id.vp_task)
@@ -53,23 +57,20 @@ public class TasksFragment extends BaseFragment {
     private List<String> mTitlesO = Arrays.asList("待填报", "已填报", "已完结");
     private List<String> mTitles = new ArrayList<>(mTitlesO);
 
-    private Unbinder mUnBinder;
-
     private Disposable mDisposable;
 
     private TaskPagerAdapter mPagerAdapter;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frament_tasks, container, false);
-        mUnBinder = ButterKnife.bind(this, view);
-        return view;
-    }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tasks);
+        ButterKnife.bind(this);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mPagerAdapter = new TaskPagerAdapter(getChildFragmentManager(), mTitles);
+        btn_back.setOnClickListener(v -> onBackPressed());
+        btn_go_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
+
+        mPagerAdapter = new TaskPagerAdapter(getSupportFragmentManager(), mTitles);
 
         vp_task.setOffscreenPageLimit(3);
         vp_task.setAdapter(mPagerAdapter);
@@ -90,10 +91,9 @@ public class TasksFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
+    protected void onDestroy() {
         mDisposable.dispose();
-        mUnBinder.unbind();
-        super.onDestroyView();
+        super.onDestroy();
     }
 
     private static class TaskPagerAdapter extends FragmentStatePagerAdapter {

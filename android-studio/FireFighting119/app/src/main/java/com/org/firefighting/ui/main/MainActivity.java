@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         mFragmentSwitchHelper = FragmentSwitchHelper.create(R.id.fl_fragment_container,
                 getSupportFragmentManager(), true,
-                new HomeFragment(), new TasksFragment(), new ConversationsFragment(), new MineFragment());
+                new HomeFragment(), new DepartmentsFragment(), new ConversationsFragment(), new MineFragment());
 
         bnv_main.setOnNavigationItemSelectedListener(this);
         bnv_main.setSelectedItemId(R.id.action_conversation);
@@ -67,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
+    protected void onStop() {
+        ShortcutBadger.removeCount(getApplicationContext());
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
         mDisposableR.dispose();
         AllenVersionChecker.getInstance().cancelAllMission();
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 mFragmentSwitchHelper.changeFragment(HomeFragment.class);
                 break;
             case R.id.action_task:
-                mFragmentSwitchHelper.changeFragment(TasksFragment.class);
+                mFragmentSwitchHelper.changeFragment(DepartmentsFragment.class);
                 break;
             case R.id.action_conversation:
                 mFragmentSwitchHelper.changeFragment(ConversationsFragment.class);
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    void checkTask() {
+    void checkContacts() {
         bnv_main.setSelectedItemId(R.id.action_task);
     }
 

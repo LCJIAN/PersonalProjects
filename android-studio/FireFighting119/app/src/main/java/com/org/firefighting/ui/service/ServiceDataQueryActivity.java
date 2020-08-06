@@ -93,6 +93,9 @@ public class ServiceDataQueryActivity extends BaseActivity {
         if (mDisposableA != null) {
             mDisposableA.dispose();
         }
+        if (mDisposableR != null) {
+            mDisposableR.dispose();
+        }
         super.onDestroy();
     }
 

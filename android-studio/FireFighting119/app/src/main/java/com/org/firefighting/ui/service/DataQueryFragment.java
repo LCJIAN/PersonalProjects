@@ -265,7 +265,7 @@ public class DataQueryFragment extends BaseFragment {
                                 Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                                 RxBus.getInstance().send(new ServiceDataQueryActivity.PermissionEvent(false));
                             } else {
-                                RxBus.getInstance().send(new ServiceDataQueryActivity.PermissionEvent(false));
+                                RxBus.getInstance().send(new ServiceDataQueryActivity.PermissionEvent(true));
                                 mColumns = responseData.field;
                                 addOptionItem();
                                 setupOptions();

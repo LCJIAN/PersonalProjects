@@ -81,10 +81,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.task.AddRecordActivity"
+            android:name=".ui.task.TasksActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.chat.DepartmentsActivity"
+            android:name=".ui.task.AddRecordActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.chat.DepartmentUsersActivity"

@@ -55,11 +55,14 @@ public interface MessageDao {
 
     @Query("SELECT from_entity_bare_jid, COUNT(*) AS un_read_count" +
             " FROM message" +
-            " WHERE (from_entity_bare_jid IN (:bareOppositeJidList) AND to_entity_bare_jid = :bareOwnerJid) AND delivery_status = 4" +
+            " WHERE (from_entity_bare_jid IN (:bareOppositeJidList) AND to_entity_bare_jid = :bareOwnerJid) AND delivery_status = " + Message.DS_RECEIVED +
             " GROUP BY from_entity_bare_jid")
     List<UnReadCount> getUnReadMessageCounts(String bareOwnerJid, List<String> bareOppositeJidList);
 
-    @Query("UPDATE message SET delivery_status = 5 " +
+    @Query("SELECT COUNT(*) FROM message WHERE to_entity_bare_jid = :bareOwnerJid AND delivery_status = " + Message.DS_RECEIVED)
+    Flowable<Integer> getTotalUnReadCountRX(String bareOwnerJid);
+
+    @Query("UPDATE message SET delivery_status = " + Message.DS_READ +
             " WHERE from_entity_bare_jid = :bareOppositeJid AND to_entity_bare_jid = :bareOwnerJid")
     void readMessages(String bareOwnerJid, String bareOppositeJid);
 }

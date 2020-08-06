@@ -1,5 +1,6 @@
 package com.org.firefighting.ui.chat;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.common.DateUtils;
 import com.lcjian.lib.util.common.FileUtils;
+import com.lcjian.lib.util.common.SoftKeyboardUtils;
 import com.org.chat.SimpleAudioPlayHelper;
 import com.org.chat.SmackClient;
 import com.org.chat.SmackClientService;
@@ -122,6 +124,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     private boolean mIsVoice;
 
     @Override
+    @SuppressLint("ClickableViewAccessibility")
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
@@ -328,7 +331,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
                                 iv_out_msg_content.setVisibility(View.GONE);
                                 ll_voice_out_msg_content.setVisibility(View.VISIBLE);
                                 tv_voice_duration.setText(t.split(";").length < 3 ? "0" : t.split(";")[2]);
-                                v_out_msg_clicked.setVisibility(data.msg.localStatus == Message.LS_NEW ? View.VISIBLE : View.GONE);
+                                v_out_msg_clicked.setVisibility(/*data.msg.localStatus == Message.LS_NEW ? View.VISIBLE : */View.GONE);
 
                                 String url = c;
                                 if (isVoicePlayings.get(url) != null && isVoicePlayings.get(url)) {
@@ -377,6 +380,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
         layoutManager.setStackFromEnd(true);
         rv_chat_message.setLayoutManager(layoutManager);
         rv_chat_message.setAdapter(mAdapter);
+        rv_chat_message.setOnTouchListener((v, event) -> {
+            SoftKeyboardUtils.hideSoftInput(v.getContext());
+            return false;
+        });
 
         mDisposableR = RxBus.getInstance()
                 .asFlowable()
@@ -540,10 +547,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
             tv_hold_voice.setVisibility(View.VISIBLE);
             et_message.setText("");
             et_message.setVisibility(View.GONE);
+            SoftKeyboardUtils.hideSoftInput(this);
         } else {
             btn_switch_keyboard.setImageResource(R.drawable.selector_chat_voice);
             tv_hold_voice.setVisibility(View.GONE);
             et_message.setVisibility(View.VISIBLE);
+            et_message.requestFocus();
+            SoftKeyboardUtils.showSoftInput(this, et_message);
         }
     }
 

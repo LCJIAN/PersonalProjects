@@ -32,9 +32,9 @@ import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.data.network.entity.VersionInfo;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.ChatActivity;
-import com.org.firefighting.ui.chat.DepartmentsActivity;
 import com.org.firefighting.ui.resource.ResourcesActivity;
 import com.org.firefighting.ui.service.ServiceListActivity;
+import com.org.firefighting.ui.task.TasksActivity;
 import com.org.firefighting.ui.user.PwdModifyActivity;
 import com.org.firefighting.ui.user.SignInActivity;
 
@@ -122,10 +122,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(v.getContext(), PwdModifyActivity.class));
                 break;
             case R.id.rl_my_task:
-                ((MainActivity) Objects.requireNonNull(getActivity())).checkTask();
+                startActivity(new Intent(v.getContext(), TasksActivity.class));
                 break;
             case R.id.rl_arc:
-                startActivity(new Intent(v.getContext(), DepartmentsActivity.class));
+                ((MainActivity) Objects.requireNonNull(getActivity())).checkContacts();
                 break;
             case R.id.rl_organisation:
                 startActivity(new Intent(v.getContext(), ResourcesActivity.class));

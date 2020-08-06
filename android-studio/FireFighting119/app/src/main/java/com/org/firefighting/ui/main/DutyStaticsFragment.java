@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.lcjian.lib.recyclerview.AdvanceAdapter;
 import com.lcjian.lib.text.Spans;
-import com.lcjian.lib.util.common.DateUtils;
 import com.lcjian.lib.util.common.DimenUtils;
 import com.org.firefighting.R;
 import com.org.firefighting.data.network.entity.DutyInfo;
@@ -82,7 +81,7 @@ public class DutyStaticsFragment extends BaseFragment {
     }
 
     private void getData() {
-        mDisposable = Single.just("http://124.162.30.39:9528/mock/data.js")
+        mDisposable = Single.just("http://124.162.30.39:10001/zbdt/getZb/50000000")
                 .map(aString -> new Gson().fromJson(
                         Utils.get(aString, null, null)
                                 .replace("var data = ", ""),
@@ -91,7 +90,7 @@ public class DutyStaticsFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dutyInfo -> {
                             mDuties.clear();
-                            List<DutyInfo.DutyItem> items = dutyInfo.userInfo.get(DateUtils.convertDateToStr(DateUtils.now(), "MM-dd"));
+                            List<DutyInfo.DutyItem> items = dutyInfo.data;
                             if (items != null) {
                                 mDuties.addAll(items);
                             }

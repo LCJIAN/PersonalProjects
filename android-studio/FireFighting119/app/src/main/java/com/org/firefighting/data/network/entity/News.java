@@ -19,5 +19,6 @@ public class News {
     public String publishTime;
     public String crawlerTime;
     public Integer crawlerStatus;
+    public String category;
 
 }

@@ -99,7 +99,7 @@
                                 android:text="@string/announcement"
                                 android:textColor="#ff666666"
                                 android:textSize="15sp"
-                                app:drawableTopCompat="@drawable/ic_announcement"
+                                android:drawableTop="@drawable/ic_announcement"
                                 app:layout_constraintBottom_toBottomOf="@+id/tv_helping"
                                 app:layout_constraintEnd_toStartOf="@+id/tv_helping"
                                 app:layout_constraintHorizontal_bias="0.5"

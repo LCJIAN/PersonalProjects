@@ -14,7 +14,10 @@ public class SoftKeyboardUtils {
      */
     public static void hideSoftInput(Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), 0);
+        View currentFocus = ((Activity) context).getWindow().getDecorView();
+        if (imm != null && imm.isActive()) {
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 
     /**
@@ -24,6 +27,8 @@ public class SoftKeyboardUtils {
      */
     public static void showSoftInput(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.HIDE_NOT_ALWAYS);
+        if (imm != null && imm.isActive()) {
+            imm.showSoftInput(view, InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

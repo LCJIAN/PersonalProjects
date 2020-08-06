@@ -26,6 +26,10 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
@@ -46,6 +50,10 @@ import org.jxmpp.jid.Jid;
 import java.util.Collections;
 import java.util.Date;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import timber.log.Timber;
 
 public class SmackClientService extends Service {
@@ -100,6 +108,28 @@ public class SmackClientService extends Service {
         }
     };
 
+    private LifecycleObserver mLifecycleObserver = new LifecycleObserver() {
+
+        private Disposable mDisposable;
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_START)
+        public void onAppForeground() {
+            if (mDisposable != null) {
+                mDisposable.dispose();
+                mDisposable = null;
+            }
+        }
+
+        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+        public void onAppBackground() {
+            mDisposable = App.getInstance().getAppDatabase().messageDao()
+                    .getTotalUnReadCountRX(mSmackClient.getUser().asEntityBareJidString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> ShortcutBadger.applyCount(getApplicationContext(), integer));
+        }
+    };
+
     private MessageReceiver mMessageReceiver = new MessageReceiver();
 
     private LocalBinder mLocalBinder = new LocalBinder();
@@ -140,6 +170,7 @@ public class SmackClientService extends Service {
             filter.addAction(MessageReceiver.ACTION_MESSAGE);
             LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
         }
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(mLifecycleObserver);
 
         mRingtone = RingtoneManager.getRingtone(this, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
     }
@@ -165,6 +196,7 @@ public class SmackClientService extends Service {
     public void onDestroy() {
         Timber.d("onDestroy");
         mRingtone.stop();
+        ProcessLifecycleOwner.get().getLifecycle().removeObserver(mLifecycleObserver);
         mRingtone = null;
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         unregisterReceiver(mConnectivityReceiver);

@@ -1,9 +1,11 @@
 package com.org.firefighting.ui.common;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
@@ -77,6 +79,15 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
                         return super.shouldOverrideUrlLoading(view, url);
                     }
 
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            if (request.getUrl().toString().contains("weixin")) {
+                                return true;
+                            }
+                        }
+                        return super.shouldOverrideUrlLoading(view, request);
+                    }
                 })
                 .setAgentWebWebSettings(new AgentWebSettingsImpl() {
                     @Override
@@ -84,7 +95,11 @@ public class WebViewActivity extends BaseActivity implements SwipeRefreshLayout.
                         WebSettings webSettings = super.getWebSettings();
                         webSettings.setAllowFileAccessFromFileURLs(true);
                         webSettings.setAllowUniversalAccessFromFileURLs(true);
-
+                        webSettings.setUseWideViewPort(true);
+                        webSettings.setLoadWithOverviewMode(true);
+                        webSettings.setSupportZoom(true);
+                        webSettings.setBuiltInZoomControls(true);
+                        webSettings.setDisplayZoomControls(false);
                         String ua = getIntent().getStringExtra("user_agent");
                         if (!TextUtils.isEmpty(ua)) {
                             webSettings.setUserAgentString(ua);

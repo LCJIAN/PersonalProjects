@@ -1,4 +1,4 @@
-package com.org.firefighting.ui.chat;
+package com.org.firefighting.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,9 @@ import android.text.style.ClickableSpan;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,7 +43,9 @@ import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Department;
 import com.org.firefighting.data.network.entity.User2;
-import com.org.firefighting.ui.base.BaseActivity;
+import com.org.firefighting.ui.base.BaseFragment;
+import com.org.firefighting.ui.chat.ChatActivity;
+import com.org.firefighting.ui.chat.DepartmentUsersActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +55,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,10 +63,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class DepartmentsActivity extends BaseActivity {
+public class DepartmentsFragment extends BaseFragment {
 
-    @BindView(R.id.btn_back)
-    ImageButton btn_back;
     @BindView(R.id.srl_department)
     SwipeRefreshLayout srl_department;
     @BindView(R.id.rv_department)
@@ -72,17 +75,22 @@ public class DepartmentsActivity extends BaseActivity {
     @BindView(R.id.btn_search)
     ImageButton btn_search;
 
+    private Unbinder mUnBinder;
+
     private SlimAdapter mAdapter;
 
     private Disposable mDisposable;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_departments);
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_departments, container, false);
+        mUnBinder = ButterKnife.bind(this, view);
+        return view;
+    }
 
-        btn_back.setOnClickListener(v -> onBackPressed());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         btn_search.setOnClickListener(v -> setupContent());
 
         et_keyword.setOnEditorActionListener((v, actionId, event) -> {
@@ -98,7 +106,7 @@ public class DepartmentsActivity extends BaseActivity {
         srl_department.setOnRefreshListener(this::setupContent);
 
         rv_department.setHasFixedSize(true);
-        rv_department.setLayoutManager(new LinearLayoutManager(this));
+        rv_department.setLayoutManager(new LinearLayoutManager(rv_department.getContext()));
         rv_department.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
@@ -222,11 +230,12 @@ public class DepartmentsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroyView() {
         if (mDisposable != null) {
             mDisposable.dispose();
         }
-        super.onDestroy();
+        mUnBinder.unbind();
+        super.onDestroyView();
     }
 
     private void setupContent() {
@@ -298,7 +307,7 @@ public class DepartmentsActivity extends BaseActivity {
 //                                setRefreshing(false);
 //                                Timber.e(throwable);
 //                            });
-            SoftKeyboardUtils.hideSoftInput(this);
+            SoftKeyboardUtils.hideSoftInput(et_keyword.getContext());
             mDisposable = Single
                     .zip(Single.just(et_keyword.getEditableText().toString()),
                             RestAPI.getInstance().apiServiceSB().getDepartments()

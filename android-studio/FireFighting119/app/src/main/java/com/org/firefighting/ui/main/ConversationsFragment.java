@@ -44,7 +44,6 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.SystemMessage;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.ChatActivity;
-import com.org.firefighting.ui.chat.DepartmentsActivity;
 import com.org.firefighting.ui.common.SystemMessagesActivity;
 
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
@@ -56,6 +55,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -118,7 +118,7 @@ public class ConversationsFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btn_go_contact.setOnClickListener(v -> startActivity(new Intent(v.getContext(), DepartmentsActivity.class)));
+        btn_go_contact.setOnClickListener(v -> ((MainActivity) Objects.requireNonNull(getActivity())).checkContacts());
         srl_conversation.setColorSchemeResources(R.color.colorPrimary);
         srl_conversation.setOnRefreshListener(() -> RxBus.getInstance().send(Boolean.TRUE));
 

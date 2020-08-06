@@ -4,6 +4,7 @@ import com.org.firefighting.data.network.entity.AskRequest;
 import com.org.firefighting.data.network.entity.DataQueryResult;
 import com.org.firefighting.data.network.entity.DataQueryResult2;
 import com.org.firefighting.data.network.entity.Department;
+import com.org.firefighting.data.network.entity.DirRoot;
 import com.org.firefighting.data.network.entity.ModifyPwdRequest;
 import com.org.firefighting.data.network.entity.News;
 import com.org.firefighting.data.network.entity.NewsCategory;
@@ -198,10 +199,16 @@ public interface ApiService {
                                                           @Query("pageSize") Integer pageSize);
 
     /**
+     * 资源目录类别接口
+     */
+    @GET("admin-ht/api/dresource/portal/tree?dictName=directory_type")
+    Single<ResponseData<List<DirRoot>>> getResourceDirs();
+
+    /**
      * 资源目录接口
      */
-    @GET("interior/data/resource/tables?category=resource")
-    Single<ResponseData<PageResponse<ResourceEntity>>> getResources(@Query("dirId") Long dirId,
+    @GET("gtone-ht/interior/data/resource/tables?category=resource")
+    Single<ResponseData<PageResponse<ResourceEntity>>> getResources(@Query("dirId") String dirId,
                                                                     @Query("userId") Long userId,
                                                                     @Query("name") String name,
                                                                     @Query("orderBy") String orderBy,

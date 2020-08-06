@@ -6,6 +6,6 @@ public class ResponseData<T> {
 
     public Integer code;
     public String message;
-    @SerializedName("result")
+    @SerializedName(value = "result", alternate = "content")
     public T data;
 }

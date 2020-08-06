@@ -2,11 +2,14 @@ package com.org.firefighting.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +35,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.lcjian.lib.content.SimpleFragmentPagerAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
+import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.common.DateUtils;
 import com.lcjian.lib.util.common.DimenUtils;
 import com.org.firefighting.BuildConfig;
@@ -40,6 +44,7 @@ import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.News;
+import com.org.firefighting.data.network.entity.NewsCategory;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.data.network.entity.Weather;
 import com.org.firefighting.ui.base.BaseFragment;
@@ -50,6 +55,7 @@ import com.org.firefighting.ui.common.StaticsActivity;
 import com.org.firefighting.ui.common.WebViewActivity;
 import com.org.firefighting.ui.resource.ResourcesActivity;
 import com.org.firefighting.ui.service.ServiceListActivity;
+import com.org.firefighting.ui.task.TasksActivity;
 import com.org.firefighting.util.Utils;
 
 import java.util.ArrayList;
@@ -175,7 +181,7 @@ public class HomeFragment extends BaseFragment {
         tv_go_to_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
         btn_go_to_scan.setOnClickListener(v -> IntentIntegrator.forSupportFragment(this).setCaptureActivity(FCaptureActivity.class).initiateScan());
 
-        fl_task.setOnClickListener(v -> ((MainActivity) getActivity()).checkTask());
+        fl_task.setOnClickListener(v -> startActivity(new Intent(v.getContext(), TasksActivity.class)));
         tv_organization.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ResourcesActivity.class)));
         tv_announcement.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ServiceListActivity.class)));
         tv_helping.setOnClickListener(v -> startActivity(new Intent(v.getContext(), StaticsActivity.class)));
@@ -227,7 +233,9 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public void onBind(News data, SlimAdapter.SlimViewHolder<News> viewHolder) {
                         viewHolder.background(R.id.ll_news, new ColorDrawable(viewHolder.getBindingAdapterPosition() % 2 == 0 ? 0xffeeeef5 : 0xffffffff))
-                                .text(R.id.tv_title, data.title)
+                                .text(R.id.tv_title, new Spans()
+                                        .append(data.category + ":", new ForegroundColorSpan(0xff333333), new StyleSpan(Typeface.BOLD))
+                                        .append(data.title))
                                 .text(R.id.tv_time, data.publishTime);
                     }
                 });
@@ -260,6 +268,9 @@ public class HomeFragment extends BaseFragment {
         }
         if (mDisposableS != null) {
             mDisposableS.dispose();
+        }
+        if (mDisposableN != null) {
+            mDisposableN.dispose();
         }
         mUnBinder.unbind();
         super.onDestroyView();
@@ -406,8 +417,19 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void getNews() {
-        mDisposableN = RestAPI.getInstance().apiServiceSB()
-                .getNews(null, 1, 2)
+        mDisposableN = Single
+                .zip(RestAPI.getInstance().apiServiceSB().getNews(null, 1, 2),
+                        RestAPI.getInstance().apiServiceSB().getNewsCategories(),
+                        ((newsPageResponse, newsCategoryPageResponse) -> {
+                            for (News n : newsPageResponse.result) {
+                                for (NewsCategory c : newsCategoryPageResponse.result) {
+                                    if (TextUtils.equals(n.seedUrlMd5, c.websiteUrlMd5)) {
+                                        n.category = c.websiteName;
+                                    }
+                                }
+                            }
+                            return newsPageResponse;
+                        }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newsPageResponse -> mNewsAdapter.updateData(newsPageResponse.result),

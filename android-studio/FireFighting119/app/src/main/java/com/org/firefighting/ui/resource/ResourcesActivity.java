@@ -13,21 +13,25 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
+import com.lcjian.lib.util.Triple;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
 import com.org.firefighting.data.entity.PageResult;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
+import com.org.firefighting.data.network.entity.Dir;
+import com.org.firefighting.data.network.entity.DirRoot;
 import com.org.firefighting.data.network.entity.ResourceEntity;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.base.RecyclerFragment;
@@ -50,15 +54,18 @@ public class ResourcesActivity extends BaseActivity {
     ImageButton btn_back;
     @BindView(R.id.btn_go_search)
     ImageButton btn_go_search;
+    @BindView(R.id.btn_dir)
+    ImageButton btn_dir;
     @BindView(R.id.tab_resource)
     TabLayout tab_resource;
     @BindView(R.id.vp_resource)
-    ViewPager vp_resource;
+    ViewPager2 vp_resource;
+
+    private TabLayoutMediator mTabLayoutMediator;
+    private ResourcePagerAdapter mPagerAdapter;
 
     private List<String> mTitlesO = Arrays.asList("所有", "已申请", "已收藏");
-    private List<String> mTitles = new ArrayList<>(mTitlesO);
-
-    private ResourcePagerAdapter mPagerAdapter;
+    private List<Triple<String, String, Integer>> mTriples = new ArrayList<>();
 
     private Disposable mDisposable;
 
@@ -70,12 +77,47 @@ public class ResourcesActivity extends BaseActivity {
 
         btn_back.setOnClickListener(v -> onBackPressed());
         btn_go_search.setOnClickListener(v -> startActivity(new Intent(v.getContext(), SearchActivity.class)));
+        btn_dir.setOnClickListener(v -> {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag("TabPopFragment");
+            if (fragment == null) {
+                TabPopFragment tabPopFragment = new TabPopFragment()
+                        .setListener(new TabPopFragment.Listener() {
 
-        mPagerAdapter = new ResourcePagerAdapter(getSupportFragmentManager(), mTitles);
+                            @Override
+                            public void onTabClicked(DirRoot dirRoot) {
+                                mTitlesO.set(0, dirRoot.label);
+                                mTriples.set(0, Triple.create(dirRoot.label, dirRoot.value, mTriples.get(0).third));
+                                mPagerAdapter.notifyDataSetChanged();
+                            }
 
+                            @Override
+                            public void onTabClicked(Dir dir) {
+                                mTitlesO.set(0, dir.name);
+                                mTriples.set(0, Triple.create(dir.name, dir.dirCode, mTriples.get(0).third));
+                                mPagerAdapter.notifyDataSetChanged();
+                            }
+                        });
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fl_fragment_container, tabPopFragment, "TabPopFragment")
+                        .addToBackStack("TabPopFragment")
+                        .commit();
+            } else {
+                onBackPressed();
+            }
+        });
+
+        mPagerAdapter = new ResourcePagerAdapter(this);
+        for (String string : mTitlesO) {
+            mTriples.add(Triple.create(string, null, 0));
+        }
+        mPagerAdapter.setData(mTriples);
         vp_resource.setOffscreenPageLimit(3);
         vp_resource.setAdapter(mPagerAdapter);
-        tab_resource.setupWithViewPager(vp_resource);
+        mTabLayoutMediator = new TabLayoutMediator(tab_resource, vp_resource, (tab, position) -> {
+            Triple<String, String, Integer> triple = mTriples.get(position);
+            tab.setText(triple.first + triple.third);
+        });
+        mTabLayoutMediator.attach();
 
         mDisposable = RxBus.getInstance().asFlowable()
                 .filter(o -> o instanceof TitleChangeEvent)
@@ -84,7 +126,7 @@ public class ResourcesActivity extends BaseActivity {
                     TitleChangeEvent e = (TitleChangeEvent) o;
                     for (int i = 0; i < mTitlesO.size(); i++) {
                         if (TextUtils.equals(mTitlesO.get(i), e.title)) {
-                            mTitles.set(i, e.title + e.count);
+                            mTriples.set(i, Triple.create(e.title, null, e.count));
                         }
                     }
                     mPagerAdapter.notifyDataSetChanged();
@@ -93,34 +135,51 @@ public class ResourcesActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        mTabLayoutMediator.detach();
         mDisposable.dispose();
         super.onDestroy();
     }
 
-    private static class ResourcePagerAdapter extends FragmentStatePagerAdapter {
+    private static class ResourcePagerAdapter extends FragmentStateAdapter {
 
-        private List<String> mTitles;
+        private List<Triple<String, String, Integer>> mData;
 
-        private ResourcePagerAdapter(FragmentManager fm, List<String> titles) {
-            super(fm);
-            this.mTitles = titles;
+        public ResourcePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
         }
 
-        @Override
         @NonNull
-        public Fragment getItem(int position) {
-            return ResourcesFragment.newInstance(mTitles.get(position));
-        }
-
-        @Nullable
         @Override
-        public CharSequence getPageTitle(int position) {
-            return mTitles.get(position);
+        public Fragment createFragment(int position) {
+            return ResourcesFragment.newInstance(mData.get(position).first, mData.get(position).second);
         }
 
         @Override
-        public int getCount() {
-            return mTitles == null ? 0 : mTitles.size();
+        public int getItemCount() {
+            return mData == null ? 0 : mData.size();
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String name = mData.get(position).first;
+            assert name != null;
+            return name.hashCode();
+        }
+
+        @Override
+        public boolean containsItem(long itemId) {
+            for (Triple<String, String, Integer> p : mData) {
+                String name = p.first;
+                assert name != null;
+                if (name.hashCode() == itemId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void setData(List<Triple<String, String, Integer>> data) {
+            this.mData = data;
         }
     }
 
@@ -141,10 +200,12 @@ public class ResourcesActivity extends BaseActivity {
         private SlimAdapter mAdapter;
 
         private String mTabTitle;
+        private String mDir;
 
-        private static ResourcesFragment newInstance(String tabTitle) {
+        private static ResourcesFragment newInstance(String tabTitle, String dir) {
             ResourcesFragment fragment = new ResourcesFragment();
             fragment.mTabTitle = tabTitle;
+            fragment.mDir = dir;
             return fragment;
         }
 
@@ -197,12 +258,14 @@ public class ResourcesActivity extends BaseActivity {
 
         @Override
         public Observable<PageResult<ResourceEntity>> onCreatePageObservable(int currentPage) {
-            return RestAPI.getInstance().apiServiceSB2()
-                    .getResources(null, SharedPreferencesDataSource.getSignInResponse().user.id,
+            return RestAPI.getInstance().apiServiceSB()
+                    .getResources(mDir, SharedPreferencesDataSource.getSignInResponse().user.id,
                             null, null, currentPage, 1000)
                     .map(responseData -> {
                         PageResult<ResourceEntity> pageResult = new PageResult<>();
-
+                        if (responseData.data.result == null) {
+                            responseData.data.result = new ArrayList<>();
+                        }
                         List<ResourceEntity> result = new ArrayList<>();
                         if (TextUtils.equals("已申请", mTabTitle)) {
                             for (ResourceEntity resourceEntity : responseData.data.result) {

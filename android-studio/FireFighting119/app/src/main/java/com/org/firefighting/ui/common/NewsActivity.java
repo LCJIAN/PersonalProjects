@@ -67,7 +67,7 @@ public class NewsActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         btn_back.setOnClickListener(v -> onBackPressed());
-        tv_title.setText("消防资讯");
+        tv_title.setText(R.string.helping);
 
         mAdapter = new CategoryPagerAdapter(NewsActivity.this);
         vp_news.setAdapter(mAdapter);
