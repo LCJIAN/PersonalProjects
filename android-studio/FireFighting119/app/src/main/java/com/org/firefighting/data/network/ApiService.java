@@ -96,7 +96,7 @@ public interface ApiService {
     /**
      * 添加表单记录
      */
-    @POST("ht/api/v2/xxtb/task/{task_id}/table/{table_id}/record")
+    @POST("ht/api/v2.1/xxtb/task/{task_id}/table/{table_id}/record")
     Single<ResponseData<Object>> addTaskTableRecord(@Path("task_id") String taskId,
                                                     @Path("table_id") String tableId,
                                                     @Body List<String> data);
