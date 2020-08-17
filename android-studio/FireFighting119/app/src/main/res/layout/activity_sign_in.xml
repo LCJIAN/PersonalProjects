@@ -1,178 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.user.SignInActivity">
 
+    <ImageView
+        android:id="@+id/iv_national_emblem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_app_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.30"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/national_emblem" />
+
+    <TextView
+        android:id="@+id/tv_app_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:letterSpacing="0.2"
+        android:text="@string/app_title"
+        android:textAppearance="@style/TextAppearance.AppTheme.Large"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_app_title_2"
+        app:layout_constraintEnd_toEndOf="@+id/iv_national_emblem"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/iv_national_emblem"
+        app:layout_constraintTop_toBottomOf="@+id/iv_national_emblem" />
+
+    <TextView
+        android:id="@+id/tv_app_title_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:letterSpacing="0.9"
+        android:text="@string/app_title_2"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#fffefefe"
+        app:layout_constraintBottom_toTopOf="@+id/tv_app_version"
+        app:layout_constraintEnd_toEndOf="@+id/tv_app_title"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tv_app_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_title" />
+
+    <TextView
+        android:id="@+id/tv_app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textAppearance="@style/TextAppearance.AppTheme"
+        android:textColor="#fffefefe"
+        app:layout_constraintBottom_toTopOf="@+id/cv_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_title_2"
+        tools:text="v2.0" />
+
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="36dp"
-        app:cardCornerRadius="12dp">
+        android:id="@+id/cv_account"
+        android:layout_width="240dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="32dp"
+        app:cardBackgroundColor="#ccffffff"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cv_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_version">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <EditText
+            android:id="@+id/et_account"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="@string/hint_user_name"
+            android:inputType="text"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#ff888EA0"
+            android:textSize="12sp" />
 
-            <ImageView
-                android:id="@+id/iv_national_emblem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/national_emblem" />
-
-            <TextView
-                android:id="@+id/tv_app_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="@string/app_title"
-                android:textAppearance="@style/TextAppearance.AppTheme.Large"
-                android:textColor="#ff2e2e2e"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/iv_national_emblem"
-                app:layout_constraintStart_toStartOf="@+id/iv_national_emblem"
-                app:layout_constraintTop_toBottomOf="@+id/iv_national_emblem" />
-
-            <ImageView
-                android:id="@+id/iv_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginBottom="48dp"
-                app:layout_constraintBottom_toTopOf="@+id/iv_pwd"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_app_title"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:srcCompat="@drawable/ic_user" />
-
-            <ImageView
-                android:id="@+id/iv_divider_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-                app:layout_constraintStart_toEndOf="@+id/iv_user"
-                app:layout_constraintTop_toTopOf="@+id/iv_user"
-                app:srcCompat="@drawable/h_divider" />
-
-            <EditText
-                android:id="@+id/et_account"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@null"
-                android:hint="@string/hint_user_name"
-                android:inputType="text"
-                android:textColorHint="#ff999999"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_divider_1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_divider_1"
-                app:layout_constraintTop_toTopOf="@+id/iv_divider_1" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="0dp"
-                android:layout_height="1px"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_account" />
-
-            <ImageView
-                android:id="@+id/iv_pwd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_user"
-                app:srcCompat="@drawable/ic_pwd" />
-
-            <ImageView
-                android:id="@+id/iv_divider_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_pwd"
-                app:layout_constraintStart_toEndOf="@+id/iv_pwd"
-                app:layout_constraintTop_toTopOf="@+id/iv_pwd"
-                app:srcCompat="@drawable/h_divider" />
-
-            <EditText
-                android:id="@+id/et_pwd"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@null"
-                android:ems="10"
-                android:hint="@string/hint_user_pwd"
-                android:inputType="textPassword"
-                android:textColorHint="#ff999999"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_divider_2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_divider_2"
-                app:layout_constraintTop_toTopOf="@+id/iv_divider_2" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="0dp"
-                android:layout_height="1px"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
-
-            <Button
-                android:id="@+id/btn_sign_in"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginBottom="64dp"
-                android:background="@drawable/shape_primary_btn_bg"
-                android:enabled="false"
-                android:text="@string/sign_in"
-                android:textAppearance="@style/TextAppearance.AppTheme.Medium"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_account" />
     </androidx.cardview.widget.CardView>
 
-</FrameLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_pwd"
+        android:layout_width="240dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="#ccffffff"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_account">
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/hint_user_pwd"
+            android:inputType="textPassword"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#ff888EA0"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_pwd" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        android:layout_width="240dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/btn_sign_in"
+        android:enabled="false"
+        android:text="@string/sign_in"
+        android:textAppearance="@style/TextAppearance.AppTheme.Medium"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_pwd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

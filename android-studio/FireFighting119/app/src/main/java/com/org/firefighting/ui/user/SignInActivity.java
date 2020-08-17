@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.AbsoluteSizeSpan;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.lcjian.lib.text.Spans;
+import com.lcjian.lib.util.common.DimenUtils;
+import com.lcjian.lib.util.common.PackageUtils2;
 import com.org.firefighting.R;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
@@ -27,6 +32,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SignInActivity extends BaseActivity implements TextWatcher {
 
+    @BindView(R.id.tv_app_version)
+    TextView tv_app_version;
     @BindView(R.id.et_account)
     EditText et_phone;
     @BindView(R.id.et_pwd)
@@ -42,6 +49,9 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
 
+        tv_app_version.setText(new Spans()
+                .append("v", new AbsoluteSizeSpan(DimenUtils.spToPixels(12, this)))
+                .append(PackageUtils2.getVersionName(this)));
         et_phone.addTextChangedListener(this);
         et_pwd.addTextChangedListener(this);
 

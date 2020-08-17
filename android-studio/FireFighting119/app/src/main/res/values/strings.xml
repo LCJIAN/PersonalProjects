@@ -7,10 +7,11 @@
     <string name="empty_data">暂无结果</string>
     <string name="error_msg">出错了</string>
     <string name="skip_guide">跳过</string>
-    <string name="app_title">重庆市消防救援总队\n数据资产管理平台</string>
+    <string name="app_title">重庆市消防救援总队</string>
+    <string name="app_title_2">数据资产管理平台</string>
     <string name="hint_user_name">请输入账户</string>
     <string name="hint_user_pwd">请输入密码</string>
-    <string name="sign_in">登录</string>
+    <string name="sign_in">登&#160;&#160;&#160;&#160;&#160;&#160;&#160;录</string>
     <string name="action_task">通讯录</string>
     <string name="action_conversation">消息</string>
     <string name="action_mine">我的</string>

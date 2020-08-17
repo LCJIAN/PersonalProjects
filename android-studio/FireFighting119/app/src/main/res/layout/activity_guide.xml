@@ -24,7 +24,6 @@
         android:layout_height="36dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:background="@drawable/shape_skip_btn_bg"
         android:text="@string/skip_guide"
         android:textAppearance="@style/TextAppearance.AppTheme.Small"
