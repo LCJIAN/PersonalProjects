@@ -1,17 +1,8 @@
 package com.org.firefighting.ui.chat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextPaint;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ClickableSpan;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +17,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lcjian.lib.recyclerview.AdvanceAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
-import com.lcjian.lib.text.Spans;
-import com.lcjian.lib.util.common.DimenUtils;
 import com.org.chat.SmackClient;
 import com.org.firefighting.App;
 import com.org.firefighting.GlideApp;
@@ -38,8 +26,6 @@ import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.User2;
 import com.org.firefighting.ui.base.BaseActivity;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
@@ -91,86 +77,37 @@ public class DepartmentUsersActivity extends BaseActivity {
 
             @Override
             public void onInit(SlimAdapter.SlimViewHolder<User2> viewHolder) {
-                viewHolder.clicked(v -> {
-                    if (SharedPreferencesDataSource.getSignInResponse().user.id.equals(viewHolder.itemData.id)) {
-                        Toast.makeText(App.getInstance(), "你不能与自已创建会话", Toast.LENGTH_SHORT).show();
-                    } else {
-                        startActivity(new Intent(v.getContext(), ChatActivity.class)
-                                .putExtra("owner_jid", SharedPreferencesDataSource.getSignInResponse().user.id + "@" + SmackClient.DOMAIN)
-                                .putExtra("opposite_jid", viewHolder.itemData.id + "@" + SmackClient.DOMAIN)
-                                .putExtra("opposite_name", viewHolder.itemData.realName));
-                    }
-                });
+                viewHolder
+                        .clicked(v -> {
+                            if (SharedPreferencesDataSource.getSignInResponse().user.id.equals(viewHolder.itemData.id)) {
+                                Toast.makeText(App.getInstance(), "你不能与自已创建会话", Toast.LENGTH_SHORT).show();
+                            } else {
+                                startActivity(new Intent(v.getContext(), ChatActivity.class)
+                                        .putExtra("owner_jid", SharedPreferencesDataSource.getSignInResponse().user.id + "@" + SmackClient.DOMAIN)
+                                        .putExtra("opposite_jid", viewHolder.itemData.id + "@" + SmackClient.DOMAIN)
+                                        .putExtra("opposite_name", viewHolder.itemData.realName));
+                            }
+                        })
+                        .clicked(R.id.tv_phone, v -> {
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel:" + viewHolder.itemData.phone));
+                            v.getContext().startActivity(intent);
+                        });
             }
 
             @Override
             public void onBind(User2 data, SlimAdapter.SlimViewHolder<User2> viewHolder) {
-                Context context = viewHolder.itemView.getContext();
-                Spans spans = new Spans()
-                        .append(data.realName, buildSpanChat(data))
-                        .append(TextUtils.isEmpty(data.job.name) ? "  " : "  " + data.job.name,
-                                new AbsoluteSizeSpan(DimenUtils.spToPixels(12, context)), new ForegroundColorSpan(0xff999999),
-                                buildSpanChat(data));
-                if (!TextUtils.isEmpty(data.phone)) {
-                    spans
-                            .append("  ")
-                            .append("*",
-                                    new ImageSpan(context, R.drawable.ic_phone, DynamicDrawableSpan.ALIGN_BASELINE),
-                                    buildSpanPhone(data))
-                            .append(data.phone,
-                                    new AbsoluteSizeSpan(DimenUtils.spToPixels(12, context)),
-                                    new ForegroundColorSpan(0xff666666),
-                                    buildSpanPhone(data));
-                }
-                TextView tv_user_name = viewHolder.findViewById(R.id.tv_user_name);
-                tv_user_name.setText(spans);
-                tv_user_name.setMovementMethod(LinkMovementMethod.getInstance());
                 viewHolder
-                        .background(R.id.ll_department_user,
-                                viewHolder.getAbsoluteAdapterPosition() == 0 ? R.drawable.shape_card_top :
-                                        (viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? R.drawable.shape_card_bottom :
-                                                R.drawable.shape_card_middle))
-                        .visibility(R.id.v_divider, viewHolder.getAbsoluteAdapterPosition() == mAdapter.getData().size() - 1 ? View.INVISIBLE : View.VISIBLE)
+                        .text(R.id.tv_user_name, data.realName)
+                        .text(R.id.tv_job, data.job.name)
+                        .text(R.id.tv_dept, data.dept.name)
                         .with(R.id.iv_user_avatar, view -> GlideApp
                                 .with(view)
                                 .load("http://124.162.30.39:9528/admin-ht/" + data.avatar)
                                 .placeholder(R.drawable.default_avatar)
                                 .circleCrop()
                                 .into((ImageView) view));
-            }
-
-            private ClickableSpan buildSpanChat(User2 data) {
-                return new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View widget) {
-                        widget.getContext().startActivity(new Intent(widget.getContext(), ChatActivity.class)
-                                .putExtra("owner_jid", SharedPreferencesDataSource.getSignInResponse().user.id + "@" + SmackClient.DOMAIN)
-                                .putExtra("opposite_jid", data.id + "@" + SmackClient.DOMAIN)
-                                .putExtra("opposite_name", data.realName));
-                    }
-
-                    @Override
-                    public void updateDrawState(@NotNull TextPaint ds) {
-                        ds.setUnderlineText(false);
-                    }
-                };
-            }
-
-            private ClickableSpan buildSpanPhone(User2 data) {
-                return new ClickableSpan() {
-                    @Override
-                    public void onClick(@NonNull View widget) {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + data.phone));
-                        widget.getContext().startActivity(intent);
-                    }
-
-                    @Override
-                    public void updateDrawState(@NotNull TextPaint ds) {
-                        ds.setUnderlineText(false);
-                    }
-                };
             }
         });
 

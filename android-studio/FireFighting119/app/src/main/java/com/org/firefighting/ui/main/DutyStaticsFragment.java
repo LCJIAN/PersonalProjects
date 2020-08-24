@@ -1,9 +1,6 @@
 package com.org.firefighting.ui.main;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.lcjian.lib.recyclerview.AdvanceAdapter;
-import com.lcjian.lib.text.Spans;
-import com.lcjian.lib.util.common.DimenUtils;
 import com.org.firefighting.R;
 import com.org.firefighting.data.network.entity.DutyInfo;
 import com.org.firefighting.ui.base.BaseFragment;
@@ -112,16 +107,17 @@ public class DutyStaticsFragment extends BaseFragment {
         public DutyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.duty_item, parent, false);
-            return new DutyViewHolder(view);
+            DutyViewHolder holder = new DutyViewHolder(view);
+            holder.text = view.findViewById(R.id.text);
+            holder.text1 = view.findViewById(R.id.text1);
+            return holder;
         }
 
         @Override
         public void onBindViewHolder(@NonNull DutyViewHolder holder, int position) {
-            DutyInfo.DutyItem item = mData.get(position % mData.size());
-            holder.itemView.setBackgroundColor(position % 2 == 0 ? 0xffeeeef5 : 0xffffffff);
-            ((TextView) holder.itemView).setText(new Spans()
-                    .append(item.type, new AbsoluteSizeSpan(DimenUtils.spToPixels(12, holder.itemView.getContext()))).append(" ")
-                    .append(item.name, new AbsoluteSizeSpan(DimenUtils.spToPixels(16, holder.itemView.getContext())), new StyleSpan(Typeface.BOLD)));
+            DutyInfo.DutyItem item = mData.get(position);
+            holder.text.setText(item.name);
+            holder.text1.setText(item.type);
         }
 
         @Override
@@ -130,6 +126,9 @@ public class DutyStaticsFragment extends BaseFragment {
         }
 
         static class DutyViewHolder extends RecyclerView.ViewHolder {
+
+            TextView text;
+            TextView text1;
 
             public DutyViewHolder(@NonNull View itemView) {
                 super(itemView);

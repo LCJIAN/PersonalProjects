@@ -3,6 +3,7 @@ package com.org.firefighting.ui.main;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,10 +98,24 @@ public class PoliceStaticsFragment extends BaseFragment {
 
     private void setupStatics(String title, Integer day, Integer year, TextView tv_statics) {
         tv_statics.setText(new Spans()
-                .append(String.valueOf(day), new AbsoluteSizeSpan(DimenUtils.spToPixels(18, tv_statics.getContext())), new StyleSpan(Typeface.BOLD))
-                .append("(今日)", new AbsoluteSizeSpan(DimenUtils.spToPixels(12, tv_statics.getContext()))).append("\n")
-                .append(title, new AbsoluteSizeSpan(DimenUtils.spToPixels(14, tv_statics.getContext())), new StyleSpan(Typeface.BOLD)).append("\n")
-                .append(String.valueOf(year), new AbsoluteSizeSpan(DimenUtils.spToPixels(16, tv_statics.getContext())))
-                .append("(今年)", new AbsoluteSizeSpan(DimenUtils.spToPixels(12, tv_statics.getContext()))));
+                .append(String.valueOf(day),
+                        new AbsoluteSizeSpan(DimenUtils.spToPixels(16, tv_statics.getContext())),
+                        new StyleSpan(Typeface.BOLD),
+                        new ForegroundColorSpan(0xff383f52))
+                .append("(今日)",
+                        new AbsoluteSizeSpan(DimenUtils.spToPixels(10, tv_statics.getContext())),
+                        new ForegroundColorSpan(0xffb3b7c0))
+                .append("\n")
+                .append(title,
+                        new AbsoluteSizeSpan(DimenUtils.spToPixels(12, tv_statics.getContext())),
+                        new StyleSpan(Typeface.BOLD),
+                        new ForegroundColorSpan(0xff067ccc))
+                .append("\n")
+                .append(String.valueOf(year),
+                        new AbsoluteSizeSpan(DimenUtils.spToPixels(14, tv_statics.getContext())),
+                        new ForegroundColorSpan(0xff414859))
+                .append("(今年)",
+                        new AbsoluteSizeSpan(DimenUtils.spToPixels(10, tv_statics.getContext())),
+                        new ForegroundColorSpan(0xffb3b7c0)));
     }
 }

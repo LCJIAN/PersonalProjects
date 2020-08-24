@@ -106,10 +106,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    void checkContacts() {
-        bnv_main.setSelectedItemId(R.id.action_task);
-    }
-
     private void checkVersion() {
         AllenVersionChecker
                 .getInstance()

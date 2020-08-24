@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="?actionBarSize"
         android:background="?colorPrimary">
 
         <TextView
@@ -31,35 +31,37 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <FrameLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
 
                 <EditText
                     android:id="@+id/et_keyword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:autofillHints="@string/hint_user_search"
-                    android:background="@drawable/shape_input_search_bg_2"
-                    android:gravity="center"
+                    android:background="@null"
+                    android:padding="12dp"
+                    android:textColorHint="#ffb5b5b5"
                     android:hint="@string/hint_user_search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:textColorHint="#ff999999" />
+                    android:textSize="12sp" />
 
                 <ImageButton
                     android:id="@+id/btn_search"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="end"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center_vertical"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:tint="#ff666666"
-                    app:srcCompat="@drawable/ic_fas_fa_search_white_24dp" />
-            </FrameLayout>
+                    app:srcCompat="@drawable/ic_search_3" />
+            </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_department"

@@ -1,10 +1,8 @@
 package com.org.firefighting.ui.resource;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -88,6 +86,7 @@ public class ResourcesActivity extends BaseActivity {
                                 mTitlesO.set(0, dirRoot.label);
                                 mTriples.set(0, Triple.create(dirRoot.label, dirRoot.value, mTriples.get(0).third));
                                 mPagerAdapter.notifyDataSetChanged();
+                                vp_resource.setCurrentItem(0);
                             }
 
                             @Override
@@ -95,6 +94,7 @@ public class ResourcesActivity extends BaseActivity {
                                 mTitlesO.set(0, dir.name);
                                 mTriples.set(0, Triple.create(dir.name, dir.dirCode, mTriples.get(0).third));
                                 mPagerAdapter.notifyDataSetChanged();
+                                vp_resource.setCurrentItem(0);
                             }
                         });
                 getSupportFragmentManager().beginTransaction()
@@ -115,7 +115,7 @@ public class ResourcesActivity extends BaseActivity {
         vp_resource.setAdapter(mPagerAdapter);
         mTabLayoutMediator = new TabLayoutMediator(tab_resource, vp_resource, (tab, position) -> {
             Triple<String, String, Integer> triple = mTriples.get(position);
-            tab.setText(triple.first + triple.third);
+            tab.setText(triple.first + "[" + triple.third + "]");
         });
         mTabLayoutMediator.attach();
 
@@ -240,16 +240,13 @@ public class ResourcesActivity extends BaseActivity {
 
                         @Override
                         public void onBind(ResourceEntity data, SlimAdapter.SlimViewHolder<ResourceEntity> viewHolder) {
-                            viewHolder.text(R.id.tv_identity, "标识符：" + data.shareXxzybh)
-                                    .text(R.id.tv_address_info, data.shareXxzymc)
-                                    .text(R.id.tv_police_category, "所属业务警种：" + data.shareXxzyflSsywjz)
-                                    .text(R.id.tv_factor, "所属要素：" + data.shareXxzyflSsys)
+                            viewHolder
                                     .text(R.id.tv_content, data.tableComment)
-                                    .text(R.id.tv_supplier, "提供单位：" + data.unitName)
-                                    .text(R.id.tv_count_1, new Spans("浏览：").append(String.valueOf(data.browses), new ForegroundColorSpan(Color.RED)))
-                                    .text(R.id.tv_count_2, new Spans("调用：").append(String.valueOf(data.calls), new ForegroundColorSpan(Color.RED)))
-                                    .text(R.id.tv_count_3, new Spans("下载：").append(String.valueOf(data.download), new ForegroundColorSpan(Color.RED)))
-                                    .text(R.id.tv_count_4, new Spans("调阅：").append(String.valueOf(data.apply), new ForegroundColorSpan(Color.RED)));
+                                    .with(R.id.iv_favourite, view -> ((ImageView) view).setImageResource(data.collectStatus == 0 ? R.drawable.ic_favourite_not : R.drawable.ic_favourite))
+                                    .text(R.id.tv_share_method, "共享类型：" + data.permission)
+                                    .text(R.id.tv_supplier, "管理单位：" + (TextUtils.isEmpty(data.unitName) ? "暂无" : data.unitName))
+                                    .text(R.id.tv_publish_time, "发布时间：" + data.createDate)
+                                    .text(R.id.tv_count_1, new Spans().append(String.valueOf(data.browses)));
                         }
                     })
                     .enableDiff();

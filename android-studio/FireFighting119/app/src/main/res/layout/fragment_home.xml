@@ -19,125 +19,131 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:scaleType="fitXY"
+                        app:layout_constraintDimensionRatio="h,360:236"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/default_banner" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="12dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:scaleType="fitXY"
-                            app:layout_constraintDimensionRatio="h,37:23"
-                            app:layout_constraintEnd_toEndOf="parent"
+                        <FrameLayout
+                            android:id="@+id/fl_task"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_organization"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_organization"
+                            app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/default_banner" />
+                            app:layout_constraintTop_toTopOf="@+id/tv_organization">
+
+                            <ImageView
+                                android:id="@+id/tv_task"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:src="@drawable/ic_task_2"
+                                android:textColor="#ff383f52"
+                                android:textSize="12sp" />
+                        </FrameLayout>
+
+                        <ImageView
+                            android:id="@+id/tv_organization"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            android:src="@drawable/ic_organisation"
+                            android:textColor="#ff383f52"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_announcement"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_announcement"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/fl_task"
+                            app:layout_constraintTop_toTopOf="@+id/tv_announcement" />
+
+                        <ImageView
+                            android:id="@+id/tv_announcement"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            android:src="@drawable/ic_announcement"
+                            android:textColor="#ff383f52"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_helping"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_helping"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/tv_organization"
+                            app:layout_constraintTop_toTopOf="@+id/tv_helping" />
+
+                        <ImageView
+                            android:id="@+id/tv_helping"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            android:src="@drawable/ic_help"
+                            android:textColor="#ff383f52"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/tv_announcement"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="200dp"
-                        android:layout_marginRight="16dp"
-                        app:cardCornerRadius="5dp">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <FrameLayout
-                                android:id="@+id/fl_task"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="?selectableItemBackgroundBorderless"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_organization"
-                                app:layout_constraintEnd_toStartOf="@+id/tv_organization"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/tv_organization">
-
-                                <TextView
-                                    android:id="@+id/tv_task"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:text="@string/task"
-                                    android:textColor="#ff666666"
-                                    android:textSize="15sp"
-                                    app:drawableTopCompat="@drawable/ic_task_2" />
-                            </FrameLayout>
-
-                            <TextView
-                                android:id="@+id/tv_organization"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="?selectableItemBackgroundBorderless"
-                                android:gravity="center"
-                                android:text="@string/organization"
-                                android:textColor="#ff666666"
-                                android:textSize="15sp"
-                                app:drawableTopCompat="@drawable/ic_organisation"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_announcement"
-                                app:layout_constraintEnd_toStartOf="@+id/tv_announcement"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toEndOf="@+id/fl_task"
-                                app:layout_constraintTop_toTopOf="@+id/tv_announcement" />
-
-                            <TextView
-                                android:id="@+id/tv_announcement"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="?selectableItemBackgroundBorderless"
-                                android:gravity="center"
-                                android:text="@string/announcement"
-                                android:textColor="#ff666666"
-                                android:textSize="15sp"
-                                android:drawableTop="@drawable/ic_announcement"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_helping"
-                                app:layout_constraintEnd_toStartOf="@+id/tv_helping"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toEndOf="@+id/tv_organization"
-                                app:layout_constraintTop_toTopOf="@+id/tv_helping" />
-
-                            <TextView
-                                android:id="@+id/tv_helping"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginBottom="12dp"
-                                android:background="?selectableItemBackgroundBorderless"
-                                android:gravity="center"
-                                android:text="@string/statics"
-                                android:textColor="#ff666666"
-                                android:textSize="15sp"
-                                app:drawableTopCompat="@drawable/ic_help"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toEndOf="@+id/tv_announcement"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </androidx.cardview.widget.CardView>
-                </FrameLayout>
+                </androidx.cardview.widget.CardView>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_weather"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="16dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:src="@drawable/weather_bg"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="h,1031:228"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/iv_weather"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:tint="@android:color/white"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -146,152 +152,127 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:textAppearance="@style/TextAppearance.AppTheme"
-                        android:textColor="#ff333333"
+                        android:layout_marginBottom="8dp"
+                        android:textAppearance="@style/TextAppearance.AppTheme.Micro"
+                        android:textColor="@android:color/white"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_weather"
                         app:layout_constraintStart_toEndOf="@+id/iv_weather"
-                        app:layout_constraintTop_toTopOf="@+id/iv_weather"
-                        tools:text=" 渝北 晴 25-36℃ 南风 1 级" />
+                        tools:text="晴" />
 
-                    <TextView
+                    <ImageView
                         android:id="@+id/tv_weather_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="8dp"
-                        android:text="@string/detail"
-                        android:textAppearance="@style/TextAppearance.AppTheme.Small"
-                        android:textColor="#ff666666"
-                        app:drawableEndCompat="@drawable/ic_arrow_right"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_weather"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_weather" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:src="@drawable/weather_detail"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_now"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:textAppearance="@style/TextAppearance.AppTheme.Micro"
-                        android:textColor="#ff333333"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="2020年7月5日 星期一 上午 11:53:18" />
+
+                    <TextView
+                        android:id="@+id/tv_temperature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="26sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        tools:text="2020年7月5日 星期一 上午 11:53:18" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="30℃～39℃" />
+
+                    <TextView
+                        android:id="@+id/tv_wind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_temperature"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_temperature"
+                        tools:text="东南风二级" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/helping"
+                        android:textColor="#ff383f52"
+                        android:textSize="16sp" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_view_more_news"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/more"
+                        android:textColor="#ff959aa8"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="8dp" />
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="5dp">
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="12dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_statics"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                android:drawablePadding="4dp"
-                                android:gravity="center_vertical"
-                                android:text="@string/helping"
-                                android:textColor="#ff333333"
-                                android:textSize="14sp"
-                                android:textStyle="bold"
-                                app:drawableStartCompat="@drawable/ic_md_assignment" />
-
-                            <Space
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-
-                            <TextView
-                                android:id="@+id/tv_view_more_news"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginEnd="4dp"
-                                android:layout_marginBottom="8dp"
-                                android:gravity="center_vertical"
-                                android:text="@string/more"
-                                android:textColor="#90D1F7"
-                                android:textSize="14sp"
-                                app:drawableEndCompat="@drawable/ic_md_chevron_right" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_news"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#ffe2e2e2">
-
-                            <TextView
-                                android:id="@+id/tv_duty_statics"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:gravity="center"
-                                android:text="@string/duty_statics"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_real_time_statics"
-                                app:layout_constraintEnd_toStartOf="@+id/tv_real_time_statics"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintHorizontal_weight="1"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="@+id/tv_real_time_statics" />
-
-                            <TextView
-                                android:id="@+id/tv_real_time_statics"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:gravity="center"
-                                android:text="@string/real_time_statics"
-                                app:layout_constraintBottom_toBottomOf="@+id/tv_police_statics"
-                                app:layout_constraintEnd_toStartOf="@+id/tv_police_statics"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintHorizontal_weight="1"
-                                app:layout_constraintStart_toEndOf="@+id/tv_duty_statics"
-                                app:layout_constraintTop_toTopOf="@+id/tv_police_statics" />
-
-                            <TextView
-                                android:id="@+id/tv_police_statics"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:gravity="center"
-                                android:text="@string/police_statics"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintHorizontal_weight="1"
-                                app:layout_constraintStart_toEndOf="@+id/tv_real_time_statics"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:layout_gravity="center"
+                            app:tabIndicatorColor="?colorPrimary"
+                            app:tabIndicatorFullWidth="false"
+                            app:tabIndicatorHeight="3dp"
+                            app:tabMode="fixed"
+                            app:tabSelectedTextColor="?colorPrimary"
+                            app:tabTextColor="#ff666666" />
 
                         <androidx.viewpager.widget.ViewPager
                             android:id="@+id/vp_statics"
@@ -303,11 +284,12 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="12dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="5dp">
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -384,6 +366,8 @@
             android:background="@drawable/shape_input_search_bg"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
             android:hint="@string/hint_search"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"

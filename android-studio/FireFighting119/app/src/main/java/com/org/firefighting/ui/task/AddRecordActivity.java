@@ -156,7 +156,7 @@ public class AddRecordActivity extends BaseActivity {
             TaskTable.RtnTitle t = ((TaskTable.RtnTitle) child.getTag());
             if (TextUtils.isEmpty(t.value)) {
                 if (t.requestedReal != null && t.requestedReal) {
-                    Toast.makeText(App.getInstance(), "有必填项为填入", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getInstance(), "有必填项未填入", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 data.add(t.value);

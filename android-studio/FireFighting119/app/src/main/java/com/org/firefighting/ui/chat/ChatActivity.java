@@ -428,8 +428,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onResume() {
-        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
         super.onResume();
+        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
     }
 
     @Override

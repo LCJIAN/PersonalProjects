@@ -5,18 +5,18 @@
     <item
         android:id="@+id/action_home"
         android:checked="true"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/selector_home"
         android:title="@string/action_home" />
     <item
         android:id="@+id/action_task"
-        android:icon="@drawable/ic_task"
+        android:icon="@drawable/selector_task"
         android:title="@string/action_task" />
     <item
         android:id="@+id/action_conversation"
-        android:icon="@drawable/ic_conversation"
+        android:icon="@drawable/selector_conversation"
         android:title="@string/action_conversation" />
     <item
         android:id="@+id/action_mine"
-        android:icon="@drawable/ic_mine"
+        android:icon="@drawable/selector_mine"
         android:title="@string/action_mine" />
 </menu>

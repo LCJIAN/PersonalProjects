@@ -1,0 +1,109 @@
+package com.org.firefighting.ui.resource;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+
+import com.lcjian.lib.text.Spans;
+import com.lcjian.lib.util.common.DimenUtils;
+import com.org.firefighting.R;
+import com.org.firefighting.RxBus;
+import com.org.firefighting.data.network.entity.ResourceEntity;
+import com.org.firefighting.ui.base.BaseDialogFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public class ApplyStatusFragment extends BaseDialogFragment {
+
+    @BindView(R.id.tv_info)
+    TextView tv_info;
+    @BindView(R.id.btn_apply)
+    AppCompatButton btn_apply;
+    @BindView(R.id.btn_close)
+    ImageButton btn_close;
+
+    private Unbinder mUnBinder;
+
+    private ResourceEntity mResourceEntity;
+
+    public static ApplyStatusFragment newInstance(ResourceEntity entity) {
+        ApplyStatusFragment fragment = new ApplyStatusFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("resource_entity", entity);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mResourceEntity = (ResourceEntity) getArguments().getSerializable("resource_entity");
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_apply_status, container, false);
+        mUnBinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (TextUtils.equals("1", mResourceEntity.applyStatus)) {
+            tv_info.setText(new Spans().append("已申请，请等待", new ForegroundColorSpan(0xff383f52)));
+            btn_apply.setVisibility(View.GONE);
+        } else if (TextUtils.equals("2", mResourceEntity.applyStatus)) {
+            tv_info.setText(new Spans()
+                    .append("审核已通过", new ForegroundColorSpan(0xff383f52))
+                    .append("\n\n")
+                    .append("申请时间：" + mResourceEntity.applyTime,
+                            new ForegroundColorSpan(0xff383f52),
+                            new AbsoluteSizeSpan(DimenUtils.spToPixels(12, view.getContext()))));
+            btn_apply.setVisibility(View.GONE);
+        } else if (TextUtils.equals("3", mResourceEntity.applyStatus)) {
+            tv_info.setText(new Spans()
+                    .append("审核不通过", new ForegroundColorSpan(0xffa60303))
+                    .append("\n")
+                    .append(mResourceEntity.auditRemarks,
+                            new ForegroundColorSpan(0xff383f52),
+                            new AbsoluteSizeSpan(DimenUtils.spToPixels(10, view.getContext())))
+                    .append("\n")
+                    .append("申请时间：" + mResourceEntity.applyTime,
+                            new ForegroundColorSpan(0xff383f52),
+                            new AbsoluteSizeSpan(DimenUtils.spToPixels(12, view.getContext()))));
+            btn_apply.setVisibility(View.VISIBLE);
+            btn_apply.setText("重新申请");
+        } else {
+            tv_info.setText(new Spans().append("暂无使用权限，请申请后使用\n\n你可以", new ForegroundColorSpan(0xff383f52)));
+            btn_apply.setVisibility(View.VISIBLE);
+            btn_apply.setText("立即申请");
+        }
+
+        btn_close.setOnClickListener(v -> dismiss());
+        btn_apply.setOnClickListener(v -> {
+            dismiss();
+            RxBus.getInstance().send(new ResourceDetailActivity.ShowApplyDialogEvent());
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        mUnBinder.unbind();
+        super.onDestroyView();
+    }
+}

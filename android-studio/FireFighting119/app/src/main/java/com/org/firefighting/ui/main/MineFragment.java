@@ -3,6 +3,7 @@ package com.org.firefighting.ui.main;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,10 @@ import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.data.network.entity.VersionInfo;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.ChatActivity;
-import com.org.firefighting.ui.resource.ResourcesActivity;
-import com.org.firefighting.ui.service.ServiceListActivity;
-import com.org.firefighting.ui.task.TasksActivity;
-import com.org.firefighting.ui.user.PwdModifyActivity;
+import com.org.firefighting.ui.user.PwdModifyFragment;
 import com.org.firefighting.ui.user.SignInActivity;
 
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,14 +53,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_user_department;
     @BindView(R.id.tv_user_role)
     TextView tv_user_role;
-    @BindView(R.id.rl_my_task)
-    RelativeLayout rl_my_task;
-    @BindView(R.id.rl_arc)
-    RelativeLayout rl_arc;
-    @BindView(R.id.rl_organisation)
-    RelativeLayout rl_organisation;
-    @BindView(R.id.rl_announcement)
-    RelativeLayout rl_announcement;
+    @BindView(R.id.tv_phone)
+    TextView tv_phone;
     @BindView(R.id.rl_version)
     ConstraintLayout rl_version;
     @BindView(R.id.rl_feed_back)
@@ -97,15 +88,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         tv_real_name.setText(user.realName);
         tv_user_department.setText(user.dept);
         tv_user_role.setText(user.roleName);
+        tv_phone.setText(user.phone);
         tv_version_name.setText(PackageUtils2.getVersionName(view.getContext()));
 
-        rl_my_task.setOnClickListener(this);
+        tv_phone.setOnClickListener(this);
         rl_version.setOnClickListener(this);
         rl_feed_back.setOnClickListener(this);
         rl_sign_out.setOnClickListener(this);
-        rl_arc.setOnClickListener(this);
-        rl_organisation.setOnClickListener(this);
-        rl_announcement.setOnClickListener(this);
         rl_pwd_modify.setOnClickListener(this);
     }
 
@@ -118,20 +107,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_phone: {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + SharedPreferencesDataSource.getSignInResponse().user.phone));
+                v.getContext().startActivity(intent);
+            }
+            break;
             case R.id.rl_pwd_modify:
-                startActivity(new Intent(v.getContext(), PwdModifyActivity.class));
-                break;
-            case R.id.rl_my_task:
-                startActivity(new Intent(v.getContext(), TasksActivity.class));
-                break;
-            case R.id.rl_arc:
-                ((MainActivity) Objects.requireNonNull(getActivity())).checkContacts();
-                break;
-            case R.id.rl_organisation:
-                startActivity(new Intent(v.getContext(), ResourcesActivity.class));
-                break;
-            case R.id.rl_announcement:
-                startActivity(new Intent(v.getContext(), ServiceListActivity.class));
+                new PwdModifyFragment().show(getChildFragmentManager(), "PwdModifyFragment");
                 break;
             case R.id.rl_feed_back:
                 startActivity(new Intent(v.getContext(), ChatActivity.class)

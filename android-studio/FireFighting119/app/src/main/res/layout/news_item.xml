@@ -18,7 +18,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:lines="2"
-        android:textColor="@android:color/black"
+        android:textColor="#ff383f52"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

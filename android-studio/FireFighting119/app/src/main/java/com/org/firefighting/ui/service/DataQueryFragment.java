@@ -124,11 +124,11 @@ public class DataQueryFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mUnBinder.unbind();
         mDisposable.dispose();
         if (mDisposableD != null) {
             mDisposableD.dispose();
         }
+        mUnBinder.unbind();
         super.onDestroyView();
     }
 

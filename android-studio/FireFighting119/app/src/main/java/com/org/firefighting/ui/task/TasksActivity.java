@@ -1,9 +1,9 @@
 package com.org.firefighting.ui.task;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +32,7 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.Task;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.common.SearchActivity;
+import com.org.firefighting.util.ImageSpanCentre;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +84,7 @@ public class TasksActivity extends BaseActivity {
                     TitleChangeEvent e = (TitleChangeEvent) o;
                     for (int i = 0; i < mTitlesO.size(); i++) {
                         if (TextUtils.equals(mTitlesO.get(i), e.title)) {
-                            mTitles.set(i, e.title + e.count);
+                            mTitles.set(i, e.title + "[" + e.count + "]");
                         }
                     }
                     mPagerAdapter.notifyDataSetChanged();
@@ -180,11 +181,16 @@ public class TasksActivity extends BaseActivity {
 
                 @Override
                 public void onBind(Task data, SlimAdapter.SlimViewHolder<Task> viewHolder) {
+                    Context context = viewHolder.itemView.getContext();
+
                     viewHolder.text(R.id.tv_task_code, "任务:" + data.code)
                             .text(R.id.tv_task_end_date, "截至日期:" + data.endDate)
-                            .text(R.id.tv_task_name, (TextUtils.equals("待查看", data.myWorkStatus.workStatus)
-                                    ? new Spans().append("[未读]", new ForegroundColorSpan(0xffff0000)).append(" ").append(data.name)
-                                    : data.name))
+                            .text(R.id.tv_task_name, new Spans()
+                                    .append("*", new ImageSpanCentre(context, TextUtils.equals("待查看", data.myWorkStatus.workStatus)
+                                            ? R.drawable.shape_dot_read_not
+                                            : R.drawable.shape_dot_read, ImageSpanCentre.CENTRE))
+                                    .append(" ")
+                                    .append(data.name))
                             .text(R.id.tv_task_from, data.departmentName);
 
                     String f = "yyyy-MM-dd";

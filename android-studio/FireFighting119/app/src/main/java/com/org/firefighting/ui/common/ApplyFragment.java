@@ -6,12 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.org.firefighting.App;
 import com.org.firefighting.R;
@@ -25,22 +26,38 @@ public class ApplyFragment extends BaseDialogFragment {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
-    @BindView(R.id.ll_name)
-    LinearLayout ll_name;
-    @BindView(R.id.et_apply_name)
-    EditText et_apply_name;
+    @BindView(R.id.tv_des)
+    TextView tv_des;
     @BindView(R.id.et_apply_reason)
     EditText et_apply_reason;
-    @BindView(R.id.tv_cancel)
-    TextView tv_cancel;
-    @BindView(R.id.tv_confirm)
-    TextView tv_confirm;
+    @BindView(R.id.btn_close)
+    ImageButton btn_close;
+    @BindView(R.id.btn_submit)
+    AppCompatButton btn_submit;
 
     private Unbinder mUnBinder;
 
     private Listener mListener;
 
     private boolean mService;
+
+    private String mDes;
+
+    public static ApplyFragment newInstance(String des) {
+        ApplyFragment fragment = new ApplyFragment();
+        Bundle args = new Bundle();
+        args.putString("des", des);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mDes = getArguments().getString("des");
+        }
+    }
 
     @Nullable
     @Override
@@ -52,21 +69,17 @@ public class ApplyFragment extends BaseDialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ll_name.setVisibility(mService ? View.GONE : View.VISIBLE);
         tv_title.setText(mService ? R.string.service_application : R.string.resource_application);
-        tv_cancel.setOnClickListener(v -> dismiss());
-        tv_confirm.setOnClickListener(v -> {
-            if (!mService && TextUtils.isEmpty(et_apply_name.getEditableText())) {
-                Toast.makeText(App.getInstance(), R.string.apply_resource_name_empty, Toast.LENGTH_SHORT).show();
-                return;
-            }
+        tv_des.setText(mDes);
+        btn_close.setOnClickListener(v -> dismiss());
+        btn_submit.setOnClickListener(v -> {
             if (TextUtils.isEmpty(et_apply_reason.getEditableText())) {
                 Toast.makeText(App.getInstance(), R.string.apply_resource_reason_empty, Toast.LENGTH_SHORT).show();
                 return;
             }
             dismiss();
             if (mListener != null) {
-                mListener.onConfirm(et_apply_name.getEditableText().toString(),
+                mListener.onConfirm(et_apply_reason.getEditableText().toString(),
                         et_apply_reason.getEditableText().toString());
             }
         });
@@ -82,7 +95,6 @@ public class ApplyFragment extends BaseDialogFragment {
         this.mService = service;
         return this;
     }
-
 
     public ApplyFragment setListener(Listener l) {
         this.mListener = l;

@@ -88,7 +88,9 @@ public class SmackClientService extends Service {
         @Override
         public void onDataConnectionStateChanged(int state) {
             if (state == TelephonyManager.DATA_CONNECTED) {
-                mSmackClient.restartAsync();
+                if (mSmackClient != null) { // 按道理不为空，但是在有些手机上取消监听不成功或者有延迟
+                    mSmackClient.restartAsync();
+                }
             }
         }
     };

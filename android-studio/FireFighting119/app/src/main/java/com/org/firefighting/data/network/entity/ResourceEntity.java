@@ -1,8 +1,9 @@
 package com.org.firefighting.data.network.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ResourceEntity {
+public class ResourceEntity implements Serializable {
 
     public String id;
     public String createBy;
@@ -62,7 +63,9 @@ public class ResourceEntity {
     public String collectStatusDescription;
     public String applyId;
     public String applyStatus;
+    public String applyTime;
     public String applyStatusDescription;
+    public String auditRemarks;
     public String subscribeId;
     public String subscribeStatus;
     public String subscribeStatusDescription;
@@ -73,7 +76,7 @@ public class ResourceEntity {
     public String statTable;
     public StatInteriorTable statInteriorTable;
 
-    public static class StatInteriorTable {
+    public static class StatInteriorTable implements Serializable {
 
         public String id;
         public String createBy;
@@ -92,7 +95,7 @@ public class ResourceEntity {
         public String schema;
     }
 
-    public static class Field {
+    public static class Field implements Serializable {
 
         public String id;
         public String createBy;

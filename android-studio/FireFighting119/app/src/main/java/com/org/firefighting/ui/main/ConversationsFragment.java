@@ -14,7 +14,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,7 +54,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,8 +69,6 @@ public class ConversationsFragment extends BaseFragment {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
-    @BindView(R.id.btn_go_contact)
-    ImageButton btn_go_contact;
     @BindView(R.id.srl_conversation)
     SwipeRefreshLayout srl_conversation;
     @BindView(R.id.rv_conversation)
@@ -118,7 +114,6 @@ public class ConversationsFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btn_go_contact.setOnClickListener(v -> ((MainActivity) Objects.requireNonNull(getActivity())).checkContacts());
         srl_conversation.setColorSchemeResources(R.color.colorPrimary);
         srl_conversation.setOnRefreshListener(() -> RxBus.getInstance().send(Boolean.TRUE));
 
@@ -280,8 +275,8 @@ public class ConversationsFragment extends BaseFragment {
 
     @Override
     public void onResume() {
-        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
         super.onResume();
+        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
     }
 
     @Override

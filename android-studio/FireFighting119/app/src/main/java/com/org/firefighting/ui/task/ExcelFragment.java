@@ -172,6 +172,7 @@ public class ExcelFragment extends BaseFragment implements View.OnClickListener 
         if (mDisposableD != null) {
             mDisposableD.dispose();
         }
+        webView.setWebViewClient(null);
         mUnBinder.unbind();
         super.onDestroyView();
     }

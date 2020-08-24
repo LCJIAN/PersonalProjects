@@ -215,7 +215,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                 tv_task_remaining.setTextColor(0xffff0000);
                             } else {
                                 tv_task_remaining.setText(new Spans("剩").append(String.valueOf(days)).append("天"));
-                                tv_task_remaining.setTextColor(0xff19d100);
+                                tv_task_remaining.setTextColor(0xff727a8d);
                             }
 
                             tv_start_date.setText(task.startDate);

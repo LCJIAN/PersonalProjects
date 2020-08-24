@@ -2,14 +2,10 @@ package com.org.firefighting.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +26,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.lcjian.lib.content.SimpleFragmentPagerAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
-import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.common.DateUtils;
 import com.lcjian.lib.util.common.DimenUtils;
 import com.org.firefighting.BuildConfig;
@@ -86,13 +82,13 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.fl_task)
     FrameLayout fl_task;
     @BindView(R.id.tv_task)
-    TextView tv_task;
+    ImageView tv_task;
     @BindView(R.id.tv_organization)
-    TextView tv_organization;
+    ImageView tv_organization;
     @BindView(R.id.tv_announcement)
-    TextView tv_announcement;
+    ImageView tv_announcement;
     @BindView(R.id.tv_helping)
-    TextView tv_helping;
+    ImageView tv_helping;
 
     @BindView(R.id.cl_weather)
     ConstraintLayout cl_weather;
@@ -102,13 +98,13 @@ public class HomeFragment extends BaseFragment {
     TextView tv_weather;
     @BindView(R.id.tv_now)
     TextView tv_now;
+    @BindView(R.id.tv_temperature)
+    TextView tv_temperature;
+    @BindView(R.id.tv_wind)
+    TextView tv_wind;
 
-    @BindView(R.id.tv_duty_statics)
-    TextView tv_duty_statics;
-    @BindView(R.id.tv_real_time_statics)
-    TextView tv_real_time_statics;
-    @BindView(R.id.tv_police_statics)
-    TextView tv_police_statics;
+    @BindView(R.id.tab_statics)
+    TabLayout tab_statics;
     @BindView(R.id.vp_statics)
     ViewPager vp_statics;
 
@@ -143,7 +139,6 @@ public class HomeFragment extends BaseFragment {
 
     private Badge mBadge;
 
-    private int mStaticsCheckId;
     private int mSummaryCheckId;
 
     private ViewPager.SimpleOnPageChangeListener mStaticsPageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
@@ -153,13 +148,10 @@ public class HomeFragment extends BaseFragment {
             ViewGroup.LayoutParams layoutParams = vp_statics.getLayoutParams();
             if (position == 0) {
                 layoutParams.height = (int) DimenUtils.dipToPixels(400, context);
-                setupStaticsTab(tv_duty_statics.getId());
             } else if (position == 1) {
                 layoutParams.height = (int) DimenUtils.dipToPixels(400, context);
-                setupStaticsTab(tv_real_time_statics.getId());
             } else {
-                layoutParams.height = (int) DimenUtils.dipToPixels(200, context);
-                setupStaticsTab(tv_police_statics.getId());
+                layoutParams.height = (int) DimenUtils.dipToPixels(240, context);
             }
             vp_statics.setLayoutParams(layoutParams);
         }
@@ -189,9 +181,6 @@ public class HomeFragment extends BaseFragment {
         cl_weather.setOnClickListener(v -> startActivity(new Intent(v.getContext(), WebViewActivity.class)
                 .putExtra("url", "https://weather.seniverse.com/?token=a50504dd-e2a1-45b6-8de5-4007e9ab3137")));
 
-        tv_duty_statics.setOnClickListener(v -> setupStaticsTab(v.getId()));
-        tv_real_time_statics.setOnClickListener(v -> setupStaticsTab(v.getId()));
-        tv_police_statics.setOnClickListener(v -> setupStaticsTab(v.getId()));
         tv_view_more_news.setOnClickListener(v -> startActivity(new Intent(v.getContext(), NewsActivity.class)));
 
         tv_task_input.setOnClickListener(v -> setupSummaryTab(v.getId()));
@@ -232,11 +221,11 @@ public class HomeFragment extends BaseFragment {
 
                     @Override
                     public void onBind(News data, SlimAdapter.SlimViewHolder<News> viewHolder) {
-                        viewHolder.background(R.id.ll_news, new ColorDrawable(viewHolder.getBindingAdapterPosition() % 2 == 0 ? 0xffeeeef5 : 0xffffffff))
-                                .text(R.id.tv_title, new Spans()
-                                        .append(data.category + ":", new ForegroundColorSpan(0xff333333), new StyleSpan(Typeface.BOLD))
-                                        .append(data.title))
-                                .text(R.id.tv_time, data.publishTime);
+                        viewHolder
+                                .text(R.id.tv_title, data.title)
+                                .text(R.id.tv_category, data.category)
+                                .text(R.id.tv_time, data.publishTime)
+                        ;
                     }
                 });
         rv_news.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -316,9 +305,9 @@ public class HomeFragment extends BaseFragment {
                                     iv_weather.setImageResource(R.drawable.dr11);
                                 }
                             }
-                            tv_weather.setText(Html.fromHtml(forecast.type + " " +
-                                    forecast.low.replace("低温", "") + "~" + forecast.high.replace("高温", "") + " " +
-                                    forecast.fengxiang + " " + forecast.fengli));
+                            tv_weather.setText(Html.fromHtml(forecast.type));
+                            tv_temperature.setText(Html.fromHtml(forecast.low.replace("低温", "") + "~" + forecast.high.replace("高温", "")));
+                            tv_wind.setText(Html.fromHtml(forecast.fengxiang + forecast.fengli));
                         },
                         Timber::e);
     }
@@ -353,15 +342,8 @@ public class HomeFragment extends BaseFragment {
                             .addFragment(new DutyStaticsFragment(), "值班动态")
                             .addFragment(new RealTimeStaticsFragment(), "实时警情")
                             .addFragment(new PoliceStaticsFragment(), "警情数据"));
+                    tab_statics.setupWithViewPager(vp_statics);
 
-                    int staticsCheckId;
-                    if (mStaticsCheckId == 0) {
-                        staticsCheckId = tv_duty_statics.getId();
-                    } else {
-                        staticsCheckId = mStaticsCheckId;
-                        mStaticsCheckId = 0;
-                    }
-                    setupStaticsTab(staticsCheckId);
                 }, throwable -> {
                     setRefreshing(false);
                     ThrowableConsumerAdapter.accept(throwable);
@@ -434,31 +416,6 @@ public class HomeFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(newsPageResponse -> mNewsAdapter.updateData(newsPageResponse.result),
                         ThrowableConsumerAdapter::accept);
-    }
-
-    private void setupStaticsTab(int staticsCheckId) {
-        if (mStaticsCheckId == staticsCheckId) {
-            return;
-        }
-        mStaticsCheckId = staticsCheckId;
-        if (tv_duty_statics.getId() == staticsCheckId) {
-            setupCheckedTab(tv_duty_statics, R.drawable.summary_tab_bg1);
-            setupUnCheckedTab(tv_real_time_statics);
-            setupUnCheckedTab(tv_police_statics);
-            vp_statics.setCurrentItem(0);
-        }
-        if (tv_real_time_statics.getId() == staticsCheckId) {
-            setupCheckedTab(tv_real_time_statics, R.drawable.summary_tab_bg2);
-            setupUnCheckedTab(tv_duty_statics);
-            setupUnCheckedTab(tv_police_statics);
-            vp_statics.setCurrentItem(1);
-        }
-        if (tv_police_statics.getId() == staticsCheckId) {
-            setupCheckedTab(tv_police_statics, R.drawable.summary_tab_bg3);
-            setupUnCheckedTab(tv_real_time_statics);
-            setupUnCheckedTab(tv_duty_statics);
-            vp_statics.setCurrentItem(2);
-        }
     }
 
     private void setupSummaryTab(int summaryCheckId) {

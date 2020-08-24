@@ -60,7 +60,9 @@ public class ServiceDataQueryActivity extends BaseActivity {
             if (mServiceEntity != null) {
                 if (1 != mServiceEntity.applyStatus
                         && 2 != mServiceEntity.applyStatus) {
-                    new ApplyFragment()
+                    ApplyFragment
+                            .newInstance("服务名称：" + mServiceEntity.serviceName
+                                    + "\n服务描述：" + (TextUtils.isEmpty(mServiceEntity.description) ? "暂无" : mServiceEntity.description))
                             .setService(true)
                             .setListener(this::applyService)
                             .show(getSupportFragmentManager(), "ApplyFragment");
@@ -157,7 +159,7 @@ public class ServiceDataQueryActivity extends BaseActivity {
             mDisposableA.dispose();
         }
         Map<String, String> map = new HashMap<>();
-        map.put("name", "name");
+        map.put("name", reason);
         map.put("category", "service");
         map.put("applyReason", reason);
         map.put("relationId", mServiceEntity.id);

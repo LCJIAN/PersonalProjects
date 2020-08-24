@@ -85,9 +85,9 @@ public class SearchActivity extends BaseActivity {
         vp_search.setOffscreenPageLimit(4);
         vp_search.setAdapter(new SimpleFragmentPagerAdapter(getSupportFragmentManager())
                 .addFragment(SearchFragment.newInstance("100000"), "资源目录")
-                .addFragment(SearchFragment.newInstance("110000"), "服务")
+                .addFragment(SearchFragment.newInstance("110000"), "服务")/*
                 .addFragment(SearchFragment.newInstance("170010"), "文档")
-                .addFragment(SearchFragment.newInstance("170020"), "标准"));
+                .addFragment(SearchFragment.newInstance("170020"), "标准")*/);
         tab_search.setupWithViewPager(vp_search);
     }
 

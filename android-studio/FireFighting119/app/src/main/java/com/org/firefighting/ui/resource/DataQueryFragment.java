@@ -15,14 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.google.gson.Gson;
-import com.org.firefighting.App;
 import com.org.firefighting.R;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
@@ -61,10 +59,7 @@ public class DataQueryFragment extends BaseFragment {
 
     private Unbinder mUnBinder;
 
-    private Disposable mDisposable;
     private Disposable mDisposableD;
-
-    private String mResourceId;
 
     private ResourceEntity mResourceEntity;
 
@@ -74,10 +69,10 @@ public class DataQueryFragment extends BaseFragment {
     private int mCurrentPage = 1;
     private int mTotalPage = 0;
 
-    public static DataQueryFragment newInstance(String taskId) {
+    public static DataQueryFragment newInstance(ResourceEntity entity) {
         DataQueryFragment fragment = new DataQueryFragment();
         Bundle args = new Bundle();
-        args.putString("resource_id", taskId);
+        args.putSerializable("resource_entity", entity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,7 +81,7 @@ public class DataQueryFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResourceId = getArguments().getString("resource_id");
+            mResourceEntity = (ResourceEntity) getArguments().getSerializable("resource_entity");
         }
     }
 
@@ -122,11 +117,10 @@ public class DataQueryFragment extends BaseFragment {
 
     @Override
     public void onDestroyView() {
-        mUnBinder.unbind();
-        mDisposable.dispose();
         if (mDisposableD != null) {
             mDisposableD.dispose();
         }
+        mUnBinder.unbind();
         super.onDestroyView();
     }
 
@@ -248,28 +242,11 @@ public class DataQueryFragment extends BaseFragment {
     }
 
     private void setupContent() {
-        showProgress();
-        mDisposable = RestAPI.getInstance().apiServiceSB2()
-                .getResourceDetail(mResourceId, SharedPreferencesDataSource.getSignInResponse().user.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(responseData -> {
-                            hideProgress();
-                            if (responseData.code == -1) {
-                                Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
-                            } else {
-                                mResourceEntity = responseData.data;
-                                addOptionItem();
-                                setupOptions();
+        addOptionItem();
+        setupOptions();
 
-                                mCurrentPage = 1;
-                                setupData();
-                            }
-                        },
-                        throwable -> {
-                            hideProgress();
-                            ThrowableConsumerAdapter.accept(throwable);
-                        });
+        mCurrentPage = 1;
+        setupData();
     }
 
     private void setupData() {
@@ -354,7 +331,7 @@ public class DataQueryFragment extends BaseFragment {
                                     }
                                 }
                                 row.setOnClickListener(v -> startActivity(new Intent(v.getContext(), ResourceRelevanceDataActivity.class)
-                                        .putExtra("resource_id", mResourceId)
+                                        .putExtra("resource_id", mResourceEntity.id)
                                         .putStringArrayListExtra("en_names", enNames)
                                         .putStringArrayListExtra("names", names)
                                         .putStringArrayListExtra("values", values)));

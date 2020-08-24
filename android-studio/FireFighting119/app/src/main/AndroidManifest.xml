@@ -49,10 +49,8 @@
             android:theme="@style/AppTheme.NoActionBar.Guide" />
         <activity
             android:name=".ui.user.SignInActivity"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar.SignIn" />
-        <activity
-            android:name=".ui.user.PwdModifyActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.task.TaskDetailActivity"
             android:exported="true"

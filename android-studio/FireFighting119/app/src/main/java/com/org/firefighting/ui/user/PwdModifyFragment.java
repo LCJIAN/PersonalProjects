@@ -4,11 +4,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.widget.Button;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,20 +24,17 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.ModifyPwdRequest;
 import com.org.firefighting.data.network.entity.ResponseData;
 import com.org.firefighting.data.network.entity.SignInRequest;
-import com.org.firefighting.ui.base.BaseActivity;
+import com.org.firefighting.ui.base.BaseDialogFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class PwdModifyActivity extends BaseActivity implements TextWatcher {
+public class PwdModifyFragment extends BaseDialogFragment implements TextWatcher {
 
-    @BindView(R.id.tv_title)
-    TextView tv_title;
-    @BindView(R.id.btn_nav_back)
-    ImageButton btn_nav_back;
     @BindView(R.id.et_old_pwd)
     EditText et_old_pwd;
     @BindView(R.id.et_new_pwd)
@@ -40,18 +42,25 @@ public class PwdModifyActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.et_new_pwd_confirm)
     EditText et_new_pwd_confirm;
     @BindView(R.id.btn_modify)
-    Button btn_modify;
+    AppCompatButton btn_modify;
+    @BindView(R.id.btn_close)
+    ImageButton btn_close;
 
     private Disposable mDisposable;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pwd_modify);
-        ButterKnife.bind(this);
+    private Unbinder mUnBinder;
 
-        tv_title.setText(getString(R.string.pwd_modify));
-        btn_nav_back.setOnClickListener(v -> onBackPressed());
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_pwd_modify, container, false);
+        mUnBinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        btn_close.setOnClickListener(v -> dismiss());
         btn_modify.setOnClickListener(v -> {
             if (!TextUtils.equals(et_new_pwd.getEditableText(), et_new_pwd_confirm.getEditableText())) {
                 Toast.makeText(App.getInstance(), R.string.error_confirm_pwd, Toast.LENGTH_SHORT).show();
@@ -73,7 +82,7 @@ public class PwdModifyActivity extends BaseActivity implements TextWatcher {
                                     signInRequest.password = modifyPwdRequest.newPass;
                                     SharedPreferencesDataSource.putSignInRequest(signInRequest);
                                     Toast.makeText(App.getInstance(), R.string.password_modification_succeeded, Toast.LENGTH_SHORT).show();
-                                    finish();
+                                    dismiss();
                                 } else {
                                     ResponseData<String> r = new Gson().fromJson(s, new TypeToken<ResponseData<String>>() {}.getType());
                                     Toast.makeText(App.getInstance(), r.message, Toast.LENGTH_SHORT).show();
@@ -89,6 +98,15 @@ public class PwdModifyActivity extends BaseActivity implements TextWatcher {
         et_new_pwd_confirm.addTextChangedListener(this);
 
         validate();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (mDisposable != null) {
+            mDisposable.dispose();
+        }
+        mUnBinder.unbind();
+        super.onDestroyView();
     }
 
     @Override
@@ -110,13 +128,5 @@ public class PwdModifyActivity extends BaseActivity implements TextWatcher {
         btn_modify.setEnabled(!TextUtils.isEmpty(et_old_pwd.getEditableText())
                 && !TextUtils.isEmpty(et_new_pwd.getEditableText())
                 && !TextUtils.isEmpty(et_new_pwd_confirm.getEditableText()));
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (mDisposable != null) {
-            mDisposable.dispose();
-        }
-        super.onDestroy();
     }
 }

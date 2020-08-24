@@ -7,13 +7,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="?actionBarSize"
         android:background="?colorPrimary">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
             android:background="?selectableItemBackground"
             android:src="@drawable/ic_back" />
 
@@ -27,24 +27,39 @@
 
         <ImageButton
             android:id="@+id/btn_go_search"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
             android:layout_alignParentEnd="true"
             android:background="?selectableItemBackground"
             app:srcCompat="@drawable/ic_search" />
     </RelativeLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_task"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@android:color/white"
-        app:tabIndicatorColor="?colorPrimary"
-        app:tabIndicatorFullWidth="false"
-        app:tabIndicatorHeight="3dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="?colorPrimary" />
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="4dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="4dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/white"
+            app:tabIndicatorColor="?colorPrimary"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="?colorPrimary" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_task"
