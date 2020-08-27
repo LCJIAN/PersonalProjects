@@ -110,4 +110,7 @@
     <string name="failed_to_modify_pwd">修改密码失败</string>
     <string name="confirm_modify">确认修改</string>
     <string name="confirm_apply">确认申请</string>
+    <string name="data_field">数据项</string>
+    <string name="data_preview">数据预览</string>
+    <string name="view_data_field">查看数据项</string>
 </resources>

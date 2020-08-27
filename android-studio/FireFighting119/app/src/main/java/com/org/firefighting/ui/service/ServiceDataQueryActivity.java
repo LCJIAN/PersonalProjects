@@ -35,6 +35,8 @@ public class ServiceDataQueryActivity extends BaseActivity {
     TextView tv_title;
     @BindView(R.id.btn_nav_back)
     ImageButton btn_nav_back;
+    @BindView(R.id.btn_nav_right)
+    ImageButton btn_nav_right;
 
     @BindView(R.id.fl_apply)
     CardView fl_apply;
@@ -54,8 +56,18 @@ public class ServiceDataQueryActivity extends BaseActivity {
         setContentView(R.layout.activity_service_data_query);
         ButterKnife.bind(this);
         mServiceId = getIntent().getStringExtra("service_id");
-
+        btn_nav_right.setVisibility(View.VISIBLE);
+        btn_nav_right.setImageResource(R.drawable.favourite_btn);
         btn_nav_back.setOnClickListener(v -> onBackPressed());
+        btn_nav_right.setOnClickListener(v -> {
+            if (mServiceEntity != null) {
+                if (mServiceEntity.collectStatus == 0) {
+                    favourite();
+                } else {
+                    unFavourite();
+                }
+            }
+        });
         fl_apply.setOnClickListener(v -> {
             if (mServiceEntity != null) {
                 if (1 != mServiceEntity.applyStatus
@@ -70,12 +82,7 @@ public class ServiceDataQueryActivity extends BaseActivity {
             }
         });
 
-        if (TextUtils.isEmpty(mServiceId)) {
-            mServiceEntity = (ServiceEntity) getIntent().getSerializableExtra("service");
-            setupAll();
-        } else {
-            getService();
-        }
+        getService();
 
         mDisposableR = RxBus.getInstance()
                 .asFlowable()
@@ -103,7 +110,7 @@ public class ServiceDataQueryActivity extends BaseActivity {
 
     private void getService() {
         showProgress();
-        mDisposable = RestAPI.getInstance().apiServiceSB3()
+        mDisposable = RestAPI.getInstance().apiServiceSB()
                 .getService(mServiceId, SharedPreferencesDataSource.getSignInResponse().user.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -136,6 +143,11 @@ public class ServiceDataQueryActivity extends BaseActivity {
         if (mPermissionEvent == null || mServiceEntity == null) {
             return;
         }
+        if (mServiceEntity.collectStatus == 0) {
+            btn_nav_right.setImageResource(R.drawable.favourite_btn);
+        } else {
+            btn_nav_right.setImageResource(R.drawable.un_favourite_btn);
+        }
         if (mPermissionEvent.permission) {
             fl_apply.setVisibility(View.GONE);
         } else {
@@ -148,6 +160,54 @@ public class ServiceDataQueryActivity extends BaseActivity {
                 tv_apply.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_security_check_white_48dp, 0, 0, 0);
             }
         }
+    }
+
+    private void favourite() {
+        showProgress();
+        if (mDisposableA != null) {
+            mDisposableA.dispose();
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", SharedPreferencesDataSource.getSignInResponse().user.id);
+        map.put("category", "service");
+        map.put("userType", "external");
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
+                .favouriteService(mServiceEntity.id, map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseData -> {
+                            hideProgress();
+                            Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
+                            if (responseData.code == 0) {
+                                getService();
+                            }
+                        },
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
+    }
+
+    private void unFavourite() {
+        showProgress();
+        if (mDisposableA != null) {
+            mDisposableA.dispose();
+        }
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
+                .unFavouriteService(mServiceEntity.collectId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(responseData -> {
+                            hideProgress();
+                            Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
+                            if (responseData.code == 0) {
+                                getService();
+                            }
+                        },
+                        throwable -> {
+                            hideProgress();
+                            ThrowableConsumerAdapter.accept(throwable);
+                        });
     }
 
     private void applyService(String name, String reason) {
@@ -163,7 +223,7 @@ public class ServiceDataQueryActivity extends BaseActivity {
         map.put("category", "service");
         map.put("applyReason", reason);
         map.put("relationId", mServiceEntity.id);
-        mDisposableA = RestAPI.getInstance().apiServiceSB3()
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
                 .applyService(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

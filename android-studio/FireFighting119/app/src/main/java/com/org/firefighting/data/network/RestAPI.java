@@ -33,7 +33,6 @@ public class RestAPI {
     private static final String API_URL = BuildConfig.API_URL;
     private static final String API_URL_SB = BuildConfig.API_URL_SB;
     private static final String API_URL_SB_2 = BuildConfig.API_URL_SB_2;
-    private static final String API_URL_SB_3 = BuildConfig.API_URL_SB_3;
 
     private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20MB
     private static RestAPI instance;
@@ -41,13 +40,11 @@ public class RestAPI {
     private Retrofit retrofitSignIn;
     private Retrofit retrofitSB;
     private Retrofit retrofitSB2;
-    private Retrofit retrofitSB3;
 
     private ApiService apiService;
     private ApiService apiServiceSignIn;
     private ApiService apiServiceSB;
     private ApiService apiServiceSB2;
-    private ApiService apiServiceSB3;
 
     public static RestAPI getInstance() {
         if (instance == null) {
@@ -102,13 +99,6 @@ public class RestAPI {
             retrofitSB2 = createRetrofit(API_URL_SB_2);
         }
         return retrofitSB2;
-    }
-
-    private Retrofit getRetrofitSB3() {
-        if (retrofitSB3 == null) {
-            retrofitSB3 = createRetrofit(API_URL_SB_3);
-        }
-        return retrofitSB3;
     }
 
     private Retrofit getRetrofit() {
@@ -229,13 +219,6 @@ public class RestAPI {
             apiServiceSB2 = getRetrofitSB2().create(ApiService.class);
         }
         return apiServiceSB2;
-    }
-
-    public ApiService apiServiceSB3() {
-        if (apiServiceSB3 == null) {
-            apiServiceSB3 = getRetrofitSB3().create(ApiService.class);
-        }
-        return apiServiceSB3;
     }
 
     public ApiService apiService() {

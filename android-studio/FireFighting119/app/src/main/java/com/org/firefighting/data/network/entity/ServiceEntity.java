@@ -9,6 +9,7 @@ public class ServiceEntity implements Serializable {
     public String createDate;
     public String remarks;
     public String serviceName;
+    public String serviceDeveloper;
     public String type;
     public String description;
     public Integer browses;
@@ -30,10 +31,10 @@ public class ServiceEntity implements Serializable {
     public String dirId;
     public Integer hot;
     public String collectId;
-    public Integer collectStatus;
+    public int collectStatus;
     public String collectStatusDescription;
     public String applyId;
-    public Integer applyStatus;
+    public int applyStatus;
     public String applyStatusDescription;
     public String subscribeId;
     public String subscribeStatus;

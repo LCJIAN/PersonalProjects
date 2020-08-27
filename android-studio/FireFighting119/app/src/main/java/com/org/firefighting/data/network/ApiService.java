@@ -216,6 +216,22 @@ public interface ApiService {
                                                                     @Query("pageSize") Integer pageSize);
 
     /**
+     * 资源目录接口 收藏
+     */
+    @GET("gtone-ht/interior/data/collect/list?userType=interior&category=resource")
+    Single<ResponseData<PageResponse<ResourceEntity>>> getResourcesF(@Query("userId") Long userId,
+                                                                     @Query("pageNum") Integer pageNum,
+                                                                     @Query("pageSize") Integer pageSize);
+
+    /**
+     * 资源目录接口 申请
+     */
+    @GET("gtone-ht/interior/data/resource/v2/apply/list?userType=interior&category=resource")
+    Single<ResponseData<PageResponse<ResourceEntity>>> getResourcesA(@Query("userId") Long userId,
+                                                                     @Query("pageNum") Integer pageNum,
+                                                                     @Query("pageSize") Integer pageSize);
+
+    /**
      * 资源目录详情接口
      */
     @GET("interior/data/resource/table/detail/{id}?userType=external&category=resource")
@@ -240,14 +256,14 @@ public interface ApiService {
      * 收藏
      */
     @POST("gtone-ht/interior/data/collect/create/{resource_id}")
-    Single<ResponseData<Object>> favourite(@Path("resource_id") String resourceId,
-                                           @Body Map<String, Object> request);
+    Single<ResponseData<Object>> favouriteResource(@Path("resource_id") String resourceId,
+                                                   @Body Map<String, Object> request);
 
     /**
      * 取消收藏
      */
     @GET("gtone-ht/interior/data/collect/cancel/{collect_id}")
-    Single<ResponseData<Object>> unFavourite(@Path("collect_id") String collectId);
+    Single<ResponseData<Object>> unFavouriteResource(@Path("collect_id") String collectId);
 
     /**
      * 申请
@@ -267,11 +283,40 @@ public interface ApiService {
                                                                   @Query("pageSize") Integer pageSize);
 
     /**
+     * 服务列表接口 收藏
+     */
+    @GET("gtone-ht/interior/data/dservice/dir/collect/list?userType=interior&category=service")
+    Single<ResponseData<PageResponse<ServiceEntity>>> getServicesF(@Query("userId") Long userId,
+                                                                   @Query("pageNum") Integer pageNum,
+                                                                   @Query("pageSize") Integer pageSize);
+
+    /**
+     * 服务列表接口 申请
+     */
+    @GET("gtone-ht/interior/data/service/apply/list?userType=interior&category=service")
+    Single<ResponseData<PageResponse<ServiceEntity>>> getServicesA(@Query("userId") Long userId,
+                                                                   @Query("pageNum") Integer pageNum,
+                                                                   @Query("pageSize") Integer pageSize);
+
+    /**
      * 服务
      */
     @GET("gtone-ht/interior/data/dservice/dir/detail/{id}?userType=external&category=service")
     Single<ResponseData<ServiceEntity>> getService(@Path("id") String id,
                                                    @Query("userId") Long userId);
+
+    /**
+     * 收藏
+     */
+    @POST("gtone-ht/interior/data/dservice/dir/create/{service_id}")
+    Single<ResponseData<Object>> favouriteService(@Path("service_id") String serviceId,
+                                                  @Body Map<String, Object> request);
+
+    /**
+     * 取消收藏
+     */
+    @GET("gtone-ht/interior/data/dservice/dir/cancel/{collect_id}")
+    Single<ResponseData<Object>> unFavouriteService(@Path("collect_id") String collectId);
 
     /**
      * 申请

@@ -90,12 +90,16 @@ public class ResourceBasicInfoFragment extends BaseFragment {
 
         if (TextUtils.equals("1", mResourceEntity.applyStatus)) {
             tv_apply_status.setText("已申请");
+            tv_apply_status.setTextColor(0xff9a9a9a);
         } else if (TextUtils.equals("2", mResourceEntity.applyStatus)) {
             tv_apply_status.setText("审核通过");
+            tv_apply_status.setTextColor(0xff1dab56);
         } else if (TextUtils.equals("3", mResourceEntity.applyStatus)) {
             tv_apply_status.setText("审核未通过!");
+            tv_apply_status.setTextColor(0xff9a9a9a);
         } else {
             tv_apply_status.setText("暂无使用权限");
+            tv_apply_status.setTextColor(0xff9a9a9a);
         }
     }
 }

@@ -152,8 +152,8 @@ public class ResourceDetailActivity extends BaseActivity {
         map.put("userId", SharedPreferencesDataSource.getSignInResponse().user.id);
         map.put("category", "resource");
         map.put("userType", "external");
-        mDisposableA = RestAPI.getInstance().apiServiceSB3()
-                .favourite(mResourceId, map)
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
+                .favouriteResource(mResourceId, map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseData -> {
@@ -174,8 +174,8 @@ public class ResourceDetailActivity extends BaseActivity {
         if (mDisposableA != null) {
             mDisposableA.dispose();
         }
-        mDisposableA = RestAPI.getInstance().apiServiceSB3()
-                .unFavourite(mResourceEntity.collectId)
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
+                .unFavouriteResource(mResourceEntity.collectId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(responseData -> {
@@ -201,7 +201,7 @@ public class ResourceDetailActivity extends BaseActivity {
         map.put("category", "resource");
         map.put("applyReason", reason);
         map.put("relationId", mResourceEntity.id);
-        mDisposableA = RestAPI.getInstance().apiServiceSB3()
+        mDisposableA = RestAPI.getInstance().apiServiceSB()
                 .applyResource(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

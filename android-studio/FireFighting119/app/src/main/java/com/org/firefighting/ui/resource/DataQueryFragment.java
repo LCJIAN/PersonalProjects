@@ -44,6 +44,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DataQueryFragment extends BaseFragment {
 
+    @BindView(R.id.tv_view_data_field)
+    TextView tv_view_data_field;
     @BindView(R.id.ll_query_options)
     LinearLayout ll_query_options;
     @BindView(R.id.tl_data)
@@ -95,6 +97,8 @@ public class DataQueryFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        tv_view_data_field.setOnClickListener(v -> DataFieldDialogFragment.newInstance(mResourceEntity)
+                .show(getChildFragmentManager(), "DataFieldDialogFragment"));
         tv_pre_page.setOnClickListener(v -> {
             if (mCurrentPage <= 1) {
                 return;

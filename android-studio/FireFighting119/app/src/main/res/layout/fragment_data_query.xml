@@ -1,68 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/data_preview"
+            android:textColor="#FF384053"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_view_data_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/view_data_field"
+            android:textColor="#FF384053"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_query_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <TableLayout
+            android:id="@+id/tl_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/shape_v_divider"
+            android:showDividers="beginning|middle|end" />
+    </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/ll_query_options"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_total_page_cont"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_marginEnd="16dp"
+            android:text="@string/total_page_count" />
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_pre_page"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:text="@string/pre_page" />
 
-            <TableLayout
-                android:id="@+id/tl_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/shape_v_divider"
-                android:showDividers="beginning|middle|end" />
-        </HorizontalScrollView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+        <EditText
+            android:id="@+id/et_page_number"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/shape_card"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:minWidth="40dp" />
 
-            <TextView
-                android:id="@+id/tv_total_page_cont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="@string/total_page_count" />
-
-            <TextView
-                android:id="@+id/tv_pre_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pre_page" />
-
-            <EditText
-                android:id="@+id/et_page_number"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/shape_card"
-                android:gravity="center"
-                android:minWidth="40dp" />
-
-            <TextView
-                android:id="@+id/tv_next_page"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/next_page" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_next_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_page" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

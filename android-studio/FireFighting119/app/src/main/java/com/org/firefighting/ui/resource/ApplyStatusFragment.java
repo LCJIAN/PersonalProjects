@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,8 @@ public class ApplyStatusFragment extends BaseDialogFragment {
 
     @BindView(R.id.tv_info)
     TextView tv_info;
+    @BindView(R.id.iv_bg)
+    ImageView iv_bg;
     @BindView(R.id.btn_apply)
     AppCompatButton btn_apply;
     @BindView(R.id.btn_close)
@@ -65,9 +68,11 @@ public class ApplyStatusFragment extends BaseDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (TextUtils.equals("1", mResourceEntity.applyStatus)) {
-            tv_info.setText(new Spans().append("已申请，请等待", new ForegroundColorSpan(0xff383f52)));
+            iv_bg.setImageResource(R.drawable.apply_dialog_bg);
+            tv_info.setText(new Spans().append("已申请，请等待审核", new ForegroundColorSpan(0xff383f52)));
             btn_apply.setVisibility(View.GONE);
         } else if (TextUtils.equals("2", mResourceEntity.applyStatus)) {
+            iv_bg.setImageResource(R.drawable.apply_dialog_bg);
             tv_info.setText(new Spans()
                     .append("审核已通过", new ForegroundColorSpan(0xff383f52))
                     .append("\n\n")
@@ -76,6 +81,7 @@ public class ApplyStatusFragment extends BaseDialogFragment {
                             new AbsoluteSizeSpan(DimenUtils.spToPixels(12, view.getContext()))));
             btn_apply.setVisibility(View.GONE);
         } else if (TextUtils.equals("3", mResourceEntity.applyStatus)) {
+            iv_bg.setImageResource(R.drawable.apply_dialog_bg_2);
             tv_info.setText(new Spans()
                     .append("审核不通过", new ForegroundColorSpan(0xffa60303))
                     .append("\n")
@@ -89,6 +95,7 @@ public class ApplyStatusFragment extends BaseDialogFragment {
             btn_apply.setVisibility(View.VISIBLE);
             btn_apply.setText("重新申请");
         } else {
+            iv_bg.setImageResource(R.drawable.apply_dialog_bg_2);
             tv_info.setText(new Spans().append("暂无使用权限，请申请后使用\n\n你可以", new ForegroundColorSpan(0xff383f52)));
             btn_apply.setVisibility(View.VISIBLE);
             btn_apply.setText("立即申请");

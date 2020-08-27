@@ -1,6 +1,7 @@
 package com.org.firefighting.ui.resource;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.lcjian.lib.recyclerview.EmptyAdapter;
 import com.lcjian.lib.recyclerview.SlimAdapter;
 import com.lcjian.lib.text.Spans;
 import com.lcjian.lib.util.Triple;
+import com.lcjian.lib.util.common.DimenUtils;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
 import com.org.firefighting.data.entity.PageResult;
@@ -41,7 +43,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.nekocode.badge.BadgeDrawable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -240,8 +244,34 @@ public class ResourcesActivity extends BaseActivity {
 
                         @Override
                         public void onBind(ResourceEntity data, SlimAdapter.SlimViewHolder<ResourceEntity> viewHolder) {
+                            String applyStr;
+                            int color;
+                            if (TextUtils.equals("1", data.applyStatus)) {
+                                applyStr = "待审核";
+                                color = 0xffdf8b07;
+                            } else if (TextUtils.equals("2", data.applyStatus)) {
+                                applyStr = "审核通过";
+                                color = 0xff1eb01b;
+                            } else if (TextUtils.equals("3", data.applyStatus)) {
+                                applyStr = "审核未通过!";
+                                color = 0xffd23319;
+                            } else {
+                                applyStr = "暂无使用权限";
+                                color = 0xffd23319;
+                            }
                             viewHolder
-                                    .text(R.id.tv_content, data.tableComment)
+                                    .text(R.id.tv_content, new Spans()
+                                            .append(data.tableComment)
+                                            .append(" ")
+                                            .append(new BadgeDrawable.Builder()
+                                                    .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
+                                                    .badgeColor(color)
+                                                    .typeFace(Typeface.DEFAULT)
+                                                    .textSize(DimenUtils.spToPixels(10, viewHolder.itemView.getContext()))
+                                                    .textColor(0xffffffff)
+                                                    .text1(" " + applyStr + " ")
+                                                    .build()
+                                                    .toSpannable()))
                                     .with(R.id.iv_favourite, view -> ((ImageView) view).setImageResource(data.collectStatus == 0 ? R.drawable.ic_favourite_not : R.drawable.ic_favourite))
                                     .text(R.id.tv_share_method, "共享类型：" + data.permission)
                                     .text(R.id.tv_supplier, "管理单位：" + (TextUtils.isEmpty(data.unitName) ? "暂无" : data.unitName))
@@ -255,49 +285,44 @@ public class ResourcesActivity extends BaseActivity {
 
         @Override
         public Observable<PageResult<ResourceEntity>> onCreatePageObservable(int currentPage) {
-            return RestAPI.getInstance().apiServiceSB()
-                    .getResources(mDir, SharedPreferencesDataSource.getSignInResponse().user.id,
-                            null, null, currentPage, 1000)
+            return Single.just(Triple.create(mTabTitle, currentPage, mDir))
+                    .flatMap(pair -> {
+                        String s = pair.first;
+                        Integer p = pair.second;
+                        String dir = pair.third;
+                        if (TextUtils.equals("已申请", s)) {
+                            return RestAPI.getInstance().apiServiceSB()
+                                    .getResourcesA(SharedPreferencesDataSource.getSignInResponse().user.id, p, 20);
+                        } else if (TextUtils.equals("已收藏", s)) {
+                            return RestAPI.getInstance().apiServiceSB()
+                                    .getResourcesF(SharedPreferencesDataSource.getSignInResponse().user.id, p, 20);
+                        } else {
+                            return RestAPI.getInstance().apiServiceSB()
+                                    .getResources(dir, SharedPreferencesDataSource.getSignInResponse().user.id, null, null, p, 20);
+                        }
+                    })
                     .map(responseData -> {
                         PageResult<ResourceEntity> pageResult = new PageResult<>();
                         if (responseData.data.result == null) {
                             responseData.data.result = new ArrayList<>();
                         }
-                        List<ResourceEntity> result = new ArrayList<>();
-                        if (TextUtils.equals("已申请", mTabTitle)) {
-                            for (ResourceEntity resourceEntity : responseData.data.result) {
-                                if (TextUtils.equals("1", resourceEntity.applyStatus) // 已申请
-                                        || TextUtils.equals("2", resourceEntity.applyStatus)) { // 审核通过
-                                    result.add(resourceEntity);
-                                }
-                            }
-                        } else if (TextUtils.equals("已收藏", mTabTitle)) {
-                            for (ResourceEntity resourceEntity : responseData.data.result) {
-                                if (resourceEntity.collectStatus == 1) {
-                                    result.add(resourceEntity);
-                                }
-                            }
-                        } else { // 全部
-                            result.addAll(responseData.data.result);
-                        }
-
-                        pageResult.elements = result;
+                        pageResult.elements = responseData.data.result;
                         pageResult.page_number = currentPage;
-                        pageResult.page_size = 1000;
-                        pageResult.total_pages = result.size() % 1000 == 0
-                                ? result.size() / 1000
-                                : result.size() / 1000 + 1;
-                        pageResult.total_elements = result.size();
+                        pageResult.page_size = 20;
+                        pageResult.total_pages = responseData.data.total % 20 == 0
+                                ? responseData.data.total / 20
+                                : responseData.data.total / 20 + 1;
+                        pageResult.total_elements = responseData.data.total;
                         return pageResult;
                     })
                     .toObservable()
+                    .doOnNext(result -> RxBus.getInstance().send(new TitleChangeEvent(mTabTitle, result.total_elements)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
 
         @Override
         public void notifyDataChanged(List<ResourceEntity> data) {
-            RxBus.getInstance().send(new TitleChangeEvent(mTabTitle, data.size()));
             mAdapter.updateData(data);
         }
 
