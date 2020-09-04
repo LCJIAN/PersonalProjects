@@ -44,6 +44,7 @@ import com.org.firefighting.data.network.entity.SystemMessage;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.ChatActivity;
 import com.org.firefighting.ui.common.SystemMessagesActivity;
+import com.org.firefighting.util.Utils;
 
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.EntityJid;
@@ -382,8 +383,17 @@ public class ConversationsFragment extends BaseFragment {
         new Thread(() -> {
             VCard vCard = mSmackClient.getVCard(null);
             if (vCard != null) {
+                boolean save = false;
                 if (TextUtils.isEmpty(vCard.getNickName())) {
                     vCard.setNickName(SharedPreferencesDataSource.getSignInResponse().user.realName);
+                    save = true;
+                }
+                if (vCard.getAvatar() == null) {
+                    vCard.setAvatar(Utils.getBytes("http://124.162.30.39:9528/admin-ht/"
+                            + SharedPreferencesDataSource.getSignInResponse().user.avatar, null, null));
+                    save = true;
+                }
+                if (save) {
                     mSmackClient.saveVCard(vCard);
                 }
             }

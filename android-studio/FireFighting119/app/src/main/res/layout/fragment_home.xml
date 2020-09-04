@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="-32dp"
                     android:layout_marginRight="12dp"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="0dp">
@@ -366,21 +366,23 @@
             android:background="@drawable/shape_input_search_bg"
             android:drawablePadding="12dp"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
+            android:drawableStart="@drawable/ic_search_3"
+            android:drawableTint="#ff999999"
             android:hint="@string/hint_search"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:textAppearance="@style/TextAppearance.AppTheme.Small"
-            app:drawableStartCompat="@drawable/ic_search_2" />
+            android:textColor="#ff999999"
+            android:textColorHint="#ff999999" />
 
         <ImageButton
             android:id="@+id/btn_go_to_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:background="?selectableItemBackgroundBorderless"
+            android:background="@drawable/shape_input_search_bg"
+            android:tint="#ff999999"
             android:src="@drawable/ic_scan" />
     </LinearLayout>
 </FrameLayout>

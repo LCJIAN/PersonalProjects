@@ -1,6 +1,7 @@
 package com.org.firefighting.data.network.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ServiceEntity implements Serializable {
 
@@ -40,4 +41,18 @@ public class ServiceEntity implements Serializable {
     public String subscribeStatus;
     public String subscribeStatusDescription;
 
+    public String applyTime;
+    public String auditRemarks;
+
+    public List<Field> fields;
+
+    public static class Field {
+        public Integer paramsType;
+        public String name;
+        public String dataType;
+        public Integer isMust;
+        public Integer isDisplay;
+        public Integer isSearch;
+        public String remarks;
+    }
 }

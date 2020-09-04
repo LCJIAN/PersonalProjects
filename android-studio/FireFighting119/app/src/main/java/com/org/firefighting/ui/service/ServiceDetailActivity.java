@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.org.firefighting.App;
 import com.org.firefighting.R;
@@ -29,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class ServiceDataQueryActivity extends BaseActivity {
+public class ServiceDetailActivity extends BaseActivity {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -37,15 +37,11 @@ public class ServiceDataQueryActivity extends BaseActivity {
     ImageButton btn_nav_back;
     @BindView(R.id.btn_nav_right)
     ImageButton btn_nav_right;
-
-    @BindView(R.id.fl_apply)
-    CardView fl_apply;
-    @BindView(R.id.tv_apply)
-    TextView tv_apply;
+    @BindView(R.id.btn_apply)
+    AppCompatButton btn_apply;
 
     private String mServiceId;
     private ServiceEntity mServiceEntity;
-    private PermissionEvent mPermissionEvent;
     private Disposable mDisposable;
     private Disposable mDisposableA;
     private Disposable mDisposableR;
@@ -53,12 +49,15 @@ public class ServiceDataQueryActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_data_query);
+        setContentView(R.layout.activity_service_detail);
         ButterKnife.bind(this);
         mServiceId = getIntent().getStringExtra("service_id");
+
+        tv_title.setText("服务详情");
         btn_nav_right.setVisibility(View.VISIBLE);
         btn_nav_right.setImageResource(R.drawable.favourite_btn);
         btn_nav_back.setOnClickListener(v -> onBackPressed());
+        btn_apply.setOnClickListener(v -> RxBus.getInstance().send(new ShowApplyDialogEvent()));
         btn_nav_right.setOnClickListener(v -> {
             if (mServiceEntity != null) {
                 if (mServiceEntity.collectStatus == 0) {
@@ -68,30 +67,17 @@ public class ServiceDataQueryActivity extends BaseActivity {
                 }
             }
         });
-        fl_apply.setOnClickListener(v -> {
-            if (mServiceEntity != null) {
-                if (1 != mServiceEntity.applyStatus
-                        && 2 != mServiceEntity.applyStatus) {
-                    ApplyFragment
-                            .newInstance("服务名称：" + mServiceEntity.serviceName
-                                    + "\n服务描述：" + (TextUtils.isEmpty(mServiceEntity.description) ? "暂无" : mServiceEntity.description))
-                            .setService(true)
-                            .setListener(this::applyService)
-                            .show(getSupportFragmentManager(), "ApplyFragment");
-                }
-            }
-        });
-
-        getService();
-
         mDisposableR = RxBus.getInstance()
                 .asFlowable()
-                .filter(o -> o instanceof PermissionEvent)
+                .filter(o -> o instanceof ShowApplyDialogEvent)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    mPermissionEvent = (PermissionEvent) o;
-                    setupButtons();
-                });
+                .subscribe(o -> ApplyFragment
+                        .newInstance("服务名称：" + mServiceEntity.serviceName
+                                + "\n服务描述：" + (TextUtils.isEmpty(mServiceEntity.description) ? "暂无" : mServiceEntity.description))
+                        .setListener(this::applyService)
+                        .show(getSupportFragmentManager(), "ApplyFragment"));
+
+        setupContent();
     }
 
     @Override
@@ -108,7 +94,7 @@ public class ServiceDataQueryActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    private void getService() {
+    private void setupContent() {
         showProgress();
         mDisposable = RestAPI.getInstance().apiServiceSB()
                 .getService(mServiceId, SharedPreferencesDataSource.getSignInResponse().user.id)
@@ -117,49 +103,43 @@ public class ServiceDataQueryActivity extends BaseActivity {
                 .subscribe(responseData -> {
                             hideProgress();
                             mServiceEntity = responseData.data;
-                            setupAll();
+
+                            if (mServiceEntity.collectStatus == 0) {
+                                btn_nav_right.setImageResource(R.drawable.favourite_btn);
+                            } else {
+                                btn_nav_right.setImageResource(R.drawable.un_favourite_btn);
+                            }
+                            if (2 == mServiceEntity.applyStatus) { // 审核通过，有权限
+                                if (getSupportFragmentManager().findFragmentByTag("ServiceBasicInfoFragment") == null) {
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fl_fragment_container_basic, ServiceBasicInfoFragment.newInstance(mServiceEntity), "ServiceBasicInfoFragment")
+                                            .replace(R.id.fl_fragment_container_query, DataQueryFragment.newInstance(mServiceEntity.invokeName), "DataQueryFragment")
+                                            .commit();
+                                }
+                            } else {
+                                if (getSupportFragmentManager().findFragmentByTag("ServiceBasicInfoFragment") == null) {
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fl_fragment_container_basic, ServiceBasicInfoFragment.newInstance(mServiceEntity), "ServiceBasicInfoFragment")
+                                            .replace(R.id.fl_fragment_container_query, DataFieldFragment.newInstance(mServiceEntity), "DataFieldFragment")
+                                            .commit();
+                                }
+                            }
+                            if (1 == mServiceEntity.applyStatus) {
+                                btn_apply.setVisibility(View.GONE);
+                            } else if (2 == mServiceEntity.applyStatus) {
+                                btn_apply.setVisibility(View.GONE);
+                            } else if (3 == mServiceEntity.applyStatus) {
+                                btn_apply.setVisibility(View.VISIBLE);
+                                btn_apply.setText("重新申请");
+                            } else {
+                                btn_apply.setVisibility(View.VISIBLE);
+                                btn_apply.setText("立即申请");
+                            }
                         },
                         throwable -> {
                             hideProgress();
                             ThrowableConsumerAdapter.accept(throwable);
                         });
-    }
-
-    private void setupAll() {
-        tv_title.setText(mServiceEntity.serviceName);
-        setupContent();
-        setupButtons();
-    }
-
-    private void setupContent() {
-        if (getSupportFragmentManager().findFragmentByTag("DataQueryFragment") == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fl_fragment_container, DataQueryFragment.newInstance(mServiceEntity.invokeName), "DataQueryFragment")
-                    .commit();
-        }
-    }
-
-    private void setupButtons() {
-        if (mPermissionEvent == null || mServiceEntity == null) {
-            return;
-        }
-        if (mServiceEntity.collectStatus == 0) {
-            btn_nav_right.setImageResource(R.drawable.favourite_btn);
-        } else {
-            btn_nav_right.setImageResource(R.drawable.un_favourite_btn);
-        }
-        if (mPermissionEvent.permission) {
-            fl_apply.setVisibility(View.GONE);
-        } else {
-            fl_apply.setVisibility(View.VISIBLE);
-            if (1 == mServiceEntity.applyStatus) {
-                tv_apply.setText("已申请");
-                tv_apply.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_security_white_48dp, 0, 0, 0);
-            } else {
-                tv_apply.setText("申请");
-                tv_apply.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_security_check_white_48dp, 0, 0, 0);
-            }
-        }
     }
 
     private void favourite() {
@@ -179,7 +159,8 @@ public class ServiceDataQueryActivity extends BaseActivity {
                             hideProgress();
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             if (responseData.code == 0) {
-                                getService();
+                                setupContent();
+                                RxBus.getInstance().send(new ServiceListActivity.RefreshServicesEvent());
                             }
                         },
                         throwable -> {
@@ -201,7 +182,8 @@ public class ServiceDataQueryActivity extends BaseActivity {
                             hideProgress();
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             if (responseData.code == 0) {
-                                getService();
+                                setupContent();
+                                RxBus.getInstance().send(new ServiceListActivity.RefreshServicesEvent());
                             }
                         },
                         throwable -> {
@@ -231,8 +213,8 @@ public class ServiceDataQueryActivity extends BaseActivity {
                             hideProgress();
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             if (responseData.code == 0) {
-                                mServiceEntity.applyStatus = 1;
-                                setupButtons();
+                                setupContent();
+                                RxBus.getInstance().send(new ServiceListActivity.RefreshServicesEvent());
                             }
                         },
                         throwable -> {
@@ -241,11 +223,6 @@ public class ServiceDataQueryActivity extends BaseActivity {
                         });
     }
 
-    static class PermissionEvent {
-        boolean permission;
-
-        PermissionEvent(boolean permission) {
-            this.permission = permission;
-        }
+    static class ShowApplyDialogEvent {
     }
 }

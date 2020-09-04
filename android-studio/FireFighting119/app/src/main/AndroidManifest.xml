@@ -103,7 +103,7 @@
             android:name=".ui.service.ServiceListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.service.ServiceDataQueryActivity"
+            android:name=".ui.service.ServiceDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.common.StaticsActivity"
@@ -152,6 +152,10 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar"
             tools:replace="screenOrientation" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <!--push-->
         <service
             android:name=".push.PushService"

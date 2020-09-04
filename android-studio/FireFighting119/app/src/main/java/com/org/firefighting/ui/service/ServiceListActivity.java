@@ -170,10 +170,23 @@ public class ServiceListActivity extends BaseActivity {
 
         private String mTabTitle;
 
+        private Disposable mDisposableR;
+        private boolean mNeedRefresh;
+
         private static ServiceListFragment newInstance(String tabTitle) {
             ServiceListFragment fragment = new ServiceListFragment();
             fragment.mTabTitle = tabTitle;
             return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mDisposableR = RxBus.getInstance()
+                    .asFlowable()
+                    .filter(o -> o instanceof RefreshServicesEvent)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(o -> mNeedRefresh = true);
         }
 
         @Override
@@ -200,7 +213,7 @@ public class ServiceListActivity extends BaseActivity {
 
                         @Override
                         public void onInit(SlimAdapter.SlimViewHolder<ServiceEntity> viewHolder) {
-                            viewHolder.clicked(v -> startActivity(new Intent(v.getContext(), ServiceDataQueryActivity.class)
+                            viewHolder.clicked(v -> startActivity(new Intent(v.getContext(), ServiceDetailActivity.class)
                                     .putExtra("service_id", viewHolder.itemData.id)));
                         }
 
@@ -208,32 +221,38 @@ public class ServiceListActivity extends BaseActivity {
                         public void onBind(ServiceEntity data, SlimAdapter.SlimViewHolder<ServiceEntity> viewHolder) {
                             String applyStr;
                             int color;
+                            boolean visible;
                             if (1 == data.applyStatus) {
                                 applyStr = "待审核";
                                 color = 0xffdf8b07;
+                                visible = true;
                             } else if (2 == data.applyStatus) {
                                 applyStr = "审核通过";
                                 color = 0xff1eb01b;
+                                visible = true;
                             } else if (3 == data.applyStatus) {
                                 applyStr = "审核未通过!";
                                 color = 0xffd23319;
+                                visible = true;
                             } else {
                                 applyStr = "暂无使用权限";
                                 color = 0xffd23319;
+                                visible = false;
+                            }
+                            Spans spans = new Spans().append(data.serviceName);
+                            if (visible) {
+                                spans.append(" ").append(new BadgeDrawable.Builder()
+                                        .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
+                                        .badgeColor(color)
+                                        .typeFace(Typeface.DEFAULT)
+                                        .textSize(DimenUtils.spToPixels(10, viewHolder.itemView.getContext()))
+                                        .textColor(0xffffffff)
+                                        .text1(" " + applyStr + " ")
+                                        .build()
+                                        .toSpannable());
                             }
                             viewHolder
-                                    .text(R.id.tv_content, new Spans()
-                                            .append(data.serviceName)
-                                            .append(" ")
-                                            .append(new BadgeDrawable.Builder()
-                                                    .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
-                                                    .badgeColor(color)
-                                                    .typeFace(Typeface.DEFAULT)
-                                                    .textSize(DimenUtils.spToPixels(10, viewHolder.itemView.getContext()))
-                                                    .textColor(0xffffffff)
-                                                    .text1(" " + applyStr + " ")
-                                                    .build()
-                                                    .toSpannable()))
+                                    .text(R.id.tv_content, spans)
                                     .with(R.id.iv_favourite, view -> ((ImageView) view).setImageResource(data.collectStatus == 0 ? R.drawable.ic_favourite_not : R.drawable.ic_favourite))
                                     .text(R.id.tv_share_method, "接口类型：" + (TextUtils.isEmpty(data.type) ? "未知" : data.type))
                                     .text(R.id.tv_supplier, "管理单位：" + (TextUtils.isEmpty(data.serviceDeveloper) ? "暂无" : data.serviceDeveloper))
@@ -291,5 +310,23 @@ public class ServiceListActivity extends BaseActivity {
             recycler_view.setLayoutManager(new LinearLayoutManager(view.getContext()));
             super.onViewCreated(view, savedInstanceState);
         }
+
+        @Override
+        public void onResume() {
+            if (mNeedRefresh) {
+                refresh();
+                mNeedRefresh = false;
+            }
+            super.onResume();
+        }
+
+        @Override
+        public void onDestroy() {
+            mDisposableR.dispose();
+            super.onDestroy();
+        }
+    }
+
+    static class RefreshServicesEvent {
     }
 }

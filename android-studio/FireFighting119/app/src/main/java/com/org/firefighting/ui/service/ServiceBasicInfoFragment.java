@@ -1,4 +1,4 @@
-package com.org.firefighting.ui.resource;
+package com.org.firefighting.ui.service;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,14 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.org.firefighting.R;
-import com.org.firefighting.data.network.entity.ResourceEntity;
+import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.ui.base.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ResourceBasicInfoFragment extends BaseFragment {
+public class ServiceBasicInfoFragment extends BaseFragment {
 
     @BindView(R.id.tv_resource_name)
     TextView tv_resource_name;
@@ -40,12 +40,12 @@ public class ResourceBasicInfoFragment extends BaseFragment {
 
     private Unbinder mUnBinder;
 
-    private ResourceEntity mResourceEntity;
+    private ServiceEntity mServiceEntity;
 
-    public static ResourceBasicInfoFragment newInstance(ResourceEntity entity) {
-        ResourceBasicInfoFragment fragment = new ResourceBasicInfoFragment();
+    public static ServiceBasicInfoFragment newInstance(ServiceEntity entity) {
+        ServiceBasicInfoFragment fragment = new ServiceBasicInfoFragment();
         Bundle args = new Bundle();
-        args.putSerializable("resource_entity", entity);
+        args.putSerializable("service_entity", entity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +54,7 @@ public class ResourceBasicInfoFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResourceEntity = (ResourceEntity) getArguments().getSerializable("resource_entity");
+            mServiceEntity = (ServiceEntity) getArguments().getSerializable("service_entity");
         }
     }
 
@@ -68,7 +68,7 @@ public class ResourceBasicInfoFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tv_apply_status.setOnClickListener(v -> ApplyStatusFragment.newInstance(mResourceEntity)
+        tv_apply_status.setOnClickListener(v -> ApplyStatusFragment.newInstance(mServiceEntity)
                 .show(getChildFragmentManager(), "ApplyStatusFragment"));
         setupContent();
     }
@@ -80,21 +80,21 @@ public class ResourceBasicInfoFragment extends BaseFragment {
     }
 
     private void setupContent() {
-        tv_resource_name.setText(mResourceEntity.tableComment);
-        tv_resource_identity.setText(TextUtils.isEmpty(mResourceEntity.shareXxzybh) ? "暂无" : mResourceEntity.shareXxzybh);
-        tv_share_type.setText(mResourceEntity.permission);
-        tv_supplier.setText(TextUtils.isEmpty(mResourceEntity.unitName) ? "暂无" : mResourceEntity.unitName);
-        tv_publish_time.setText(mResourceEntity.createDate);
-        tv_des.setText(mResourceEntity.shareXxzyzy);
-        tv_tag.setText(mResourceEntity.tableLabel);
+        tv_resource_name.setText(mServiceEntity.serviceName);
+        tv_resource_identity.setText(TextUtils.isEmpty(mServiceEntity.dirId) ? "暂无" : mServiceEntity.dirId);
+        tv_share_type.setText(mServiceEntity.contentType);
+        tv_supplier.setText(TextUtils.isEmpty(mServiceEntity.serviceDeveloper) ? "暂无" : mServiceEntity.serviceDeveloper);
+        tv_publish_time.setText(mServiceEntity.createDate);
+        tv_des.setText(mServiceEntity.description);
+        tv_tag.setText(mServiceEntity.remarks);
 
-        if (TextUtils.equals("1", mResourceEntity.applyStatus)) {
+        if (1 == mServiceEntity.applyStatus) {
             tv_apply_status.setText("已申请");
             tv_apply_status.setTextColor(0xff9a9a9a);
-        } else if (TextUtils.equals("2", mResourceEntity.applyStatus)) {
+        } else if (2 == mServiceEntity.applyStatus) {
             tv_apply_status.setText("审核通过");
             tv_apply_status.setTextColor(0xff1dab56);
-        } else if (TextUtils.equals("3", mResourceEntity.applyStatus)) {
+        } else if (3 == mServiceEntity.applyStatus) {
             tv_apply_status.setText("审核未通过!");
             tv_apply_status.setTextColor(0xff9a9a9a);
         } else {

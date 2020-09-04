@@ -54,9 +54,9 @@ public class ResourceDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         mResourceId = getIntent().getStringExtra("resource_id");
 
-        tv_title.setText(getIntent().getStringExtra("resource_table_comment"));
+        tv_title.setText("资源详情");
         btn_back.setOnClickListener(v -> onBackPressed());
-        btn_apply.setOnClickListener(v -> RxBus.getInstance().send(new ResourceDetailActivity.ShowApplyDialogEvent()));
+        btn_apply.setOnClickListener(v -> RxBus.getInstance().send(new ShowApplyDialogEvent()));
         btn_favourite.setOnClickListener(v -> {
             if (mResourceEntity != null) {
                 if (mResourceEntity.collectStatus == 0) {
@@ -70,14 +70,11 @@ public class ResourceDetailActivity extends BaseActivity {
                 .asFlowable()
                 .filter(o -> o instanceof ShowApplyDialogEvent)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(o -> {
-                    ApplyFragment
-                            .newInstance("资源名称：" + mResourceEntity.tableComment
-                                    + "\n资源描述：" + (TextUtils.isEmpty(mResourceEntity.shareXxzyzy) ? "暂无" : mResourceEntity.shareXxzyzy))
-                            .setListener(this::applyResource)
-                            .show(getSupportFragmentManager(), "ApplyFragment");
-                });
-
+                .subscribe(o -> ApplyFragment
+                        .newInstance("资源名称：" + mResourceEntity.tableComment
+                                + "\n资源描述：" + (TextUtils.isEmpty(mResourceEntity.shareXxzyzy) ? "暂无" : mResourceEntity.shareXxzyzy))
+                        .setListener(this::applyResource)
+                        .show(getSupportFragmentManager(), "ApplyFragment"));
 
         setupContent();
     }
@@ -112,17 +109,20 @@ public class ResourceDetailActivity extends BaseActivity {
                             } else {
                                 btn_favourite.setImageResource(R.drawable.un_favourite_btn);
                             }
-
                             if (TextUtils.equals("2", mResourceEntity.applyStatus)) { // 审核通过，有权限
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fl_fragment_container_basic, ResourceBasicInfoFragment.newInstance(mResourceEntity), "ResourceBasicInfoFragment")
-                                        .replace(R.id.fl_fragment_container_query, DataQueryFragment.newInstance(mResourceEntity), "DataQueryFragment")
-                                        .commit();
+                                if (getSupportFragmentManager().findFragmentByTag("ResourceBasicInfoFragment") == null) {
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fl_fragment_container_basic, ResourceBasicInfoFragment.newInstance(mResourceEntity), "ResourceBasicInfoFragment")
+                                            .replace(R.id.fl_fragment_container_query, DataQueryFragment.newInstance(mResourceEntity), "DataQueryFragment")
+                                            .commit();
+                                }
                             } else {
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fl_fragment_container_basic, ResourceBasicInfoFragment.newInstance(mResourceEntity), "ResourceBasicInfoFragment")
-                                        .replace(R.id.fl_fragment_container_field, DataFieldFragment.newInstance(mResourceEntity), "DataFieldFragment")
-                                        .commit();
+                                if (getSupportFragmentManager().findFragmentByTag("ResourceBasicInfoFragment") == null) {
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fl_fragment_container_basic, ResourceBasicInfoFragment.newInstance(mResourceEntity), "ResourceBasicInfoFragment")
+                                            .replace(R.id.fl_fragment_container_field, DataFieldFragment.newInstance(mResourceEntity), "DataFieldFragment")
+                                            .commit();
+                                }
                             }
 
                             if (TextUtils.equals("1", mResourceEntity.applyStatus)) {
@@ -161,6 +161,7 @@ public class ResourceDetailActivity extends BaseActivity {
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             if (responseData.code == 0) {
                                 setupContent();
+                                RxBus.getInstance().send(new ResourcesActivity.RefreshResourcesEvent());
                             }
                         },
                         throwable -> {
@@ -183,6 +184,7 @@ public class ResourceDetailActivity extends BaseActivity {
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             if (responseData.code == 0) {
                                 setupContent();
+                                RxBus.getInstance().send(new ResourcesActivity.RefreshResourcesEvent());
                             }
                         },
                         throwable -> {
@@ -209,6 +211,7 @@ public class ResourceDetailActivity extends BaseActivity {
                             hideProgress();
                             Toast.makeText(App.getInstance(), responseData.message, Toast.LENGTH_SHORT).show();
                             setupContent();
+                            RxBus.getInstance().send(new ResourcesActivity.RefreshResourcesEvent());
                         },
                         throwable -> {
                             hideProgress();

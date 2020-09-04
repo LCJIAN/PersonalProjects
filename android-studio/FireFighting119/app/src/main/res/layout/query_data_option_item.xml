@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:src="@drawable/ic_arrow_spinner" />
     </FrameLayout>
 
@@ -52,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:src="@drawable/ic_arrow_spinner" />
         </FrameLayout>
 
@@ -61,7 +59,6 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:background="@drawable/shape_white_round_corner"
             android:inputType="text"
@@ -71,19 +68,25 @@
 
         <TextView
             android:id="@+id/tv_add_or_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:text="删除" />
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/shape_query_btn_bg"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:text="删 除" />
 
         <TextView
             android:id="@+id/tv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:text="搜索" />
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_query_btn_bg"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:text="搜 索" />
     </LinearLayout>
 
 </LinearLayout>

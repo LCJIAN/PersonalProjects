@@ -7,14 +7,23 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.winside.lighting.App;
 import com.winside.lighting.BuildConfig;
+import com.winside.lighting.data.network.entity.Building;
+import com.winside.lighting.data.network.entity.Device;
+import com.winside.lighting.data.network.entity.Floor;
+import com.winside.lighting.data.network.entity.Project;
+import com.winside.lighting.data.network.entity.Region;
+import com.winside.lighting.data.network.entity.RegionFloorPlanData;
 import com.winside.lighting.data.network.entity.ResponseData;
 import com.winside.lighting.data.network.entity.SignInInfo;
 import com.winside.lighting.util.StorageUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Single;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -22,6 +31,9 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.mock.BehaviorDelegate;
+import retrofit2.mock.MockRetrofit;
+import retrofit2.mock.NetworkBehavior;
 import timber.log.Timber;
 
 public class RestAPI {
@@ -37,6 +49,9 @@ public class RestAPI {
 
     private SignInService signInService;
     private LightingService lightingService;
+
+    private SignInService signInServiceMock;
+    private LightingService lightingServiceMock;
 
     private String token;
 
@@ -170,17 +185,241 @@ public class RestAPI {
         this.token = token;
     }
 
-    public LightingService lightingService() {
+    public LightingService lightingServiceMock() {
         if (lightingService == null) {
             lightingService = getRetrofit().create(LightingService.class);
         }
         return lightingService;
     }
 
-    public SignInService signInService() {
+    public SignInService signInServiceMock() {
         if (signInService == null) {
             signInService = getRetrofitSignIn().create(SignInService.class);
         }
         return signInService;
     }
+
+    public LightingService lightingService() {
+        if (lightingServiceMock == null) {
+            NetworkBehavior behavior = NetworkBehavior.create();
+            MockRetrofit mockRetrofit = new MockRetrofit.Builder(getRetrofit()).networkBehavior(behavior).build();
+            BehaviorDelegate<LightingService> delegate = mockRetrofit.create(LightingService.class);
+            lightingServiceMock = new MockLightingService(delegate);
+        }
+        return lightingServiceMock;
+    }
+
+    public SignInService signInService() {
+        if (signInServiceMock == null) {
+            NetworkBehavior behavior = NetworkBehavior.create();
+            MockRetrofit mockRetrofit = new MockRetrofit.Builder(getRetrofitSignIn()).networkBehavior(behavior).build();
+            BehaviorDelegate<SignInService> delegate = mockRetrofit.create(SignInService.class);
+            signInServiceMock = new MockSignInService(delegate);
+        }
+        return signInServiceMock;
+    }
+
+    static final class MockLightingService implements LightingService {
+
+        private final BehaviorDelegate<LightingService> delegate;
+
+        MockLightingService(BehaviorDelegate<LightingService> delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public Single<ResponseData<Object>> signOut() {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).signOut();
+        }
+
+        @Override
+        public Single<ResponseData<Object>> modifyPassword(String oldPassword, String newPassword) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).modifyPassword(oldPassword, newPassword);
+        }
+
+        @Override
+        public Single<ResponseData<List<Project>>> getProjects() {
+            ResponseData<List<Project>> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new ArrayList<>();
+            Project project = new Project();
+            project.id = 1L;
+            project.name = "项目名称";
+            project.buildCount = 1;
+            project.lightTotal = 1;
+            project.lightFixedTotal = 1;
+            project.lightOnlineTotal = 1;
+            project.sensorTotal = 1;
+            project.sensorFixedTotal = 1;
+            project.sensorOnlineTotal = 1;
+            response.data.add(project);
+            return delegate.returningResponse(response).getProjects();
+        }
+
+        @Override
+        public Single<ResponseData<List<Building>>> getBuildings(Long projectId) {
+            ResponseData<List<Building>> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new ArrayList<>();
+            Building building = new Building();
+            building.id = 1L;
+            building.name = "建筑名称";
+            response.data.add(building);
+            return delegate.returningResponse(response).getBuildings(projectId);
+        }
+
+        @Override
+        public Single<ResponseData<List<Floor>>> getFloors(Long buildingId) {
+            ResponseData<List<Floor>> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new ArrayList<>();
+            Floor floor = new Floor();
+            floor.id = 1L;
+            floor.name = "楼层名称";
+            response.data.add(floor);
+            return delegate.returningResponse(response).getFloors(buildingId);
+        }
+
+        @Override
+        public Single<ResponseData<List<Region>>> getRegions(Long floorId) {
+            ResponseData<List<Region>> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new ArrayList<>();
+            Region region = new Region();
+            region.id = 1L;
+            region.name = "区域名称";
+            response.data.add(region);
+            return delegate.returningResponse(response).getRegions(floorId);
+        }
+
+        @Override
+        public Single<ResponseData<Object>> getFloorData(Long floorId) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).getFloorData(floorId);
+        }
+
+        @Override
+        public Single<ResponseData<RegionFloorPlanData>> getRegionData(Long regionId) {
+            ResponseData<RegionFloorPlanData> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new RegionFloorPlanData();
+            response.data.id = 1L;
+            response.data.name = "ss";
+            response.data.drawings = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597325872572&di=d780657b987a20900c051f35c1823e09&imgtype=0&src=http%3A%2F%2Fimg1.focus.cn%2Fupload%2Fbj%2F36134%2Fa_361331797.jpg";
+            response.data.gatewayCoordinates = new ArrayList<>();
+            RegionFloorPlanData.GatewayCoordinate gate = new RegionFloorPlanData.GatewayCoordinate();
+            gate.id = 1L;
+            gate.name = "ss";
+            gate.point = new Double[]{100.0, 100.0};
+            gate.deviceId = 1L;
+            gate.deviceTypeId = 1;
+            gate.deviceStatus = "unconf";
+            gate.deviceTypeName = "XXX";
+            gate.deviceCoordinates = new ArrayList<>();
+
+            RegionFloorPlanData.DeviceCoordinate dc = new RegionFloorPlanData.DeviceCoordinate();
+            dc.deviceId = 1L;
+            dc.deviceStatus = "unreg";
+            dc.deviceTypeId = 8;
+            dc.deviceTypeName = "sss";
+            dc.id = 1L;
+            dc.point = new Double[]{200.0,200.0};
+            gate.deviceCoordinates.add(dc);
+            response.data.gatewayCoordinates.add(gate);
+            return delegate.returningResponse(response).getRegionData(regionId);
+        }
+
+        @Override
+        public Single<ResponseData<Object>> bindPosition(Long coordinateId, String deviceSN) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).bindPosition(coordinateId, deviceSN);
+        }
+
+        @Override
+        public Single<ResponseData<Device>> getDeviceDetail(Long deviceId) {
+            ResponseData<Device> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new Device();
+            response.data.alias = "1";
+            return delegate.returningResponse(response).getDeviceDetail(deviceId);
+        }
+
+        @Override
+        public Single<ResponseData<Object>> noticeConfigResult(String deviceIds) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).noticeConfigResult(deviceIds);
+        }
+
+        @Override
+        public Single<ResponseData<Object>> deleteDevice(Long coordinateId) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).deleteDevice(coordinateId);
+        }
+
+        @Override
+        public Single<ResponseData<List<Device>>> getDevices(Long gwDeviceId) {
+            ResponseData<List<Device>> response = new ResponseData<>();
+            return delegate.returningResponse(response).getDevices(gwDeviceId);
+        }
+
+        @Override
+        public Single<ResponseData<Object>> sendToDevice(Long deviceId, String message) {
+            ResponseData<Object> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            return delegate.returningResponse(response).sendToDevice(deviceId, message);
+        }
+    }
+
+    static class MockSignInService implements SignInService {
+
+        private final BehaviorDelegate<SignInService> delegate;
+
+        MockSignInService(BehaviorDelegate<SignInService> delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public Call<ResponseData<SignInInfo>> signIn(String userName, String password) {
+            ResponseData<SignInInfo> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new SignInInfo();
+            response.data.token = "ss";
+            response.data.userId = 1L;
+            return delegate.returningResponse(response).signIn(userName, password);
+        }
+
+        @Override
+        public Single<ResponseData<SignInInfo>> signInRx(String userName, String password) {
+            ResponseData<SignInInfo> response = new ResponseData<>();
+            response.code = 1000;
+            response.message = "success";
+            response.data = new SignInInfo();
+            response.data.token = "ss";
+            response.data.userId = 1L;
+            return delegate.returningResponse(response).signInRx(userName, password);
+        }
+    }
+
 }

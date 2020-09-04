@@ -206,11 +206,24 @@ public class ResourcesActivity extends BaseActivity {
         private String mTabTitle;
         private String mDir;
 
+        private Disposable mDisposableR;
+        private boolean mNeedRefresh;
+
         private static ResourcesFragment newInstance(String tabTitle, String dir) {
             ResourcesFragment fragment = new ResourcesFragment();
             fragment.mTabTitle = tabTitle;
             fragment.mDir = dir;
             return fragment;
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mDisposableR = RxBus.getInstance()
+                    .asFlowable()
+                    .filter(o -> o instanceof RefreshResourcesEvent)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(o -> mNeedRefresh = true);
         }
 
         @Override
@@ -238,40 +251,45 @@ public class ResourcesActivity extends BaseActivity {
                         @Override
                         public void onInit(SlimAdapter.SlimViewHolder<ResourceEntity> viewHolder) {
                             viewHolder.clicked(v -> startActivity(new Intent(v.getContext(), ResourceDetailActivity.class)
-                                    .putExtra("resource_id", viewHolder.itemData.id)
-                                    .putExtra("resource_table_comment", viewHolder.itemData.tableComment)));
+                                    .putExtra("resource_id", viewHolder.itemData.id)));
                         }
 
                         @Override
                         public void onBind(ResourceEntity data, SlimAdapter.SlimViewHolder<ResourceEntity> viewHolder) {
                             String applyStr;
                             int color;
+                            boolean visible;
                             if (TextUtils.equals("1", data.applyStatus)) {
                                 applyStr = "待审核";
                                 color = 0xffdf8b07;
+                                visible = true;
                             } else if (TextUtils.equals("2", data.applyStatus)) {
                                 applyStr = "审核通过";
                                 color = 0xff1eb01b;
+                                visible = true;
                             } else if (TextUtils.equals("3", data.applyStatus)) {
                                 applyStr = "审核未通过!";
                                 color = 0xffd23319;
+                                visible = true;
                             } else {
                                 applyStr = "暂无使用权限";
                                 color = 0xffd23319;
+                                visible = false;
+                            }
+                            Spans spans = new Spans().append(data.tableComment);
+                            if (visible) {
+                                spans.append(" ").append(new BadgeDrawable.Builder()
+                                        .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
+                                        .badgeColor(color)
+                                        .typeFace(Typeface.DEFAULT)
+                                        .textSize(DimenUtils.spToPixels(10, viewHolder.itemView.getContext()))
+                                        .textColor(0xffffffff)
+                                        .text1(" " + applyStr + " ")
+                                        .build()
+                                        .toSpannable());
                             }
                             viewHolder
-                                    .text(R.id.tv_content, new Spans()
-                                            .append(data.tableComment)
-                                            .append(" ")
-                                            .append(new BadgeDrawable.Builder()
-                                                    .type(BadgeDrawable.TYPE_ONLY_ONE_TEXT)
-                                                    .badgeColor(color)
-                                                    .typeFace(Typeface.DEFAULT)
-                                                    .textSize(DimenUtils.spToPixels(10, viewHolder.itemView.getContext()))
-                                                    .textColor(0xffffffff)
-                                                    .text1(" " + applyStr + " ")
-                                                    .build()
-                                                    .toSpannable()))
+                                    .text(R.id.tv_content, spans)
                                     .with(R.id.iv_favourite, view -> ((ImageView) view).setImageResource(data.collectStatus == 0 ? R.drawable.ic_favourite_not : R.drawable.ic_favourite))
                                     .text(R.id.tv_share_method, "共享类型：" + data.permission)
                                     .text(R.id.tv_supplier, "管理单位：" + (TextUtils.isEmpty(data.unitName) ? "暂无" : data.unitName))
@@ -332,5 +350,23 @@ public class ResourcesActivity extends BaseActivity {
             recycler_view.setLayoutManager(new LinearLayoutManager(view.getContext()));
             super.onViewCreated(view, savedInstanceState);
         }
+
+        @Override
+        public void onResume() {
+            if (mNeedRefresh) {
+                refresh();
+                mNeedRefresh = false;
+            }
+            super.onResume();
+        }
+
+        @Override
+        public void onDestroy() {
+            mDisposableR.dispose();
+            super.onDestroy();
+        }
+    }
+
+    static class RefreshResourcesEvent {
     }
 }

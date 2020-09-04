@@ -26,19 +26,23 @@ import com.org.firefighting.data.network.entity.TaskLog;
 import com.org.firefighting.data.network.entity.TaskQuestion;
 import com.org.firefighting.data.network.entity.TaskSummary2;
 import com.org.firefighting.data.network.entity.TaskTable;
+import com.org.firefighting.data.network.entity.User;
 import com.org.firefighting.data.network.entity.User2;
 
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -57,10 +61,23 @@ public interface ApiService {
     Call<SignInResponse> signInSync(@Body SignInRequest signInRequest);
 
     /**
+     * 用户信息
+     */
+    @GET("admin-ht/auth/info")
+    Single<User> getUserInfo();
+
+    /**
      * 修改密码
      */
     @POST("admin-ht/api/users/updatePass")
     Single<ResponseBody> modifyPwd(@Body ModifyPwdRequest modifyPwdRequest);
+
+    /**
+     * 用户中心-修改头像
+     */
+    @Multipart
+    @POST("admin-ht/api/users/updateAvatar")
+    Single<ResponseBody> modifyAvatar(@Part MultipartBody.Part image);
 
     /**
      * 获取个人信息填报任务列表

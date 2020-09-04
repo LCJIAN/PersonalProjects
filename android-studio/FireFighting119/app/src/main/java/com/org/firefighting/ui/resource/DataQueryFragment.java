@@ -230,7 +230,7 @@ public class DataQueryFragment extends BaseFragment {
             TextView tv_add_or_delete = view.findViewById(R.id.tv_add_or_delete);
             TextView tv_search = view.findViewById(R.id.tv_search);
             if (i == ll_query_options.getChildCount() - 1) {
-                tv_add_or_delete.setText("添加");
+                tv_add_or_delete.setText("添 加");
                 tv_search.setVisibility(View.VISIBLE);
 
                 tv_add_or_delete.setOnClickListener(v -> {
@@ -238,7 +238,7 @@ public class DataQueryFragment extends BaseFragment {
                     setupOptions();
                 });
             } else {
-                tv_add_or_delete.setText("删除");
+                tv_add_or_delete.setText("删 除");
                 tv_search.setVisibility(View.GONE);
                 tv_add_or_delete.setOnClickListener(v -> ll_query_options.removeView(view));
             }
@@ -304,6 +304,8 @@ public class DataQueryFragment extends BaseFragment {
                                     if (c.isDisplay != null && c.isDisplay == 1) {
                                         TextView columnHeader = (TextView) inflater.inflate(R.layout.data_table_cell_item, headerRow, false);
                                         columnHeader.setText(c.name);
+                                        columnHeader.setTextColor(0xffffffff);
+                                        columnHeader.setBackgroundColor(0xff2a80e1);
                                         headerRow.addView(columnHeader);
                                         names.add(columnHeader.getText().toString());
                                         enNames.add(c.field);

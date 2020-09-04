@@ -1,6 +1,7 @@
 package com.org.firefighting.ui.main;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -107,10 +108,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void checkVersion() {
+        checkVersion("http://47.241.26.39/app/checkversion.html", "http://124.162.30.39:9000/app/checkversion.html");
+    }
+
+    private void checkVersion(String url, String fallback) {
         AllenVersionChecker
                 .getInstance()
                 .requestVersion()
-                .setRequestUrl("http://124.162.30.39:9000/app/checkversion.html")
+                .setRequestUrl(url)
                 .request(new RequestVersionListener() {
                     @Override
                     public UIData onRequestVersionSuccess(DownloadBuilder downloadBuilder, String result) {
@@ -144,7 +149,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                     @Override
                     public void onRequestVersionFailure(String message) {
-
+                        if (!TextUtils.isEmpty(fallback)) {
+                            checkVersion(fallback, null);
+                        }
                     }
                 })
                 .executeMission(this);
