@@ -317,6 +317,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                             return null;
                         }
                         VersionInfo info = new Gson().fromJson(result, VersionInfo.class);
+                        SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+                        signInResponse.setting = info.setting;
+                        SharedPreferencesDataSource.putSignInResponse(signInResponse);
 
                         int newVersion = Integer.parseInt(info.newVersion.replace(".", ""));
                         int minVersion = Integer.parseInt(info.minVersion.replace(".", ""));

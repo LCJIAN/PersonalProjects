@@ -113,7 +113,7 @@ public class ServiceDetailActivity extends BaseActivity {
                                 if (getSupportFragmentManager().findFragmentByTag("ServiceBasicInfoFragment") == null) {
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.fl_fragment_container_basic, ServiceBasicInfoFragment.newInstance(mServiceEntity), "ServiceBasicInfoFragment")
-                                            .replace(R.id.fl_fragment_container_query, DataQueryFragment.newInstance(mServiceEntity.invokeName), "DataQueryFragment")
+                                            .replace(R.id.fl_fragment_container_query, DataQueryFragment.newInstance(mServiceEntity.invokeName, mServiceEntity), "DataQueryFragment")
                                             .commit();
                                 }
                             } else {

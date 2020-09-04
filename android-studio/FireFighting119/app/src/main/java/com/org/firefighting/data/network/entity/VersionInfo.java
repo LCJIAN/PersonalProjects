@@ -10,5 +10,6 @@ public class VersionInfo {
     public Map<String, String> updateDescription;
     public String apkSize;
     public String md5;
+    public Map<String, String> setting;
 
 }

@@ -18,6 +18,8 @@ import com.lcjian.lib.util.FragmentSwitchHelper;
 import com.lcjian.lib.util.common.PackageUtils2;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
+import com.org.firefighting.data.local.SharedPreferencesDataSource;
+import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.data.network.entity.VersionInfo;
 
 import java.util.Map;
@@ -120,6 +122,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     @Override
                     public UIData onRequestVersionSuccess(DownloadBuilder downloadBuilder, String result) {
                         VersionInfo info = new Gson().fromJson(result, VersionInfo.class);
+                        SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+                        signInResponse.setting = info.setting;
+                        SharedPreferencesDataSource.putSignInResponse(signInResponse);
 
                         int newVersion = Integer.parseInt(info.newVersion.replace(".", ""));
                         int minVersion = Integer.parseInt(info.minVersion.replace(".", ""));

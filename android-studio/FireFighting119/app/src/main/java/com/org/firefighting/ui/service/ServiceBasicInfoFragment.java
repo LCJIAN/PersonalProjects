@@ -11,8 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.org.firefighting.R;
+import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.ui.base.BaseFragment;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,9 +83,10 @@ public class ServiceBasicInfoFragment extends BaseFragment {
     }
 
     private void setupContent() {
+        Map<String, String> map = SharedPreferencesDataSource.getSignInResponse().setting;
         tv_resource_name.setText(mServiceEntity.serviceName);
         tv_resource_identity.setText(TextUtils.isEmpty(mServiceEntity.dirId) ? "暂无" : mServiceEntity.dirId);
-        tv_share_type.setText(mServiceEntity.contentType);
+        tv_share_type.setText(map == null ? "开放" : map.get(mServiceEntity.contentType));
         tv_supplier.setText(TextUtils.isEmpty(mServiceEntity.serviceDeveloper) ? "暂无" : mServiceEntity.serviceDeveloper);
         tv_publish_time.setText(mServiceEntity.createDate);
         tv_des.setText(mServiceEntity.description);

@@ -29,6 +29,7 @@ import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.DataQueryResult2;
 import com.org.firefighting.data.network.entity.ServiceDataRequest;
 import com.org.firefighting.data.network.entity.ServiceDataRequestEmpty;
+import com.org.firefighting.data.network.entity.ServiceEntity;
 import com.org.firefighting.ui.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class DataQueryFragment extends BaseFragment {
     private Disposable mDisposable;
     private Disposable mDisposableD;
 
+    private ServiceEntity mServiceEntity;
     private String mInvokeName;
     private List<DataQueryResult2.Column> mColumns;
 
@@ -76,10 +78,11 @@ public class DataQueryFragment extends BaseFragment {
     private int mCurrentPage = 1;
     private int mTotalPage = 0;
 
-    public static DataQueryFragment newInstance(String invokeName) {
+    public static DataQueryFragment newInstance(String invokeName, ServiceEntity entity) {
         DataQueryFragment fragment = new DataQueryFragment();
         Bundle args = new Bundle();
         args.putString("invoke_name", invokeName);
+        args.putSerializable("service_entity", entity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,6 +92,7 @@ public class DataQueryFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mInvokeName = getArguments().getString("invoke_name");
+            mServiceEntity = (ServiceEntity) getArguments().getSerializable("service_entity");
         }
     }
 
@@ -102,7 +106,8 @@ public class DataQueryFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        tv_view_data_field.setVisibility(View.GONE);
+        tv_view_data_field.setOnClickListener(v -> DataFieldDialogFragment.newInstance(mServiceEntity)
+                .show(getChildFragmentManager(), "DataFieldDialogFragment"));
         tv_pre_page.setOnClickListener(v -> {
             if (mCurrentPage <= 1) {
                 return;
