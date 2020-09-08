@@ -72,8 +72,8 @@ public class DataQueryFragment extends BaseFragment {
     private String mInvokeName;
     private List<DataQueryResult2.Column> mColumns;
 
-    private static final String[] OPTION_NAMES = new String[]{"等于", "不等于", "大于", "大于等于", "小于", "小于等于", "含有", "in", "为空", "不为空"};
-    private static final String[] OPTION_OPS = new String[]{"eq", "neq", "gt", "gte", "lt", "lte", "like", "in", "isNull", "isNotNull"};
+    private static final String[] OPTION_NAMES = new String[]{"等于", /*"不等于",*/ "大于", "大于等于", "小于", "小于等于", "包含"/*, "in", "为空", "不为空"*/};
+    private static final String[] OPTION_OPS = new String[]{"eq", /*"neq",*/ "gt", "gte", "lt", "lte", "like"/*, "in", "isNull", "isNotNull"*/};
 
     private int mCurrentPage = 1;
     private int mTotalPage = 0;
