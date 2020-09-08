@@ -33,11 +33,7 @@ public class QRHelper {
         QRCodeReader reader = new QRCodeReader();
         try {
             return reader.decode(tempBitmap, hints);
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (ChecksumException e) {
-            e.printStackTrace();
-        } catch (FormatException e) {
+        } catch (NotFoundException | ChecksumException | FormatException e) {
             e.printStackTrace();
         }
         return null;
