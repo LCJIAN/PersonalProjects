@@ -24,7 +24,6 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -37,6 +36,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.MediaController.MediaPlayerControl;
+
+import androidx.annotation.NonNull;
 
 import com.lcjian.lib.media.AndroidMediaPlayer;
 import com.lcjian.lib.media.IMediaPlayer;
@@ -795,10 +796,12 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
     }
 
     private void toggleMediaControlsVisibility() {
-        if (mMediaController.isShowing()) {
-            mMediaController.hide();
-        } else {
-            mMediaController.show();
+        if (mMediaController != null) {
+            if (mMediaController.isShowing()) {
+                mMediaController.hide();
+            } else {
+                mMediaController.show();
+            }
         }
     }
 
@@ -809,7 +812,9 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
             mCurrentState = STATE_PLAYING;
         }
         mTargetState = STATE_PLAYING;
-        mMediaController.show();
+        if (mMediaController != null) {
+            mMediaController.show();
+        }
         mTransportMediator.refreshState();
     }
 
@@ -822,7 +827,9 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
             }
         }
         mTargetState = STATE_PAUSED;
-        mMediaController.show();
+        if (mMediaController != null) {
+            mMediaController.show();
+        }
         mTransportMediator.refreshState();
     }
 
