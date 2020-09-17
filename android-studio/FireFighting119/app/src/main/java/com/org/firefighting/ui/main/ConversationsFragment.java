@@ -40,6 +40,7 @@ import com.org.firefighting.RxBus;
 import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
+import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.data.network.entity.SystemMessage;
 import com.org.firefighting.ui.base.BaseFragment;
 import com.org.firefighting.ui.chat.ChatActivity;
@@ -277,7 +278,12 @@ public class ConversationsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
+        SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+        SmackClientService.start(App.getInstance(),
+                signInResponse.setting.get("IMserverIP"),
+                signInResponse.setting.get("IMservername"),
+                signInResponse.user.id.toString(),
+                "123456");
     }
 
     @Override
