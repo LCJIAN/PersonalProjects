@@ -166,9 +166,10 @@ dependencies {
     implementation 'com.just.agentweb:filechooser:latest.integration'
     implementation 'com.jaredrummler:colorpicker:latest.integration'
 
-    implementation 'com.umeng.umsdk:analytics:latest.integration'
-    implementation 'com.umeng.umsdk:common:latest.integration'
-    implementation 'com.umeng.umsdk:utdid:latest.integration'
+    // umeng
+    implementation "com.umeng.umsdk:common:latest.integration"
+    implementation "com.umeng.umsdk:asms:latest.integration"
+    implementation "com.umeng.umsdk:crash:latest.integration"
 //    implementation 'com.umeng.sdk:share-core:latest.integration'
 //    implementation 'com.umeng.sdk:share-qq:latest.integration'
 //    implementation 'com.umeng.sdk:share-wechat:latest.integration'

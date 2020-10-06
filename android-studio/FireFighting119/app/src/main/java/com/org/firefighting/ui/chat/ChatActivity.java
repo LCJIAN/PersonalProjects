@@ -45,6 +45,7 @@ import com.org.firefighting.GlideApp;
 import com.org.firefighting.R;
 import com.org.firefighting.RxBus;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
+import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.common.ImageViewerActivity;
 import com.zhihu.matisse.Matisse;
@@ -429,7 +430,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        SmackClientService.start(App.getInstance(), SharedPreferencesDataSource.getSignInResponse().user.id.toString(), "123456");
+        SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
+        SmackClientService.start(App.getInstance(),
+                signInResponse.setting.get("IMserverIP"),
+                signInResponse.setting.get("IMservername"),
+                signInResponse.user.id.toString(),
+                "123456");
     }
 
     @Override

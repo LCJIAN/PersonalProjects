@@ -213,7 +213,9 @@ public class SmackClientService extends Service {
         super.onDestroy();
     }
 
-    public static void start(Context context, String username, String password) {
+    public static void start(Context context, String host, String domain, String username, String password) {
+        SmackClient.HOST = host;
+        SmackClient.DOMAIN = domain;
         context.startService(new Intent(context, SmackClientService.class)
                 .putExtra("action", "start")
                 .putExtra("username", username)

@@ -115,11 +115,11 @@ public class SmackClient {
 
     private final ExecutorService mActionThreadPool;
 
-    private final static String HOST = "47.108.88.62";
+    public static String HOST = "47.108.88.62";
 
     private final static int PORT = 5222;
 
-    public final static String DOMAIN = "ff-chat";
+    public static String DOMAIN = "ff-chat";
 
     private String mUsername;
 
