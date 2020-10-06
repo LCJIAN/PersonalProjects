@@ -241,6 +241,10 @@ public class AddRecordActivity extends BaseActivity {
             }
             temp.get(0).longNameStr = longNameStr.substring(0, longNameStr.length() - 1);
             temp.get(0).requestedReal = ve.get(row - 1).get(i).requested;
+            temp.get(0).options = ve.get(row - 1).get(i).options;
+            temp.get(0).type = ve.get(row - 1).get(i).type;
+            temp.get(0).remarks = ve.get(row - 1).get(i).remarks;
+            temp.get(0).value = ve.get(row - 1).get(i).value;
             result.add(temp.get(0));
         }
 

@@ -238,7 +238,7 @@ public class ResourcesActivity extends BaseActivity {
         }
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<ResourceEntity> data) {
+        public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<ResourceEntity> data) {
             mAdapter = SlimAdapter
                     .create()
                     .register(new SlimAdapter.SlimInjector<ResourceEntity>() {

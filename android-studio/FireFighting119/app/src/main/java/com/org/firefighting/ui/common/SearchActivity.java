@@ -129,7 +129,7 @@ public class SearchActivity extends BaseActivity {
         }
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<SearchResult> data) {
+        public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<SearchResult> data) {
             mAdapter = SlimAdapter
                     .create()
                     .register(new SlimAdapter.SlimInjector<SearchResult>() {

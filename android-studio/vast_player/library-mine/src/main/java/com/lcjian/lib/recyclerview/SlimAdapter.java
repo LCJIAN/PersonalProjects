@@ -29,14 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder> {
+public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder<?>> {
 
     private static final int WHAT_NOTIFY_DATA_SET_CHANGED = 1;
 
     private List<?> data;
     private List<Type> dataTypes = new ArrayList<>();
-    private Map<Type, ViewHolderCreator> creators = new HashMap<>();
-    private ViewHolderCreator defaultCreator = null;
+    private Map<Type, ViewHolderCreator<?>> creators = new HashMap<>();
+    private ViewHolderCreator<?> defaultCreator = null;
     private DiffCallback diffCallback = null;
 
     public static SlimAdapter create() {
@@ -101,9 +101,9 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
 
     @NonNull
     @Override
-    public SlimViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SlimViewHolder<?> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Type dataType = dataTypes.get(viewType);
-        ViewHolderCreator creator = creators.get(dataType);
+        ViewHolderCreator<?> creator = creators.get(dataType);
         if (creator == null) {
             for (Type t : creators.keySet()) {
                 if (isTypeMatch(t, dataType)) {
@@ -118,7 +118,7 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
             }
             creator = defaultCreator;
         }
-        SlimViewHolder holder = creator.create(parent);
+        SlimViewHolder<?> holder = creator.create(parent);
         holder.init();
         return holder;
     }
@@ -150,7 +150,7 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
     }
 
     @SuppressWarnings("unchecked")
-    public SlimAdapter registerDefault(final SlimInjector injector) {
+    public SlimAdapter registerDefault(final SlimInjector<?> injector) {
         defaultCreator = new ViewHolderCreator(injector);
         return this;
     }
@@ -347,72 +347,72 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
             return (T) view;
         }
 
-        public SlimViewHolder tag(int id, Object object) {
+        public SlimViewHolder<?> tag(int id, Object object) {
             findViewById(id).setTag(object);
             return this;
         }
 
-        public SlimViewHolder text(int id, int res) {
+        public SlimViewHolder<?> text(int id, int res) {
             TextView view = findViewById(id);
             view.setText(res);
             return this;
         }
 
-        public SlimViewHolder text(int id, CharSequence charSequence) {
+        public SlimViewHolder<?> text(int id, CharSequence charSequence) {
             TextView view = findViewById(id);
             view.setText(charSequence);
             return this;
         }
 
-        public SlimViewHolder typeface(int id, Typeface typeface, int style) {
+        public SlimViewHolder<?> typeface(int id, Typeface typeface, int style) {
             TextView view = findViewById(id);
             view.setTypeface(typeface, style);
             return this;
         }
 
-        public SlimViewHolder typeface(int id, Typeface typeface) {
+        public SlimViewHolder<?> typeface(int id, Typeface typeface) {
             TextView view = findViewById(id);
             view.setTypeface(typeface);
             return this;
         }
 
-        public SlimViewHolder textColor(int id, int color) {
+        public SlimViewHolder<?> textColor(int id, int color) {
             TextView view = findViewById(id);
             view.setTextColor(color);
             return this;
         }
 
-        public SlimViewHolder textSize(int id, int sp) {
+        public SlimViewHolder<?> textSize(int id, int sp) {
             TextView view = findViewById(id);
             view.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
             return this;
         }
 
-        public SlimViewHolder alpha(int id, float alpha) {
+        public SlimViewHolder<?> alpha(int id, float alpha) {
             View view = findViewById(id);
             view.setAlpha(alpha);
             return this;
         }
 
-        public SlimViewHolder image(int id, int res) {
+        public SlimViewHolder<?> image(int id, int res) {
             ImageView view = findViewById(id);
             view.setImageResource(res);
             return this;
         }
 
-        public SlimViewHolder image(int id, Drawable drawable) {
+        public SlimViewHolder<?> image(int id, Drawable drawable) {
             ImageView view = findViewById(id);
             view.setImageDrawable(drawable);
             return this;
         }
 
-        public SlimViewHolder background(int id, int res) {
+        public SlimViewHolder<?> background(int id, int res) {
             View view = findViewById(id);
             view.setBackgroundResource(res);
             return this;
         }
 
-        public SlimViewHolder background(int id, Drawable drawable) {
+        public SlimViewHolder<?> background(int id, Drawable drawable) {
             View view = findViewById(id);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 view.setBackground(drawable);
@@ -422,109 +422,109 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
             return this;
         }
 
-        public SlimViewHolder visible(int id) {
+        public SlimViewHolder<?> visible(int id) {
             findViewById(id).setVisibility(View.VISIBLE);
             return this;
         }
 
-        public SlimViewHolder invisible(int id) {
+        public SlimViewHolder<?> invisible(int id) {
             findViewById(id).setVisibility(View.INVISIBLE);
             return this;
         }
 
-        public SlimViewHolder gone(int id) {
+        public SlimViewHolder<?> gone(int id) {
             findViewById(id).setVisibility(View.GONE);
             return this;
         }
 
-        public SlimViewHolder visibility(int id, int visibility) {
+        public SlimViewHolder<?> visibility(int id, int visibility) {
             findViewById(id).setVisibility(visibility);
             return this;
         }
 
         @SuppressWarnings("unchecked")
-        public <V extends View> SlimViewHolder with(int id, Action<V> action) {
+        public <V extends View> SlimViewHolder<?> with(int id, Action<V> action) {
             action.action((V) findViewById(id));
             return this;
         }
 
-        public SlimViewHolder clicked(int id, View.OnClickListener listener) {
+        public SlimViewHolder<?> clicked(int id, View.OnClickListener listener) {
             findViewById(id).setOnClickListener(listener);
             return this;
         }
 
-        public SlimViewHolder clicked(View.OnClickListener listener) {
+        public SlimViewHolder<?> clicked(View.OnClickListener listener) {
             itemView.setOnClickListener(listener);
             return this;
         }
 
-        public SlimViewHolder longClicked(int id, View.OnLongClickListener listener) {
+        public SlimViewHolder<?> longClicked(int id, View.OnLongClickListener listener) {
             findViewById(id).setOnLongClickListener(listener);
             return this;
         }
 
-        public SlimViewHolder longClicked(View.OnLongClickListener listener) {
+        public SlimViewHolder<?> longClicked(View.OnLongClickListener listener) {
             itemView.setOnLongClickListener(listener);
             return this;
         }
 
-        public SlimViewHolder enable(int id, boolean enable) {
+        public SlimViewHolder<?> enable(int id, boolean enable) {
             findViewById(id).setEnabled(enable);
             return this;
         }
 
-        public SlimViewHolder enable(int id) {
+        public SlimViewHolder<?> enable(int id) {
             findViewById(id).setEnabled(true);
             return this;
         }
 
-        public SlimViewHolder disable(int id) {
+        public SlimViewHolder<?> disable(int id) {
             findViewById(id).setEnabled(false);
             return this;
         }
 
-        public SlimViewHolder checked(int id, boolean checked) {
+        public SlimViewHolder<?> checked(int id, boolean checked) {
             Checkable view = findViewById(id);
             view.setChecked(checked);
             return this;
         }
 
-        public SlimViewHolder selected(int id, boolean selected) {
+        public SlimViewHolder<?> selected(int id, boolean selected) {
             findViewById(id).setSelected(selected);
             return this;
         }
 
         @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
-        public SlimViewHolder activated(int id, boolean activated) {
+        public SlimViewHolder<?> activated(int id, boolean activated) {
             findViewById(id).setSelected(activated);
             return this;
         }
 
-        public SlimViewHolder pressed(int id, boolean pressed) {
+        public SlimViewHolder<?> pressed(int id, boolean pressed) {
             findViewById(id).setPressed(pressed);
             return this;
         }
 
-        public SlimViewHolder adapter(int id, RecyclerView.Adapter adapter) {
+        public SlimViewHolder<?> adapter(int id, RecyclerView.Adapter<?> adapter) {
             RecyclerView view = findViewById(id);
             view.setAdapter(adapter);
             return this;
         }
 
         @SuppressWarnings("unchecked")
-        public SlimViewHolder adapter(int id, Adapter adapter) {
+        public SlimViewHolder<?> adapter(int id, Adapter adapter) {
             AdapterView view = findViewById(id);
             view.setAdapter(adapter);
             return this;
         }
 
-        public SlimViewHolder layoutManager(int id, RecyclerView.LayoutManager layoutManager) {
+        public SlimViewHolder<?> layoutManager(int id, RecyclerView.LayoutManager layoutManager) {
             RecyclerView view = findViewById(id);
             view.setLayoutManager(layoutManager);
             return this;
         }
 
-        public SlimViewHolder addView(int id, View... views) {
+        public SlimViewHolder<?> addView(int id, View... views) {
             ViewGroup viewGroup = findViewById(id);
             for (View view : views) {
                 viewGroup.addView(view);
@@ -532,19 +532,19 @@ public class SlimAdapter extends RecyclerView.Adapter<SlimAdapter.SlimViewHolder
             return this;
         }
 
-        public SlimViewHolder addView(int id, View view, ViewGroup.LayoutParams params) {
+        public SlimViewHolder<?> addView(int id, View view, ViewGroup.LayoutParams params) {
             ViewGroup viewGroup = findViewById(id);
             viewGroup.addView(view, params);
             return this;
         }
 
-        public SlimViewHolder removeAllViews(int id) {
+        public SlimViewHolder<?> removeAllViews(int id) {
             ViewGroup viewGroup = findViewById(id);
             viewGroup.removeAllViews();
             return this;
         }
 
-        public SlimViewHolder removeView(int id, View view) {
+        public SlimViewHolder<?> removeView(int id, View view) {
             ViewGroup viewGroup = findViewById(id);
             viewGroup.removeView(view);
             return this;

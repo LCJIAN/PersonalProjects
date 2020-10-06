@@ -70,7 +70,7 @@ public class SystemMessagesActivity extends BaseActivity {
         }
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<SystemMessage> data) {
+        public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<SystemMessage> data) {
             mAdapter = SlimAdapter
                     .create()
                     .register(new SlimAdapter.SlimInjector<SystemMessage>() {

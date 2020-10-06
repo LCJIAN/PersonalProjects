@@ -176,7 +176,7 @@ public class NewsActivity extends BaseActivity {
         }
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<News> data) {
+        public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<News> data) {
             mAdapter = SlimAdapter
                     .create()
                     .register(new SlimAdapter.SlimInjector<News>() {

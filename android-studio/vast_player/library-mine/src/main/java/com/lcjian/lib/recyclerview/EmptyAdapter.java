@@ -1,17 +1,18 @@
 package com.lcjian.lib.recyclerview;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
 
 public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private RecyclerView.Adapter mInnerAdapter;
+    private RecyclerView.Adapter<? super RecyclerView.ViewHolder> mInnerAdapter;
 
     private View mEmptyView;
 
@@ -80,7 +81,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     };
 
-    public EmptyAdapter(RecyclerView.Adapter adapter) {
+    public EmptyAdapter(RecyclerView.Adapter<? super RecyclerView.ViewHolder> adapter) {
         setInnerAdapter(adapter);
     }
 
@@ -102,7 +103,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public void setInnerAdapter(RecyclerView.Adapter adapter) {
+    public void setInnerAdapter(RecyclerView.Adapter<? super RecyclerView.ViewHolder> adapter) {
         if (mInnerAdapter != null) {
             mInnerAdapter.unregisterAdapterDataObserver(dataObserver);
         }
@@ -146,7 +147,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof EmptyHolder) {
             return;
@@ -155,7 +155,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
         if (holder instanceof EmptyHolder) {
             return;
@@ -189,7 +188,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
@@ -203,7 +201,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             return super.onFailedToRecycleView(holder);
@@ -218,7 +215,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             super.onViewDetachedFromWindow(holder);
@@ -228,7 +224,6 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             super.onViewRecycled(holder);

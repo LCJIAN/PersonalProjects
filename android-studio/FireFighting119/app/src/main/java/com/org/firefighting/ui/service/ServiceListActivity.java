@@ -201,7 +201,7 @@ public class ServiceListActivity extends BaseActivity {
         }
 
         @Override
-        public RecyclerView.Adapter onCreateAdapter(List<ServiceEntity> data) {
+        public RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<ServiceEntity> data) {
             mAdapter = SlimAdapter
                     .create()
                     .register(new SlimAdapter.SlimInjector<ServiceEntity>() {

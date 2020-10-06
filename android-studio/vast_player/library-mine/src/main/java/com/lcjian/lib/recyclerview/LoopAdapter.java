@@ -1,9 +1,10 @@
 package com.lcjian.lib.recyclerview;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ public class LoopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private RecyclerView mParent;
 
-    private RecyclerView.Adapter mInnerAdapter;
+    private RecyclerView.Adapter<? super RecyclerView.ViewHolder> mInnerAdapter;
 
     private Runnable mLooper;
 
-    public LoopAdapter(RecyclerView.Adapter innerAdapter) {
+    public LoopAdapter(RecyclerView.Adapter<? super RecyclerView.ViewHolder> innerAdapter) {
         this.mInnerAdapter = innerAdapter;
         this.mLooper = new Runnable() {
             @Override
@@ -58,13 +59,11 @@ public class LoopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         mInnerAdapter.onBindViewHolder(holder, position % mInnerAdapter.getItemCount());
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
         mInnerAdapter.onBindViewHolder(holder, position % mInnerAdapter.getItemCount(), payloads);
     }
@@ -84,25 +83,21 @@ public class LoopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         mInnerAdapter.onViewAttachedToWindow(holder);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         mInnerAdapter.onViewDetachedFromWindow(holder);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         mInnerAdapter.onViewRecycled(holder);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
         return mInnerAdapter.onFailedToRecycleView(holder);
     }

@@ -35,7 +35,7 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     private EmptyAdapter mEmptyAdapter;
     private LoadMoreAdapter mLoadMoreAdapter;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter<? extends RecyclerView.ViewHolder> mAdapter;
 
     private List<T> mData;
     private List<T> mPrePageData;
@@ -50,7 +50,7 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     private Unbinder mUnBinder;
 
-    public abstract RecyclerView.Adapter onCreateAdapter(List<T> data);
+    public abstract RecyclerView.Adapter<? extends RecyclerView.ViewHolder> onCreateAdapter(List<T> data);
 
     public abstract Observable<PageResult<T>> onCreatePageObservable(int currentPage);
 
@@ -77,7 +77,7 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mAdapter = onCreateAdapter(new ArrayList<T>());
+        mAdapter = onCreateAdapter(new ArrayList<>());
         mLoadMoreAdapter = new LoadMoreAdapter(mAdapter);
 
         swipe_refresh_layout.setOnRefreshListener(this::refresh);

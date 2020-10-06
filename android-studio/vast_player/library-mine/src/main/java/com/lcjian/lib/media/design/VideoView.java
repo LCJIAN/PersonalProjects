@@ -24,7 +24,6 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -37,6 +36,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.MediaController.MediaPlayerControl;
+
+import androidx.annotation.NonNull;
 
 import com.lcjian.lib.media.AndroidMediaPlayer;
 import com.lcjian.lib.media.IMediaPlayer;
@@ -315,18 +316,18 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
                         mMediaController.hide();
                     }
 
-            /* If an error handler has been supplied, use it and finish. */
+                    /* If an error handler has been supplied, use it and finish. */
                     if (mOnErrorListener != null) {
                         if (mOnErrorListener.onError(mMediaPlayer, framework_err, impl_err)) {
                             return true;
                         }
                     }
 
-            /* Otherwise, pop up an error dialog so the user knows that
-             * something bad has happened. Only try and pop up the dialog
-             * if we're attached to a window. When we're going away and no
-             * longer have a window, don't bother showing the user an error.
-             */
+                    /* Otherwise, pop up an error dialog so the user knows that
+                     * something bad has happened. Only try and pop up the dialog
+                     * if we're attached to a window. When we're going away and no
+                     * longer have a window, don't bother showing the user an error.
+                     */
                     if (getWindowToken() != null) {
                         int messageId;
 
@@ -341,9 +342,9 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
                                 .setPositiveButton(R.string.VideoView_error_button,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int whichButton) {
-                                        /* If we get here, there is no onError listener, so
-                                         * at least inform them that the video is over.
-                                         */
+                                                /* If we get here, there is no onError listener, so
+                                                 * at least inform them that the video is over.
+                                                 */
                                                 if (mOnCompletionListener != null) {
                                                     mOnCompletionListener.onCompletion(mMediaPlayer);
                                                 }
@@ -795,10 +796,12 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
     }
 
     private void toggleMediaControlsVisibility() {
-        if (mMediaController.isShowing()) {
-            mMediaController.hide();
-        } else {
-            mMediaController.show();
+        if (mMediaController != null) {
+            if (mMediaController.isShowing()) {
+                mMediaController.hide();
+            } else {
+                mMediaController.show();
+            }
         }
     }
 
@@ -809,7 +812,9 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
             mCurrentState = STATE_PLAYING;
         }
         mTargetState = STATE_PLAYING;
-        mMediaController.show();
+        if (mMediaController != null) {
+            mMediaController.show();
+        }
         mTransportMediator.refreshState();
     }
 
@@ -822,7 +827,9 @@ public class VideoView extends FrameLayout implements MediaPlayerControl {
             }
         }
         mTargetState = STATE_PAUSED;
-        mMediaController.show();
+        if (mMediaController != null) {
+            mMediaController.show();
+        }
         mTransportMediator.refreshState();
     }
 

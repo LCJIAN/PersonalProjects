@@ -2,10 +2,10 @@ package com.lcjian.lib.recyclerview;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 public class LoadMoreAdapter extends AdvanceAdapter {
 
@@ -32,7 +32,7 @@ public class LoadMoreAdapter extends AdvanceAdapter {
 
     private Runnable mStateSetter;
 
-    public LoadMoreAdapter(RecyclerView.Adapter adapter) {
+    public LoadMoreAdapter(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
         super(adapter);
         this.mOnScrollListener = new EndlessRecyclerOnScrollListener() {
             @Override
@@ -43,33 +43,30 @@ public class LoadMoreAdapter extends AdvanceAdapter {
             }
         };
         this.mHandler = new Handler(Looper.getMainLooper());
-        this.mStateSetter = new Runnable() {
-            @Override
-            public void run() {
-                switch (mState) {
-                    case STATE_DEFAULT:
-                        removeFooter(mLoadingView);
-                        removeFooter(mErrorView);
-                        removeFooter(mEndView);
-                        break;
-                    case STATE_LOADING:
-                        removeFooter(mErrorView);
-                        removeFooter(mEndView);
-                        addFooter(mLoadingView);
-                        break;
-                    case STATE_ERROR:
-                        removeFooter(mLoadingView);
-                        removeFooter(mEndView);
-                        addFooter(mErrorView);
-                        break;
-                    case STATE_END:
-                        removeFooter(mLoadingView);
-                        removeFooter(mErrorView);
-                        addFooter(mEndView);
-                        break;
-                    default:
-                        break;
-                }
+        this.mStateSetter = () -> {
+            switch (mState) {
+                case STATE_DEFAULT:
+                    removeFooter(mLoadingView);
+                    removeFooter(mErrorView);
+                    removeFooter(mEndView);
+                    break;
+                case STATE_LOADING:
+                    removeFooter(mErrorView);
+                    removeFooter(mEndView);
+                    addFooter(mLoadingView);
+                    break;
+                case STATE_ERROR:
+                    removeFooter(mLoadingView);
+                    removeFooter(mEndView);
+                    addFooter(mErrorView);
+                    break;
+                case STATE_END:
+                    removeFooter(mLoadingView);
+                    removeFooter(mErrorView);
+                    addFooter(mEndView);
+                    break;
+                default:
+                    break;
             }
         };
     }

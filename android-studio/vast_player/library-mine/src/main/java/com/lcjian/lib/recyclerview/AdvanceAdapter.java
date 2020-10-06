@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private RecyclerView.Adapter mInnerAdapter;
+    private RecyclerView.Adapter<? extends RecyclerView.ViewHolder> mInnerAdapter;
     private OnItemClickListener mOnItemClickListener;
     private List<Entry> headers, footers;
     private RecyclerView.AdapterDataObserver dataObserver = new RecyclerView.AdapterDataObserver() {
@@ -49,13 +49,13 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     };
 
-    public AdvanceAdapter(RecyclerView.Adapter adapter) {
+    public AdvanceAdapter(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
         headers = new ArrayList<>();
         footers = new ArrayList<>();
         setInnerAdapter(adapter);
     }
 
-    public void setInnerAdapter(RecyclerView.Adapter adapter) {
+    public void setInnerAdapter(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
         if (mInnerAdapter != null) {
             notifyItemRangeRemoved(headers.size(), mInnerAdapter.getItemCount());
             mInnerAdapter.unregisterAdapterDataObserver(dataObserver);
@@ -126,7 +126,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (!(holder instanceof AdvanceHolder)) {
-            mInnerAdapter.onBindViewHolder(holder, position - headers.size());
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onBindViewHolder(holder, position - headers.size());
         }
     }
 
@@ -134,7 +134,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
         if (!(holder instanceof AdvanceHolder)) {
-            mInnerAdapter.onBindViewHolder(holder, position - headers.size(), payloads);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onBindViewHolder(holder, position - headers.size(), payloads);
         }
     }
 
@@ -177,7 +177,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             }
         } else {
-            mInnerAdapter.onViewAttachedToWindow(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewAttachedToWindow(holder);
         }
     }
 
@@ -187,7 +187,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof AdvanceHolder) {
             super.onViewRecycled(holder);
         } else {
-            mInnerAdapter.onViewRecycled(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewRecycled(holder);
         }
     }
 
@@ -197,7 +197,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof AdvanceHolder) {
             super.onViewDetachedFromWindow(holder);
         } else {
-            mInnerAdapter.onViewDetachedFromWindow(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewDetachedFromWindow(holder);
         }
     }
 
@@ -212,7 +212,7 @@ public class AdvanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof AdvanceHolder) {
             return super.onFailedToRecycleView(holder);
         } else {
-            return mInnerAdapter.onFailedToRecycleView(holder);
+            return ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onFailedToRecycleView(holder);
         }
     }
 
