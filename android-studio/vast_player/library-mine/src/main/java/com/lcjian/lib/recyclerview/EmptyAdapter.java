@@ -12,7 +12,7 @@ import java.util.List;
 
 public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private RecyclerView.Adapter<? super RecyclerView.ViewHolder> mInnerAdapter;
+    private RecyclerView.Adapter<? extends RecyclerView.ViewHolder> mInnerAdapter;
 
     private View mEmptyView;
 
@@ -81,7 +81,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     };
 
-    public EmptyAdapter(RecyclerView.Adapter<? super RecyclerView.ViewHolder> adapter) {
+    public EmptyAdapter(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
         setInnerAdapter(adapter);
     }
 
@@ -103,7 +103,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public void setInnerAdapter(RecyclerView.Adapter<? super RecyclerView.ViewHolder> adapter) {
+    public void setInnerAdapter(RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter) {
         if (mInnerAdapter != null) {
             mInnerAdapter.unregisterAdapterDataObserver(dataObserver);
         }
@@ -147,19 +147,21 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof EmptyHolder) {
             return;
         }
-        mInnerAdapter.onBindViewHolder(holder, position);
+        ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onBindViewHolder(holder, position);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull List<Object> payloads) {
         if (holder instanceof EmptyHolder) {
             return;
         }
-        mInnerAdapter.onBindViewHolder(holder, position, payloads);
+        ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -188,6 +190,7 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
@@ -196,16 +199,17 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 p.setFullSpan(true);
             }
         } else {
-            mInnerAdapter.onViewAttachedToWindow(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewAttachedToWindow(holder);
         }
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean onFailedToRecycleView(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             return super.onFailedToRecycleView(holder);
         } else {
-            return mInnerAdapter.onFailedToRecycleView(holder);
+            return ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onFailedToRecycleView(holder);
         }
     }
 
@@ -215,20 +219,22 @@ public class EmptyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             super.onViewDetachedFromWindow(holder);
         } else {
-            mInnerAdapter.onViewDetachedFromWindow(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewDetachedFromWindow(holder);
         }
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
         if (holder instanceof EmptyHolder) {
             super.onViewRecycled(holder);
         } else {
-            mInnerAdapter.onViewRecycled(holder);
+            ((RecyclerView.Adapter<RecyclerView.ViewHolder>) mInnerAdapter).onViewRecycled(holder);
         }
     }
 

@@ -191,7 +191,8 @@ public class SmackClientService extends Service {
                 mSmackClient.stopAsync();
             }
         }
-        return super.onStartCommand(intent, flags, startId);
+        super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
