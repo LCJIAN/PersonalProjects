@@ -20,6 +20,7 @@ import com.org.firefighting.ThrowableConsumerAdapter;
 import com.org.firefighting.data.local.SharedPreferencesDataSource;
 import com.org.firefighting.data.network.RestAPI;
 import com.org.firefighting.data.network.entity.SignInRequest;
+import com.org.firefighting.data.network.entity.SignInResponse;
 import com.org.firefighting.ui.base.BaseActivity;
 import com.org.firefighting.ui.main.MainActivity;
 
@@ -93,7 +94,14 @@ public class SignInActivity extends BaseActivity implements TextWatcher {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(signInResponse -> {
                     hideProgress();
-                    SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                    SignInResponse signInResponseL = SharedPreferencesDataSource.getSignInResponse();
+                    if (signInResponseL == null) {
+                        SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                    } else {
+                        signInResponseL.token = signInResponse.token;
+                        signInResponseL.user = signInResponse.user;
+                        SharedPreferencesDataSource.putSignInResponse(signInResponseL);
+                    }
                     JPushInterface.resumePush(this);
                     JPushInterface.setAlias(this, signInResponse.user.id.intValue(),
                             String.valueOf(signInResponse.user.id));

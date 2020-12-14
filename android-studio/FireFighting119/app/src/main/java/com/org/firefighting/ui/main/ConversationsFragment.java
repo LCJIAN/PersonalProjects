@@ -276,14 +276,16 @@ public class ConversationsFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
         SignInResponse signInResponse = SharedPreferencesDataSource.getSignInResponse();
-        SmackClientService.start(App.getInstance(),
-                signInResponse.setting.get("IMserverIP"),
-                signInResponse.setting.get("IMservername"),
-                signInResponse.user.id.toString(),
-                "123456");
+        if (!hidden && signInResponse.setting != null) {
+            SmackClientService.start(App.getInstance(),
+                    signInResponse.setting.get("IMserverIP"),
+                    signInResponse.setting.get("IMservername"),
+                    signInResponse.user.id.toString(),
+                    "123456");
+        }
     }
 
     @Override

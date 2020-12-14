@@ -8,6 +8,7 @@ import com.org.firefighting.data.network.entity.DirRoot;
 import com.org.firefighting.data.network.entity.ModifyPwdRequest;
 import com.org.firefighting.data.network.entity.News;
 import com.org.firefighting.data.network.entity.NewsCategory;
+import com.org.firefighting.data.network.entity.Nmsl;
 import com.org.firefighting.data.network.entity.PageResponse;
 import com.org.firefighting.data.network.entity.RelevanceTable;
 import com.org.firefighting.data.network.entity.ResourceDataRequest;
@@ -107,8 +108,8 @@ public interface ApiService {
      * 获取某条信息填报任务对应的表单的记录
      */
     @GET("ht/api/v2/xxtb/task/{task_id}/table/{table_id}/record")
-    Single<PageResponse<List<String>>> getTaskTableRecords(@Path("task_id") String taskId,
-                                                           @Path("table_id") String tableId);
+    Single<PageResponse<Nmsl>> getTaskTableRecords(@Path("task_id") String taskId,
+                                                   @Path("table_id") String tableId);
 
     /**
      * 添加表单记录

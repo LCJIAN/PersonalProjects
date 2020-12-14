@@ -160,7 +160,14 @@ public class RestAPI {
                         if (signInResponse == null) {
                             return response.request();
                         } else {
-                            SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                            SignInResponse signInResponseL = SharedPreferencesDataSource.getSignInResponse();
+                            if (signInResponseL == null) {
+                                SharedPreferencesDataSource.putSignInResponse(signInResponse);
+                            } else {
+                                signInResponseL.token = signInResponse.token;
+                                signInResponseL.user = signInResponse.user;
+                                SharedPreferencesDataSource.putSignInResponse(signInResponseL);
+                            }
                             return response.request()
                                     .newBuilder()
                                     .header("token", signInResponse.token)

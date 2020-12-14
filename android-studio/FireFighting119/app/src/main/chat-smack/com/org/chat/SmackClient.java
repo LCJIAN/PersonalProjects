@@ -58,7 +58,7 @@ public class SmackClient {
         CONNECTION_CLOSED_ERROR("connection closed error"),
         CONNECTION_CLOSED_ERROR_CONFLICT("connection closed error conflict");
 
-        private String message;
+        private final String message;
 
         State(String message) {
             this.message = message;
@@ -127,23 +127,23 @@ public class SmackClient {
 
     private XMPPTCPConnection mXMPPTCPConnection;
 
-    private OutgoingChatMessageListener mOutgoingChatMessageListener = (from, message, chat) -> {
+    private final OutgoingChatMessageListener mOutgoingChatMessageListener = (from, message, chat) -> {
         for (MessageListener l : mMessageListeners) {
             l.newOutgoingMessage(message);
         }
     };
-    private IncomingChatMessageListener mIncomingChatMessageListener = (to, message, chat) -> {
+    private final IncomingChatMessageListener mIncomingChatMessageListener = (to, message, chat) -> {
         for (MessageListener l : mMessageListeners) {
             l.newIncomingMessage(message);
         }
     };
-    private ReceiptReceivedListener mReceiptReceivedListener = (fromJid, toJid, receiptId, receipt) -> {
+    private final ReceiptReceivedListener mReceiptReceivedListener = (fromJid, toJid, receiptId, receipt) -> {
         for (MessageListener l : mMessageListeners) {
             l.onReceiptReceived(fromJid, toJid, receiptId, receipt);
         }
     };
 
-    private ConnectionListener mConnectionListener = new ConnectionListener() {
+    private final ConnectionListener mConnectionListener = new ConnectionListener() {
 
         @Override
         public void connected(XMPPConnection connection) {

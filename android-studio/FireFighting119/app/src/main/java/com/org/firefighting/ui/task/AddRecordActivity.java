@@ -140,7 +140,7 @@ public class AddRecordActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(listPageResponse -> {
                             hideProgress();
-                            mData = listPageResponse.result.get(mPosition);
+                            mData = listPageResponse.result.get(0).data.get(mPosition);
                             setupContent();
                         },
                         throwable -> {
@@ -168,6 +168,26 @@ public class AddRecordActivity extends BaseActivity {
                     } else {
                         data.add(t.value);
                     }
+                } else if (TextUtils.equals("整数", t.type)) {
+                    if (!TextUtils.isEmpty(t.min) && Double.parseDouble(t.value) < Double.parseDouble(t.min)) {
+                        Toast.makeText(App.getInstance(), t.name + "超过范围", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(t.max) && Double.parseDouble(t.value) > Double.parseDouble(t.max)) {
+                        Toast.makeText(App.getInstance(), t.name + "超过范围", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    data.add(t.value);
+                } else if (TextUtils.equals("小数", t.type)) {
+                    if (!TextUtils.isEmpty(t.min) && Double.parseDouble(t.value) < Double.parseDouble(t.min)) {
+                        Toast.makeText(App.getInstance(), t.name + "超过范围", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(t.max) && Double.parseDouble(t.value) > Double.parseDouble(t.max)) {
+                        Toast.makeText(App.getInstance(), t.name + "超过范围", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    data.add(t.value);
                 } else {
                     data.add(t.value);
                 }
@@ -253,24 +273,24 @@ public class AddRecordActivity extends BaseActivity {
             if (mData != null) {
                 t.value = mData.get(i);
             }
-            if (t.options.size() > 0) {
-                buildItemPicker(t);
-            } else {
-                if (TextUtils.equals("文本", t.type)) {
-                    buildItemText(t);
-                } else if (TextUtils.equals("整数", t.type)) {
-                    buildItemInteger(t);
-                } else if (TextUtils.equals("小数", t.type)) {
-                    buildItemDecimal(t);
-                } else if (TextUtils.equals("秒表", t.type)) {
-                    buildItemWatch(t);
-                } else if (TextUtils.equals("手机号", t.type)) {
-                    buildItemPhone(t);
-                } else if (TextUtils.equals("身份证号", t.type)) {
-                    buildItemIdentity(t);
+            if (TextUtils.equals("文本", t.type)) {
+                if (t.options.size() > 0) {
+                    buildItemPicker(t);
                 } else {
-                    buildItemDateTime(t);
+                    buildItemText(t);
                 }
+            } else if (TextUtils.equals("整数", t.type)) {
+                buildItemInteger(t);
+            } else if (TextUtils.equals("小数", t.type)) {
+                buildItemDecimal(t);
+            } else if (TextUtils.equals("秒表", t.type)) {
+                buildItemWatch(t);
+            } else if (TextUtils.equals("手机号", t.type)) {
+                buildItemPhone(t);
+            } else if (TextUtils.equals("身份证号", t.type)) {
+                buildItemIdentity(t);
+            } else {
+                buildItemDateTime(t);
             }
         }
     }
@@ -308,7 +328,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123");
+        et_value.setHint((!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123") + (TextUtils.isEmpty(t.range) ? "" : "(范围：" + t.range + ")"));
         if (t.value != null) {
             et_value.setText(t.value);
         }
@@ -327,7 +347,7 @@ public class AddRecordActivity extends BaseActivity {
         setupItemInfo(rootV, t);
 
         EditText et_value = rootV.findViewById(R.id.et_value);
-        et_value.setHint(!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123.456");
+        et_value.setHint((!TextUtils.isEmpty(t.remarks) ? t.remarks : "示例：123.456") + (TextUtils.isEmpty(t.range) ? "" : "(范围：" + t.range + ")"));
         if (t.value != null) {
             et_value.setText(t.value);
         }
